@@ -1,0 +1,33 @@
+{
+  "name": "tfg-fernando",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "dev:web": "turbo run dev --filter=@tfg/web",
+    "dev:api": "turbo run dev --filter=@tfg/api",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "check-types": "turbo run check-types"
+  },
+  "devDependencies": {
+    "prettier": "^3.7.4",
+    "turbo": "^2.9.14",
+    "typescript": "5.9.2"
+  },
+  "packageManager": "pnpm@11.1.2",
+  "engines": {
+    "node": ">=26.1.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@nestjs/core",
+      "@parcel/watcher",
+      "@scarf/scarf",
+      "bcrypt",
+      "esbuild",
+      "unrs-resolver",
+      "vue-demi"
+    ]
+  }
+}
