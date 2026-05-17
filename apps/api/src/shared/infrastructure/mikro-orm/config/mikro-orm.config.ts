@@ -17,8 +17,13 @@ export default defineConfig({
     warnWhenNoEntities: false,
   },
   extensions: [Migrator, SeedManager],
+  seeder: {
+    path: './src/shared/infrastructure/seeds',
+    glob: '!(*.d).{js,ts}',
+    defaultSeeder: 'DatabaseSeeder',
+  },
   migrations: {
     path: './src/shared/infrastructure/mikro-orm/migrations',
-    glob: '!(*.d).{js,ts}',
+    glob: 'Migration*.{js,ts}',
   },
 });
