@@ -44,6 +44,7 @@ import { RefreshTokenHandler } from './application/commands/auth/refresh-token';
 import { LogoutHandler } from './application/commands/auth/logout';
 import { SwitchAccountHandler } from './application/commands/auth/switch-account';
 import { AcceptInvitationHandler } from './application/commands/account/accept-invitation';
+import { JoinViaInvitationHandler } from './application/commands/account/join-via-invitation';
 import { InviteMemberHandler } from './application/commands/account/invite-member';
 import { RemoveMemberHandler } from './application/commands/account/remove-member';
 import { UpdateMemberRoleHandler } from './application/commands/account/update-member-role';
@@ -53,6 +54,7 @@ import { UpdateAvatarHandler } from './application/commands/user/update-avatar';
 // Query Handlers
 import { GetMeHandler } from './application/queries/auth/get-me';
 import { FindMembersHandler } from './application/queries/account/find-members';
+import { FindMyAccountsHandler } from './application/queries/account/find-my-accounts';
 
 // Shared Modules
 import { EmailModule } from '../shared/infrastructure/email/email.module';
@@ -62,6 +64,7 @@ import { IdService } from '../shared/domain/services/id.service';
 const commandHandlers = [
   RegisterHandler,
   AcceptInvitationHandler,
+  JoinViaInvitationHandler,
   LoginHandler,
   RefreshTokenHandler,
   LogoutHandler,
@@ -73,7 +76,7 @@ const commandHandlers = [
   UpdateAvatarHandler,
 ];
 
-const queryHandlers = [GetMeHandler, FindMembersHandler];
+const queryHandlers = [GetMeHandler, FindMembersHandler, FindMyAccountsHandler];
 
 @Module({
   imports: [

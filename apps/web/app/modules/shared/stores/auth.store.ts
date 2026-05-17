@@ -14,11 +14,12 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function init(): Promise<void> {
     try {
-      const user = await $fetch<UserDto>('/auth/me', {
+      const response = await $fetch<AuthResponseDto>('/auth/me', {
         baseURL: getBaseURL(),
         credentials: 'include',
       });
-      currentUser.value = user;
+      currentUser.value = response.user;
+      currentAccountId.value = response.accountId;
     } catch {
       currentUser.value = null;
       currentAccountId.value = null;

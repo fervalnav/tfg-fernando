@@ -21,11 +21,12 @@ import { InviteMemberCommand } from '../../application/commands/account/invite-m
 import { RemoveMemberCommand } from '../../application/commands/account/remove-member';
 import { UpdateMemberRoleCommand } from '../../application/commands/account/update-member-role';
 import { FindMembersQuery } from '../../application/queries/account/find-members';
+import { FindMyAccountsQuery } from '../../application/queries/account/find-my-accounts';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import { AccountMemberAlreadyExistsException } from '../../domain/exceptions/account-member-already-exists.exception';
 import { AccountMemberNotFoundException } from '../../domain/exceptions/account-member-not-found.exception';
 import type { JwtPayload } from '../passport/jwt.strategy';
-import type { AccountMemberDto } from '@tfg/types';
+import type { AccountMemberDto, MyAccountDto } from '@tfg/types';
 
 @ApiTags('account')
 @Controller('auth/account')
@@ -34,6 +35,15 @@ export class AccountController {
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
   ) {}
+
+  @Get('my-accounts')
+  async findMyAccounts(@CurrentUser('sub') userId: string): Promise<MyAccountDto[]> {
+    try {
+      return await this.queryBus.execute<FindMyAccountsQuery, MyAccountDto[]>(new FindMyAccountsQuery(userId));
+    } catch {
+      throw new InternalServerErrorException();
+    }
+  }
 
   @Get('members')
   async findMembers(@CurrentUser() payload: JwtPayload): Promise<AccountMemberDto[]> {

@@ -18,8 +18,10 @@ import type { Request, Response } from 'express';
 import { RegisterDto } from './dto/register.dto';
 import { SwitchAccountDto } from './dto/switch-account.dto';
 import { AcceptInvitationDto } from './dto/accept-invitation.dto';
+import { JoinViaInvitationDto } from './dto/join-via-invitation.dto';
 import { RegisterCommand } from '../../application/commands/auth/register';
 import { AcceptInvitationCommand } from '../../application/commands/account/accept-invitation';
+import { JoinViaInvitationCommand } from '../../application/commands/account/join-via-invitation';
 import { LoginCommand } from '../../application/commands/auth/login';
 import { RefreshTokenCommand } from '../../application/commands/auth/refresh-token';
 import { LogoutCommand } from '../../application/commands/auth/logout';
@@ -31,6 +33,7 @@ import { CurrentUser } from '../decorators/current-user.decorator';
 import { UserAlreadyExistsException } from '../../domain/exceptions/user-already-exists.exception';
 import { UserNotFoundException } from '../../domain/exceptions/user-not-found.exception';
 import { InvitationTokenInvalidException } from '../../domain/exceptions/invitation-token-invalid.exception';
+import { AccountMemberAlreadyExistsException } from '../../domain/exceptions/account-member-already-exists.exception';
 import type { JwtPayload } from '../passport/jwt.strategy';
 import type { User } from '../../domain/entities/user.entity';
 import type { AuthResponseDto, UserDto } from '@tfg/types';
@@ -146,10 +149,29 @@ export class AuthController {
     }
   }
 
-  @Get('me')
-  async getMe(@CurrentUser() payload: JwtPayload): Promise<UserDto> {
+  @Post('accept-invitation/authenticated')
+  @HttpCode(201)
+  async joinViaInvitation(
+    @Body() dto: JoinViaInvitationDto,
+    @CurrentUser('sub') userId: string,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<AuthResponseDto> {
     try {
-      return await this.queryBus.execute<GetMeQuery, UserDto>(new GetMeQuery(payload.sub));
+      return await this.commandBus.execute<JoinViaInvitationCommand, AuthResponseDto>(
+        new JoinViaInvitationCommand(userId, dto.token, res),
+      );
+    } catch (error) {
+      if (error instanceof InvitationTokenInvalidException) throw new UnauthorizedException(error.message);
+      if (error instanceof AccountMemberAlreadyExistsException) throw new ConflictException(error.message);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  @Get('me')
+  async getMe(@CurrentUser() payload: JwtPayload): Promise<AuthResponseDto> {
+    try {
+      const user = await this.queryBus.execute<GetMeQuery, UserDto>(new GetMeQuery(payload.sub));
+      return { user, accountId: payload.accountId };
     } catch (error) {
       if (error instanceof UserNotFoundException) throw new UnauthorizedException();
       throw new InternalServerErrorException();

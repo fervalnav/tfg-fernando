@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { HomeIcon, ChevronsUpDownIcon, SettingsIcon, LogOutIcon, SunIcon, MoonIcon, LayoutGridIcon } from 'lucide-vue-next';
+import { HomeIcon, ChevronsUpDownIcon, SettingsIcon, LogOutIcon, SunIcon, MoonIcon, LayoutGridIcon, BuildingIcon, CheckIcon } from 'lucide-vue-next';
 import { useTheme } from '~/modules/shared/composables/useTheme';
 import {
   Sidebar,
@@ -15,11 +15,13 @@ import {
   SidebarTrigger,
 } from '~/modules/shared/components/ui/sidebar';
 import { useAuthStore } from '~/modules/shared/stores/auth.store';
-import { useLogoutMutation } from '~/modules/auth';
+import { useLogoutMutation, useMyAccountsQuery, useSwitchAccountMutation } from '~/modules/auth';
 
 const authStore = useAuthStore();
 const { mutate: logout } = useLogoutMutation();
 const { isDark, toggleDark } = useTheme();
+const { data: accounts } = useMyAccountsQuery();
+const { mutate: switchAccount, isPending: isSwitching } = useSwitchAccountMutation();
 
 function handleLogout() {
   logout(undefined, {
@@ -27,32 +29,71 @@ function handleLogout() {
   });
 }
 
+function handleSwitch(accountId: string) {
+  if (accountId === authStore.currentAccountId || isSwitching.value) return;
+  switchAccount(accountId, {
+    onSuccess: () => navigateTo('/'),
+  });
+}
+
+const currentAccount = computed(() =>
+  accounts.value?.find((a) => a.id === authStore.currentAccountId),
+);
+
 const userInitials = computed(() => {
   const first = authStore.currentUser?.firstName?.charAt(0) ?? '';
   const last = authStore.currentUser?.lastName?.charAt(0) ?? '';
   return (first + last).toUpperCase();
 });
-
 </script>
 
 <template>
   <SidebarProvider>
     <Sidebar collapsible="icon">
-      <SidebarHeader class="px-2 py-3">
+      <SidebarHeader class="px-2 py-3 space-y-2">
         <div class="flex items-center justify-center h-8">
           <NuxtLink to="/" class="flex items-center">
             <img
               src="/images/logos/logoA_tendios_white.svg"
               alt="Tendios"
-              class="h-7 group-data-[collapsible=icon]:hidden"
-            >
+              class="h-7 group-data-[collapsible=icon]:hidden">
             <img
-              src="/images/logos/tendios-icono.svg"
+              src="/images/logos/tendios-icono-dark.svg"
               alt="Tendios"
-              class="h-7 hidden group-data-[collapsible=icon]:block"
-            >
+              class="h-7 hidden group-data-[collapsible=icon]:block">
           </NuxtLink>
         </div>
+
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <SidebarMenuButton
+                  tooltip="Cambiar cuenta"
+                  class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                >
+                  <BuildingIcon class="shrink-0" />
+                  <span class="truncate font-medium">{{ currentAccount?.name ?? 'Cuenta' }}</span>
+                  <ChevronsUpDownIcon class="ml-auto size-4 shrink-0" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent class="w-56" side="bottom" align="start" :side-offset="4">
+                <DropdownMenuLabel class="text-xs text-muted-foreground">Mis cuentas</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  v-for="account in accounts"
+                  :key="account.id"
+                  :disabled="account.id === authStore.currentAccountId"
+                  @click="handleSwitch(account.id)"
+                >
+                  <BuildingIcon class="mr-2 size-4" />
+                  <span class="flex-1 truncate">{{ account.name }}</span>
+                  <CheckIcon v-if="account.id === authStore.currentAccountId" class="ml-auto size-4" />
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
 
       <SidebarContent class="px-2 py-2">
@@ -83,10 +124,12 @@ const userInitials = computed(() => {
               <DropdownMenuTrigger as-child>
                 <SidebarMenuButton
                   size="lg"
-                  class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-                >
+                  class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
                   <Avatar class="size-8 shrink-0">
-                    <AvatarImage :src="authStore.currentUser?.avatarUrl ?? undefined" alt="Avatar" />
+                    <AvatarImage
+                      v-if="authStore.currentUser?.avatarUrl"
+                      :src="authStore.currentUser?.avatarUrl"
+                      alt="Avatar" />
                     <AvatarFallback class="text-xs">{{ userInitials }}</AvatarFallback>
                   </Avatar>
                   <div class="grid flex-1 text-left text-sm leading-tight">
@@ -100,12 +143,7 @@ const userInitials = computed(() => {
                   <ChevronsUpDownIcon class="ml-auto size-4" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
-              <DropdownMenuContent
-                class="w-56"
-                side="top"
-                align="end"
-                :side-offset="4"
-              >
+              <DropdownMenuContent class="w-56" side="top" align="end" :side-offset="4">
                 <DropdownMenuItem @click="navigateTo('/settings/profile')">
                   <SettingsIcon class="mr-2 size-4" />
                   Configuración

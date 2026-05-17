@@ -1,35 +1,32 @@
 <script setup lang="ts">
-import { useForm } from 'vee-validate';
-import { toTypedSchema } from '@vee-validate/zod';
-import { z } from 'zod';
 import { toast } from 'vue-sonner';
-import { useAcceptInvitationMutation } from '~/modules/auth';
+import { useJoinViaInvitationMutation } from '~/modules/auth';
 import { isFetchError } from '~/modules/shared/composables/useApi';
+import { useAuthStore } from '~/modules/shared/stores/auth.store';
 
 definePageMeta({ layout: 'auth' });
 
 const route = useRoute();
 const token = computed(() => route.query['token'] as string | undefined);
+const authStore = useAuthStore();
 
-const schema = toTypedSchema(
-  z.object({
-    firstName: z.string().min(1, 'El nombre es obligatorio'),
-    lastName: z.string().min(1, 'El apellido es obligatorio'),
-    password: z.string().min(8, 'Mínimo 8 caracteres'),
-  }),
-);
+onMounted(() => {
+  if (authStore.isAuthenticated) return;
 
-const form = useForm({ validationSchema: schema });
-const { mutate: acceptInvitation, isPending } = useAcceptInvitationMutation();
+  const redirectPath = `/auth/accept-invitation${token.value ? `?token=${encodeURIComponent(token.value)}` : ''}`;
+  navigateTo(`/auth/login?redirect=${encodeURIComponent(redirectPath)}`);
+});
 
-const onSubmit = form.handleSubmit((values) => {
+const { mutate: joinViaInvitation, isPending } = useJoinViaInvitationMutation();
+
+const handleJoin = () => {
   if (!token.value) {
     toast.error('Token de invitación inválido');
     return;
   }
 
-  acceptInvitation(
-    { token: token.value, ...values },
+  joinViaInvitation(
+    { token: token.value },
     {
       onSuccess: () => navigateTo('/'),
       onError: (error) => {
@@ -38,66 +35,32 @@ const onSubmit = form.handleSubmit((values) => {
           return;
         }
         if (isFetchError(error, 409)) {
-          toast.error('Ya existe una cuenta con ese email');
+          toast.error('Ya eres miembro de esta cuenta');
           return;
         }
         toast.error('Error inesperado');
       },
     },
   );
-});
+};
 </script>
 
 <template>
-  <div>
+  <div v-if="authStore.isAuthenticated">
     <div class="mb-8 text-center">
       <h1 class="text-2xl font-bold text-foreground">Aceptar invitacion</h1>
-      <p class="text-muted-foreground mt-2">Completa tu registro para acceder</p>
+      <p class="text-muted-foreground mt-2">Hola, {{ authStore.currentUser?.firstName }}. Haz clic para unirte a la cuenta.</p>
     </div>
 
     <div v-if="!token" class="bg-card rounded-xl border p-6 shadow-sm text-center">
       <p class="text-destructive">Token de invitación no encontrado.</p>
-      <NuxtLink to="/auth/login" class="text-primary hover:underline text-sm mt-2 block"> Volver al login </NuxtLink>
+      <NuxtLink to="/" class="text-primary hover:underline text-sm mt-2 block">Volver al inicio</NuxtLink>
     </div>
 
     <div v-else class="bg-card rounded-xl border p-6 shadow-sm">
-      <form class="space-y-4" @submit="onSubmit">
-        <div class="grid grid-cols-2 gap-4">
-          <FormField v-slot="{ componentField }" name="firstName">
-            <FormItem>
-              <FormLabel>Nombre</FormLabel>
-              <FormControl>
-                <Input placeholder="Juan" v-bind="componentField" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          </FormField>
-
-          <FormField v-slot="{ componentField }" name="lastName">
-            <FormItem>
-              <FormLabel>Apellido</FormLabel>
-              <FormControl>
-                <Input placeholder="García" v-bind="componentField" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          </FormField>
-        </div>
-
-        <FormField v-slot="{ componentField }" name="password">
-          <FormItem>
-            <FormLabel>Contraseña</FormLabel>
-            <FormControl>
-              <Input type="password" placeholder="••••••••" autocomplete="new-password" v-bind="componentField" />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        </FormField>
-
-        <Button type="submit" class="w-full" :disabled="isPending">
-          {{ isPending ? 'Procesando...' : 'Aceptar invitacion' }}
-        </Button>
-      </form>
+      <Button class="w-full" :disabled="isPending" @click="handleJoin">
+        {{ isPending ? 'Procesando...' : 'Unirse a la cuenta' }}
+      </Button>
     </div>
   </div>
 </template>

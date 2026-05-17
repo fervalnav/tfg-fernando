@@ -64,3 +64,14 @@ export type SwitchAccountPayload = {
 export type UpdateMemberRolePayload = {
   role: 'ADMIN' | 'MEMBER';
 };
+
+export type JoinViaInvitationPayload = {
+  token: string;
+};
+
+export type MyAccountDto = {
+  id: string;
+  name: string;
+  role: 'ADMIN' | 'MEMBER';
+  isDefault: boolean;
+};

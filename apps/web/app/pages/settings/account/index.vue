@@ -142,7 +142,7 @@ function handleRoleChange(userId: string, role: string) {
         <li v-for="member in members" :key="member.id" class="flex items-center justify-between px-6 py-4">
           <div class="flex items-center gap-3">
             <Avatar class="size-9">
-              <AvatarImage :src="member.user.avatarUrl ?? undefined" alt="Avatar" />
+              <AvatarImage v-if="member.user.avatarUrl" :src="member.user.avatarUrl" alt="Avatar" />
               <AvatarFallback class="text-sm font-medium">
                 {{ member.user.firstName?.charAt(0) }}
               </AvatarFallback>
@@ -150,18 +150,16 @@ function handleRoleChange(userId: string, role: string) {
             <div>
               <p class="text-sm font-medium">
                 {{ member.user.firstName }} {{ member.user.lastName }}
-                <span v-if="member.userId === authStore.currentUser?.id" class="text-xs text-muted-foreground ml-1">(tú)</span>
+                <span v-if="member.userId === authStore.currentUser?.id"
+                  class="text-xs text-muted-foreground ml-1">(tú)</span>
               </p>
               <p class="text-xs text-muted-foreground">{{ member.user.email }}</p>
             </div>
           </div>
 
           <div class="flex items-center gap-2">
-            <Select
-              :model-value="member.role"
-              :disabled="member.userId === authStore.currentUser?.id"
-              @update:model-value="(val) => val && handleRoleChange(member.userId, val as 'ADMIN' | 'MEMBER')"
-            >
+            <Select :model-value="member.role" :disabled="member.userId === authStore.currentUser?.id"
+              @update:model-value="(val) => val && handleRoleChange(member.userId, val as 'ADMIN' | 'MEMBER')">
               <SelectTrigger class="w-28 h-8 text-xs">
                 <SelectValue />
               </SelectTrigger>
@@ -171,13 +169,8 @@ function handleRoleChange(userId: string, role: string) {
               </SelectContent>
             </Select>
 
-            <Button
-              v-if="member.userId !== authStore.currentUser?.id"
-              variant="ghost"
-              size="sm"
-              class="text-destructive hover:text-destructive"
-              @click="handleRemove(member.userId)"
-            >
+            <Button v-if="member.userId !== authStore.currentUser?.id" variant="ghost" size="sm"
+              class="text-destructive hover:text-destructive" @click="handleRemove(member.userId)">
               <TrashIcon class="mr-1 size-4" />
               Eliminar
             </Button>

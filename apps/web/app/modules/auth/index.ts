@@ -2,6 +2,8 @@ export { useLoginMutation } from './composables/api/useLoginMutation';
 export { useRegisterMutation } from './composables/api/useRegisterMutation';
 export { useLogoutMutation } from './composables/api/useLogoutMutation';
 export { useAcceptInvitationMutation } from './composables/api/useAcceptInvitationMutation';
+export { useJoinViaInvitationMutation } from './composables/api/useJoinViaInvitationMutation';
+export { useMyAccountsQuery } from './composables/api/useMyAccountsQuery';
 export { useMembersQuery } from './composables/api/useMembersQuery';
 export { useInviteMemberMutation } from './composables/api/useInviteMemberMutation';
 export { useRemoveMemberMutation } from './composables/api/useRemoveMemberMutation';

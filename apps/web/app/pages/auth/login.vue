@@ -8,6 +8,9 @@ import { isFetchError } from '~/modules/shared/composables/useApi';
 
 definePageMeta({ layout: 'auth', middleware: 'guest' });
 
+const route = useRoute();
+const redirectTo = computed(() => route.query['redirect'] as string | undefined);
+
 const schema = toTypedSchema(
   z.object({
     email: z.string().email('Email inválido'),
@@ -20,7 +23,7 @@ const { mutate: login, isPending } = useLoginMutation();
 
 const onSubmit = form.handleSubmit((values) => {
   login(values, {
-    onSuccess: () => navigateTo('/'),
+    onSuccess: () => navigateTo(redirectTo.value ?? '/'),
     onError: (error) => {
       if (isFetchError(error, 401)) {
         toast.error('Email o contraseña incorrectos');
@@ -35,7 +38,7 @@ const onSubmit = form.handleSubmit((values) => {
 <template>
   <div>
     <div class="mb-8 text-center">
-      <img src="/images/logos/logoA_tendios_darkblue.svg" alt="Logo" class="h-10 mx-auto mb-6" />
+      <img src="/images/logos/logoA_tendios_darkblue.svg" alt="Logo" class="h-10 mx-auto mb-6">
       <h1 class="text-2xl font-bold text-foreground">Iniciar sesion</h1>
       <p class="text-muted-foreground mt-2">Accede a tu cuenta</p>
     </div>
