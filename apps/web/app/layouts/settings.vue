@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { HomeIcon, UserIcon, UsersIcon, ChevronsUpDownIcon, SettingsIcon, LogOutIcon, SunIcon, MoonIcon } from 'lucide-vue-next';
+import { HomeIcon, UserIcon, UsersIcon, ChevronsUpDownIcon, SettingsIcon, LogOutIcon, SunIcon, MoonIcon, GitBranchIcon } from 'lucide-vue-next';
 import { useTheme } from '~/modules/shared/composables/useTheme';
 import {
   Sidebar,
@@ -86,6 +86,14 @@ const userInitials = computed(() => {
               <NuxtLink to="/settings/account">
                 <UsersIcon />
                 <span>Cuenta y miembros</span>
+              </NuxtLink>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton as-child tooltip="Pipelines">
+              <NuxtLink to="/settings/pipelines">
+                <GitBranchIcon />
+                <span>Pipelines</span>
               </NuxtLink>
             </SidebarMenuButton>
           </SidebarMenuItem>

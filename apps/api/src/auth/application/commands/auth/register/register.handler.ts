@@ -1,4 +1,4 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import * as bcrypt from 'bcrypt';
 
 import { RegisterCommand } from './register.command';
@@ -21,6 +21,7 @@ export class RegisterHandler implements ICommandHandler<RegisterCommand, AuthRes
     private readonly memberRepo: AccountMemberRepository,
     private readonly idService: IdService,
     private readonly sessionService: AuthSessionService,
+    private readonly eventBus: EventBus,
   ) {}
 
   async execute(command: RegisterCommand): Promise<AuthResponseDto> {
@@ -64,6 +65,10 @@ export class RegisterHandler implements ICommandHandler<RegisterCommand, AuthRes
     };
 
     await this.sessionService.createSessionByIds(user.id, account.id, command.res);
+
+    for (const event of account.pullEvents()) {
+      this.eventBus.publish(event);
+    }
 
     return result;
   }

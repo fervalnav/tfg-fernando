@@ -1,18 +1,25 @@
+import { AggregateRoot } from '@/shared/domain/aggregate-root';
+import { AccountCreatedEvent } from '../events/account-created.event';
+
 type AccountPrimitives = {
   id: string;
   name: string;
   createdAt: Date;
 };
 
-export class Account {
+export class Account extends AggregateRoot {
   private constructor(
     private readonly _id: string,
     private _name: string,
     private readonly _createdAt: Date,
-  ) {}
+  ) {
+    super();
+  }
 
   static create(params: { id: string; name: string }): Account {
-    return new Account(params.id, params.name, new Date());
+    const account = new Account(params.id, params.name, new Date());
+    account.record(new AccountCreatedEvent(params.id));
+    return account;
   }
 
   static fromPrimitives(data: AccountPrimitives): Account {

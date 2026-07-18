@@ -6,6 +6,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import mikroOrmConfig from './shared/infrastructure/mikro-orm/config/mikro-orm.config';
 import { HealthController } from './health.controller';
 import { AuthModule } from '@/auth';
+import { PipelineModule } from '@/pipeline';
 import { JwtAuthGuard } from './auth/infrastructure/guards/jwt-auth.guard';
 
 @Module({
@@ -14,6 +15,7 @@ import { JwtAuthGuard } from './auth/infrastructure/guards/jwt-auth.guard';
     MikroOrmModule.forRoot(mikroOrmConfig),
     CqrsModule.forRoot(),
     AuthModule,
+    PipelineModule,
   ],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],
