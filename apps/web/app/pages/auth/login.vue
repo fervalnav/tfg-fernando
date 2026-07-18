@@ -73,7 +73,7 @@ const onSubmit = form.handleSubmit((values) => {
 
     <p class="text-center text-sm text-muted-foreground mt-4">
       ¿No tienes cuenta?
-      <NuxtLink to="/auth/register" class="text-primary hover:underline"> Registrate </NuxtLink>
+      <NuxtLink :to="{ path: '/auth/register', query: redirectTo ? { redirect: redirectTo } : {} }" class="text-primary hover:underline"> Registrate </NuxtLink>
     </p>
   </div>
 </template>

@@ -8,6 +8,9 @@ import { isFetchError } from '~/modules/shared/composables/useApi';
 
 definePageMeta({ layout: 'auth', middleware: 'guest' });
 
+const route = useRoute();
+const redirectTo = computed(() => route.query['redirect'] as string | undefined);
+
 const schema = toTypedSchema(
   z.object({
     firstName: z.string().min(1, 'El nombre es obligatorio'),
@@ -23,7 +26,7 @@ const { mutate: register, isPending } = useRegisterMutation();
 
 const onSubmit = form.handleSubmit((values) => {
   register(values, {
-    onSuccess: () => navigateTo('/'),
+    onSuccess: () => navigateTo(redirectTo.value ?? '/'),
     onError: (error) => {
       if (isFetchError(error, 409)) {
         toast.error('Ya existe una cuenta con ese email');
@@ -105,7 +108,7 @@ const onSubmit = form.handleSubmit((values) => {
 
     <p class="text-center text-sm text-muted-foreground mt-4">
       ¿Ya tienes cuenta?
-      <NuxtLink to="/auth/login" class="text-primary hover:underline"> Inicia sesion </NuxtLink>
+      <NuxtLink :to="{ path: '/auth/login', query: redirectTo ? { redirect: redirectTo } : {} }" class="text-primary hover:underline"> Inicia sesion </NuxtLink>
     </p>
   </div>
 </template>
