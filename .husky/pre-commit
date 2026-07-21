@@ -1,0 +1,8 @@
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+nvm use --silent
+
+ROOT=$(git rev-parse --show-toplevel)
+
+cd "$ROOT/apps/api" && pnpm exec lint-staged
+cd "$ROOT/apps/web" && pnpm exec lint-staged

@@ -11,8 +11,10 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@lucide/vue": "^1.25.0",
     "@pinia/nuxt": "^0.11.3",
     "@tanstack/vue-query": "^5.100.10",
+    "@tfg/types": "workspace:*",
     "@vee-validate/zod": "^4.15.1",
     "@vueuse/core": "^14.3.0",
     "class-variance-authority": "^0.7.1",
@@ -28,8 +30,10 @@
     "vue": "^3.5.34",
     "vue-router": "^5.0.6",
     "vue-sonner": "^2.0.9",
-    "@tfg/types": "workspace:*",
     "zod": "^3.25.76"
+  },
+  "lint-staged": {
+    "app/**/*.{ts,vue}": ["prettier --write", "eslint --fix"]
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.4.1",

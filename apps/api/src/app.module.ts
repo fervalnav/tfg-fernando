@@ -7,6 +7,9 @@ import mikroOrmConfig from './shared/infrastructure/mikro-orm/config/mikro-orm.c
 import { HealthController } from './health.controller';
 import { AuthModule } from '@/auth';
 import { PipelineModule } from '@/pipeline';
+import { ControlQuestionModule } from '@/control-question';
+import { CustomFieldModule } from '@/custom-field';
+import { SummaryModule } from '@/summary';
 import { JwtAuthGuard } from './auth/infrastructure/guards/jwt-auth.guard';
 
 @Module({
@@ -16,6 +19,9 @@ import { JwtAuthGuard } from './auth/infrastructure/guards/jwt-auth.guard';
     CqrsModule.forRoot(),
     AuthModule,
     PipelineModule,
+    ControlQuestionModule,
+    CustomFieldModule,
+    SummaryModule,
   ],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],

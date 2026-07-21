@@ -11,10 +11,6 @@
     "check-types": "turbo run check-types",
     "prepare": "husky"
   },
-  "lint-staged": {
-    "apps/api/src/**/*.ts": ["prettier --write", "eslint --fix"],
-    "apps/web/app/**/*.{ts,vue}": ["prettier --write"]
-  },
   "devDependencies": {
     "husky": "^9.1.7",
     "lint-staged": "^17.0.5",

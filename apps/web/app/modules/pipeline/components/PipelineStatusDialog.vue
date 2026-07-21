@@ -73,7 +73,11 @@ const onSubmit = form.handleSubmit((values) => {
     updateStatus(
       { pipelineId: props.pipelineId, statusId: props.status.id, ...payload },
       {
-        onSuccess: () => { toast.success('Estado actualizado'); isOpen.value = false; emit('saved'); },
+        onSuccess: () => {
+          toast.success('Estado actualizado');
+          isOpen.value = false;
+          emit('saved');
+        },
         onError: (e) => toast.error(e.message ?? 'Error al actualizar el estado'),
       },
     );
@@ -81,7 +85,12 @@ const onSubmit = form.handleSubmit((values) => {
     createStatus(
       { pipelineId: props.pipelineId, id: uuidv7(), ...payload },
       {
-        onSuccess: () => { toast.success('Estado creado'); isOpen.value = false; form.resetForm(); emit('saved'); },
+        onSuccess: () => {
+          toast.success('Estado creado');
+          isOpen.value = false;
+          form.resetForm();
+          emit('saved');
+        },
         onError: (e) => toast.error(e.message ?? 'Error al crear el estado'),
       },
     );
@@ -123,7 +132,12 @@ const onSubmit = form.handleSubmit((values) => {
               <FormLabel>Color de fondo</FormLabel>
               <FormControl>
                 <div class="flex items-center gap-2">
-                  <input type="color" :value="value" class="h-9 w-9 cursor-pointer rounded border border-input p-0.5" @input="handleChange(($event.target as HTMLInputElement).value)" />
+                  <input
+                    type="color"
+                    :value="value"
+                    class="h-9 w-9 cursor-pointer rounded border border-input p-0.5"
+                    @input="handleChange(($event.target as HTMLInputElement).value)"
+                  >
                   <span class="text-sm text-muted-foreground">{{ value }}</span>
                 </div>
               </FormControl>
@@ -135,7 +149,12 @@ const onSubmit = form.handleSubmit((values) => {
               <FormLabel>Color de texto</FormLabel>
               <FormControl>
                 <div class="flex items-center gap-2">
-                  <input type="color" :value="value" class="h-9 w-9 cursor-pointer rounded border border-input p-0.5" @input="handleChange(($event.target as HTMLInputElement).value)" />
+                  <input
+                    type="color"
+                    :value="value"
+                    class="h-9 w-9 cursor-pointer rounded border border-input p-0.5"
+                    @input="handleChange(($event.target as HTMLInputElement).value)"
+                  >
                   <span class="text-sm text-muted-foreground">{{ value }}</span>
                 </div>
               </FormControl>
@@ -146,9 +165,9 @@ const onSubmit = form.handleSubmit((values) => {
         <FormField v-slot="{ value, handleChange }" name="isTerminal">
           <FormItem class="flex items-center gap-3">
             <FormControl>
-              <input type="checkbox" :checked="value" class="h-4 w-4 cursor-pointer rounded border-input" @change="handleChange(($event.target as HTMLInputElement).checked)" />
+              <Checkbox :checked="value" @update:checked="handleChange" />
             </FormControl>
-            <FormLabel class="!mt-0">Estado terminal (cierre)</FormLabel>
+            <FormLabel class="!mt-0 font-normal cursor-pointer">Estado terminal (cierre)</FormLabel>
           </FormItem>
         </FormField>
 
@@ -174,16 +193,16 @@ const onSubmit = form.handleSubmit((values) => {
         <FormField v-slot="{ value, handleChange }" name="showInKanban">
           <FormItem class="flex items-center gap-3">
             <FormControl>
-              <input type="checkbox" :checked="value" class="h-4 w-4 cursor-pointer rounded border-input" @change="handleChange(($event.target as HTMLInputElement).checked)" />
+              <Checkbox :checked="value" @update:checked="handleChange" />
             </FormControl>
-            <FormLabel class="!mt-0">Visible en Kanban</FormLabel>
+            <FormLabel class="!mt-0 font-normal cursor-pointer">Visible en Kanban</FormLabel>
           </FormItem>
         </FormField>
 
         <DialogFooter>
           <Button type="button" variant="outline" @click="isOpen = false">Cancelar</Button>
           <Button type="submit" :disabled="isPending">
-            {{ isPending ? 'Guardando...' : (isEditing ? 'Guardar cambios' : 'Crear estado') }}
+            {{ isPending ? 'Guardando...' : isEditing ? 'Guardar cambios' : 'Crear estado' }}
           </Button>
         </DialogFooter>
       </form>

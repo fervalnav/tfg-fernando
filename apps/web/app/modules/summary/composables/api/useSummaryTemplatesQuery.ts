@@ -1,0 +1,19 @@
+import { useInfiniteQuery } from '@tanstack/vue-query';
+import type { SummaryTemplateDto, PaginatedResult } from '@tfg/types';
+import { useApi } from '~/modules/shared/composables/useApi';
+
+const LIMIT = 20;
+
+export const useSummaryTemplatesQuery = () => {
+  const api = useApi();
+  return useInfiniteQuery<PaginatedResult<SummaryTemplateDto>, Error>({
+    queryKey: ['summary-templates'],
+    queryFn: ({ pageParam }) =>
+      api<PaginatedResult<SummaryTemplateDto>>(`/summaries/templates?page=${pageParam as number}&limit=${LIMIT}`),
+    initialPageParam: 1,
+    getNextPageParam: (last) => {
+      const loaded = (last.page - 1) * last.limit + last.items.length;
+      return loaded < last.total ? last.page + 1 : undefined;
+    },
+  });
+};

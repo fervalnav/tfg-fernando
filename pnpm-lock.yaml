@@ -201,6 +201,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@lucide/vue':
+        specifier: ^1.25.0
+        version: 1.25.0(vue@3.5.34(typescript@6.0.3))
       '@pinia/nuxt':
         specifier: ^0.11.3
         version: 0.11.3(magicast@0.5.3)(pinia@3.0.4(typescript@6.0.3)(vue@3.5.34(typescript@6.0.3)))
@@ -1468,6 +1471,11 @@ packages:
 
   '@kwsites/promise-deferred@1.1.1':
     resolution: {integrity: sha512-GaHYm+c0O9MjZRu0ongGBRbinu8gVAMd2UZjji6jVmqKtZluZnptXGWhz1E8j8D2HJ3f/yMxKAUC0b+57wncIw==}
+
+  '@lucide/vue@1.25.0':
+    resolution: {integrity: sha512-hkEetV+v48ScIn3uwqwWQ66sI8foeP2q6OMI09GzLFH4SfvBlfe3JHYlMBdBCqFC7WRlhFsndyDn/awRKRc2OQ==}
+    peerDependencies:
+      vue: '>=3.0.1'
 
   '@lukeed/csprng@1.1.0':
     resolution: {integrity: sha512-Z7C/xXCiGWsg0KuKsHTKJxbWhpI3Vs5GwLfOean7MGyVFGqdRgBbAjOCh6u4bbjPc/8MJ2pZmK/0DLdCbivLDA==}
@@ -9483,6 +9491,10 @@ snapshots:
       - supports-color
 
   '@kwsites/promise-deferred@1.1.1': {}
+
+  '@lucide/vue@1.25.0(vue@3.5.34(typescript@6.0.3))':
+    dependencies:
+      vue: 3.5.34(typescript@6.0.3)
 
   '@lukeed/csprng@1.1.0': {}
 
