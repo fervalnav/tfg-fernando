@@ -253,7 +253,7 @@
           "length": 10,
           "precision": null,
           "scale": null,
-          "default": "'TEXT'",
+          "default": null,
           "comment": null,
           "enumItems": [],
           "mappedType": "string"
@@ -322,21 +322,7 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {
-        "default_control_questions_account_id_fkey": {
-          "columnNames": [
-            "account_id"
-          ],
-          "constraintName": "default_control_questions_account_id_fkey",
-          "localTableName": "public.default_control_questions",
-          "referencedTableName": "public.accounts",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "updateRule": "no action",
-          "deleteRule": "cascade"
-        }
-      },
+      "foreignKeys": {},
       "nativeEnums": {},
       "comment": null
     },
@@ -417,7 +403,7 @@
           "length": 20,
           "precision": null,
           "scale": null,
-          "default": "'TEXT'",
+          "default": null,
           "comment": null,
           "enumItems": [],
           "mappedType": "string"
@@ -433,7 +419,7 @@
           "length": null,
           "precision": null,
           "scale": null,
-          "default": "'[]'",
+          "default": null,
           "comment": null,
           "enumItems": [],
           "mappedType": "json"
@@ -449,7 +435,7 @@
           "length": null,
           "precision": null,
           "scale": null,
-          "default": "false",
+          "default": null,
           "comment": null,
           "enumItems": [],
           "mappedType": "boolean"
@@ -465,7 +451,7 @@
           "length": null,
           "precision": null,
           "scale": null,
-          "default": "false",
+          "default": null,
           "comment": null,
           "enumItems": [],
           "mappedType": "boolean"
@@ -534,19 +520,185 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {
-        "default_custom_fields_account_id_fkey": {
+      "foreignKeys": {},
+      "nativeEnums": {},
+      "comment": null
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "workflow_step_id": {
+          "name": "workflow_step_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 255,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "string"
+        },
+        "target_type": {
+          "name": "target_type",
+          "type": "varchar(50)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 50,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "string"
+        },
+        "target_id": {
+          "name": "target_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "json"
+        },
+        "position": {
+          "name": "position",
+          "type": "int4",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": 32,
+          "scale": 0,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        }
+      },
+      "name": "default_workflow_step_actions",
+      "schema": "public",
+      "indexes": [
+        {
           "columnNames": [
-            "account_id"
+            "id"
           ],
-          "constraintName": "default_custom_fields_account_id_fkey",
-          "localTableName": "public.default_custom_fields",
-          "referencedTableName": "public.accounts",
+          "composite": false,
+          "constraint": false,
+          "keyName": "default_workflow_step_actions_pkey",
+          "unique": true,
+          "primary": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "default_workflow_step_actions_workflow_step_id_foreign": {
+          "columnNames": [
+            "workflow_step_id"
+          ],
+          "constraintName": "default_workflow_step_actions_workflow_step_id_foreign",
+          "localTableName": "public.default_workflow_step_actions",
+          "referencedTableName": "public.workflow_steps",
           "referencedColumnNames": [
             "id"
           ],
-          "updateRule": "no action",
-          "deleteRule": "cascade"
+          "updateRule": "cascade",
+          "deleteRule": "no action"
         }
       },
       "nativeEnums": {},
@@ -811,7 +963,7 @@
           "length": null,
           "precision": null,
           "scale": null,
-          "default": "false",
+          "default": null,
           "comment": null,
           "enumItems": [],
           "mappedType": "boolean"
@@ -827,7 +979,7 @@
           "length": null,
           "precision": null,
           "scale": null,
-          "default": "false",
+          "default": null,
           "comment": null,
           "enumItems": [],
           "mappedType": "boolean"
@@ -843,7 +995,7 @@
           "length": 10,
           "precision": null,
           "scale": null,
-          "default": "'NONE'",
+          "default": null,
           "comment": null,
           "enumItems": [],
           "mappedType": "string"
@@ -875,7 +1027,7 @@
           "length": null,
           "precision": 32,
           "scale": 0,
-          "default": "100",
+          "default": null,
           "comment": null,
           "enumItems": [],
           "mappedType": "integer"
@@ -929,18 +1081,18 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "pipeline_statuses_pipeline_id_fkey": {
+        "pipeline_statuses_pipeline_id_foreign": {
           "columnNames": [
             "pipeline_id"
           ],
-          "constraintName": "pipeline_statuses_pipeline_id_fkey",
+          "constraintName": "pipeline_statuses_pipeline_id_foreign",
           "localTableName": "public.pipeline_statuses",
           "referencedTableName": "public.pipelines",
           "referencedColumnNames": [
             "id"
           ],
-          "updateRule": "no action",
-          "deleteRule": "cascade"
+          "updateRule": "cascade",
+          "deleteRule": "no action"
         }
       },
       "nativeEnums": {},
@@ -1044,21 +1196,7 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {
-        "pipelines_account_id_fkey": {
-          "columnNames": [
-            "account_id"
-          ],
-          "constraintName": "pipelines_account_id_fkey",
-          "localTableName": "public.pipelines",
-          "referencedTableName": "public.accounts",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "updateRule": "no action",
-          "deleteRule": "cascade"
-        }
-      },
+      "foreignKeys": {},
       "nativeEnums": {},
       "comment": null
     },
@@ -1294,21 +1432,7 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {
-        "summary_templates_account_id_fkey": {
-          "columnNames": [
-            "account_id"
-          ],
-          "constraintName": "summary_templates_account_id_fkey",
-          "localTableName": "public.summary_templates",
-          "referencedTableName": "public.accounts",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "updateRule": "no action",
-          "deleteRule": "cascade"
-        }
-      },
+      "foreignKeys": {},
       "nativeEnums": {},
       "comment": null
     },
@@ -1447,6 +1571,288 @@
           "composite": false,
           "constraint": false,
           "keyName": "users_pkey",
+          "unique": true,
+          "primary": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {},
+      "nativeEnums": {},
+      "comment": null
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "workflow_id": {
+          "name": "workflow_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 255,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "string"
+        },
+        "type": {
+          "name": "type",
+          "type": "varchar(20)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 20,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "string"
+        },
+        "condition": {
+          "name": "condition",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "position": {
+          "name": "position",
+          "type": "int4",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": 32,
+          "scale": 0,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "integer"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        }
+      },
+      "name": "workflow_steps",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": false,
+          "keyName": "workflow_steps_pkey",
+          "unique": true,
+          "primary": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "workflow_steps_workflow_id_foreign": {
+          "columnNames": [
+            "workflow_id"
+          ],
+          "constraintName": "workflow_steps_workflow_id_foreign",
+          "localTableName": "public.workflow_steps",
+          "referencedTableName": "public.workflows",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "updateRule": "cascade",
+          "deleteRule": "no action"
+        }
+      },
+      "nativeEnums": {},
+      "comment": null
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "account_id": {
+          "name": "account_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 255,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "string"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        }
+      },
+      "name": "workflows",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": false,
+          "keyName": "workflows_pkey",
           "unique": true,
           "primary": true
         }

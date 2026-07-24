@@ -10,6 +10,7 @@ import { PipelineModule } from '@/pipeline';
 import { ControlQuestionModule } from '@/control-question';
 import { CustomFieldModule } from '@/custom-field';
 import { SummaryModule } from '@/summary';
+import { WorkflowModule } from '@/workflow';
 import { JwtAuthGuard } from './auth/infrastructure/guards/jwt-auth.guard';
 
 @Module({
@@ -22,6 +23,7 @@ import { JwtAuthGuard } from './auth/infrastructure/guards/jwt-auth.guard';
     ControlQuestionModule,
     CustomFieldModule,
     SummaryModule,
+    WorkflowModule,
   ],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],
