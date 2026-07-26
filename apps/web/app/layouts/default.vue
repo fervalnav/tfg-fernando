@@ -1,5 +1,16 @@
 <script setup lang="ts">
-import { HomeIcon, ChevronsUpDownIcon, SettingsIcon, LogOutIcon, SunIcon, MoonIcon, LayoutGridIcon, BuildingIcon, CheckIcon } from 'lucide-vue-next';
+import {
+  HomeIcon,
+  ChevronsUpDownIcon,
+  SettingsIcon,
+  LogOutIcon,
+  SunIcon,
+  MoonIcon,
+  LayoutGridIcon,
+  BuildingIcon,
+  CheckIcon,
+  KanbanSquareIcon,
+} from 'lucide-vue-next';
 import { useTheme } from '~/modules/shared/composables/useTheme';
 import {
   Sidebar,
@@ -36,9 +47,7 @@ function handleSwitch(accountId: string) {
   });
 }
 
-const currentAccount = computed(() =>
-  accounts.value?.find((a) => a.id === authStore.currentAccountId),
-);
+const currentAccount = computed(() => accounts.value?.find((a) => a.id === authStore.currentAccountId));
 
 const userInitials = computed(() => {
   const first = authStore.currentUser?.firstName?.charAt(0) ?? '';
@@ -56,11 +65,13 @@ const userInitials = computed(() => {
             <img
               src="/images/logos/logoA_tendios_white.svg"
               alt="Tendios"
-              class="h-7 group-data-[collapsible=icon]:hidden">
+              class="h-7 group-data-[collapsible=icon]:hidden"
+            >
             <img
               src="/images/logos/tendios-icono-dark.svg"
               alt="Tendios"
-              class="h-7 hidden group-data-[collapsible=icon]:block">
+              class="h-7 hidden group-data-[collapsible=icon]:block"
+            >
           </NuxtLink>
         </div>
 
@@ -107,6 +118,14 @@ const userInitials = computed(() => {
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
+            <SidebarMenuButton as-child tooltip="Oportunidades">
+              <NuxtLink to="/opportunities">
+                <KanbanSquareIcon />
+                <span>Oportunidades</span>
+              </NuxtLink>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
             <SidebarMenuButton as-child tooltip="Componentes">
               <NuxtLink to="/demo">
                 <LayoutGridIcon />
@@ -124,12 +143,14 @@ const userInitials = computed(() => {
               <DropdownMenuTrigger as-child>
                 <SidebarMenuButton
                   size="lg"
-                  class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
+                  class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                >
                   <Avatar class="size-8 shrink-0">
                     <AvatarImage
                       v-if="authStore.currentUser?.avatarUrl"
                       :src="authStore.currentUser?.avatarUrl"
-                      alt="Avatar" />
+                      alt="Avatar"
+                    />
                     <AvatarFallback class="text-xs">{{ userInitials }}</AvatarFallback>
                   </Avatar>
                   <div class="grid flex-1 text-left text-sm leading-tight">
