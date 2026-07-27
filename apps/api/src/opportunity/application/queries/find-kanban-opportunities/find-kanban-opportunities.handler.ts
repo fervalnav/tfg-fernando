@@ -8,7 +8,7 @@ export class FindKanbanOpportunitiesHandler implements IQueryHandler<FindKanbanO
   constructor(private readonly repo: OpportunityRepository) {}
 
   async execute(query: FindKanbanOpportunitiesQuery): Promise<OpportunityDto[]> {
-    const opportunities = await this.repo.findKanban(query.pipelineId, query.accountId);
+    const opportunities = await this.repo.findKanban(query.filters);
     return opportunities.map((e) => OpportunityDto.fromEntity(e));
   }
 }

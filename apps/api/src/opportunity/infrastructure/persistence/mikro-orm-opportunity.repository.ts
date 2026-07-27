@@ -11,6 +11,8 @@ import { Opportunity } from '../../domain/opportunity.entity';
 import { OpportunityOrmEntity } from './opportunity.orm-entity';
 import type { PaginatedResult } from '@/shared/domain/dto/paginated.dto';
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 @Injectable()
 export class MikroOrmOpportunityRepository implements OpportunityRepository {
   constructor(private readonly em: EntityManager) {}
@@ -69,7 +71,6 @@ export class MikroOrmOpportunityRepository implements OpportunityRepository {
     }
 
     const offset = (page - 1) * limit;
-    const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
     const safeUserId = filters.userId && UUID_RE.test(filters.userId) ? filters.userId : undefined;
     const effectiveWhere = (
       safeUserId ? { ...where, $and: [{ $raw: `responsible_user_ids @> '["${safeUserId}"]'::jsonb` }] } : where
@@ -93,16 +94,27 @@ export class MikroOrmOpportunityRepository implements OpportunityRepository {
     return this.em.count(OpportunityOrmEntity, { pipelineId, pipelineStatusId: statusId });
   }
 
-  async findKanban(pipelineId: string, accountId: string): Promise<Opportunity[]> {
+  async findKanban(filters: OpportunityFilters): Promise<Opportunity[]> {
     const knex = this.em.getKnex();
-    const rows = await knex
+    const query = knex
       .select('o.*')
       .from('opportunities as o')
       .join('pipeline_statuses as ps', 'o.pipeline_status_id', 'ps.id')
-      .where('o.pipeline_id', pipelineId)
-      .where('o.account_id', accountId)
-      .where('ps.show_in_kanban', true)
-      .orderBy('o.sort_points', 'asc');
+      .where('o.pipeline_id', filters.pipelineId)
+      .where('o.account_id', filters.accountId)
+      .where('ps.show_in_kanban', true);
+
+    if (filters.q) query.whereILike('o.title', `%${filters.q}%`);
+    if (filters.statusIds?.length) query.whereIn('o.pipeline_status_id', filters.statusIds);
+    if (filters.userId && UUID_RE.test(filters.userId)) {
+      query.whereRaw('o.responsible_user_ids @> ?::jsonb', [JSON.stringify([filters.userId])]);
+    }
+    if (filters.dueDateFrom) query.where('o.due_date', '>=', filters.dueDateFrom);
+    if (filters.dueDateTo) query.where('o.due_date', '<=', filters.dueDateTo);
+    if (filters.amountMin !== undefined) query.where('o.amount', '>=', filters.amountMin);
+    if (filters.amountMax !== undefined) query.where('o.amount', '<=', filters.amountMax);
+
+    const rows = await query.orderBy('o.sort_points', 'asc');
 
     return rows.map((row: Record<string, unknown>) =>
       Opportunity.fromPrimitives({
@@ -129,15 +141,26 @@ export class MikroOrmOpportunityRepository implements OpportunityRepository {
     );
   }
 
-  async findStatusTotals(pipelineId: string, accountId: string): Promise<PipelineStatusTotal[]> {
+  async findStatusTotals(filters: OpportunityFilters): Promise<PipelineStatusTotal[]> {
     const knex = this.em.getKnex();
-    const rows = await knex
+    const query = knex
       .select('pipeline_status_id as statusId')
       .count('* as count')
       .sum('amount as totalAmount')
       .from('opportunities')
-      .where({ pipeline_id: pipelineId, account_id: accountId })
-      .groupBy('pipeline_status_id');
+      .where({ pipeline_id: filters.pipelineId, account_id: filters.accountId });
+
+    if (filters.q) query.whereILike('title', `%${filters.q}%`);
+    if (filters.statusIds?.length) query.whereIn('pipeline_status_id', filters.statusIds);
+    if (filters.userId && UUID_RE.test(filters.userId)) {
+      query.whereRaw('responsible_user_ids @> ?::jsonb', [JSON.stringify([filters.userId])]);
+    }
+    if (filters.dueDateFrom) query.where('due_date', '>=', filters.dueDateFrom);
+    if (filters.dueDateTo) query.where('due_date', '<=', filters.dueDateTo);
+    if (filters.amountMin !== undefined) query.where('amount', '>=', filters.amountMin);
+    if (filters.amountMax !== undefined) query.where('amount', '<=', filters.amountMax);
+
+    const rows = await query.groupBy('pipeline_status_id');
 
     return rows.map((row: Record<string, unknown>) => ({
       statusId: row['statusId'] as string,

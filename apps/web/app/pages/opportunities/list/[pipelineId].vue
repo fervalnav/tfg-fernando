@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { KanbanSquareIcon, ListIcon } from 'lucide-vue-next';
 import { usePipelinesQuery, usePipelineQuery } from '~/modules/pipeline';
+import { useMembersQuery } from '~/modules/auth';
 import {
   OpportunityListTable,
   OpportunityPipelineSelector,
-  OpportunityFiltersPanel,
+  OpportunityFiltersBar,
   useOpportunitiesQuery,
   useOpportunityFilters,
 } from '~/modules/opportunity';
@@ -16,6 +17,7 @@ const pipelineId = computed(() => route.params['pipelineId'] as string);
 
 const { data: pipelines } = usePipelinesQuery();
 const { data: pipeline } = usePipelineQuery(pipelineId);
+const { data: members } = useMembersQuery();
 
 const { filters } = useOpportunityFilters();
 const page = ref(1);
@@ -44,9 +46,9 @@ function goToKanban() {
 </script>
 
 <template>
-  <div class="flex flex-col h-full">
+  <div class="flex h-full min-h-0 flex-col overflow-hidden">
     <!-- Page header -->
-    <div class="flex items-center gap-3 px-4 py-3 border-b shrink-0">
+    <div class="flex shrink-0 items-center gap-3 border-b px-4 py-3">
       <ListIcon class="size-4 text-muted-foreground" />
       <h1 class="text-base font-semibold">Oportunidades</h1>
       <OpportunityPipelineSelector
@@ -58,12 +60,13 @@ function goToKanban() {
         <Button variant="ghost" size="icon" class="size-8" title="Vista kanban" @click="goToKanban">
           <KanbanSquareIcon class="size-4" />
         </Button>
-        <OpportunityFiltersPanel :statuses="pipeline?.statuses" />
       </div>
     </div>
 
+    <OpportunityFiltersBar :statuses="pipeline?.statuses" :members="members" />
+
     <!-- List -->
-    <div class="flex-1 overflow-auto p-4">
+    <div class="min-h-0 flex-1 overflow-auto p-4">
       <OpportunityListTable :opportunities="data?.items ?? []" :is-loading="isLoading" :pipeline="pipeline" />
 
       <!-- Pagination -->

@@ -31,6 +31,7 @@ import { CreateOpportunityDto } from './dto/create-opportunity.dto';
 import { UpdateOpportunityDto } from './dto/update-opportunity.dto';
 import { TransitionOpportunityStatusDto } from './dto/transition-opportunity-status.dto';
 import { UpdateOpportunityPositionDto } from './dto/update-opportunity-position.dto';
+import type { OpportunityFilters } from '../../domain/opportunity.repository';
 
 @Controller('opportunities')
 export class OpportunityController {
@@ -44,9 +45,30 @@ export class OpportunityController {
   async findKanban(
     @CurrentUser() user: JwtPayload,
     @Query('pipelineId') pipelineId: string,
+    @Query('q') q?: string,
+    @Query('statusIds') statusIds?: string | string[],
+    @Query('userId') userId?: string,
+    @Query('dueDateFrom') dueDateFrom?: string,
+    @Query('dueDateTo') dueDateTo?: string,
+    @Query('amountMin') amountMinRaw?: string,
+    @Query('amountMax') amountMaxRaw?: string,
   ): Promise<OpportunityDto[]> {
     try {
-      return await this.queryBus.execute(new FindKanbanOpportunitiesQuery(pipelineId, user.accountId));
+      return await this.queryBus.execute(
+        new FindKanbanOpportunitiesQuery(
+          parseOpportunityFilters(
+            user.accountId,
+            pipelineId,
+            q,
+            statusIds,
+            userId,
+            dueDateFrom,
+            dueDateTo,
+            amountMinRaw,
+            amountMaxRaw,
+          ),
+        ),
+      );
     } catch {
       throw new InternalServerErrorException();
     }
@@ -56,9 +78,30 @@ export class OpportunityController {
   async findStatusTotals(
     @CurrentUser() user: JwtPayload,
     @Query('pipelineId') pipelineId: string,
+    @Query('q') q?: string,
+    @Query('statusIds') statusIds?: string | string[],
+    @Query('userId') userId?: string,
+    @Query('dueDateFrom') dueDateFrom?: string,
+    @Query('dueDateTo') dueDateTo?: string,
+    @Query('amountMin') amountMinRaw?: string,
+    @Query('amountMax') amountMaxRaw?: string,
   ): Promise<PipelineStatusTotalsDto[]> {
     try {
-      return await this.queryBus.execute(new FindPipelineStatusTotalsQuery(pipelineId, user.accountId));
+      return await this.queryBus.execute(
+        new FindPipelineStatusTotalsQuery(
+          parseOpportunityFilters(
+            user.accountId,
+            pipelineId,
+            q,
+            statusIds,
+            userId,
+            dueDateFrom,
+            dueDateTo,
+            amountMinRaw,
+            amountMaxRaw,
+          ),
+        ),
+      );
     } catch {
       throw new InternalServerErrorException();
     }
@@ -79,23 +122,31 @@ export class OpportunityController {
     @Query('amountMax') amountMaxRaw?: string,
   ): Promise<PaginatedResult<OpportunityDto>> {
     try {
-      const statusIdsArray = statusIds ? (Array.isArray(statusIds) ? statusIds : [statusIds]) : undefined;
-      const amountMin = amountMinRaw ? parseFloat(amountMinRaw) : undefined;
-      const amountMax = amountMaxRaw ? parseFloat(amountMaxRaw) : undefined;
+      const filters = parseOpportunityFilters(
+        user.accountId,
+        pipelineId,
+        q,
+        statusIds,
+        userId,
+        dueDateFrom,
+        dueDateTo,
+        amountMinRaw,
+        amountMaxRaw,
+      );
 
       return await this.queryBus.execute(
         new FindAllOpportunitiesQuery(
-          user.accountId,
-          pipelineId,
+          filters.accountId,
+          filters.pipelineId,
           page,
           Math.min(limit, 50),
-          q,
-          statusIdsArray,
-          userId,
-          dueDateFrom ? new Date(dueDateFrom) : undefined,
-          dueDateTo ? new Date(dueDateTo) : undefined,
-          amountMin,
-          amountMax,
+          filters.q,
+          filters.statusIds,
+          filters.userId,
+          filters.dueDateFrom,
+          filters.dueDateTo,
+          filters.amountMin,
+          filters.amountMax,
         ),
       );
     } catch {
@@ -208,4 +259,31 @@ export class OpportunityController {
       throw new InternalServerErrorException();
     }
   }
+}
+
+function parseOpportunityFilters(
+  accountId: string,
+  pipelineId: string,
+  q?: string,
+  statusIds?: string | string[],
+  userId?: string,
+  dueDateFrom?: string,
+  dueDateTo?: string,
+  amountMinRaw?: string,
+  amountMaxRaw?: string,
+): OpportunityFilters {
+  const amountMin = amountMinRaw ? Number(amountMinRaw) : undefined;
+  const amountMax = amountMaxRaw ? Number(amountMaxRaw) : undefined;
+
+  return {
+    accountId,
+    pipelineId,
+    q: q?.trim() || undefined,
+    statusIds: statusIds ? (Array.isArray(statusIds) ? statusIds : [statusIds]) : undefined,
+    userId,
+    dueDateFrom: dueDateFrom ? new Date(dueDateFrom) : undefined,
+    dueDateTo: dueDateTo ? new Date(dueDateTo) : undefined,
+    amountMin: amountMin !== undefined && Number.isFinite(amountMin) ? amountMin : undefined,
+    amountMax: amountMax !== undefined && Number.isFinite(amountMax) ? amountMax : undefined,
+  };
 }

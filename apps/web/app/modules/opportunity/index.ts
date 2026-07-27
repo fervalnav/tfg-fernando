@@ -1,7 +1,7 @@
 // Components
 export { default as OpportunityKanban } from './components/OpportunityKanban.vue';
 export { default as OpportunityListTable } from './components/OpportunityListTable.vue';
-export { default as OpportunityFiltersPanel } from './components/OpportunityFiltersPanel.vue';
+export { default as OpportunityFiltersBar } from './components/OpportunityFiltersBar.vue';
 export { default as OpportunityPipelineSelector } from './components/OpportunityPipelineSelector.vue';
 
 // Composables

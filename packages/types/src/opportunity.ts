@@ -53,6 +53,16 @@ export type UpdateOpportunityPositionPayload = {
   pipelineStatusId?: string;
 };
 
+export type OpportunityFilters = {
+  q?: string;
+  statusIds?: string[];
+  userId?: string;
+  dueDateFrom?: string;
+  dueDateTo?: string;
+  amountMin?: number;
+  amountMax?: number;
+};
+
 export type PipelineStatusTotalsDto = {
   statusId: string;
   count: number;

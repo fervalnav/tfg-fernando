@@ -24,7 +24,7 @@ export abstract class OpportunityRepository {
   abstract findById(id: string, accountId: string): Promise<Opportunity | null>;
   abstract findAll(filters: OpportunityFilters, page: number, limit: number): Promise<PaginatedResult<Opportunity>>;
   abstract countInStatus(pipelineId: string, statusId: string): Promise<number>;
-  abstract findKanban(pipelineId: string, accountId: string): Promise<Opportunity[]>;
-  abstract findStatusTotals(pipelineId: string, accountId: string): Promise<PipelineStatusTotal[]>;
+  abstract findKanban(filters: OpportunityFilters): Promise<Opportunity[]>;
+  abstract findStatusTotals(filters: OpportunityFilters): Promise<PipelineStatusTotal[]>;
   abstract delete(id: string, accountId: string): Promise<void>;
 }

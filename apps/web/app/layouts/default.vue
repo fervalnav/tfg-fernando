@@ -188,11 +188,11 @@ const userInitials = computed(() => {
       <SidebarRail />
     </Sidebar>
 
-    <SidebarInset>
+    <SidebarInset class="h-svh min-w-0 overflow-hidden">
       <header class="flex h-14 shrink-0 items-center gap-4 border-b px-4">
         <SidebarTrigger />
       </header>
-      <div class="flex-1 overflow-auto">
+      <div class="min-h-0 min-w-0 flex-1 overflow-auto">
         <slot />
       </div>
     </SidebarInset>

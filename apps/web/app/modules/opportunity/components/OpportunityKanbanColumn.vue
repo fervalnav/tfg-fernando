@@ -63,7 +63,7 @@ function handleDragEnd(event: SortableEvent) {
 </script>
 
 <template>
-  <div class="flex flex-col w-72 shrink-0 rounded-lg bg-muted/40 border border-border/50">
+  <div class="flex h-full min-h-0 w-72 shrink-0 flex-col rounded-lg border border-border/50 bg-muted/40">
     <!-- Header -->
     <div class="flex items-center gap-2 px-3 py-2.5 border-b border-border/50">
       <span class="size-2.5 rounded-full shrink-0" :style="{ backgroundColor: status.backgroundColor ?? '#94a3b8' }" />
@@ -77,7 +77,7 @@ function handleDragEnd(event: SortableEvent) {
       v-model="localItems"
       group="kanban"
       :data-status-id="status.id"
-      class="flex flex-col gap-2 p-2 flex-1 min-h-16 overflow-y-auto max-h-[calc(100vh-220px)]"
+      class="flex min-h-16 flex-1 flex-col gap-2 overflow-y-auto p-2"
       @end="handleDragEnd"
     >
       <div v-for="item in localItems" :key="item.id" :data-opportunity-id="item.id">

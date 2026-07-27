@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { toast } from 'vue-sonner';
 import { useQueryClient } from '@tanstack/vue-query';
-import type { PipelineDto } from '@tfg/types';
+import type { OpportunityFilters, PipelineDto } from '@tfg/types';
 import OpportunityKanbanColumn from './OpportunityKanbanColumn.vue';
 import OpportunityCreateDialog from './OpportunityCreateDialog.vue';
 import { useKanbanOpportunitiesQuery } from '../composables/api/useKanbanOpportunitiesQuery';
@@ -9,13 +9,17 @@ import { usePipelineStatusTotalsQuery } from '../composables/api/usePipelineStat
 import { useTransitionStatusMutation } from '../composables/api/useTransitionStatusMutation';
 import { useUpdatePositionMutation } from '../composables/api/useUpdatePositionMutation';
 
-const props = defineProps<{ pipeline: PipelineDto }>();
+const props = defineProps<{
+  pipeline: PipelineDto;
+  filters: OpportunityFilters;
+}>();
 
 const queryClient = useQueryClient();
 const pipelineId = computed(() => props.pipeline.id);
+const filters = computed(() => props.filters);
 
-const { data: kanbanItems, isLoading } = useKanbanOpportunitiesQuery(pipelineId);
-const { data: totals } = usePipelineStatusTotalsQuery(pipelineId);
+const { data: kanbanItems, isLoading } = useKanbanOpportunitiesQuery(pipelineId, filters);
+const { data: totals } = usePipelineStatusTotalsQuery(pipelineId, filters);
 const { mutate: transitionStatus } = useTransitionStatusMutation();
 const { mutate: updatePosition } = useUpdatePositionMutation();
 
@@ -98,7 +102,7 @@ function handleDrop(event: {
 </script>
 
 <template>
-  <div class="flex gap-4 overflow-x-auto pb-4 px-4 h-full items-start pt-4">
+  <div class="flex h-full min-h-0 items-stretch gap-4 overflow-x-auto overflow-y-hidden px-4 py-4">
     <template v-if="isLoading">
       <div v-for="i in 4" :key="i" class="w-72 shrink-0 h-48 rounded-lg bg-muted animate-pulse" />
     </template>

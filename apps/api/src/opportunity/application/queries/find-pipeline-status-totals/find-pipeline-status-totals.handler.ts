@@ -11,7 +11,7 @@ export class FindPipelineStatusTotalsHandler implements IQueryHandler<
   constructor(private readonly repo: OpportunityRepository) {}
 
   async execute(query: FindPipelineStatusTotalsQuery): Promise<PipelineStatusTotalsDto[]> {
-    const totals = await this.repo.findStatusTotals(query.pipelineId, query.accountId);
+    const totals = await this.repo.findStatusTotals(query.filters);
     return totals.map((t) => PipelineStatusTotalsDto.fromRaw(t));
   }
 }
