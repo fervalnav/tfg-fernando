@@ -31,13 +31,14 @@ packages/
 
 ### Requisitos
 
-- Node 22+ (ver `.nvmrc`)
-- pnpm 9+
+- Node 26.1.0 (versión fijada en `.nvmrc`)
+- pnpm 11.1.2
 - Docker
 
 ### Primera vez
 
 ```bash
+nvm use           # Siempre antes de ejecutar comandos Node/pnpm; lee .nvmrc
 make setup        # Copia .env.example → .env y levanta Docker (PostgreSQL + RabbitMQ + MinIO)
 pnpm install
 make migration-up # Aplica migraciones

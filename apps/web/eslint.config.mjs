@@ -3,6 +3,9 @@ import boundaries from 'eslint-plugin-boundaries';
 import withNuxt from './.nuxt/eslint.config.mjs';
 
 export default withNuxt(
+  {
+    ignores: ['coverage/**'],
+  },
   // Barrel-only imports: fuera de un módulo solo se puede importar desde su index.ts
   {
     plugins: { boundaries },
