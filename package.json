@@ -9,6 +9,8 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
+    "test": "turbo run test",
+    "test:cov": "turbo run test:cov",
     "prepare": "husky"
   },
   "devDependencies": {
