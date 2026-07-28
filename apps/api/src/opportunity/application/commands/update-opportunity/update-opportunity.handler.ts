@@ -17,6 +17,8 @@ export class UpdateOpportunityHandler implements ICommandHandler<UpdateOpportuni
       amount: command.amount,
       currency: command.currency,
       dueDate: command.dueDate,
+      responsibleUserIds: command.responsibleUserIds,
+      responsibleTeamIds: command.responsibleTeamIds,
     });
 
     await this.repo.save(opportunity);

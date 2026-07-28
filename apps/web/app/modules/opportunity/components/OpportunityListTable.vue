@@ -73,7 +73,9 @@ function handleDelete(id: string, title: string) {
           :key="opp.id"
           class="border-b last:border-0 hover:bg-muted/30 transition-colors"
         >
-          <td class="px-4 py-3 font-medium max-w-xs truncate">{{ opp.title }}</td>
+          <td class="px-4 py-3 font-medium max-w-xs truncate">
+            <NuxtLink :to="`/opportunities/${opp.id}`" class="hover:underline">{{ opp.title }}</NuxtLink>
+          </td>
           <td class="px-4 py-3">
             <Badge variant="outline" class="gap-1.5" :style="{ borderColor: getStatusColor(opp.pipelineStatusId) }">
               <span class="size-1.5 rounded-full" :style="{ backgroundColor: getStatusColor(opp.pipelineStatusId) }" />

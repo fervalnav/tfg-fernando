@@ -9,6 +9,12 @@ export type ActionTargetType =
 
 export type StepType = 'step' | 'decision';
 
+export type WorkflowStepActionStatus = 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'SKIPPED' | 'FAILED';
+
+export type WorkflowDecisionStatus = 'PENDING' | 'TRUE' | 'FALSE' | 'ERROR';
+
+export type OpportunityWorkflowStatus = 'ACTIVE' | 'COMPLETED';
+
 export type DefaultWorkflowStepActionDto = {
   id: string;
   workflowStepId: string;
@@ -40,6 +46,46 @@ export type WorkflowDto = {
 
 export type WorkflowDetailDto = WorkflowDto & {
   steps: WorkflowStepDto[];
+};
+
+export type WorkflowStepActionDto = {
+  id: string;
+  opportunityId: string;
+  workflowStepId: string;
+  defaultWorkflowStepActionId: string;
+  name: string;
+  targetType: ActionTargetType;
+  targetId: string | null;
+  metadata: Record<string, unknown> | null;
+  position: number;
+  status: WorkflowStepActionStatus;
+  errorMessage: string | null;
+  completedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type WorkflowDecisionResultDto = {
+  id: string;
+  opportunityId: string;
+  workflowStepId: string;
+  status: WorkflowDecisionStatus;
+  evidence: string | null;
+  evaluatedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type OpportunityWorkflowDto = {
+  workflow: WorkflowDetailDto;
+  currentStepId: string;
+  status: OpportunityWorkflowStatus;
+  actions: WorkflowStepActionDto[];
+  decisions: WorkflowDecisionResultDto[];
+};
+
+export type AssignOpportunityWorkflowPayload = {
+  workflowId: string;
 };
 
 export type CreateWorkflowPayload = {

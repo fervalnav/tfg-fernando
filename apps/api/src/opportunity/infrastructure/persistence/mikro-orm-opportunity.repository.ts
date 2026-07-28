@@ -26,6 +26,7 @@ export class MikroOrmOpportunityRepository implements OpportunityRepository {
         description: p.description,
         amount: p.amount,
         currency: p.currency,
+        pipelineId: p.pipelineId,
         pipelineStatusId: p.pipelineStatusId,
         sortPoints: p.sortPoints,
         workflowId: p.workflowId,

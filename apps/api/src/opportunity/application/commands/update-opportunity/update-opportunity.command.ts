@@ -9,6 +9,8 @@ export class UpdateOpportunityCommand extends Command<void> {
     public readonly amount: number | null | undefined,
     public readonly currency: string | null | undefined,
     public readonly dueDate: Date | null | undefined,
+    public readonly responsibleUserIds: string[] | undefined,
+    public readonly responsibleTeamIds: string[] | undefined,
   ) {
     super();
   }

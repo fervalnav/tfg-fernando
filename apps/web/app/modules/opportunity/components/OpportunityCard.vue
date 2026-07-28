@@ -29,7 +29,13 @@ const isOverdue = computed(() => {
 <template>
   <Card class="cursor-grab active:cursor-grabbing hover:shadow-sm transition-shadow">
     <CardContent class="p-3 space-y-2">
-      <p class="text-sm font-medium leading-tight">{{ opportunity.title }}</p>
+      <NuxtLink
+        :to="`/opportunities/${opportunity.id}`"
+        class="block text-sm font-medium leading-tight hover:underline"
+        @click.stop
+      >
+        {{ opportunity.title }}
+      </NuxtLink>
       <div v-if="formattedAmount || formattedDueDate" class="flex items-center gap-3 flex-wrap">
         <span v-if="formattedAmount" class="flex items-center gap-1 text-xs text-muted-foreground">
           <EuroIcon class="size-3" />

@@ -40,6 +40,8 @@ export type UpdateOpportunityPayload = Partial<{
   amount: number | null;
   currency: string | null;
   dueDate: string | null;
+  responsibleUserIds: string[];
+  responsibleTeamIds: string[];
 }>;
 
 export type TransitionOpportunityStatusPayload = {

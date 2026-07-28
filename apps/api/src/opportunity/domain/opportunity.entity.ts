@@ -112,12 +112,16 @@ export class Opportunity {
     amount?: number | null;
     currency?: string | null;
     dueDate?: Date | null;
+    responsibleUserIds?: string[];
+    responsibleTeamIds?: string[];
   }): void {
     if (params.title !== undefined) this._title = params.title;
     if (params.description !== undefined) this._description = params.description;
     if (params.amount !== undefined) this._amount = params.amount;
     if (params.currency !== undefined) this._currency = params.currency;
     if (params.dueDate !== undefined) this._dueDate = params.dueDate;
+    if (params.responsibleUserIds !== undefined) this._responsibleUserIds = [...params.responsibleUserIds];
+    if (params.responsibleTeamIds !== undefined) this._responsibleTeamIds = [...params.responsibleTeamIds];
     this._updatedAt = new Date();
   }
 
@@ -132,6 +136,23 @@ export class Opportunity {
   updatePosition(sortPoints: number, pipelineStatusId?: string): void {
     this._sortPoints = sortPoints;
     if (pipelineStatusId !== undefined) this._pipelineStatusId = pipelineStatusId;
+    this._updatedAt = new Date();
+  }
+
+  assignWorkflow(workflowId: string, workflowStepId: string): void {
+    this._workflowId = workflowId;
+    this._workflowStepId = workflowStepId;
+    this._updatedAt = new Date();
+  }
+
+  advanceWorkflowStep(workflowStepId: string): void {
+    this._workflowStepId = workflowStepId;
+    this._updatedAt = new Date();
+  }
+
+  transitionPipelineStatus(pipelineId: string, pipelineStatusId: string): void {
+    this._pipelineId = pipelineId;
+    this._pipelineStatusId = pipelineStatusId;
     this._updatedAt = new Date();
   }
 

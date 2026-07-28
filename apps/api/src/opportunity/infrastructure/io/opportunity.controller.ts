@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  ConflictException,
   DefaultValuePipe,
   Delete,
   Get,
@@ -16,7 +17,14 @@ import {
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CurrentUser } from '@/auth';
 import type { JwtPayload } from '@/auth';
-import type { OpportunityDto, PaginatedResult, PipelineStatusTotalsDto } from '@tfg/types';
+import type {
+  OpportunityDto,
+  OpportunityWorkflowDto,
+  PaginatedResult,
+  PipelineStatusTotalsDto,
+  WorkflowDecisionResultDto,
+  WorkflowStepActionDto,
+} from '@tfg/types';
 import { OpportunityNotFoundException } from '../../domain/exceptions/opportunity-not-found.exception';
 import { CreateOpportunityCommand } from '../../application/commands/create-opportunity';
 import { UpdateOpportunityCommand } from '../../application/commands/update-opportunity';
@@ -32,6 +40,24 @@ import { UpdateOpportunityDto } from './dto/update-opportunity.dto';
 import { TransitionOpportunityStatusDto } from './dto/transition-opportunity-status.dto';
 import { UpdateOpportunityPositionDto } from './dto/update-opportunity-position.dto';
 import type { OpportunityFilters } from '../../domain/opportunity.repository';
+import { OpportunityWorkflowConflictException } from '../../domain/exceptions/opportunity-workflow-conflict.exception';
+import { WorkflowRuntimeActionNotFoundException } from '../../domain/exceptions/workflow-runtime-action-not-found.exception';
+import { AssignOpportunityWorkflowDto } from './dto/assign-opportunity-workflow.dto';
+import {
+  AssignWorkflowToOpportunityCommand,
+  ChangeOpportunityWorkflowCommand,
+  CheckAndAdvanceOpportunityWorkflowStepCommand,
+  CompleteWorkflowStepActionCommand,
+  ReEvaluateWorkflowDecisionCommand,
+  RetryWorkflowStepActionCommand,
+  SkipWorkflowStepActionCommand,
+  TriggerOpportunityStepAutoExecuteCommand,
+} from '../../application/workflow/opportunity-workflow.commands';
+import { FindOpportunityWorkflowQuery } from '../../application/workflow/find-opportunity-workflow.query';
+import {
+  FindOpportunityDecisionResultsQuery,
+  FindOpportunityStepActionsQuery,
+} from '../../application/workflow/find-opportunity-workflow-runtime.query';
 
 @Controller('opportunities')
 export class OpportunityController {
@@ -187,6 +213,143 @@ export class OpportunityController {
     }
   }
 
+  @Get(':id/workflow')
+  async findWorkflow(@CurrentUser() user: JwtPayload, @Param('id') id: string): Promise<OpportunityWorkflowDto> {
+    try {
+      return await this.queryBus.execute(new FindOpportunityWorkflowQuery(id, user.accountId));
+    } catch (error) {
+      this.handleWorkflowError(error);
+    }
+  }
+
+  @Get(':id/workflow/actions')
+  async findWorkflowActions(
+    @CurrentUser() user: JwtPayload,
+    @Param('id') id: string,
+  ): Promise<WorkflowStepActionDto[]> {
+    try {
+      return await this.queryBus.execute(new FindOpportunityStepActionsQuery(id, user.accountId));
+    } catch (error) {
+      this.handleWorkflowError(error);
+    }
+  }
+
+  @Get(':id/workflow/decisions')
+  async findWorkflowDecisions(
+    @CurrentUser() user: JwtPayload,
+    @Param('id') id: string,
+  ): Promise<WorkflowDecisionResultDto[]> {
+    try {
+      return await this.queryBus.execute(new FindOpportunityDecisionResultsQuery(id, user.accountId));
+    } catch (error) {
+      this.handleWorkflowError(error);
+    }
+  }
+
+  @Post(':id/workflow')
+  @HttpCode(204)
+  async assignWorkflow(
+    @CurrentUser() user: JwtPayload,
+    @Param('id') id: string,
+    @Body() dto: AssignOpportunityWorkflowDto,
+  ): Promise<void> {
+    try {
+      await this.commandBus.execute(new AssignWorkflowToOpportunityCommand(id, user.accountId, dto.workflowId));
+    } catch (error) {
+      this.handleWorkflowError(error);
+    }
+  }
+
+  @Patch(':id/workflow')
+  @HttpCode(204)
+  async changeWorkflow(
+    @CurrentUser() user: JwtPayload,
+    @Param('id') id: string,
+    @Body() dto: AssignOpportunityWorkflowDto,
+  ): Promise<void> {
+    try {
+      await this.commandBus.execute(new ChangeOpportunityWorkflowCommand(id, user.accountId, dto.workflowId));
+    } catch (error) {
+      this.handleWorkflowError(error);
+    }
+  }
+
+  @Post(':id/workflow/actions/:actionId/complete')
+  @HttpCode(204)
+  async completeWorkflowAction(
+    @CurrentUser() user: JwtPayload,
+    @Param('id') id: string,
+    @Param('actionId') actionId: string,
+  ): Promise<void> {
+    try {
+      await this.commandBus.execute(new CompleteWorkflowStepActionCommand(id, user.accountId, actionId));
+    } catch (error) {
+      this.handleWorkflowError(error);
+    }
+  }
+
+  @Post(':id/workflow/actions/:actionId/skip')
+  @HttpCode(204)
+  async skipWorkflowAction(
+    @CurrentUser() user: JwtPayload,
+    @Param('id') id: string,
+    @Param('actionId') actionId: string,
+  ): Promise<void> {
+    try {
+      await this.commandBus.execute(new SkipWorkflowStepActionCommand(id, user.accountId, actionId));
+    } catch (error) {
+      this.handleWorkflowError(error);
+    }
+  }
+
+  @Post(':id/workflow/actions/:actionId/retry')
+  @HttpCode(204)
+  async retryWorkflowAction(
+    @CurrentUser() user: JwtPayload,
+    @Param('id') id: string,
+    @Param('actionId') actionId: string,
+  ): Promise<void> {
+    try {
+      await this.commandBus.execute(new RetryWorkflowStepActionCommand(id, user.accountId, actionId));
+    } catch (error) {
+      this.handleWorkflowError(error);
+    }
+  }
+
+  @Post(':id/workflow/advance')
+  @HttpCode(204)
+  async advanceWorkflow(@CurrentUser() user: JwtPayload, @Param('id') id: string): Promise<void> {
+    try {
+      await this.commandBus.execute(new CheckAndAdvanceOpportunityWorkflowStepCommand(id, user.accountId));
+    } catch (error) {
+      this.handleWorkflowError(error);
+    }
+  }
+
+  @Post(':id/workflow/auto-execute')
+  @HttpCode(204)
+  async autoExecuteWorkflow(@CurrentUser() user: JwtPayload, @Param('id') id: string): Promise<void> {
+    try {
+      await this.commandBus.execute(new TriggerOpportunityStepAutoExecuteCommand(id, user.accountId));
+    } catch (error) {
+      this.handleWorkflowError(error);
+    }
+  }
+
+  @Post(':id/workflow/decisions/:stepId/re-evaluate')
+  @HttpCode(204)
+  async reEvaluateDecision(
+    @CurrentUser() user: JwtPayload,
+    @Param('id') id: string,
+    @Param('stepId') stepId: string,
+  ): Promise<void> {
+    try {
+      await this.commandBus.execute(new ReEvaluateWorkflowDecisionCommand(id, user.accountId, stepId));
+    } catch (error) {
+      this.handleWorkflowError(error);
+    }
+  }
+
   @Patch(':id')
   async update(
     @CurrentUser() user: JwtPayload,
@@ -203,12 +366,22 @@ export class OpportunityController {
           dto.amount,
           dto.currency,
           dto.dueDate !== undefined ? (dto.dueDate ? new Date(dto.dueDate) : null) : undefined,
+          dto.responsibleUserIds,
+          dto.responsibleTeamIds,
         ),
       );
     } catch (error) {
       if (error instanceof OpportunityNotFoundException) throw new NotFoundException(error.message);
       throw new InternalServerErrorException();
     }
+  }
+
+  private handleWorkflowError(error: unknown): never {
+    if (error instanceof OpportunityNotFoundException || error instanceof WorkflowRuntimeActionNotFoundException) {
+      throw new NotFoundException(error.message);
+    }
+    if (error instanceof OpportunityWorkflowConflictException) throw new ConflictException(error.message);
+    throw new InternalServerErrorException();
   }
 
   @Delete(':id')

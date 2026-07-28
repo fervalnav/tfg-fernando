@@ -57,5 +57,6 @@ const eventHandlers = [AccountCreatedHandler];
     { provide: WorkflowStepRepository, useClass: MikroOrmWorkflowStepRepository },
     { provide: DefaultWorkflowStepActionRepository, useClass: MikroOrmDefaultWorkflowStepActionRepository },
   ],
+  exports: [WorkflowRepository, WorkflowStepRepository, DefaultWorkflowStepActionRepository],
 })
 export class WorkflowModule {}
