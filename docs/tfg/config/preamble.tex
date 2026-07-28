@@ -1,0 +1,63 @@
+\usepackage[spanish,english,es-tabla,es-lcroman]{babel}
+\usepackage[
+  a4paper,
+  top=2.5cm,
+  bottom=2.5cm,
+  left=3cm,
+  right=3cm
+]{geometry}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{apacite}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\usetikzlibrary{arrows.meta,fit,positioning}
+
+\graphicspath{{assets/}{figures/}}
+
+\definecolor{TFGBlue}{HTML}{17324D}
+\definecolor{TFGAccent}{HTML}{2F80ED}
+\definecolor{TFGMuted}{HTML}{667085}
+\definecolor{TFGCodeBackground}{HTML}{F5F7FA}
+\definecolor{TFGLightBlue}{HTML}{EAF2FB}
+\definecolor{TFGLightGray}{HTML}{F2F4F7}
+
+\hypersetup{
+  pdftitle={\TFGTitle},
+  pdfauthor={\TFGAuthor},
+  pdfsubject={Trabajo Fin de Grado},
+  colorlinks=true,
+  linkcolor=TFGBlue,
+  citecolor=TFGBlue,
+  urlcolor=TFGAccent
+}
+
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{TFGCodeBackground},
+  frame=single,
+  rulecolor=\color{TFGMuted},
+  numbers=left,
+  numberstyle=\tiny\color{TFGMuted},
+  numbersep=8pt,
+  showstringspaces=false,
+  breaklines=true,
+  captionpos=b,
+  tabsize=2
+}
+
+\renewcommand{\lstlistingname}{Fragmento de código}
+\renewcommand{\lstlistlistingname}{Índice de código}

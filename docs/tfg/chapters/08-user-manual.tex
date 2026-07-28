@@ -1,0 +1,55 @@
+\chapter{Manual de usuario}
+\label{chap:user-manual}
+
+\section{Requisitos previos}
+\section{Instalación y puesta en marcha}
+
+\section{Acceso a la aplicación}
+\label{sec:user-manual-access}
+
+La aplicación dispone de un sistema de autenticación mediante correo
+electrónico y contraseña. Desde la pantalla de acceso, el usuario puede iniciar
+sesión con una cuenta existente o acceder al formulario de registro mediante el
+enlace \emph{Regístrate}.
+
+\subsection{Creación de una cuenta}
+
+Para crear una cuenta nueva, el usuario debe completar los campos de nombre,
+apellido, correo electrónico, contraseña y nombre de la empresa, tal y como se
+muestra en la Figura~\ref{fig:user-manual-register}. Todos los campos son
+obligatorios, el correo debe tener un formato válido y la contraseña debe
+contener al menos ocho caracteres. Una vez cumplimentado el formulario, se debe
+pulsar el botón \emph{Crear cuenta}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.72\textwidth,trim=250bp 45bp 250bp 0,clip]{screenshots/auth-register.png}
+  \caption{Formulario de creación de una cuenta en el prototipo actual.}
+  \label{fig:user-manual-register}
+\end{figure}
+
+Si ya se dispone de una cuenta, el enlace \emph{Inicia sesión}, situado bajo el
+formulario, permite regresar a la pantalla de acceso.
+
+\subsection{Inicio de sesión}
+
+En la pantalla mostrada en la Figura~\ref{fig:user-manual-login}, el usuario
+debe introducir su correo electrónico y su contraseña y pulsar
+\emph{Iniciar sesión}. El sistema comprueba que el correo tenga un formato
+válido y que la contraseña no esté vacía antes de enviar la solicitud.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.72\textwidth,trim=250bp 45bp 250bp 0,clip]{screenshots/auth-login.png}
+  \caption{Pantalla de inicio de sesión del prototipo actual.}
+  \label{fig:user-manual-login}
+\end{figure}
+
+Si las credenciales no son correctas, la aplicación informa al usuario mediante
+un mensaje de error. Cuando la autenticación se completa correctamente, el
+usuario es redirigido a la página solicitada inicialmente o, si no existe una
+redirección pendiente, a la pantalla principal.
+
+\section{Gestión de oportunidades}
+\section{Configuración de pipelines y workflows}
+\section{Gestión del CRM}
