@@ -1,0 +1,76 @@
+\begin{titlepage}
+  \centering
+  \sffamily
+
+  \IfFileExists{assets/university-logo.pdf}{
+    \includegraphics[width=0.62\textwidth,height=3.2cm,keepaspectratio]
+      {assets/university-logo.pdf}
+  }{
+    \IfFileExists{assets/university-logo.png}{
+      \includegraphics[width=0.62\textwidth,height=3.2cm,keepaspectratio]
+        {assets/university-logo.png}
+    }{
+      \fcolorbox{TFGMuted}{white}{
+        \parbox[c][2.2cm][c]{0.58\textwidth}{
+          \centering
+          \color{TFGMuted}\small
+          Añadir el logotipo de la Universidad de Sevilla en\\
+          \texttt{assets/university-logo.pdf}
+        }
+      }
+    }
+  }
+
+  \vspace{0.8cm}
+
+  {\large\bfseries\MakeUppercase{\TFGUniversity}\par}
+  \vspace{0.25cm}
+  {\Large\bfseries\MakeUppercase{\TFGFaculty}\par}
+  \vspace{0.35cm}
+  {\large\TFGDegree\par}
+
+  \vfill
+
+  {\large\bfseries\color{TFGAccent}TRABAJO FIN DE GRADO\par}
+
+  \vspace{0.75cm}
+  {\color{TFGBlue}\rule{0.8\textwidth}{1.1pt}\par}
+  \vspace{0.75cm}
+
+  {\LARGE\bfseries\color{TFGBlue}\TFGTitle\par}
+
+  \vspace{0.55cm}
+  {\large\color{TFGMuted}\TFGSubtitle\par}
+
+  \vspace{0.75cm}
+  {\color{TFGBlue}\rule{0.8\textwidth}{1.1pt}\par}
+
+  \vfill
+
+  \begin{minipage}{0.78\textwidth}
+    \centering
+
+    {\normalsize Realizado por\par}
+    \vspace{0.15cm}
+    {\large\bfseries\TFGAuthor\par}
+
+    \vspace{0.65cm}
+
+    {\normalsize Dirigido por\par}
+    \vspace{0.15cm}
+    {\large\bfseries\TFGTutor\par}
+
+    \vspace{0.65cm}
+
+    {\normalsize Departamento\par}
+    \vspace{0.15cm}
+    {\large\bfseries\TFGDepartment\par}
+  \end{minipage}
+
+  \vfill
+
+  \begin{flushright}
+    \large\bfseries
+    \TFGLocation, \TFGDate
+  \end{flushright}
+\end{titlepage}

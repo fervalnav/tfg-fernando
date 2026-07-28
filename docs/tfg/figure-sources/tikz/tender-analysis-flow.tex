@@ -1,0 +1,49 @@
+\begin{tikzpicture}[
+  node distance=0.5cm,
+  every node/.style={font=\small\sffamily},
+  flowbox/.style={
+    draw=TFGBlue,
+    rounded corners=2pt,
+    fill=TFGLightBlue,
+    minimum height=1.75cm,
+    text width=2.6cm,
+    align=center,
+    inner sep=5pt
+  },
+  result/.style={
+    flowbox,
+    fill=TFGBlue,
+    text=white
+  },
+  flow/.style={
+    -{Latex[length=2.5mm]},
+    semithick,
+    draw=TFGAccent
+  }
+]
+  \node[flowbox] (documents) {
+    \textbf{Documentación}\\[2pt]
+    Pliegos, anuncios y memorias
+  };
+  \node[flowbox, right=of documents] (extraction) {
+    \textbf{Extracción}\\[2pt]
+    Identificación de información clave
+  };
+  \node[flowbox, right=of extraction] (assessment) {
+    \textbf{Evaluación}\\[2pt]
+    Solvencia y viabilidad preliminar
+  };
+  \node[flowbox, right=of assessment] (criteria) {
+    \textbf{Análisis}\\[2pt]
+    Requisitos y criterios de adjudicación
+  };
+  \node[result, right=of criteria] (decision) {
+    \textbf{Resultado}\\[2pt]
+    Documento de análisis para apoyar la decisión
+  };
+
+  \draw[flow] (documents) -- (extraction);
+  \draw[flow] (extraction) -- (assessment);
+  \draw[flow] (assessment) -- (criteria);
+  \draw[flow] (criteria) -- (decision);
+\end{tikzpicture}

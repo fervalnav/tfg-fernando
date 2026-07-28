@@ -1,0 +1,41 @@
+# LaTeX intermediate files
+*.aux
+*.bbl
+*.blg
+*.bcf
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lol
+*.lot
+*.nav
+*.out
+*.run.xml
+*.snm
+*.toc
+*.synctex.gz
+*.vrb
+
+# Glossaries and indexes
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.idx
+*.ilg
+*.ind
+*.ist
+
+# Alternative compiler outputs
+*.dvi
+*.ps
+*.xdv
+
+# Local previews and temporary review files
+tmp/
+
+# Generated deliverable
+main.pdf

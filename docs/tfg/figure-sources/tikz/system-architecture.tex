@@ -1,0 +1,80 @@
+\begin{tikzpicture}[
+  node distance=0.85cm and 1.2cm,
+  every node/.style={font=\small\sffamily},
+  component/.style={
+    draw=TFGBlue,
+    rounded corners=2pt,
+    fill=TFGLightBlue,
+    minimum height=1.1cm,
+    text width=3.5cm,
+    align=center,
+    inner sep=6pt
+  },
+  shared/.style={
+    component,
+    fill=TFGLightGray
+  },
+  infrastructure/.style={
+    component,
+    fill=white
+  },
+  connection/.style={
+    -{Latex[length=2.5mm]},
+    semithick,
+    draw=TFGAccent
+  },
+  bidirectional/.style={
+    {Latex[length=2.5mm]}-{Latex[length=2.5mm]},
+    semithick,
+    draw=TFGAccent
+  }
+]
+  \node[component] (web) {
+    \textbf{Aplicación web}\\
+    Nuxt 4 y Vue 3
+  };
+  \node[component, right=4cm of web] (api) {
+    \textbf{API}\\
+    NestJS
+  };
+  \path (web) -- (api) coordinate[midway] (application-center);
+  \node[shared, above=0.8cm of application-center] (types) {
+    \textbf{Tipos compartidos}\\
+    Paquete TypeScript
+  };
+
+  \node[infrastructure, below=1.5cm of web] (postgres) {
+    \textbf{Persistencia}\\
+    PostgreSQL y MikroORM
+  };
+  \node[infrastructure, below=1.5cm of application-center] (rabbitmq) {
+    \textbf{Mensajería}\\
+    RabbitMQ
+  };
+  \node[infrastructure, below=1.5cm of api] (storage) {
+    \textbf{Adjuntos}\\
+    S3 / MinIO
+  };
+
+  \draw[bidirectional] (web) -- node[above, font=\scriptsize\sffamily] {HTTP} (api);
+  \draw[connection] (types.south west) -- (web.north east);
+  \draw[connection] (types.south east) -- (api.north west);
+
+  \coordinate[above=0.35cm of postgres] (bus-left);
+  \coordinate[above=0.35cm of rabbitmq] (bus-center);
+  \coordinate[above=0.35cm of storage] (bus-right);
+  \draw[semithick, draw=TFGAccent] (bus-left) -- (bus-right);
+  \draw[semithick, draw=TFGAccent] (api.south) -- (bus-right);
+  \draw[semithick, draw=TFGAccent] (bus-left) -- (postgres.north);
+  \draw[semithick, draw=TFGAccent] (bus-center) -- (rabbitmq.north);
+  \draw[semithick, draw=TFGAccent] (bus-right) -- (storage.north);
+
+  \node[
+    draw=TFGMuted,
+    dashed,
+    rounded corners=3pt,
+    fit=(web)(types)(api),
+    inner sep=10pt,
+    label={[font=\scriptsize\sffamily\color{TFGMuted}]above:Monorepositorio Turborepo}
+  ] {};
+\end{tikzpicture}

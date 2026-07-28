@@ -1,0 +1,116 @@
+\chapter{Introducción}
+\label{chap:introduction}
+
+\section{Contexto}
+
+La contratación pública genera oportunidades comerciales cuyo análisis exige
+procesar documentación técnica y administrativa de gran extensión. Entre esta
+documentación se encuentran los pliegos de condiciones, los anuncios de
+licitación y las memorias explicativas. Su revisión permite identificar los
+requisitos que debe satisfacer la empresa licitadora, valorar la viabilidad
+económica del contrato y estudiar los criterios que determinan la adjudicación.
+
+La cualificación de una licitación es, por tanto, una actividad intensiva en
+conocimiento. Los equipos responsables deben localizar información distribuida
+entre diferentes documentos y relacionarla con las características de la
+empresa que valora presentarse. Cuando el proceso se lleva a cabo de forma
+manual, requiere una dedicación considerable y queda expuesto a posibles
+errores de omisión.
+
+En este contexto surge LIA, una plataforma web de gestión de oportunidades
+comerciales centrada en licitaciones públicas. El proyecto combina la
+organización de oportunidades mediante pipelines configurables y flujos de
+trabajo estructurados con el uso de inteligencia artificial generativa para
+apoyar las tareas de mayor carga cognitiva del proceso de análisis.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/tender-analysis-flow}
+  }
+  \caption{Flujo funcional propuesto para el análisis de una licitación.}
+  \label{fig:tender-analysis-flow}
+\end{figure}
+
+La \Cref{fig:tender-analysis-flow} resume el flujo funcional descrito en la
+propuesta registrada del proyecto. La figura representa el planteamiento del
+sistema y no presupone que todas las etapas estén implementadas en el estado
+actual del desarrollo.
+
+% TODO: incorporar fuentes bibliográficas sobre contratación pública,
+% cualificación de licitaciones e IA generativa antes de cerrar el capítulo.
+
+\section{Motivación}
+
+La motivación principal del proyecto parte de la necesidad de reducir el
+esfuerzo dedicado a revisar y cualificar licitaciones públicas. La
+automatización de las tareas repetitivas de extracción y organización de
+información puede permitir que los equipos de consultoras y empresas
+licitadoras concentren su trabajo en la valoración de la oportunidad y en la
+toma de decisiones.
+
+La inteligencia artificial generativa ofrece la posibilidad de analizar
+documentos, extraer información relevante y elaborar contenidos de apoyo. Sin
+embargo, su incorporación a un proceso empresarial requiere integrarla dentro
+de un flujo de trabajo controlado. Por este motivo, LIA no se plantea
+únicamente como una herramienta de consulta aislada, sino como una plataforma
+que relaciona las capacidades de inteligencia artificial con la gestión de la
+cartera de oportunidades y con las distintas etapas del análisis de una
+licitación.
+
+Otro aspecto que motiva el proyecto es la necesidad de equilibrar la capacidad
+de los proveedores de inteligencia artificial generativa con el coste
+asociado a su utilización. La plataforma contempla este aspecto como parte de
+su diseño, con el objetivo de buscar una relación adecuada entre el rendimiento
+obtenido y los recursos consumidos.
+
+\section{Objetivos del proyecto}
+
+El objetivo general del presente Trabajo Fin de Grado es aligerar el proceso de
+análisis y toma de requisitos de licitaciones públicas mediante el desarrollo
+de una plataforma web de gestión de oportunidades comerciales asistida por
+inteligencia artificial generativa.
+
+Para alcanzar este objetivo general se establecen los siguientes objetivos
+específicos:
+
+\begin{itemize}
+  \item Automatizar la detección de solvencia económica necesaria para valorar
+        la presentación de una empresa a una licitación.
+  \item Optimizar la relación entre el coste y el rendimiento derivado del uso
+        de proveedores de inteligencia artificial generativa.
+  \item Facilitar la creación de flujos de trabajo que estructuren el proceso
+        de análisis de licitaciones.
+\end{itemize}
+
+\section{Alcance}
+
+El proyecto comprende el desarrollo de una plataforma web orientada a equipos
+de consultoras y empresas licitadoras. La solución plantea la gestión de una
+cartera de oportunidades mediante pipelines configurables y flujos de trabajo
+estructurados. Sobre esta base se integran capacidades de inteligencia
+artificial generativa destinadas a apoyar la extracción de información clave,
+la evaluación preliminar de solvencia y la generación de documentos de
+análisis.
+
+La implementación se organiza como un monorepositorio gestionado con
+Turborepo. La interfaz web utiliza Vue 3 y la API se desarrolla con NestJS. El
+detalle de las funcionalidades finalmente implementadas y de aquellas que
+formen parte del trabajo futuro se documentará conforme avance el desarrollo,
+sin atribuir al resultado capacidades que no hayan sido verificadas.
+
+% TODO: confirmar las exclusiones explícitas del alcance antes de cerrar esta
+% sección.
+
+\section{Estructura de la memoria}
+
+La memoria se organiza en diez capítulos. Tras esta introducción, el segundo
+capítulo presenta la planificación y los costes del proyecto. El tercero
+recoge el análisis de requisitos y el cuarto desarrolla el análisis del
+sistema. El quinto capítulo describe la arquitectura adoptada, mientras que el
+sexto detalla la implementación de sus componentes.
+
+El séptimo capítulo expone la estrategia y los resultados de las pruebas. El
+octavo proporciona el manual de usuario de la aplicación. Finalmente, el
+noveno capítulo analiza las dificultades, limitaciones y posibles líneas de
+trabajo futuro, y el décimo reúne las conclusiones del proyecto.

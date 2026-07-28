@@ -1,0 +1,33 @@
+\chapter{Arquitectura del sistema}
+\label{chap:architecture}
+
+\section{Visión general}
+
+La solución se organiza como un monorepositorio gestionado mediante
+Turborepo. En él se separan la aplicación web desarrollada con Nuxt 4 y Vue 3,
+la API implementada con NestJS y el paquete TypeScript que contiene los tipos
+compartidos. La API se comunica con PostgreSQL mediante MikroORM, utiliza
+RabbitMQ para la mensajería y emplea almacenamiento compatible con S3 para los
+adjuntos.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/system-architecture}
+  }
+  \caption{Vista general de los componentes técnicos comprobados en el
+    repositorio.}
+  \label{fig:system-architecture}
+\end{figure}
+
+La \Cref{fig:system-architecture} muestra únicamente tecnologías y relaciones
+generales respaldadas por la configuración actual del repositorio. La
+arquitectura interna de cada componente se desarrolla en las siguientes
+secciones.
+
+\section{Arquitectura del backend}
+\section{Arquitectura del frontend}
+\section{Persistencia y mensajería}
+\section{Integración de inteligencia artificial}
+\section{Despliegue e infraestructura}
+\section{Decisiones arquitectónicas}
