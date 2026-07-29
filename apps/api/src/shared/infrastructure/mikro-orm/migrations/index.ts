@@ -5,3 +5,5 @@ export { Migration20260722064912 } from './Migration20260722_Sprint4Workflows';
 export { Migration20260726_Sprint5Opportunities } from './Migration20260726_Sprint5Opportunities';
 export { Migration20260727_Sprint6OpportunityWorkflow } from './Migration20260727_Sprint6OpportunityWorkflow';
 export { Migration20260727_Sprint6PreserveActionHistory } from './Migration20260727_Sprint6PreserveActionHistory';
+export { Migration20260728_Sprint7QualificationInstances } from './Migration20260728_Sprint7QualificationInstances';
+export { Migration20260729_WorkflowLinkedQualificationInstances } from './Migration20260729_WorkflowLinkedQualificationInstances';

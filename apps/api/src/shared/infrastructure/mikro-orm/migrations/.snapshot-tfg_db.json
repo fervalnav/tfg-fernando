@@ -1,5 +1,7 @@
 {
-  "namespaces": ["public"],
+  "namespaces": [
+    "public"
+  ],
   "name": "public",
   "tables": [
     {
@@ -105,7 +107,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "account_members_pkey",
@@ -173,7 +177,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "accounts_pkey",
@@ -183,6 +189,504 @@
       ],
       "checks": [],
       "foreignKeys": {},
+      "nativeEnums": {},
+      "comment": null
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "account_id": {
+          "name": "account_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "opportunity_id": {
+          "name": "opportunity_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": true,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "default_control_question_id": {
+          "name": "default_control_question_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "question": {
+          "name": "question",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "answer_type": {
+          "name": "answer_type",
+          "type": "varchar(10)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 10,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "string"
+        },
+        "pass_condition_prompt": {
+          "name": "pass_condition_prompt",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "answer": {
+          "name": "answer",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        }
+      },
+      "name": "control_questions",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "opportunity_id"
+          ],
+          "composite": false,
+          "constraint": false,
+          "keyName": "control_questions_opportunity_idx",
+          "unique": false,
+          "primary": false
+        },
+        {
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": false,
+          "keyName": "control_questions_pkey",
+          "unique": true,
+          "primary": true
+        },
+        {
+          "columnNames": [
+            "opportunity_id",
+            "default_control_question_id"
+          ],
+          "composite": true,
+          "constraint": true,
+          "keyName": "control_questions_unique_template",
+          "unique": true,
+          "primary": false
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "control_questions_opportunity_fkey": {
+          "columnNames": [
+            "opportunity_id"
+          ],
+          "constraintName": "control_questions_opportunity_fkey",
+          "localTableName": "public.control_questions",
+          "referencedTableName": "public.opportunities",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "updateRule": "no action",
+          "deleteRule": "cascade"
+        }
+      },
+      "nativeEnums": {},
+      "comment": null
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "account_id": {
+          "name": "account_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "opportunity_id": {
+          "name": "opportunity_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": true,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "default_custom_field_id": {
+          "name": "default_custom_field_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 255,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "string"
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "type": {
+          "name": "type",
+          "type": "varchar(20)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 20,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "string"
+        },
+        "classifiers": {
+          "name": "classifiers",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "'[]'",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "json"
+        },
+        "can_select_multiple": {
+          "name": "can_select_multiple",
+          "type": "bool",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "false",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "boolean"
+        },
+        "automatic": {
+          "name": "automatic",
+          "type": "bool",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": "false",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "boolean"
+        },
+        "ai_prompt": {
+          "name": "ai_prompt",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "value": {
+          "name": "value",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        }
+      },
+      "name": "custom_fields",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "opportunity_id"
+          ],
+          "composite": false,
+          "constraint": false,
+          "keyName": "custom_fields_opportunity_idx",
+          "unique": false,
+          "primary": false
+        },
+        {
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": false,
+          "keyName": "custom_fields_pkey",
+          "unique": true,
+          "primary": true
+        },
+        {
+          "columnNames": [
+            "opportunity_id",
+            "default_custom_field_id"
+          ],
+          "composite": true,
+          "constraint": true,
+          "keyName": "custom_fields_unique_template",
+          "unique": true,
+          "primary": false
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "custom_fields_opportunity_fkey": {
+          "columnNames": [
+            "opportunity_id"
+          ],
+          "constraintName": "custom_fields_opportunity_fkey",
+          "localTableName": "public.custom_fields",
+          "referencedTableName": "public.opportunities",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "updateRule": "no action",
+          "deleteRule": "cascade"
+        }
+      },
       "nativeEnums": {},
       "comment": null
     },
@@ -305,7 +809,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "default_control_questions_pkey",
@@ -501,7 +1007,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "default_custom_fields_pkey",
@@ -665,7 +1173,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "default_workflow_step_actions_pkey",
@@ -676,11 +1186,15 @@
       "checks": [],
       "foreignKeys": {
         "default_workflow_step_actions_workflow_step_id_foreign": {
-          "columnNames": ["workflow_step_id"],
+          "columnNames": [
+            "workflow_step_id"
+          ],
           "constraintName": "default_workflow_step_actions_workflow_step_id_foreign",
           "localTableName": "public.default_workflow_step_actions",
           "referencedTableName": "public.workflow_steps",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "updateRule": "cascade",
           "deleteRule": "no action"
         }
@@ -823,7 +1337,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "invitation_tokens_pkey",
@@ -1147,7 +1663,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["account_id"],
+          "columnNames": [
+            "account_id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "opportunities_account_id_idx",
@@ -1155,7 +1673,9 @@
           "primary": false
         },
         {
-          "columnNames": ["pipeline_id"],
+          "columnNames": [
+            "pipeline_id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "opportunities_pipeline_id_idx",
@@ -1163,7 +1683,9 @@
           "primary": false
         },
         {
-          "columnNames": ["pipeline_status_id"],
+          "columnNames": [
+            "pipeline_status_id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "opportunities_pipeline_status_id_idx",
@@ -1171,7 +1693,9 @@
           "primary": false
         },
         {
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "opportunities_pkey",
@@ -1179,7 +1703,9 @@
           "primary": true
         },
         {
-          "columnNames": ["sort_points"],
+          "columnNames": [
+            "sort_points"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "opportunities_sort_points_idx",
@@ -1190,38 +1716,54 @@
       "checks": [],
       "foreignKeys": {
         "opportunities_pipeline_id_fkey": {
-          "columnNames": ["pipeline_id"],
+          "columnNames": [
+            "pipeline_id"
+          ],
           "constraintName": "opportunities_pipeline_id_fkey",
           "localTableName": "public.opportunities",
           "referencedTableName": "public.pipelines",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "updateRule": "no action",
           "deleteRule": "cascade"
         },
         "opportunities_pipeline_status_id_fkey": {
-          "columnNames": ["pipeline_status_id"],
+          "columnNames": [
+            "pipeline_status_id"
+          ],
           "constraintName": "opportunities_pipeline_status_id_fkey",
           "localTableName": "public.opportunities",
           "referencedTableName": "public.pipeline_statuses",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "updateRule": "no action",
           "deleteRule": "cascade"
         },
         "opportunities_workflow_id_fkey": {
-          "columnNames": ["workflow_id"],
+          "columnNames": [
+            "workflow_id"
+          ],
           "constraintName": "opportunities_workflow_id_fkey",
           "localTableName": "public.opportunities",
           "referencedTableName": "public.workflows",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "updateRule": "no action",
           "deleteRule": "set null"
         },
         "opportunities_workflow_step_id_fkey": {
-          "columnNames": ["workflow_step_id"],
+          "columnNames": [
+            "workflow_step_id"
+          ],
           "constraintName": "opportunities_workflow_step_id_fkey",
           "localTableName": "public.opportunities",
           "referencedTableName": "public.workflow_steps",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "updateRule": "no action",
           "deleteRule": "set null"
         }
@@ -1444,7 +1986,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "pipeline_statuses_pkey",
@@ -1455,11 +1999,15 @@
       "checks": [],
       "foreignKeys": {
         "pipeline_statuses_pipeline_id_foreign": {
-          "columnNames": ["pipeline_id"],
+          "columnNames": [
+            "pipeline_id"
+          ],
           "constraintName": "pipeline_statuses_pipeline_id_foreign",
           "localTableName": "public.pipeline_statuses",
           "referencedTableName": "public.pipelines",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "updateRule": "cascade",
           "deleteRule": "no action"
         }
@@ -1554,7 +2102,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "pipelines_pkey",
@@ -1670,7 +2220,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "refresh_tokens_pkey",
@@ -1680,6 +2232,207 @@
       ],
       "checks": [],
       "foreignKeys": {},
+      "nativeEnums": {},
+      "comment": null
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": true,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "account_id": {
+          "name": "account_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "opportunity_id": {
+          "name": "opportunity_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": true,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "summary_template_id": {
+          "name": "summary_template_id",
+          "type": "uuid",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "uuid"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 255,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "string"
+        },
+        "prompt": {
+          "name": "prompt",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "result": {
+          "name": "result",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "unique": false,
+          "length": null,
+          "precision": null,
+          "scale": null,
+          "default": null,
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "text"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz(6)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "unique": false,
+          "length": 6,
+          "precision": null,
+          "scale": null,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": null,
+          "enumItems": [],
+          "mappedType": "datetime"
+        }
+      },
+      "name": "summaries",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": [
+            "opportunity_id"
+          ],
+          "composite": false,
+          "constraint": false,
+          "keyName": "summaries_opportunity_idx",
+          "unique": false,
+          "primary": false
+        },
+        {
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": false,
+          "keyName": "summaries_pkey",
+          "unique": true,
+          "primary": true
+        },
+        {
+          "columnNames": [
+            "opportunity_id",
+            "summary_template_id"
+          ],
+          "composite": true,
+          "constraint": true,
+          "keyName": "summaries_unique_template",
+          "unique": true,
+          "primary": false
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "summaries_opportunity_fkey": {
+          "columnNames": [
+            "opportunity_id"
+          ],
+          "constraintName": "summaries_opportunity_fkey",
+          "localTableName": "public.summaries",
+          "referencedTableName": "public.opportunities",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "updateRule": "no action",
+          "deleteRule": "cascade"
+        }
+      },
       "nativeEnums": {},
       "comment": null
     },
@@ -1786,7 +2539,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "summary_templates_pkey",
@@ -1918,7 +2673,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["email"],
+          "columnNames": [
+            "email"
+          ],
           "composite": false,
           "constraint": true,
           "keyName": "users_email_unique",
@@ -1926,7 +2683,9 @@
           "primary": false
         },
         {
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "users_pkey",
@@ -2090,7 +2849,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["opportunity_id"],
+          "columnNames": [
+            "opportunity_id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "workflow_decision_results_opportunity_idx",
@@ -2098,7 +2859,9 @@
           "primary": false
         },
         {
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "workflow_decision_results_pkey",
@@ -2106,7 +2869,10 @@
           "primary": true
         },
         {
-          "columnNames": ["opportunity_id", "workflow_step_id"],
+          "columnNames": [
+            "opportunity_id",
+            "workflow_step_id"
+          ],
           "composite": true,
           "constraint": true,
           "keyName": "workflow_decision_results_unique_step",
@@ -2117,20 +2883,28 @@
       "checks": [],
       "foreignKeys": {
         "workflow_decision_results_opportunity_id_fkey": {
-          "columnNames": ["opportunity_id"],
+          "columnNames": [
+            "opportunity_id"
+          ],
           "constraintName": "workflow_decision_results_opportunity_id_fkey",
           "localTableName": "public.workflow_decision_results",
           "referencedTableName": "public.opportunities",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "updateRule": "no action",
           "deleteRule": "cascade"
         },
         "workflow_decision_results_workflow_step_id_fkey": {
-          "columnNames": ["workflow_step_id"],
+          "columnNames": [
+            "workflow_step_id"
+          ],
           "constraintName": "workflow_decision_results_workflow_step_id_fkey",
           "localTableName": "public.workflow_decision_results",
           "referencedTableName": "public.workflow_steps",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "updateRule": "no action",
           "deleteRule": "cascade"
         }
@@ -2385,7 +3159,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["opportunity_id"],
+          "columnNames": [
+            "opportunity_id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "workflow_step_actions_opportunity_idx",
@@ -2393,7 +3169,9 @@
           "primary": false
         },
         {
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "workflow_step_actions_pkey",
@@ -2401,7 +3179,9 @@
           "primary": true
         },
         {
-          "columnNames": ["status"],
+          "columnNames": [
+            "status"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "workflow_step_actions_status_idx",
@@ -2409,7 +3189,9 @@
           "primary": false
         },
         {
-          "columnNames": ["workflow_step_id"],
+          "columnNames": [
+            "workflow_step_id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "workflow_step_actions_step_idx",
@@ -2417,7 +3199,10 @@
           "primary": false
         },
         {
-          "columnNames": ["opportunity_id", "default_workflow_step_action_id"],
+          "columnNames": [
+            "opportunity_id",
+            "default_workflow_step_action_id"
+          ],
           "composite": true,
           "constraint": true,
           "keyName": "workflow_step_actions_unique_instance",
@@ -2428,20 +3213,28 @@
       "checks": [],
       "foreignKeys": {
         "workflow_step_actions_opportunity_id_fkey": {
-          "columnNames": ["opportunity_id"],
+          "columnNames": [
+            "opportunity_id"
+          ],
           "constraintName": "workflow_step_actions_opportunity_id_fkey",
           "localTableName": "public.workflow_step_actions",
           "referencedTableName": "public.opportunities",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "updateRule": "no action",
           "deleteRule": "cascade"
         },
         "workflow_step_actions_workflow_step_id_fkey": {
-          "columnNames": ["workflow_step_id"],
+          "columnNames": [
+            "workflow_step_id"
+          ],
           "constraintName": "workflow_step_actions_workflow_step_id_fkey",
           "localTableName": "public.workflow_step_actions",
           "referencedTableName": "public.workflow_steps",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "updateRule": "no action",
           "deleteRule": "cascade"
         }
@@ -2584,7 +3377,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "workflow_steps_pkey",
@@ -2595,11 +3390,15 @@
       "checks": [],
       "foreignKeys": {
         "workflow_steps_workflow_id_foreign": {
-          "columnNames": ["workflow_id"],
+          "columnNames": [
+            "workflow_id"
+          ],
           "constraintName": "workflow_steps_workflow_id_foreign",
           "localTableName": "public.workflow_steps",
           "referencedTableName": "public.workflows",
-          "referencedColumnNames": ["id"],
+          "referencedColumnNames": [
+            "id"
+          ],
           "updateRule": "cascade",
           "deleteRule": "no action"
         }
@@ -2710,7 +3509,9 @@
       "schema": "public",
       "indexes": [
         {
-          "columnNames": ["id"],
+          "columnNames": [
+            "id"
+          ],
           "composite": false,
           "constraint": false,
           "keyName": "workflows_pkey",

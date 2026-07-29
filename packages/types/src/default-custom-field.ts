@@ -34,3 +34,31 @@ export type UpdateDefaultCustomFieldPayload = {
   automatic?: boolean;
   aiPrompt?: string | null;
 };
+
+export type CustomFieldValue = string | number | boolean | string[] | null;
+
+export type CustomFieldDto = {
+  id: string;
+  accountId: string;
+  opportunityId: string;
+  defaultCustomFieldId: string;
+  name: string;
+  description: string | null;
+  type: CustomFieldType;
+  classifiers: string[];
+  canSelectMultiple: boolean;
+  automatic: boolean;
+  aiPrompt: string | null;
+  value: CustomFieldValue;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type SetCustomFieldValuePayload = {
+  value: Exclude<CustomFieldValue, null>;
+};
+
+export type AddCustomFieldToOpportunityPayload = {
+  id: string;
+  defaultCustomFieldId: string;
+};

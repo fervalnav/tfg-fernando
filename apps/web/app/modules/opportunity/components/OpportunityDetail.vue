@@ -1,18 +1,21 @@
 <script setup lang="ts">
 import {
   ArrowLeftIcon,
+  BotIcon,
   CheckCircle2Icon,
   ChevronRightIcon,
   CircleIcon,
-  FileTextIcon,
+  CircleHelpIcon,
   GitBranchIcon,
-  LayoutDashboardIcon,
+  InfoIcon,
+  ListChecksIcon,
   MoreHorizontalIcon,
-  PaperclipIcon,
   PencilIcon,
   RotateCcwIcon,
+  SparklesIcon,
   Trash2Icon,
 } from 'lucide-vue-next';
+import type { Component } from 'vue';
 import { toast } from 'vue-sonner';
 import type {
   AccountMemberDto,
@@ -34,12 +37,23 @@ import OpportunityResponsiblesDropdown from './OpportunityResponsiblesDropdown.v
 import OpportunityStatusDropdown from './OpportunityStatusDropdown.vue';
 import OpportunityWorkflowActionRow from './OpportunityWorkflowActionRow.vue';
 import OpportunityWorkflowChangeDialog from './OpportunityWorkflowChangeDialog.vue';
+import OpportunityControlQuestionsSection from './OpportunityControlQuestionsSection.vue';
+import OpportunityCustomFieldsSection from './OpportunityCustomFieldsSection.vue';
+import OpportunityDetailsSection from './OpportunityDetailsSection.vue';
+import OpportunitySummariesSection from './OpportunitySummariesSection.vue';
+import {
+  useOpportunityControlQuestionsQuery,
+  useOpportunityCustomFieldsQuery,
+  useOpportunitySummariesQuery,
+} from '../composables/api/useOpportunityQualificationQueries';
+import type { OpportunityDetailSection } from '../opportunity-detail.types';
 
 const props = defineProps<{
   opportunity: OpportunityDto;
   pipeline?: PipelineDto;
   workflows: WorkflowDto[];
   members: AccountMemberDto[];
+  section: OpportunityDetailSection;
 }>();
 
 const opportunityId = computed(() => props.opportunity.id);
@@ -47,6 +61,40 @@ const hasWorkflow = computed(() => Boolean(props.opportunity.workflowId));
 const { data: runtime, isLoading: isWorkflowLoading } = useOpportunityWorkflowQuery(opportunityId, hasWorkflow);
 const { mutate: assignWorkflow, isPending: isAssigning } = useAssignOpportunityWorkflowMutation();
 const { mutate: reEvaluate, isPending: isReEvaluating } = useReEvaluateWorkflowDecisionMutation();
+const { data: controlQuestions } = useOpportunityControlQuestionsQuery(opportunityId);
+const { data: customFields } = useOpportunityCustomFieldsQuery(opportunityId);
+const { data: summaries } = useOpportunitySummariesQuery(opportunityId);
+
+type NavigationItem = {
+  id: OpportunityDetailSection;
+  label: string;
+  icon: Component;
+  count?: number;
+};
+
+const navigationGroups = computed<{ label: string; items: NavigationItem[] }[]>(() => [
+  {
+    label: 'Oportunidad',
+    items: [{ id: 'details', label: 'Detalles', icon: InfoIcon }],
+  },
+  {
+    label: 'Cualificación inteligente',
+    items: [
+      {
+        id: 'control-questions',
+        label: 'Preguntas de control',
+        icon: CircleHelpIcon,
+        count: controlQuestions.value?.length,
+      },
+      { id: 'custom-fields', label: 'Campos personalizados', icon: ListChecksIcon, count: customFields.value?.length },
+      { id: 'summaries', label: 'Resúmenes', icon: SparklesIcon, count: summaries.value?.length },
+    ],
+  },
+  {
+    label: 'Proceso',
+    items: [{ id: 'workflow', label: 'Workflow', icon: GitBranchIcon }],
+  },
+]);
 
 const selectedWorkflowId = ref('');
 const selectedStepId = ref('');
@@ -162,6 +210,10 @@ function actionFor(definition: DefaultWorkflowStepActionDto): WorkflowStepAction
     (action) => action.defaultWorkflowStepActionId === definition.id && action.workflowStepId === selectedStepId.value,
   );
 }
+
+function selectSection(section: OpportunityDetailSection): void {
+  void navigateTo({ path: `/opportunities/${props.opportunity.id}`, query: { section } });
+}
 </script>
 
 <template>
@@ -207,218 +259,267 @@ function actionFor(definition: DefaultWorkflowStepActionDto): WorkflowStepAction
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-
-      <nav class="flex items-center gap-1 overflow-x-auto px-5" aria-label="Secciones de oportunidad">
-        <button
-          type="button"
-          disabled
-          class="flex shrink-0 items-center gap-2 border-b-2 border-transparent px-3 py-2.5 text-sm text-muted-foreground/60"
-          title="Disponible en el Sprint 7"
-        >
-          <LayoutDashboardIcon class="size-4" />
-          Resumen
-        </button>
-        <button
-          type="button"
-          class="flex shrink-0 items-center gap-2 border-b-2 border-primary px-3 py-2.5 text-sm font-medium"
-          aria-current="page"
-        >
-          <GitBranchIcon class="size-4" />
-          Workflow
-        </button>
-        <button
-          type="button"
-          disabled
-          class="flex shrink-0 items-center gap-2 border-b-2 border-transparent px-3 py-2.5 text-sm text-muted-foreground/60"
-          title="Disponible en el Sprint 9"
-        >
-          <PaperclipIcon class="size-4" />
-          Adjuntos
-        </button>
-        <button
-          type="button"
-          disabled
-          class="flex shrink-0 items-center gap-2 border-b-2 border-transparent px-3 py-2.5 text-sm text-muted-foreground/60"
-          title="Disponible en el Sprint 9"
-        >
-          <FileTextIcon class="size-4" />
-          Actividad
-        </button>
-      </nav>
     </header>
 
-    <main class="min-h-0 flex-1 overflow-y-auto p-5 lg:overflow-hidden">
-      <div class="mx-auto min-h-full max-w-7xl lg:h-full">
-        <Card v-if="!hasWorkflow" class="mx-auto max-w-2xl">
-          <CardHeader>
-            <CardTitle>Workflow</CardTitle>
-            <CardDescription>Asigna un workflow para comenzar.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div class="space-y-4 rounded-lg border border-dashed p-5 text-center">
-              <p class="text-sm text-muted-foreground">Esta oportunidad todavía no tiene un proceso asignado.</p>
-              <div class="mx-auto flex max-w-md gap-2">
-                <Select v-model="selectedWorkflowId">
-                  <SelectTrigger><SelectValue placeholder="Selecciona un workflow" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem v-for="workflow in workflows" :key="workflow.id" :value="workflow.id">
-                      {{ workflow.name }}
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-                <Button :disabled="!selectedWorkflowId || isAssigning" @click="handleAssign">Asignar</Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <div
-          v-else-if="isWorkflowLoading"
-          class="flex h-full items-center justify-center text-sm text-muted-foreground"
-        >
-          Cargando workflow...
-        </div>
-
-        <div
-          v-else-if="runtime"
-          class="min-h-full rounded-xl border bg-background lg:grid lg:h-full lg:min-h-0 lg:grid-cols-[360px_minmax(0,1fr)] lg:overflow-hidden"
-        >
-          <aside class="border-b bg-muted/10 lg:min-h-0 lg:overflow-y-auto lg:border-b-0 lg:border-r">
-            <div class="z-10 border-b bg-background/95 p-5 backdrop-blur lg:sticky lg:top-0">
-              <div class="flex items-center justify-between gap-3">
-                <div class="min-w-0">
-                  <h2 class="font-semibold">Workflow</h2>
-                  <p class="truncate text-sm text-muted-foreground">{{ runtime.workflow.name }}</p>
-                </div>
-                <span class="shrink-0 text-sm text-muted-foreground">{{ overallProgress.percentage }}%</span>
-              </div>
-              <div class="mt-4 h-2 overflow-hidden rounded-full bg-muted">
-                <div
-                  class="h-full rounded-full bg-primary transition-all"
-                  :style="{ width: `${overallProgress.percentage}%` }"
-                />
-              </div>
-            </div>
-
-            <div class="relative p-4">
-              <div class="absolute bottom-10 left-[43px] top-10 w-px bg-border" />
-              <button
-                v-for="step in runtime.workflow.steps"
-                :key="step.id"
-                type="button"
-                class="relative mb-2 flex w-full items-center gap-3 rounded-xl px-2 py-3 text-left transition-all last:mb-0 hover:bg-muted/60"
-                :class="selectedStepId === step.id ? 'border bg-background shadow-sm' : 'border border-transparent'"
-                @click="selectStep(step)"
-              >
-                <span
-                  class="z-[1] flex size-12 shrink-0 items-center justify-center rounded-full border-4 text-sm font-semibold"
-                  :class="{
-                    'border-emerald-500 bg-emerald-500 text-white': stepState(step) === 'completed',
-                    'border-primary/20 bg-primary text-primary-foreground': stepState(step) === 'current',
-                    'border-muted bg-background text-muted-foreground': stepState(step) === 'upcoming',
-                  }"
-                >
-                  <CheckCircle2Icon v-if="stepState(step) === 'completed'" class="size-5" />
-                  <span v-else>{{ step.position }}</span>
+    <main class="min-h-0 flex-1 overflow-y-auto p-5 md:overflow-hidden">
+      <div
+        class="mx-auto grid min-h-full max-w-[1500px] gap-5 md:h-full md:grid-cols-[240px_minmax(0,1fr)] lg:grid-cols-[280px_minmax(0,1fr)]"
+      >
+        <aside class="hidden md:block">
+          <Card class="sticky top-0 overflow-hidden">
+            <CardHeader class="border-b pb-4">
+              <div class="flex items-center gap-2">
+                <span class="flex size-8 items-center justify-center rounded-lg bg-violet-500/10 text-violet-600">
+                  <BotIcon class="size-4" />
                 </span>
-
-                <span class="min-w-0 flex-1">
-                  <span class="flex items-center justify-between gap-2">
-                    <span class="truncate text-sm font-medium">{{ step.name }}</span>
-                    <ChevronRightIcon v-if="selectedStepId === step.id" class="size-4 shrink-0 text-muted-foreground" />
-                  </span>
-                  <span class="mt-2 flex items-center gap-2">
-                    <span class="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
-                      <span
-                        class="block h-full rounded-full transition-all"
-                        :class="stepState(step) === 'completed' ? 'bg-emerald-500' : 'bg-primary'"
-                        :style="{ width: `${stepProgress(step).percentage}%` }"
-                      />
-                    </span>
-                    <span class="text-xs text-muted-foreground">
-                      {{ stepProgress(step).completed }}/{{ stepProgress(step).total }}
-                    </span>
-                  </span>
-                </span>
-              </button>
-            </div>
-          </aside>
-
-          <section v-if="selectedStep" class="lg:min-h-0 lg:overflow-y-auto">
-            <header class="z-10 border-b bg-background/95 px-5 py-5 backdrop-blur lg:sticky lg:top-0">
-              <div class="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    Step {{ selectedStep.position }}
-                  </p>
-                  <h2 class="mt-1 text-2xl font-semibold">{{ selectedStep.name }}</h2>
-                  <p v-if="selectedStep.condition" class="mt-1 text-sm text-muted-foreground">
-                    {{ selectedStep.condition }}
-                  </p>
+                  <CardTitle class="text-sm">Oportunidad</CardTitle>
+                  <CardDescription class="text-xs">Navegación contextual</CardDescription>
                 </div>
-                <Badge :variant="stepState(selectedStep) === 'current' ? 'default' : 'secondary'">
-                  {{
-                    stepState(selectedStep) === 'completed'
-                      ? 'Completado'
-                      : stepState(selectedStep) === 'current'
-                        ? 'Step actual'
-                        : 'Próximo'
-                  }}
-                </Badge>
               </div>
+            </CardHeader>
+            <CardContent class="space-y-5 p-3">
+              <div v-for="group in navigationGroups" :key="group.label">
+                <p class="px-3 pb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  {{ group.label }}
+                </p>
+                <nav class="space-y-1" :aria-label="group.label">
+                  <button
+                    v-for="item in group.items"
+                    :key="item.id"
+                    type="button"
+                    class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors"
+                    :class="
+                      section === item.id
+                        ? 'bg-primary text-primary-foreground shadow-sm'
+                        : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                    "
+                    :aria-current="section === item.id ? 'page' : undefined"
+                    @click="selectSection(item.id)"
+                  >
+                    <component :is="item.icon" class="size-4 shrink-0" />
+                    <span class="min-w-0 flex-1 truncate">{{ item.label }}</span>
+                    <Badge
+                      v-if="item.count !== undefined"
+                      :variant="section === item.id ? 'outline' : 'secondary'"
+                      class="min-w-6 justify-center px-1.5"
+                    >
+                      {{ item.count }}
+                    </Badge>
+                  </button>
+                </nav>
+              </div>
+            </CardContent>
+          </Card>
+        </aside>
 
-              <div class="mt-5 flex items-center gap-4">
-                <div class="h-2 flex-1 overflow-hidden rounded-full bg-muted">
-                  <div
-                    class="h-full rounded-full bg-primary transition-all"
-                    :style="{ width: `${stepProgress(selectedStep).percentage}%` }"
-                  />
+        <section class="min-w-0 lg:min-h-0">
+          <Select :model-value="section" @update:model-value="selectSection($event as OpportunityDetailSection)">
+            <SelectTrigger class="mb-5 md:hidden"><SelectValue placeholder="Selecciona una sección" /></SelectTrigger>
+            <SelectContent>
+              <template v-for="group in navigationGroups" :key="group.label">
+                <SelectLabel>{{ group.label }}</SelectLabel>
+                <SelectItem v-for="item in group.items" :key="item.id" :value="item.id">
+                  {{ item.label }}
+                </SelectItem>
+              </template>
+            </SelectContent>
+          </Select>
+
+          <div v-if="section !== 'workflow'" class="pb-8 lg:h-full lg:overflow-y-auto lg:pr-1">
+            <OpportunityDetailsSection
+              v-if="section === 'details'"
+              :opportunity="opportunity"
+              :pipeline="pipeline"
+              @edit="isEditOpen = true"
+            />
+            <OpportunityControlQuestionsSection
+              v-else-if="section === 'control-questions'"
+              :opportunity-id="opportunity.id"
+            />
+            <OpportunityCustomFieldsSection v-else-if="section === 'custom-fields'" :opportunity-id="opportunity.id" />
+            <OpportunitySummariesSection v-else :opportunity-id="opportunity.id" />
+          </div>
+
+          <template v-else>
+            <Card v-if="!hasWorkflow" class="mx-auto max-w-2xl">
+              <CardHeader>
+                <CardTitle>Workflow</CardTitle>
+                <CardDescription>Asigna un workflow para comenzar.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div class="space-y-4 rounded-lg border border-dashed p-5 text-center">
+                  <p class="text-sm text-muted-foreground">Esta oportunidad todavía no tiene un proceso asignado.</p>
+                  <div class="mx-auto flex max-w-md gap-2">
+                    <Select v-model="selectedWorkflowId">
+                      <SelectTrigger><SelectValue placeholder="Selecciona un workflow" /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem v-for="workflow in workflows" :key="workflow.id" :value="workflow.id">
+                          {{ workflow.name }}
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button :disabled="!selectedWorkflowId || isAssigning" @click="handleAssign">Asignar</Button>
+                  </div>
                 </div>
-                <span class="shrink-0 text-sm text-muted-foreground">
-                  {{ stepProgress(selectedStep).completed }}/{{ stepProgress(selectedStep).total }}
-                </span>
-              </div>
-            </header>
+              </CardContent>
+            </Card>
 
             <div
-              v-if="selectedStep.type === 'decision'"
-              class="flex flex-wrap items-center justify-between gap-4 border-b bg-amber-500/5 px-5 py-4"
+              v-else-if="isWorkflowLoading"
+              class="flex h-full items-center justify-center text-sm text-muted-foreground"
             >
-              <div>
-                <p class="text-sm font-medium">Decisión: {{ selectedDecision?.status ?? 'PENDING' }}</p>
-                <p class="mt-1 text-sm text-muted-foreground">
-                  {{ selectedDecision?.evidence ?? 'Todavía no hay evidencia disponible.' }}
-                </p>
-              </div>
-              <Button
-                v-if="selectedStep.id === runtime.currentStepId"
-                variant="outline"
-                size="sm"
-                :disabled="isReEvaluating"
-                @click="handleReEvaluate"
-              >
-                <RotateCcwIcon class="mr-2 size-4" />
-                Reevaluar
-              </Button>
+              Cargando workflow...
             </div>
 
-            <div v-if="selectedStepActions.length" class="border-t">
-              <OpportunityWorkflowActionRow
-                v-for="{ definition } in selectedStepActions"
-                :key="definition.id"
-                :definition="definition"
-                :action="actionFor(definition)"
-                :is-current-step="selectedStep.id === runtime.currentStepId"
-              />
-            </div>
+            <div
+              v-else-if="runtime"
+              class="min-h-full rounded-xl border bg-background lg:grid lg:h-full lg:min-h-0 lg:grid-cols-[360px_minmax(0,1fr)] lg:overflow-hidden"
+            >
+              <aside class="border-b bg-muted/10 lg:min-h-0 lg:overflow-y-auto lg:border-b-0 lg:border-r">
+                <div class="z-10 border-b bg-background/95 p-5 backdrop-blur lg:sticky lg:top-0">
+                  <div class="flex items-center justify-between gap-3">
+                    <div class="min-w-0">
+                      <h2 class="font-semibold">Workflow</h2>
+                      <p class="truncate text-sm text-muted-foreground">{{ runtime.workflow.name }}</p>
+                    </div>
+                    <span class="shrink-0 text-sm text-muted-foreground">{{ overallProgress.percentage }}%</span>
+                  </div>
+                  <div class="mt-4 h-2 overflow-hidden rounded-full bg-muted">
+                    <div
+                      class="h-full rounded-full bg-primary transition-all"
+                      :style="{ width: `${overallProgress.percentage}%` }"
+                    />
+                  </div>
+                </div>
 
-            <div v-else class="p-10 text-center">
-              <CircleIcon class="mx-auto size-8 text-muted-foreground/50" />
-              <p class="mt-3 text-sm font-medium">Este step no tiene acciones</p>
-              <p class="mt-1 text-sm text-muted-foreground">El workflow avanzará automáticamente cuando corresponda.</p>
+                <div class="relative p-4">
+                  <div class="absolute bottom-10 left-[43px] top-10 w-px bg-border" />
+                  <button
+                    v-for="step in runtime.workflow.steps"
+                    :key="step.id"
+                    type="button"
+                    class="relative mb-2 flex w-full items-center gap-3 rounded-xl px-2 py-3 text-left transition-all last:mb-0 hover:bg-muted/60"
+                    :class="selectedStepId === step.id ? 'border bg-background shadow-sm' : 'border border-transparent'"
+                    @click="selectStep(step)"
+                  >
+                    <span
+                      class="z-[1] flex size-12 shrink-0 items-center justify-center rounded-full border-4 text-sm font-semibold"
+                      :class="{
+                        'border-emerald-500 bg-emerald-500 text-white': stepState(step) === 'completed',
+                        'border-primary/20 bg-primary text-primary-foreground': stepState(step) === 'current',
+                        'border-muted bg-background text-muted-foreground': stepState(step) === 'upcoming',
+                      }"
+                    >
+                      <CheckCircle2Icon v-if="stepState(step) === 'completed'" class="size-5" />
+                      <span v-else>{{ step.position }}</span>
+                    </span>
+
+                    <span class="min-w-0 flex-1">
+                      <span class="flex items-center justify-between gap-2">
+                        <span class="truncate text-sm font-medium">{{ step.name }}</span>
+                        <ChevronRightIcon
+                          v-if="selectedStepId === step.id"
+                          class="size-4 shrink-0 text-muted-foreground"
+                        />
+                      </span>
+                      <span class="mt-2 flex items-center gap-2">
+                        <span class="h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
+                          <span
+                            class="block h-full rounded-full transition-all"
+                            :class="stepState(step) === 'completed' ? 'bg-emerald-500' : 'bg-primary'"
+                            :style="{ width: `${stepProgress(step).percentage}%` }"
+                          />
+                        </span>
+                        <span class="text-xs text-muted-foreground">
+                          {{ stepProgress(step).completed }}/{{ stepProgress(step).total }}
+                        </span>
+                      </span>
+                    </span>
+                  </button>
+                </div>
+              </aside>
+
+              <section v-if="selectedStep" class="lg:min-h-0 lg:overflow-y-auto">
+                <header class="z-10 border-b bg-background/95 px-5 py-5 backdrop-blur lg:sticky lg:top-0">
+                  <div class="flex flex-wrap items-start justify-between gap-4">
+                    <div>
+                      <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                        Step {{ selectedStep.position }}
+                      </p>
+                      <h2 class="mt-1 text-2xl font-semibold">{{ selectedStep.name }}</h2>
+                      <p v-if="selectedStep.condition" class="mt-1 text-sm text-muted-foreground">
+                        {{ selectedStep.condition }}
+                      </p>
+                    </div>
+                    <Badge :variant="stepState(selectedStep) === 'current' ? 'default' : 'secondary'">
+                      {{
+                        stepState(selectedStep) === 'completed'
+                          ? 'Completado'
+                          : stepState(selectedStep) === 'current'
+                            ? 'Step actual'
+                            : 'Próximo'
+                      }}
+                    </Badge>
+                  </div>
+
+                  <div class="mt-5 flex items-center gap-4">
+                    <div class="h-2 flex-1 overflow-hidden rounded-full bg-muted">
+                      <div
+                        class="h-full rounded-full bg-primary transition-all"
+                        :style="{ width: `${stepProgress(selectedStep).percentage}%` }"
+                      />
+                    </div>
+                    <span class="shrink-0 text-sm text-muted-foreground">
+                      {{ stepProgress(selectedStep).completed }}/{{ stepProgress(selectedStep).total }}
+                    </span>
+                  </div>
+                </header>
+
+                <div
+                  v-if="selectedStep.type === 'decision'"
+                  class="flex flex-wrap items-center justify-between gap-4 border-b bg-amber-500/5 px-5 py-4"
+                >
+                  <div>
+                    <p class="text-sm font-medium">Decisión: {{ selectedDecision?.status ?? 'PENDING' }}</p>
+                    <p class="mt-1 text-sm text-muted-foreground">
+                      {{ selectedDecision?.evidence ?? 'Todavía no hay evidencia disponible.' }}
+                    </p>
+                  </div>
+                  <Button
+                    v-if="selectedStep.id === runtime.currentStepId"
+                    variant="outline"
+                    size="sm"
+                    :disabled="isReEvaluating"
+                    @click="handleReEvaluate"
+                  >
+                    <RotateCcwIcon class="mr-2 size-4" />
+                    Reevaluar
+                  </Button>
+                </div>
+
+                <div v-if="selectedStepActions.length" class="border-t">
+                  <OpportunityWorkflowActionRow
+                    v-for="{ definition } in selectedStepActions"
+                    :key="definition.id"
+                    :definition="definition"
+                    :action="actionFor(definition)"
+                    :is-current-step="selectedStep.id === runtime.currentStepId"
+                    :opportunity-id="opportunity.id"
+                  />
+                </div>
+
+                <div v-else class="p-10 text-center">
+                  <CircleIcon class="mx-auto size-8 text-muted-foreground/50" />
+                  <p class="mt-3 text-sm font-medium">Este step no tiene acciones</p>
+                  <p class="mt-1 text-sm text-muted-foreground">
+                    El workflow avanzará automáticamente cuando corresponda.
+                  </p>
+                </div>
+              </section>
             </div>
-          </section>
-        </div>
+          </template>
+        </section>
       </div>
     </main>
 

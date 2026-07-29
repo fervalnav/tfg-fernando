@@ -43,21 +43,17 @@ import type { OpportunityFilters } from '../../domain/opportunity.repository';
 import { OpportunityWorkflowConflictException } from '../../domain/exceptions/opportunity-workflow-conflict.exception';
 import { WorkflowRuntimeActionNotFoundException } from '../../domain/exceptions/workflow-runtime-action-not-found.exception';
 import { AssignOpportunityWorkflowDto } from './dto/assign-opportunity-workflow.dto';
-import {
-  AssignWorkflowToOpportunityCommand,
-  ChangeOpportunityWorkflowCommand,
-  CheckAndAdvanceOpportunityWorkflowStepCommand,
-  CompleteWorkflowStepActionCommand,
-  ReEvaluateWorkflowDecisionCommand,
-  RetryWorkflowStepActionCommand,
-  SkipWorkflowStepActionCommand,
-  TriggerOpportunityStepAutoExecuteCommand,
-} from '../../application/workflow/opportunity-workflow.commands';
-import { FindOpportunityWorkflowQuery } from '../../application/workflow/find-opportunity-workflow.query';
-import {
-  FindOpportunityDecisionResultsQuery,
-  FindOpportunityStepActionsQuery,
-} from '../../application/workflow/find-opportunity-workflow-runtime.query';
+import { AssignWorkflowToOpportunityCommand } from '../../application/commands/assign-workflow-to-opportunity';
+import { ChangeOpportunityWorkflowCommand } from '../../application/commands/change-opportunity-workflow';
+import { CheckAndAdvanceOpportunityWorkflowStepCommand } from '../../application/commands/check-and-advance-opportunity-workflow-step';
+import { CompleteWorkflowStepActionCommand } from '../../application/commands/complete-workflow-step-action';
+import { ReEvaluateWorkflowDecisionCommand } from '../../application/commands/re-evaluate-workflow-decision';
+import { RetryWorkflowStepActionCommand } from '../../application/commands/retry-workflow-step-action';
+import { SkipWorkflowStepActionCommand } from '../../application/commands/skip-workflow-step-action';
+import { TriggerOpportunityStepAutoExecuteCommand } from '../../application/commands/trigger-opportunity-step-auto-execute';
+import { FindOpportunityWorkflowQuery } from '../../application/queries/find-opportunity-workflow';
+import { FindOpportunityDecisionResultsQuery } from '../../application/queries/find-opportunity-decision-results';
+import { FindOpportunityStepActionsQuery } from '../../application/queries/find-opportunity-step-actions';
 
 @Controller('opportunities')
 export class OpportunityController {
