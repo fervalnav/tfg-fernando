@@ -74,4 +74,27 @@ export default tseslint.config(
       'prettier/prettier': ['error', { endOfLine: 'auto', printWidth: 120, singleQuote: true, trailingComma: 'all' }],
     },
   },
+  {
+    files: ['src/*/application/commands/**/*.handler.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@nestjs/cqrs',
+              importNames: ['CommandBus', 'QueryBus'],
+              message: 'Un handler debe usar repositorios o servicios compartidos, no ejecutar otros commands o queries.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ['src/*/application/{commands,queries,events}/**/*.handler.ts'],
+    rules: {
+      'max-classes-per-file': ['error', 1],
+    },
+  },
 );

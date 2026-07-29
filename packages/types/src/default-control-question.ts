@@ -22,3 +22,27 @@ export type UpdateDefaultControlQuestionPayload = {
   answerType?: AnswerType;
   passConditionPrompt?: string | null;
 };
+
+export type ControlQuestionAnswer = string | boolean | null;
+
+export type ControlQuestionDto = {
+  id: string;
+  accountId: string;
+  opportunityId: string;
+  defaultControlQuestionId: string;
+  question: string;
+  answerType: AnswerType;
+  passConditionPrompt: string | null;
+  answer: ControlQuestionAnswer;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type AnswerControlQuestionPayload = {
+  answer: Exclude<ControlQuestionAnswer, null>;
+};
+
+export type AddControlQuestionToOpportunityPayload = {
+  id: string;
+  defaultControlQuestionId: string;
+};

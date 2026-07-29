@@ -16,11 +16,13 @@ import {
 } from 'lucide-vue-next';
 import { toast } from 'vue-sonner';
 import { useWorkflowActionMutation } from '../composables/api/useOpportunityWorkflowMutations';
+import OpportunityQualificationActionContent from './OpportunityQualificationActionContent.vue';
 
 const props = defineProps<{
   definition: DefaultWorkflowStepActionDto;
   action?: WorkflowStepActionDto;
   isCurrentStep: boolean;
+  opportunityId: string;
 }>();
 
 const isExpanded = ref(false);
@@ -64,8 +66,6 @@ const statusClass = computed(() => {
 
 const futureSprintLabel = computed(() => {
   const type = props.definition.targetType;
-  if (type === 'control_question' || type === 'custom_field' || type === 'summary')
-    return 'El contenido específico de esta acción se conectará en el Sprint 7.';
   if (type === 'task' || type === 'attachment')
     return 'El contenido específico de esta acción se conectará en el Sprint 9.';
   if (type === 'email_notification') return 'El detalle del envío automático se conectará en un sprint posterior.';
@@ -146,7 +146,14 @@ function run(operation: 'complete' | 'skip' | 'retry'): void {
           <p class="mt-1 text-sm text-muted-foreground">{{ action.errorMessage }}</p>
         </div>
 
-        <div class="rounded-lg border bg-background p-4">
+        <OpportunityQualificationActionContent
+          v-if="action && ['control_question', 'custom_field', 'summary'].includes(definition.targetType)"
+          :opportunity-id="opportunityId"
+          :definition="definition"
+          :action="action"
+        />
+
+        <div v-else class="rounded-lg border bg-background p-4">
           <p class="text-sm text-muted-foreground">{{ futureSprintLabel }}</p>
         </div>
 
