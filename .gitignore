@@ -7,6 +7,7 @@ AGENTS.md
 
 # Dependencies
 node_modules
+.pnpm-store/
 .pnp
 .pnp.js
 
@@ -41,10 +42,12 @@ yarn-error.log*
 # Nuxt
 .nuxt
 .output
+.nuxtrc
 
 # Misc
 .DS_Store
 *.pem
+.vscode/
 
 # Local reference material used while drafting the TFG
 /docs/refs/
