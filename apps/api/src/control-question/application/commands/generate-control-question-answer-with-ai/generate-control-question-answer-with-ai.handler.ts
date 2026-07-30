@@ -2,11 +2,7 @@ import { CommandHandler, EventBus, type ICommandHandler } from '@nestjs/cqrs';
 import { z } from 'zod';
 import { AiGenerationService } from '@/ai';
 import { OpportunityAttachmentDocumentsService } from '@/attachment';
-import {
-  OpportunityFinder,
-  OpportunityQualificationGenerationFailedEvent,
-  OpportunityQualificationUpdatedEvent,
-} from '@/opportunity';
+import { OpportunityFinder } from '@/opportunity';
 import { ControlQuestionRepository } from '../../../domain/control-question.repository';
 import { ControlQuestionNotFoundException } from '../../../domain/exceptions/control-question-not-found.exception';
 import { GenerateControlQuestionAnswerWithAiCommand } from './generate-control-question-answer-with-ai.command';
@@ -61,27 +57,12 @@ export class GenerateControlQuestionAnswerWithAiHandler implements ICommandHandl
       });
       question.completeAiGeneration(generated.value.answer, generated.value.evidence, generated.value.passed);
       await this.questions.save(question);
-      this.eventBus.publish(
-        new OpportunityQualificationUpdatedEvent(
-          command.opportunityId,
-          command.accountId,
-          'control_question',
-          question.id,
-        ),
-      );
+      await this.eventBus.publishAll(question.pullDomainEvents());
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Error inesperado al responder la pregunta';
       question.failAiGeneration(message);
       await this.questions.save(question);
-      this.eventBus.publish(
-        new OpportunityQualificationGenerationFailedEvent(
-          command.opportunityId,
-          command.accountId,
-          'control_question',
-          question.id,
-          message,
-        ),
-      );
+      await this.eventBus.publishAll(question.pullDomainEvents());
     }
   }
 }

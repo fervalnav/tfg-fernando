@@ -1,5 +1,4 @@
 import { CommandHandler, EventBus, type ICommandHandler } from '@nestjs/cqrs';
-import { OpportunityQualificationUpdatedEvent } from '@/opportunity';
 import { CustomFieldRepository } from '../../../domain/custom-field.repository';
 import { CustomFieldNotFoundException } from '../../../domain/exceptions/custom-field-not-found.exception';
 import { SetCustomFieldValueCommand } from './set-custom-field-value.command';
@@ -18,8 +17,6 @@ export class SetCustomFieldValueHandler implements ICommandHandler<SetCustomFiel
     }
     instance.setValue(command.value);
     await this.instances.save(instance);
-    this.eventBus.publish(
-      new OpportunityQualificationUpdatedEvent(command.opportunityId, command.accountId, 'custom_field', instance.id),
-    );
+    await this.eventBus.publishAll(instance.pullDomainEvents());
   }
 }

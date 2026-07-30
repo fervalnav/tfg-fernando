@@ -1,8 +1,6 @@
 import { CommandBus, EventBus, EventsHandler, type IEventHandler } from '@nestjs/cqrs';
-import {
-  OpportunityQualificationGenerationFailedEvent,
-  OpportunityQualificationGenerationRequestedEvent,
-} from '@/opportunity';
+import { OpportunityQualificationGenerationRequestedEvent } from '@/opportunity';
+import { SummaryRepository } from '../../domain/summary.repository';
 import { RequestSummaryAiGenerationCommand } from '../commands/request-summary-ai-generation';
 
 @EventsHandler(OpportunityQualificationGenerationRequestedEvent)
@@ -10,6 +8,7 @@ export class OpportunitySummaryGenerationRequestedHandler implements IEventHandl
   constructor(
     private readonly commandBus: CommandBus,
     private readonly eventBus: EventBus,
+    private readonly summaries: SummaryRepository,
   ) {}
 
   async handle(event: OpportunityQualificationGenerationRequestedEvent): Promise<void> {
@@ -19,15 +18,11 @@ export class OpportunitySummaryGenerationRequestedHandler implements IEventHandl
         new RequestSummaryAiGenerationCommand(event.opportunityId, event.accountId, event.targetId),
       );
     } catch (error) {
-      this.eventBus.publish(
-        new OpportunityQualificationGenerationFailedEvent(
-          event.opportunityId,
-          event.accountId,
-          event.targetType,
-          event.targetId,
-          error instanceof Error ? error.message : 'No se pudo solicitar la generación',
-        ),
-      );
+      const summary = await this.summaries.findById(event.targetId);
+      if (!summary || summary.accountId !== event.accountId || summary.opportunityId !== event.opportunityId) return;
+      summary.failAiGeneration(error instanceof Error ? error.message : 'No se pudo solicitar la generación');
+      await this.summaries.save(summary);
+      await this.eventBus.publishAll(summary.pullDomainEvents());
     }
   }
 }

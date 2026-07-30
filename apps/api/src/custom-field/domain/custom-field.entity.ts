@@ -1,4 +1,10 @@
 import type { AiGenerationStatus, CustomFieldType, CustomFieldValue } from '@tfg/types';
+import { AggregateRoot } from '@/shared/domain/aggregate-root';
+import {
+  OpportunityQualificationGenerationFailedEvent,
+  OpportunityQualificationUpdatedEvent,
+} from '@/opportunity/domain/events/opportunity-workflow.events';
+import { CustomFieldAiGenerationRequestedEvent } from './events/custom-field-ai.events';
 
 type Primitives = {
   id: string;
@@ -21,7 +27,7 @@ type Primitives = {
   updatedAt: Date;
 };
 
-export class CustomField {
+export class CustomField extends AggregateRoot {
   private constructor(
     private readonly data: Omit<
       Primitives,
@@ -33,7 +39,9 @@ export class CustomField {
     private _aiEvidence: string | null,
     private _aiGeneratedAt: Date | null,
     private _updatedAt: Date,
-  ) {}
+  ) {
+    super();
+  }
 
   static create(
     params: Omit<
@@ -69,6 +77,14 @@ export class CustomField {
     }
     this._value = value;
     this._updatedAt = new Date();
+    this.record(
+      new OpportunityQualificationUpdatedEvent(
+        this.data.opportunityId,
+        this.data.accountId,
+        'custom_field',
+        this.data.id,
+      ),
+    );
   }
 
   requestAiGeneration(): boolean {
@@ -76,6 +92,7 @@ export class CustomField {
     this._aiStatus = 'PENDING';
     this._aiError = null;
     this._updatedAt = new Date();
+    this.record(new CustomFieldAiGenerationRequestedEvent(this.data.opportunityId, this.data.accountId, this.data.id));
     return true;
   }
 
@@ -99,6 +116,15 @@ export class CustomField {
     this._aiStatus = 'FAILED';
     this._aiError = message;
     this._updatedAt = new Date();
+    this.record(
+      new OpportunityQualificationGenerationFailedEvent(
+        this.data.opportunityId,
+        this.data.accountId,
+        'custom_field',
+        this.data.id,
+        message,
+      ),
+    );
   }
 
   toPrimitives(): Primitives {

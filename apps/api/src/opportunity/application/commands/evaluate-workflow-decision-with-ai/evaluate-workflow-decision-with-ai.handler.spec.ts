@@ -14,12 +14,14 @@ describe('EvaluateWorkflowDecisionWithAiHandler', () => {
   const workflowStepId = 'step-id';
 
   function createDecision() {
-    return WorkflowDecisionResult.create({
+    const decision = WorkflowDecisionResult.create({
       id: 'decision-id',
       accountId,
       opportunityId,
       workflowStepId,
     });
+    decision.pullDomainEvents();
+    return decision;
   }
 
   function createStep() {
@@ -34,10 +36,11 @@ describe('EvaluateWorkflowDecisionWithAiHandler', () => {
   }
 
   function createHandler(generateStructured: jest.Mock) {
-    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const eventBus = { publishAll: jest.fn() } as unknown as jest.Mocked<EventBus>;
     const handler = new EvaluateWorkflowDecisionWithAiHandler(
       {
         findByOpportunityAndStep: jest.fn().mockResolvedValue(createDecision()),
+        save: jest.fn().mockResolvedValue(undefined),
       } as unknown as WorkflowDecisionResultRepository,
       { findById: jest.fn().mockResolvedValue(createStep()) } as unknown as WorkflowStepRepository,
       {
@@ -73,12 +76,12 @@ describe('EvaluateWorkflowDecisionWithAiHandler', () => {
 
     await handler.execute(new EvaluateWorkflowDecisionWithAiCommand(opportunityId, accountId, workflowStepId));
 
-    expect(eventBus.publish).toHaveBeenCalledWith(
+    expect(eventBus.publishAll).toHaveBeenCalledWith([
       expect.objectContaining<Partial<WorkflowDecisionEvaluatedEvent>>({
         status: 'TRUE',
         evidence: 'El importe supera el umbral',
       }),
-    );
+    ]);
   });
 
   it('publishes an error decision when the provider fails', async () => {
@@ -86,11 +89,11 @@ describe('EvaluateWorkflowDecisionWithAiHandler', () => {
 
     await handler.execute(new EvaluateWorkflowDecisionWithAiCommand(opportunityId, accountId, workflowStepId));
 
-    expect(eventBus.publish).toHaveBeenCalledWith(
+    expect(eventBus.publishAll).toHaveBeenCalledWith([
       expect.objectContaining<Partial<WorkflowDecisionEvaluatedEvent>>({
         status: 'ERROR',
         evidence: 'Proveedor no disponible',
       }),
-    );
+    ]);
   });
 });

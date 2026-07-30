@@ -14,15 +14,7 @@ import { WorkflowDecisionResult } from '../../domain/workflow-decision-result.en
 import { OpportunityWorkflowConflictException } from '../../domain/exceptions/opportunity-workflow-conflict.exception';
 import { WorkflowRuntimeActionNotFoundException } from '../../domain/exceptions/workflow-runtime-action-not-found.exception';
 import { OpportunityFinder } from './opportunity.finder';
-import {
-  OpportunityStepActionsCreatedEvent,
-  OpportunityQualificationGenerationRequestedEvent,
-  OpportunityWorkflowCompletedEvent,
-  OpportunityWorkflowStepEnteredEvent,
-  WorkflowDecisionEvaluatedEvent,
-  WorkflowDecisionEvaluationRequestedEvent,
-  WorkflowStepActionStatusChangedEvent,
-} from '../events/opportunity-workflow.events';
+import { WorkflowDecisionEvaluatedEvent } from '../events/opportunity-workflow.events';
 
 @Injectable()
 export class OpportunityWorkflowService {
@@ -75,7 +67,7 @@ export class OpportunityWorkflowService {
       accountId,
       steps.map((step) => step.id),
     );
-    this.eventBus.publish(new OpportunityWorkflowStepEnteredEvent(opportunityId, accountId, firstStep.id));
+    await this.eventBus.publishAll(opportunity.pullDomainEvents());
   }
 
   async initializeCurrentStep(opportunityId: string, accountId: string, workflowStepId: string): Promise<void> {
@@ -94,9 +86,11 @@ export class OpportunityWorkflowService {
           opportunityId,
           workflowStepId: step.id,
         });
-        await this.decisionRepo.save(result);
+      } else {
+        result.requestEvaluation();
       }
-      this.eventBus.publish(new WorkflowDecisionEvaluationRequestedEvent(opportunityId, accountId, step.id));
+      await this.decisionRepo.save(result);
+      await this.eventBus.publishAll(result.pullDomainEvents());
       return;
     }
 
@@ -105,7 +99,10 @@ export class OpportunityWorkflowService {
 
   async createCurrentStepActions(opportunityId: string, accountId: string, workflowStepId: string): Promise<void> {
     await this.createOrLinkActionsForSteps(opportunityId, accountId, [workflowStepId]);
-    this.eventBus.publish(new OpportunityStepActionsCreatedEvent(opportunityId, accountId));
+    const opportunity = await this.getOpportunity(opportunityId, accountId);
+    opportunity.notifyStepActionsCreated();
+    await this.opportunityRepo.save(opportunity);
+    await this.eventBus.publishAll(opportunity.pullDomainEvents());
   }
 
   private async createOrLinkActionsForSteps(
@@ -183,7 +180,7 @@ export class OpportunityWorkflowService {
     }
     action.complete();
     await this.actionRepo.save(action);
-    this.eventBus.publish(new WorkflowStepActionStatusChangedEvent(opportunityId, accountId));
+    await this.eventBus.publishAll(action.pullDomainEvents());
   }
 
   async completeQualificationActions(
@@ -192,20 +189,16 @@ export class OpportunityWorkflowService {
     targetType: 'control_question' | 'custom_field' | 'summary',
     targetId: string,
   ): Promise<void> {
-    await this.getOpportunity(opportunityId, accountId);
-    const actions = await this.actionRepo.findByOpportunityId(opportunityId, accountId);
+    const opportunity = await this.getOpportunity(opportunityId, accountId);
+    if (!opportunity.workflowStepId) return;
+    const actions = await this.actionRepo.findByOpportunityAndStep(opportunityId, opportunity.workflowStepId);
     const matchingActions = actions.filter(
-      (action) =>
-        action.targetType === targetType &&
-        action.targetId === targetId &&
-        (action.status === 'PENDING' || action.status === 'IN_PROGRESS'),
+      (action) => action.targetType === targetType && action.targetId === targetId && !action.isSettled,
     );
-    for (const action of matchingActions) {
-      action.complete();
-      await this.actionRepo.save(action);
-    }
+    for (const action of matchingActions) action.complete();
     if (matchingActions.length) {
-      this.eventBus.publish(new WorkflowStepActionStatusChangedEvent(opportunityId, accountId));
+      await this.actionRepo.saveMany(matchingActions);
+      await this.eventBus.publishAll(matchingActions.flatMap((action) => action.pullDomainEvents()));
     }
   }
 
@@ -216,17 +209,16 @@ export class OpportunityWorkflowService {
     targetId: string,
     errorMessage: string,
   ): Promise<void> {
-    await this.getOpportunity(opportunityId, accountId);
-    const actions = await this.actionRepo.findByOpportunityId(opportunityId, accountId);
+    const opportunity = await this.getOpportunity(opportunityId, accountId);
+    if (!opportunity.workflowStepId) return;
+    const actions = await this.actionRepo.findByOpportunityAndStep(opportunityId, opportunity.workflowStepId);
     const matchingActions = actions.filter(
       (action) => action.targetType === targetType && action.targetId === targetId && action.status === 'IN_PROGRESS',
     );
-    for (const action of matchingActions) {
-      action.fail(errorMessage);
-      await this.actionRepo.save(action);
-    }
+    for (const action of matchingActions) action.fail(errorMessage);
     if (matchingActions.length) {
-      this.eventBus.publish(new WorkflowStepActionStatusChangedEvent(opportunityId, accountId));
+      await this.actionRepo.saveMany(matchingActions);
+      await this.eventBus.publishAll(matchingActions.flatMap((action) => action.pullDomainEvents()));
     }
   }
 
@@ -237,7 +229,7 @@ export class OpportunityWorkflowService {
     }
     action.skip();
     await this.actionRepo.save(action);
-    this.eventBus.publish(new WorkflowStepActionStatusChangedEvent(opportunityId, accountId));
+    await this.eventBus.publishAll(action.pullDomainEvents());
   }
 
   async retryAction(opportunityId: string, accountId: string, actionId: string): Promise<void> {
@@ -247,7 +239,7 @@ export class OpportunityWorkflowService {
     }
     action.retry();
     await this.actionRepo.save(action);
-    this.eventBus.publish(new OpportunityStepActionsCreatedEvent(opportunityId, accountId));
+    await this.eventBus.publishAll(action.pullDomainEvents());
   }
 
   async autoExecute(opportunityId: string, accountId: string): Promise<void> {
@@ -261,21 +253,12 @@ export class OpportunityWorkflowService {
         action.targetType === 'custom_field' ||
         action.targetType === 'summary'
       ) {
-        action.start();
-        await this.actionRepo.save(action);
+        action.startQualificationGeneration();
         if (!action.targetId) {
           action.fail('La acción no tiene una instancia vinculada');
-          await this.actionRepo.save(action);
-          continue;
         }
-        this.eventBus.publish(
-          new OpportunityQualificationGenerationRequestedEvent(
-            opportunityId,
-            accountId,
-            action.targetType,
-            action.targetId,
-          ),
-        );
+        await this.actionRepo.save(action);
+        await this.eventBus.publishAll(action.pullDomainEvents());
         continue;
       }
       if (action.targetType !== 'opportunity_status_update') continue;
@@ -292,7 +275,7 @@ export class OpportunityWorkflowService {
         action.fail(error instanceof Error ? error.message : 'Error inesperado');
       }
       await this.actionRepo.save(action);
-      this.eventBus.publish(new WorkflowStepActionStatusChangedEvent(opportunityId, accountId));
+      await this.eventBus.publishAll(action.pullDomainEvents());
     }
   }
 
@@ -319,12 +302,14 @@ export class OpportunityWorkflowService {
     const currentIndex = steps.findIndex((step) => step.id === opportunity.workflowStepId);
     const nextStep = currentIndex >= 0 ? steps[currentIndex + 1] : undefined;
     if (!nextStep) {
-      this.eventBus.publish(new OpportunityWorkflowCompletedEvent(opportunityId, accountId));
+      opportunity.completeWorkflow();
+      await this.opportunityRepo.save(opportunity);
+      await this.eventBus.publishAll(opportunity.pullDomainEvents());
       return;
     }
     opportunity.advanceWorkflowStep(nextStep.id);
     await this.opportunityRepo.save(opportunity);
-    this.eventBus.publish(new OpportunityWorkflowStepEnteredEvent(opportunityId, accountId, nextStep.id));
+    await this.eventBus.publishAll(opportunity.pullDomainEvents());
   }
 
   async requestDecisionEvaluation(opportunityId: string, accountId: string, workflowStepId: string): Promise<void> {
@@ -348,7 +333,7 @@ export class OpportunityWorkflowService {
       result.requestEvaluation();
     }
     await this.decisionRepo.save(result);
-    this.eventBus.publish(new WorkflowDecisionEvaluationRequestedEvent(opportunityId, accountId, workflowStepId));
+    await this.eventBus.publishAll(result.pullDomainEvents());
   }
 
   async applyDecision(event: WorkflowDecisionEvaluatedEvent): Promise<void> {
@@ -356,14 +341,19 @@ export class OpportunityWorkflowService {
     if (opportunity.workflowStepId !== event.workflowStepId) return;
     let result = await this.decisionRepo.findByOpportunityAndStep(event.opportunityId, event.workflowStepId);
     if (!result) {
-      result = WorkflowDecisionResult.create({
-        id: this.idService.generate(),
-        accountId: event.accountId,
-        opportunityId: event.opportunityId,
-        workflowStepId: event.workflowStepId,
-      });
+      result = WorkflowDecisionResult.createEvaluated(
+        {
+          id: this.idService.generate(),
+          accountId: event.accountId,
+          opportunityId: event.opportunityId,
+          workflowStepId: event.workflowStepId,
+        },
+        event.status,
+        event.evidence,
+      );
+    } else {
+      result.applyEvaluation(event.status, event.evidence);
     }
-    result.resolve(event.status, event.evidence);
     await this.decisionRepo.save(result);
     if (event.status === 'TRUE') {
       await this.createCurrentStepActions(event.opportunityId, event.accountId, event.workflowStepId);
@@ -372,7 +362,11 @@ export class OpportunityWorkflowService {
     if (event.status !== 'FALSE') return;
     const actions = await this.actionRepo.findByOpportunityAndStep(event.opportunityId, event.workflowStepId);
     for (const action of actions) action.skip();
-    if (actions.length) await this.actionRepo.saveMany(actions);
+    if (actions.length) {
+      await this.actionRepo.saveMany(actions);
+      await this.eventBus.publishAll(actions.flatMap((action) => action.pullDomainEvents()));
+      return;
+    }
     await this.advance(event.opportunityId, event.accountId);
   }
 

@@ -1,8 +1,8 @@
 import { CommandHandler, EventBus, type ICommandHandler } from '@nestjs/cqrs';
+import { OpportunityQualificationActionLifecycleService } from '@/opportunity';
 import { CustomFieldRepository } from '../../../domain/custom-field.repository';
 import { CustomFieldNotFoundException } from '../../../domain/exceptions/custom-field-not-found.exception';
 import { CustomFieldAiGenerationUnavailableException } from '../../../domain/exceptions/custom-field-ai-generation-unavailable.exception';
-import { CustomFieldAiGenerationRequestedEvent } from '../../events/custom-field-ai.events';
 import { RequestCustomFieldAiGenerationCommand } from './request-custom-field-ai-generation.command';
 
 @CommandHandler(RequestCustomFieldAiGenerationCommand)
@@ -13,6 +13,7 @@ export class RequestCustomFieldAiGenerationHandler implements ICommandHandler<
   constructor(
     private readonly fields: CustomFieldRepository,
     private readonly eventBus: EventBus,
+    private readonly actionLifecycle: OpportunityQualificationActionLifecycleService,
   ) {}
 
   async execute(command: RequestCustomFieldAiGenerationCommand): Promise<void> {
@@ -26,8 +27,7 @@ export class RequestCustomFieldAiGenerationHandler implements ICommandHandler<
     }
     if (!field.requestAiGeneration()) return;
     await this.fields.save(field);
-    this.eventBus.publish(
-      new CustomFieldAiGenerationRequestedEvent(command.opportunityId, command.accountId, command.customFieldId),
-    );
+    await this.actionLifecycle.start(command.opportunityId, command.accountId, 'custom_field', command.customFieldId);
+    await this.eventBus.publishAll(field.pullDomainEvents());
   }
 }

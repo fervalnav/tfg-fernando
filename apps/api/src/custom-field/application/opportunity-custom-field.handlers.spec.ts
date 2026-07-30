@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { EventBus } from '@nestjs/cqrs';
-import { OpportunityFinder, OpportunityQualificationUpdatedEvent } from '@/opportunity';
+import {
+  OpportunityFinder,
+  OpportunityQualificationActionLifecycleService,
+  OpportunityQualificationUpdatedEvent,
+} from '@/opportunity';
 import { AddCustomFieldToOpportunityCommand } from './commands/add-custom-field-to-opportunity/add-custom-field-to-opportunity.command';
 import { AddCustomFieldToOpportunityHandler } from './commands/add-custom-field-to-opportunity/add-custom-field-to-opportunity.handler';
 import { SetCustomFieldValueCommand } from './commands/set-custom-field-value/set-custom-field-value.command';
@@ -76,14 +80,14 @@ describe('opportunity custom-field use cases', () => {
       findById: jest.fn().mockResolvedValue(field),
       save: jest.fn().mockResolvedValue(undefined),
     } as unknown as jest.Mocked<CustomFieldRepository>;
-    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const eventBus = { publishAll: jest.fn() } as unknown as jest.Mocked<EventBus>;
     const handler = new SetCustomFieldValueHandler(repo, eventBus);
 
     await handler.execute(new SetCustomFieldValueCommand(opportunityId, accountId, instanceId, 25000));
 
     expect(field.value).toBe(25000);
     expect(repo.save).toHaveBeenCalledWith(field);
-    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(OpportunityQualificationUpdatedEvent));
+    expect(eventBus.publishAll).toHaveBeenCalledWith([expect.any(OpportunityQualificationUpdatedEvent)]);
   });
 
   it('rejects updating an instance outside the requested opportunity', async () => {
@@ -93,7 +97,7 @@ describe('opportunity custom-field use cases', () => {
     });
     const handler = new SetCustomFieldValueHandler(
       { findById: jest.fn().mockResolvedValue(foreign) } as unknown as CustomFieldRepository,
-      { publish: jest.fn() } as unknown as EventBus,
+      { publishAll: jest.fn() } as unknown as EventBus,
     );
 
     await expect(
@@ -116,7 +120,8 @@ describe('opportunity custom-field use cases', () => {
   it('rejects AI generation for a field that is not automatic', async () => {
     const handler = new RequestCustomFieldAiGenerationHandler(
       { findById: jest.fn().mockResolvedValue(instance()) } as unknown as CustomFieldRepository,
-      { publish: jest.fn() } as unknown as EventBus,
+      { publishAll: jest.fn() } as unknown as EventBus,
+      { start: jest.fn() } as unknown as OpportunityQualificationActionLifecycleService,
     );
 
     await expect(
@@ -130,39 +135,49 @@ describe('opportunity custom-field use cases', () => {
       findById: jest.fn().mockResolvedValue(field),
       save: jest.fn().mockResolvedValue(undefined),
     } as unknown as jest.Mocked<CustomFieldRepository>;
-    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
-    const handler = new RequestCustomFieldAiGenerationHandler(repo, eventBus);
+    const eventBus = { publishAll: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const start = jest.fn().mockResolvedValue(undefined);
+    const handler = new RequestCustomFieldAiGenerationHandler(repo, eventBus, {
+      start,
+    } as unknown as OpportunityQualificationActionLifecycleService);
 
     await handler.execute(new RequestCustomFieldAiGenerationCommand(opportunityId, accountId, instanceId));
 
     expect(field.toPrimitives().aiStatus).toBe('PENDING');
-    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(CustomFieldAiGenerationRequestedEvent));
+    expect(start).toHaveBeenCalledWith(opportunityId, accountId, 'custom_field', instanceId);
+    expect(eventBus.publishAll).toHaveBeenCalledWith([expect.any(CustomFieldAiGenerationRequestedEvent)]);
   });
 
   it('does not enqueue the same automatic field while generation is already pending', async () => {
     const field = automaticInstance();
     field.requestAiGeneration();
+    field.pullDomainEvents();
     const repo = {
       findById: jest.fn().mockResolvedValue(field),
       save: jest.fn().mockResolvedValue(undefined),
     } as unknown as jest.Mocked<CustomFieldRepository>;
-    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
-    const handler = new RequestCustomFieldAiGenerationHandler(repo, eventBus);
+    const eventBus = { publishAll: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const start = jest.fn();
+    const handler = new RequestCustomFieldAiGenerationHandler(repo, eventBus, {
+      start,
+    } as unknown as OpportunityQualificationActionLifecycleService);
 
     await handler.execute(new RequestCustomFieldAiGenerationCommand(opportunityId, accountId, instanceId));
 
     expect(repo.save).not.toHaveBeenCalled();
-    expect(eventBus.publish).not.toHaveBeenCalled();
+    expect(start).not.toHaveBeenCalled();
+    expect(eventBus.publishAll).not.toHaveBeenCalled();
   });
 
   it('validates and persists the generated field value', async () => {
     const field = automaticInstance();
     field.requestAiGeneration();
+    field.pullDomainEvents();
     const repo = {
       findById: jest.fn().mockResolvedValue(field),
       save: jest.fn().mockResolvedValue(undefined),
     } as unknown as jest.Mocked<CustomFieldRepository>;
-    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const eventBus = { publishAll: jest.fn() } as unknown as jest.Mocked<EventBus>;
     const handler = new GenerateCustomFieldValueWithAiHandler(
       repo,
       {
@@ -196,6 +211,6 @@ describe('opportunity custom-field use cases', () => {
         aiEvidence: 'El importe figura en la oportunidad',
       }),
     );
-    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(OpportunityQualificationUpdatedEvent));
+    expect(eventBus.publishAll).toHaveBeenCalledWith([expect.any(OpportunityQualificationUpdatedEvent)]);
   });
 });

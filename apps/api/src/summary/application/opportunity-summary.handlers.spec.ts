@@ -2,6 +2,7 @@
 import { EventBus } from '@nestjs/cqrs';
 import {
   OpportunityFinder,
+  OpportunityQualificationActionLifecycleService,
   OpportunityQualificationGenerationFailedEvent,
   OpportunityQualificationUpdatedEvent,
 } from '@/opportunity';
@@ -58,14 +59,14 @@ describe('opportunity summary use cases', () => {
       findById: jest.fn().mockResolvedValue(summary),
       save: jest.fn().mockResolvedValue(undefined),
     } as unknown as jest.Mocked<SummaryRepository>;
-    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const eventBus = { publishAll: jest.fn() } as unknown as jest.Mocked<EventBus>;
     const handler = new UpdateSummaryResultHandler(repo, eventBus);
 
     await handler.execute(new UpdateSummaryResultCommand(opportunityId, accountId, instanceId, '  Resultado  '));
 
     expect(summary.toPrimitives().result).toBe('Resultado');
     expect(repo.save).toHaveBeenCalledWith(summary);
-    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(OpportunityQualificationUpdatedEvent));
+    expect(eventBus.publishAll).toHaveBeenCalledWith([expect.any(OpportunityQualificationUpdatedEvent)]);
   });
 
   it('rejects updating an instance outside the requested opportunity', async () => {
@@ -79,7 +80,7 @@ describe('opportunity summary use cases', () => {
     });
     const handler = new UpdateSummaryResultHandler(
       { findById: jest.fn().mockResolvedValue(foreign) } as unknown as SummaryRepository,
-      { publish: jest.fn() } as unknown as EventBus,
+      { publishAll: jest.fn() } as unknown as EventBus,
     );
 
     await expect(
@@ -105,39 +106,49 @@ describe('opportunity summary use cases', () => {
       findById: jest.fn().mockResolvedValue(summary),
       save: jest.fn().mockResolvedValue(undefined),
     } as unknown as jest.Mocked<SummaryRepository>;
-    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
-    const handler = new RequestSummaryAiGenerationHandler(repo, eventBus);
+    const eventBus = { publishAll: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const start = jest.fn().mockResolvedValue(undefined);
+    const handler = new RequestSummaryAiGenerationHandler(repo, eventBus, {
+      start,
+    } as unknown as OpportunityQualificationActionLifecycleService);
 
     await handler.execute(new RequestSummaryAiGenerationCommand(opportunityId, accountId, instanceId));
 
     expect(summary.toPrimitives().generationStatus).toBe('PENDING');
-    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(SummaryAiGenerationRequestedEvent));
+    expect(start).toHaveBeenCalledWith(opportunityId, accountId, 'summary', instanceId);
+    expect(eventBus.publishAll).toHaveBeenCalledWith([expect.any(SummaryAiGenerationRequestedEvent)]);
   });
 
   it('does not enqueue the same summary while generation is already pending', async () => {
     const summary = instance();
     summary.requestAiGeneration();
+    summary.pullDomainEvents();
     const repo = {
       findById: jest.fn().mockResolvedValue(summary),
       save: jest.fn().mockResolvedValue(undefined),
     } as unknown as jest.Mocked<SummaryRepository>;
-    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
-    const handler = new RequestSummaryAiGenerationHandler(repo, eventBus);
+    const eventBus = { publishAll: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const start = jest.fn();
+    const handler = new RequestSummaryAiGenerationHandler(repo, eventBus, {
+      start,
+    } as unknown as OpportunityQualificationActionLifecycleService);
 
     await handler.execute(new RequestSummaryAiGenerationCommand(opportunityId, accountId, instanceId));
 
     expect(repo.save).not.toHaveBeenCalled();
-    expect(eventBus.publish).not.toHaveBeenCalled();
+    expect(start).not.toHaveBeenCalled();
+    expect(eventBus.publishAll).not.toHaveBeenCalled();
   });
 
   it('generates and persists a summary with the configured AI provider', async () => {
     const summary = instance();
     summary.requestAiGeneration();
+    summary.pullDomainEvents();
     const repo = {
       findById: jest.fn().mockResolvedValue(summary),
       save: jest.fn().mockResolvedValue(undefined),
     } as unknown as jest.Mocked<SummaryRepository>;
-    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const eventBus = { publishAll: jest.fn() } as unknown as jest.Mocked<EventBus>;
     const generateStructured = jest.fn().mockResolvedValue({
       value: { result: 'Resumen generado' },
       provider: 'fake',
@@ -166,17 +177,18 @@ describe('opportunity summary use cases', () => {
     expect(summary.toPrimitives()).toEqual(
       expect.objectContaining({ result: 'Resumen generado', generationStatus: 'COMPLETED' }),
     );
-    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(OpportunityQualificationUpdatedEvent));
+    expect(eventBus.publishAll).toHaveBeenCalledWith([expect.any(OpportunityQualificationUpdatedEvent)]);
   });
 
   it('persists the provider error and emits a workflow failure event', async () => {
     const summary = instance();
     summary.requestAiGeneration();
+    summary.pullDomainEvents();
     const repo = {
       findById: jest.fn().mockResolvedValue(summary),
       save: jest.fn().mockResolvedValue(undefined),
     } as unknown as jest.Mocked<SummaryRepository>;
-    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const eventBus = { publishAll: jest.fn() } as unknown as jest.Mocked<EventBus>;
     const handler = new GenerateSummaryWithAiHandler(
       repo,
       { find: jest.fn().mockResolvedValue({ title: 'Oportunidad' }) } as unknown as OpportunityFinder,
@@ -190,6 +202,6 @@ describe('opportunity summary use cases', () => {
     expect(summary.toPrimitives()).toEqual(
       expect.objectContaining({ generationStatus: 'FAILED', generationError: 'Proveedor no disponible' }),
     );
-    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(OpportunityQualificationGenerationFailedEvent));
+    expect(eventBus.publishAll).toHaveBeenCalledWith([expect.any(OpportunityQualificationGenerationFailedEvent)]);
   });
 });

@@ -8,7 +8,6 @@ import { SummaryRepository } from '@/summary';
 import { WorkflowStepRepository } from '@/workflow';
 import { WorkflowDecisionResultRepository } from '../../../domain/workflow-decision-result.repository';
 import { OpportunityWorkflowConflictException } from '../../../domain/exceptions/opportunity-workflow-conflict.exception';
-import { WorkflowDecisionEvaluatedEvent } from '../../events/opportunity-workflow.events';
 import { OpportunityFinder } from '../../services/opportunity.finder';
 import { EvaluateWorkflowDecisionWithAiCommand } from './evaluate-workflow-decision-with-ai.command';
 
@@ -84,25 +83,11 @@ export class EvaluateWorkflowDecisionWithAiHandler implements ICommandHandler<
         ].join('\n'),
         documents,
       });
-      this.eventBus.publish(
-        new WorkflowDecisionEvaluatedEvent(
-          command.opportunityId,
-          command.accountId,
-          command.workflowStepId,
-          generated.value.result ? 'TRUE' : 'FALSE',
-          generated.value.evidence,
-        ),
-      );
+      decision.resolve(generated.value.result ? 'TRUE' : 'FALSE', generated.value.evidence);
     } catch (error) {
-      this.eventBus.publish(
-        new WorkflowDecisionEvaluatedEvent(
-          command.opportunityId,
-          command.accountId,
-          command.workflowStepId,
-          'ERROR',
-          error instanceof Error ? error.message : 'Error inesperado al evaluar la decisión',
-        ),
-      );
+      decision.resolve('ERROR', error instanceof Error ? error.message : 'Error inesperado al evaluar la decisión');
     }
+    await this.decisions.save(decision);
+    await this.eventBus.publishAll(decision.pullDomainEvents());
   }
 }

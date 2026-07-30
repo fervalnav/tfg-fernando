@@ -51,6 +51,7 @@ import { OpportunityWorkflowService } from './application/services/opportunity-w
 import { OpportunityFinder } from './application/services/opportunity.finder';
 import { EvaluateWorkflowDecisionWithAiHandler } from './application/commands/evaluate-workflow-decision-with-ai';
 import { WorkflowDecisionEvaluationRequestedHandler } from './application/events/workflow-decision-evaluation-requested.handler';
+import { OpportunityQualificationActionLifecycleService } from './application/services/opportunity-qualification-action-lifecycle.service';
 
 const commandHandlers = [
   CreateOpportunityHandler,
@@ -107,12 +108,13 @@ const eventHandlers = [
     ...queryHandlers,
     ...eventHandlers,
     OpportunityWorkflowService,
+    OpportunityQualificationActionLifecycleService,
     OpportunityFinder,
     IdService,
     { provide: OpportunityRepository, useClass: MikroOrmOpportunityRepository },
     { provide: WorkflowStepActionRepository, useClass: MikroOrmWorkflowStepActionRepository },
     { provide: WorkflowDecisionResultRepository, useClass: MikroOrmWorkflowDecisionResultRepository },
   ],
-  exports: [OpportunityFinder, WorkflowStepActionRepository],
+  exports: [OpportunityFinder, OpportunityQualificationActionLifecycleService, WorkflowStepActionRepository],
 })
 export class OpportunityModule {}

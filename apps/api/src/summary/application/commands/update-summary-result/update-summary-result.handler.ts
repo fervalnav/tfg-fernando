@@ -1,5 +1,4 @@
 import { CommandHandler, EventBus, type ICommandHandler } from '@nestjs/cqrs';
-import { OpportunityQualificationUpdatedEvent } from '@/opportunity';
 import { SummaryRepository } from '../../../domain/summary.repository';
 import { SummaryNotFoundException } from '../../../domain/exceptions/summary-not-found.exception';
 import { UpdateSummaryResultCommand } from './update-summary-result.command';
@@ -18,8 +17,6 @@ export class UpdateSummaryResultHandler implements ICommandHandler<UpdateSummary
     }
     summary.updateResult(command.result);
     await this.summaries.save(summary);
-    this.eventBus.publish(
-      new OpportunityQualificationUpdatedEvent(command.opportunityId, command.accountId, 'summary', summary.id),
-    );
+    await this.eventBus.publishAll(summary.pullDomainEvents());
   }
 }

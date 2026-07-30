@@ -1,8 +1,6 @@
 import { CommandBus, EventBus, EventsHandler, type IEventHandler } from '@nestjs/cqrs';
-import {
-  OpportunityQualificationGenerationFailedEvent,
-  OpportunityQualificationGenerationRequestedEvent,
-} from '@/opportunity';
+import { OpportunityQualificationGenerationRequestedEvent } from '@/opportunity';
+import { CustomFieldRepository } from '../../domain/custom-field.repository';
 import { RequestCustomFieldAiGenerationCommand } from '../commands/request-custom-field-ai-generation';
 
 @EventsHandler(OpportunityQualificationGenerationRequestedEvent)
@@ -10,6 +8,7 @@ export class OpportunityCustomFieldGenerationRequestedHandler implements IEventH
   constructor(
     private readonly commandBus: CommandBus,
     private readonly eventBus: EventBus,
+    private readonly fields: CustomFieldRepository,
   ) {}
 
   async handle(event: OpportunityQualificationGenerationRequestedEvent): Promise<void> {
@@ -19,15 +18,11 @@ export class OpportunityCustomFieldGenerationRequestedHandler implements IEventH
         new RequestCustomFieldAiGenerationCommand(event.opportunityId, event.accountId, event.targetId),
       );
     } catch (error) {
-      this.eventBus.publish(
-        new OpportunityQualificationGenerationFailedEvent(
-          event.opportunityId,
-          event.accountId,
-          event.targetType,
-          event.targetId,
-          error instanceof Error ? error.message : 'No se pudo solicitar la generación',
-        ),
-      );
+      const field = await this.fields.findById(event.targetId);
+      if (!field || field.accountId !== event.accountId || field.opportunityId !== event.opportunityId) return;
+      field.failAiGeneration(error instanceof Error ? error.message : 'No se pudo solicitar la generación');
+      await this.fields.save(field);
+      await this.eventBus.publishAll(field.pullDomainEvents());
     }
   }
 }

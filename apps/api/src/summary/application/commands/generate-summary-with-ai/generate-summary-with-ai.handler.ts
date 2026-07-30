@@ -2,11 +2,7 @@ import { CommandHandler, EventBus, type ICommandHandler } from '@nestjs/cqrs';
 import { z } from 'zod';
 import { AiGenerationService } from '@/ai';
 import { OpportunityAttachmentDocumentsService } from '@/attachment';
-import {
-  OpportunityFinder,
-  OpportunityQualificationGenerationFailedEvent,
-  OpportunityQualificationUpdatedEvent,
-} from '@/opportunity';
+import { OpportunityFinder } from '@/opportunity';
 import { SummaryRepository } from '../../../domain/summary.repository';
 import { SummaryNotFoundException } from '../../../domain/exceptions/summary-not-found.exception';
 import { GenerateSummaryWithAiCommand } from './generate-summary-with-ai.command';
@@ -52,22 +48,12 @@ export class GenerateSummaryWithAiHandler implements ICommandHandler<GenerateSum
       });
       summary.completeAiGeneration(generated.value.result);
       await this.summaries.save(summary);
-      this.eventBus.publish(
-        new OpportunityQualificationUpdatedEvent(command.opportunityId, command.accountId, 'summary', summary.id),
-      );
+      await this.eventBus.publishAll(summary.pullDomainEvents());
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Error inesperado al generar el resumen';
       summary.failAiGeneration(message);
       await this.summaries.save(summary);
-      this.eventBus.publish(
-        new OpportunityQualificationGenerationFailedEvent(
-          command.opportunityId,
-          command.accountId,
-          'summary',
-          summary.id,
-          message,
-        ),
-      );
+      await this.eventBus.publishAll(summary.pullDomainEvents());
     }
   }
 }

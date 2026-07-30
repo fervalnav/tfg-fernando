@@ -1,7 +1,7 @@
 import { CommandHandler, EventBus, type ICommandHandler } from '@nestjs/cqrs';
+import { OpportunityQualificationActionLifecycleService } from '@/opportunity';
 import { ControlQuestionRepository } from '../../../domain/control-question.repository';
 import { ControlQuestionNotFoundException } from '../../../domain/exceptions/control-question-not-found.exception';
-import { ControlQuestionAiGenerationRequestedEvent } from '../../events/control-question-ai.events';
 import { RequestControlQuestionAiGenerationCommand } from './request-control-question-ai-generation.command';
 
 @CommandHandler(RequestControlQuestionAiGenerationCommand)
@@ -12,6 +12,7 @@ export class RequestControlQuestionAiGenerationHandler implements ICommandHandle
   constructor(
     private readonly questions: ControlQuestionRepository,
     private readonly eventBus: EventBus,
+    private readonly actionLifecycle: OpportunityQualificationActionLifecycleService,
   ) {}
 
   async execute(command: RequestControlQuestionAiGenerationCommand): Promise<void> {
@@ -21,12 +22,12 @@ export class RequestControlQuestionAiGenerationHandler implements ICommandHandle
     }
     if (!question.requestAiGeneration()) return;
     await this.questions.save(question);
-    this.eventBus.publish(
-      new ControlQuestionAiGenerationRequestedEvent(
-        command.opportunityId,
-        command.accountId,
-        command.controlQuestionId,
-      ),
+    await this.actionLifecycle.start(
+      command.opportunityId,
+      command.accountId,
+      'control_question',
+      command.controlQuestionId,
     );
+    await this.eventBus.publishAll(question.pullDomainEvents());
   }
 }

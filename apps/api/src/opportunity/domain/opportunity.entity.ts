@@ -1,4 +1,11 @@
+import { AggregateRoot } from '@/shared/domain/aggregate-root';
 import type { FinalOutcomeType } from './value-objects/final-outcome-type.vo';
+import {
+  OpportunityCreatedEvent,
+  OpportunityStepActionsCreatedEvent,
+  OpportunityWorkflowCompletedEvent,
+  OpportunityWorkflowStepEnteredEvent,
+} from './events/opportunity-workflow.events';
 
 type OpportunityPrimitives = {
   id: string;
@@ -22,7 +29,7 @@ type OpportunityPrimitives = {
   updatedAt: Date;
 };
 
-export class Opportunity {
+export class Opportunity extends AggregateRoot {
   private constructor(
     private readonly _id: string,
     private readonly _accountId: string,
@@ -43,7 +50,9 @@ export class Opportunity {
     private _responsibleTeamIds: string[],
     private readonly _createdAt: Date,
     private _updatedAt: Date,
-  ) {}
+  ) {
+    super();
+  }
 
   static create(params: {
     id: string;
@@ -56,10 +65,11 @@ export class Opportunity {
     pipelineStatusId: string;
     sortPoints: number;
     workflowId?: string | null;
+    workflowIdToAssign?: string | null;
     dueDate?: Date | null;
   }): Opportunity {
     const now = new Date();
-    return new Opportunity(
+    const opportunity = new Opportunity(
       params.id,
       params.accountId,
       params.title,
@@ -80,6 +90,10 @@ export class Opportunity {
       now,
       now,
     );
+    opportunity.record(
+      new OpportunityCreatedEvent(params.id, params.accountId, params.workflowIdToAssign ?? params.workflowId ?? null),
+    );
+    return opportunity;
   }
 
   static fromPrimitives(data: OpportunityPrimitives): Opportunity {
@@ -143,11 +157,21 @@ export class Opportunity {
     this._workflowId = workflowId;
     this._workflowStepId = workflowStepId;
     this._updatedAt = new Date();
+    this.record(new OpportunityWorkflowStepEnteredEvent(this._id, this._accountId, workflowStepId));
   }
 
   advanceWorkflowStep(workflowStepId: string): void {
     this._workflowStepId = workflowStepId;
     this._updatedAt = new Date();
+    this.record(new OpportunityWorkflowStepEnteredEvent(this._id, this._accountId, workflowStepId));
+  }
+
+  notifyStepActionsCreated(): void {
+    this.record(new OpportunityStepActionsCreatedEvent(this._id, this._accountId));
+  }
+
+  completeWorkflow(): void {
+    this.record(new OpportunityWorkflowCompletedEvent(this._id, this._accountId));
   }
 
   transitionPipelineStatus(pipelineId: string, pipelineStatusId: string): void {

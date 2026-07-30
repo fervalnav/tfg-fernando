@@ -7,7 +7,7 @@ export abstract class AggregateRoot {
     this._events.push(event);
   }
 
-  pullEvents(): DomainEvent[] {
+  pullDomainEvents(): DomainEvent[] {
     const events = [...this._events];
     this._events.length = 0;
     return events;

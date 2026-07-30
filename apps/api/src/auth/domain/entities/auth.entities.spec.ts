@@ -22,8 +22,8 @@ describe('Sprint 1 auth domain', () => {
   it('creates an account with one AccountCreatedEvent and drains it once', () => {
     const account = Account.create({ id: 'account-id', name: 'Acme' });
 
-    expect(account.pullEvents()).toEqual([expect.objectContaining({ accountId: 'account-id' })]);
-    expect(account.pullEvents()).toEqual([]);
+    expect(account.pullDomainEvents()).toEqual([expect.objectContaining({ accountId: 'account-id' })]);
+    expect(account.pullDomainEvents()).toEqual([]);
   });
 
   it('updates a user profile and avatar without changing omitted fields', () => {
