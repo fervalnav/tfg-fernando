@@ -47,7 +47,7 @@ export class PipelineResponseDto implements IPipelineDto {
     const dto = new PipelineResponseDto();
     dto.id = pipeline.id;
     dto.name = pipeline.name;
-    dto.statuses = statuses.map(PipelineStatusResponseDto.fromEntity);
+    dto.statuses = statuses.map((status) => PipelineStatusResponseDto.fromEntity(status));
     dto.createdAt = pipeline.createdAt.toISOString();
     return dto;
   }

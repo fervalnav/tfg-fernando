@@ -11,6 +11,7 @@ const route = useRoute();
 const opportunityId = computed(() => route.params['id'] as string);
 const validSections: OpportunityDetailSection[] = [
   'details',
+  'attachments',
   'control-questions',
   'custom-fields',
   'summaries',

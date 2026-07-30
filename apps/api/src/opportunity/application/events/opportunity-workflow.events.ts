@@ -88,3 +88,28 @@ export class OpportunityQualificationUpdatedEvent extends DomainEvent {
     super();
   }
 }
+
+export class OpportunityQualificationGenerationRequestedEvent extends DomainEvent {
+  readonly eventName = 'opportunity.qualification.generation-requested';
+  constructor(
+    public readonly opportunityId: string,
+    public readonly accountId: string,
+    public readonly targetType: Extract<ActionTargetType, 'control_question' | 'custom_field' | 'summary'>,
+    public readonly targetId: string,
+  ) {
+    super();
+  }
+}
+
+export class OpportunityQualificationGenerationFailedEvent extends DomainEvent {
+  readonly eventName = 'opportunity.qualification.generation-failed';
+  constructor(
+    public readonly opportunityId: string,
+    public readonly accountId: string,
+    public readonly targetType: Extract<ActionTargetType, 'control_question' | 'custom_field' | 'summary'>,
+    public readonly targetId: string,
+    public readonly errorMessage: string,
+  ) {
+    super();
+  }
+}

@@ -11,6 +11,12 @@ import { CustomFieldFromDefaultService } from './services/custom-field-from-defa
 import { CustomField } from '../domain/custom-field.entity';
 import { CustomFieldRepository } from '../domain/custom-field.repository';
 import { CustomFieldNotFoundException } from '../domain/exceptions/custom-field-not-found.exception';
+import { CustomFieldAiGenerationUnavailableException } from '../domain/exceptions/custom-field-ai-generation-unavailable.exception';
+import { RequestCustomFieldAiGenerationCommand } from './commands/request-custom-field-ai-generation';
+import { RequestCustomFieldAiGenerationHandler } from './commands/request-custom-field-ai-generation/request-custom-field-ai-generation.handler';
+import { GenerateCustomFieldValueWithAiCommand } from './commands/generate-custom-field-value-with-ai';
+import { GenerateCustomFieldValueWithAiHandler } from './commands/generate-custom-field-value-with-ai/generate-custom-field-value-with-ai.handler';
+import { CustomFieldAiGenerationRequestedEvent } from './events/custom-field-ai.events';
 
 describe('opportunity custom-field use cases', () => {
   const accountId = 'account-id';
@@ -31,6 +37,22 @@ describe('opportunity custom-field use cases', () => {
       canSelectMultiple: false,
       automatic: false,
       aiPrompt: null,
+    });
+  }
+
+  function automaticInstance() {
+    return CustomField.create({
+      id: instanceId,
+      accountId,
+      opportunityId,
+      defaultCustomFieldId: templateId,
+      name: 'Importe estimado',
+      description: null,
+      type: 'NUMBER',
+      classifiers: [],
+      canSelectMultiple: false,
+      automatic: true,
+      aiPrompt: 'Obtén el importe de la oportunidad',
     });
   }
 
@@ -89,5 +111,91 @@ describe('opportunity custom-field use cases', () => {
 
     expect(repo.findByOpportunityId).toHaveBeenCalledWith(opportunityId, accountId);
     expect(result).toEqual([expect.objectContaining({ id: instanceId, name: 'Importe' })]);
+  });
+
+  it('rejects AI generation for a field that is not automatic', async () => {
+    const handler = new RequestCustomFieldAiGenerationHandler(
+      { findById: jest.fn().mockResolvedValue(instance()) } as unknown as CustomFieldRepository,
+      { publish: jest.fn() } as unknown as EventBus,
+    );
+
+    await expect(
+      handler.execute(new RequestCustomFieldAiGenerationCommand(opportunityId, accountId, instanceId)),
+    ).rejects.toThrow(CustomFieldAiGenerationUnavailableException);
+  });
+
+  it('requests AI generation for an automatic field', async () => {
+    const field = automaticInstance();
+    const repo = {
+      findById: jest.fn().mockResolvedValue(field),
+      save: jest.fn().mockResolvedValue(undefined),
+    } as unknown as jest.Mocked<CustomFieldRepository>;
+    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const handler = new RequestCustomFieldAiGenerationHandler(repo, eventBus);
+
+    await handler.execute(new RequestCustomFieldAiGenerationCommand(opportunityId, accountId, instanceId));
+
+    expect(field.toPrimitives().aiStatus).toBe('PENDING');
+    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(CustomFieldAiGenerationRequestedEvent));
+  });
+
+  it('does not enqueue the same automatic field while generation is already pending', async () => {
+    const field = automaticInstance();
+    field.requestAiGeneration();
+    const repo = {
+      findById: jest.fn().mockResolvedValue(field),
+      save: jest.fn().mockResolvedValue(undefined),
+    } as unknown as jest.Mocked<CustomFieldRepository>;
+    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const handler = new RequestCustomFieldAiGenerationHandler(repo, eventBus);
+
+    await handler.execute(new RequestCustomFieldAiGenerationCommand(opportunityId, accountId, instanceId));
+
+    expect(repo.save).not.toHaveBeenCalled();
+    expect(eventBus.publish).not.toHaveBeenCalled();
+  });
+
+  it('validates and persists the generated field value', async () => {
+    const field = automaticInstance();
+    field.requestAiGeneration();
+    const repo = {
+      findById: jest.fn().mockResolvedValue(field),
+      save: jest.fn().mockResolvedValue(undefined),
+    } as unknown as jest.Mocked<CustomFieldRepository>;
+    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const handler = new GenerateCustomFieldValueWithAiHandler(
+      repo,
+      {
+        find: jest.fn().mockResolvedValue({
+          title: 'Oportunidad',
+          description: 'Contrato de 25000 euros',
+          amount: 25000,
+          currency: 'EUR',
+          dueDate: null,
+        }),
+      } as unknown as OpportunityFinder,
+      {
+        generateStructured: jest.fn().mockResolvedValue({
+          value: { value: 25000, evidence: 'El importe figura en la oportunidad' },
+          provider: 'fake',
+          model: 'fake',
+          durationMs: 1,
+          usage: { inputTokens: 1, outputTokens: 1, totalTokens: 2 },
+        }),
+      },
+      { find: jest.fn().mockResolvedValue([]) } as never,
+      eventBus,
+    );
+
+    await handler.execute(new GenerateCustomFieldValueWithAiCommand(opportunityId, accountId, instanceId));
+
+    expect(field.toPrimitives()).toEqual(
+      expect.objectContaining({
+        value: 25000,
+        aiStatus: 'COMPLETED',
+        aiEvidence: 'El importe figura en la oportunidad',
+      }),
+    );
+    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(OpportunityQualificationUpdatedEvent));
   });
 });

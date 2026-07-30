@@ -77,6 +77,12 @@ export class StorageService implements OnModuleInit {
     });
   }
 
+  async download(key: string): Promise<Buffer> {
+    const result = await this.s3.send(new GetObjectCommand({ Bucket: this.bucket, Key: key }));
+    if (!result.Body) throw new Error(`Storage object "${key}" has no body`);
+    return Buffer.from(await result.Body.transformToByteArray());
+  }
+
   async delete(key: string): Promise<void> {
     await this.s3.send(new DeleteObjectCommand({ Bucket: this.bucket, Key: key }));
   }

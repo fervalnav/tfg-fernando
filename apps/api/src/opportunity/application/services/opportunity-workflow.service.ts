@@ -16,6 +16,7 @@ import { WorkflowRuntimeActionNotFoundException } from '../../domain/exceptions/
 import { OpportunityFinder } from './opportunity.finder';
 import {
   OpportunityStepActionsCreatedEvent,
+  OpportunityQualificationGenerationRequestedEvent,
   OpportunityWorkflowCompletedEvent,
   OpportunityWorkflowStepEnteredEvent,
   WorkflowDecisionEvaluatedEvent,
@@ -194,10 +195,34 @@ export class OpportunityWorkflowService {
     await this.getOpportunity(opportunityId, accountId);
     const actions = await this.actionRepo.findByOpportunityId(opportunityId, accountId);
     const matchingActions = actions.filter(
-      (action) => action.targetType === targetType && action.targetId === targetId && action.status === 'PENDING',
+      (action) =>
+        action.targetType === targetType &&
+        action.targetId === targetId &&
+        (action.status === 'PENDING' || action.status === 'IN_PROGRESS'),
     );
     for (const action of matchingActions) {
       action.complete();
+      await this.actionRepo.save(action);
+    }
+    if (matchingActions.length) {
+      this.eventBus.publish(new WorkflowStepActionStatusChangedEvent(opportunityId, accountId));
+    }
+  }
+
+  async failQualificationActions(
+    opportunityId: string,
+    accountId: string,
+    targetType: 'control_question' | 'custom_field' | 'summary',
+    targetId: string,
+    errorMessage: string,
+  ): Promise<void> {
+    await this.getOpportunity(opportunityId, accountId);
+    const actions = await this.actionRepo.findByOpportunityId(opportunityId, accountId);
+    const matchingActions = actions.filter(
+      (action) => action.targetType === targetType && action.targetId === targetId && action.status === 'IN_PROGRESS',
+    );
+    for (const action of matchingActions) {
+      action.fail(errorMessage);
       await this.actionRepo.save(action);
     }
     if (matchingActions.length) {
@@ -230,7 +255,30 @@ export class OpportunityWorkflowService {
     if (!opportunity.workflowStepId) return;
     const actions = await this.actionRepo.findByOpportunityAndStep(opportunityId, opportunity.workflowStepId);
     for (const action of actions) {
-      if (action.status !== 'PENDING' || action.targetType !== 'opportunity_status_update') continue;
+      if (action.status !== 'PENDING') continue;
+      if (
+        action.targetType === 'control_question' ||
+        action.targetType === 'custom_field' ||
+        action.targetType === 'summary'
+      ) {
+        action.start();
+        await this.actionRepo.save(action);
+        if (!action.targetId) {
+          action.fail('La acción no tiene una instancia vinculada');
+          await this.actionRepo.save(action);
+          continue;
+        }
+        this.eventBus.publish(
+          new OpportunityQualificationGenerationRequestedEvent(
+            opportunityId,
+            accountId,
+            action.targetType,
+            action.targetId,
+          ),
+        );
+        continue;
+      }
+      if (action.targetType !== 'opportunity_status_update') continue;
       action.start();
       await this.actionRepo.save(action);
       try {

@@ -52,6 +52,32 @@ services:
       - "1025:1025"
       - "8025:8025"
 
+  ollama:
+    image: ollama/ollama:latest
+    profiles: ["ai"]
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  ollama-model:
+    image: ollama/ollama:latest
+    profiles: ["ai"]
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen3:8b}
+    entrypoint: ["/bin/sh", "-c", "ollama pull \"$${OLLAMA_MODEL}\""]
+    restart: "no"
+
 volumes:
   postgres_data:
   minio_data:
+  ollama_data:

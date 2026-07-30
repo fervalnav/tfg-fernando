@@ -8,6 +8,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "target": "ES2021",
+    "lib": ["ES2025", "ESNext.Temporal"],
     "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./src",

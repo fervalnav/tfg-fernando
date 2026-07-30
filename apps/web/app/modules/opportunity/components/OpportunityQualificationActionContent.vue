@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SaveIcon, SparklesIcon } from 'lucide-vue-next';
+import { LoaderCircleIcon, SaveIcon, SparklesIcon } from 'lucide-vue-next';
 import { toast } from 'vue-sonner';
 import type { DefaultWorkflowStepActionDto, CustomFieldValue, WorkflowStepActionDto } from '@tfg/types';
 import {
@@ -9,6 +9,9 @@ import {
 } from '../composables/api/useOpportunityQualificationQueries';
 import {
   useAnswerControlQuestionMutation,
+  useGenerateControlQuestionMutation,
+  useGenerateCustomFieldMutation,
+  useGenerateSummaryMutation,
   useSetCustomFieldValueMutation,
   useUpdateSummaryResultMutation,
 } from '../composables/api/useOpportunityQualificationMutations';
@@ -25,6 +28,9 @@ const { data: summaries } = useOpportunitySummariesQuery(() => props.opportunity
 const { mutate: answerQuestion, isPending: isAnswering } = useAnswerControlQuestionMutation();
 const { mutate: setFieldValue, isPending: isSettingField } = useSetCustomFieldValueMutation();
 const { mutate: updateSummary, isPending: isUpdatingSummary } = useUpdateSummaryResultMutation();
+const { mutate: generateQuestion, isPending: isGeneratingQuestion } = useGenerateControlQuestionMutation();
+const { mutate: generateField, isPending: isGeneratingField } = useGenerateCustomFieldMutation();
+const { mutate: generateSummary, isPending: isGeneratingSummary } = useGenerateSummaryMutation();
 
 const question = computed(() => questions.value?.find((item) => item.id === props.action.targetId));
 const field = computed(() => fields.value?.find((item) => item.id === props.action.targetId));
@@ -74,6 +80,39 @@ function saveSummary(): void {
     },
   );
 }
+
+function requestQuestionGeneration(): void {
+  if (!question.value) return;
+  generateQuestion(
+    { opportunityId: props.opportunityId, controlQuestionId: question.value.id },
+    {
+      onSuccess: () => toast.success('Generación iniciada'),
+      onError: () => toast.error('No se pudo generar la respuesta'),
+    },
+  );
+}
+
+function requestFieldGeneration(): void {
+  if (!field.value) return;
+  generateField(
+    { opportunityId: props.opportunityId, customFieldId: field.value.id },
+    {
+      onSuccess: () => toast.success('Generación iniciada'),
+      onError: () => toast.error('No se pudo generar el campo'),
+    },
+  );
+}
+
+function requestSummaryGeneration(): void {
+  if (!summary.value) return;
+  generateSummary(
+    { opportunityId: props.opportunityId, summaryId: summary.value.id },
+    {
+      onSuccess: () => toast.success('Generación iniciada'),
+      onError: () => toast.error('No se pudo generar el resumen'),
+    },
+  );
+}
 </script>
 
 <template>
@@ -82,6 +121,11 @@ function saveSummary(): void {
       <p class="text-xs font-medium uppercase tracking-wide text-muted-foreground">Pregunta de control</p>
       <p class="mt-1 font-medium">{{ question.question }}</p>
     </div>
+    <div v-if="question.aiEvidence" class="rounded-md border bg-background p-3 text-sm">
+      <p class="font-medium">Evidencia de IA</p>
+      <p class="mt-1 text-muted-foreground">{{ question.aiEvidence }}</p>
+    </div>
+    <p v-if="question.aiError" class="text-sm text-destructive">{{ question.aiError }}</p>
     <Input
       v-if="question.answerType === 'TEXT'"
       :model-value="typeof questionDraft === 'string' ? questionDraft : ''"
@@ -99,12 +143,30 @@ function saveSummary(): void {
         <SelectItem value="false">No</SelectItem>
       </SelectContent>
     </Select>
-    <div class="flex justify-end">
+    <div class="flex flex-wrap justify-end gap-2">
+      <Button
+        variant="outline"
+        size="sm"
+        :disabled="isGeneratingQuestion || question.aiStatus === 'PENDING' || question.aiStatus === 'PROCESSING'"
+        @click.stop="requestQuestionGeneration"
+      >
+        <LoaderCircleIcon
+          v-if="question.aiStatus === 'PENDING' || question.aiStatus === 'PROCESSING'"
+          class="mr-2 size-4 animate-spin"
+        />
+        <SparklesIcon v-else class="mr-2 size-4" />
+        {{ question.aiStatus === 'COMPLETED' ? 'Regenerar' : 'Responder con IA' }}
+      </Button>
       <Button size="sm" :disabled="isAnswering" @click.stop="saveQuestion">
         <SaveIcon class="mr-2 size-4" />
         Guardar respuesta
       </Button>
     </div>
+    <div v-if="field.aiEvidence" class="rounded-md border bg-background p-3 text-sm">
+      <p class="font-medium">Evidencia de IA</p>
+      <p class="mt-1 text-muted-foreground">{{ field.aiEvidence }}</p>
+    </div>
+    <p v-if="field.aiError" class="text-sm text-destructive">{{ field.aiError }}</p>
   </div>
 
   <div v-else-if="definition.targetType === 'custom_field' && field" class="space-y-4">
@@ -142,7 +204,21 @@ function saveSummary(): void {
         </SelectItem>
       </SelectContent>
     </Select>
-    <div class="flex justify-end">
+    <div class="flex flex-wrap justify-end gap-2">
+      <Button
+        v-if="field.automatic"
+        variant="outline"
+        size="sm"
+        :disabled="isGeneratingField || field.aiStatus === 'PENDING' || field.aiStatus === 'PROCESSING'"
+        @click.stop="requestFieldGeneration"
+      >
+        <LoaderCircleIcon
+          v-if="field.aiStatus === 'PENDING' || field.aiStatus === 'PROCESSING'"
+          class="mr-2 size-4 animate-spin"
+        />
+        <SparklesIcon v-else class="mr-2 size-4" />
+        {{ field.aiStatus === 'COMPLETED' ? 'Regenerar' : 'Generar con IA' }}
+      </Button>
       <Button size="sm" :disabled="isSettingField" @click.stop="saveField">
         <SaveIcon class="mr-2 size-4" />
         Guardar campo
@@ -160,7 +236,23 @@ function saveSummary(): void {
       <p class="mt-1 text-sm text-muted-foreground">{{ summary.prompt }}</p>
     </div>
     <Textarea v-model="summaryDraft" placeholder="Escribe o revisa el resumen..." />
-    <div class="flex justify-end">
+    <p v-if="summary.generationError" class="text-sm text-destructive">{{ summary.generationError }}</p>
+    <div class="flex flex-wrap justify-end gap-2">
+      <Button
+        variant="outline"
+        size="sm"
+        :disabled="
+          isGeneratingSummary || summary.generationStatus === 'PENDING' || summary.generationStatus === 'PROCESSING'
+        "
+        @click.stop="requestSummaryGeneration"
+      >
+        <LoaderCircleIcon
+          v-if="summary.generationStatus === 'PENDING' || summary.generationStatus === 'PROCESSING'"
+          class="mr-2 size-4 animate-spin"
+        />
+        <SparklesIcon v-else class="mr-2 size-4" />
+        {{ summary.generationStatus === 'COMPLETED' ? 'Regenerar' : 'Generar con IA' }}
+      </Button>
       <Button size="sm" :disabled="isUpdatingSummary" @click.stop="saveSummary">
         <SaveIcon class="mr-2 size-4" />
         Guardar resumen

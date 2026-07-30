@@ -1,4 +1,6 @@
 export * from './shared';
+export * from './ai';
+export * from './attachment';
 export * from './auth';
 export * from './pipeline';
 export * from './default-control-question';

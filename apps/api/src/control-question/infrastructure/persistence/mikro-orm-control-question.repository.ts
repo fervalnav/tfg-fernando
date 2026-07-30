@@ -41,7 +41,15 @@ export class MikroOrmControlQuestionRepository implements ControlQuestionReposit
       await this.em.persistAndFlush(new ControlQuestionOrmEntity(primitives));
       return;
     }
-    wrap(existing).assign({ answer: primitives.answer, updatedAt: primitives.updatedAt });
+    wrap(existing).assign({
+      answer: primitives.answer,
+      aiStatus: primitives.aiStatus,
+      aiError: primitives.aiError,
+      aiEvidence: primitives.aiEvidence,
+      aiPassed: primitives.aiPassed,
+      aiGeneratedAt: primitives.aiGeneratedAt,
+      updatedAt: primitives.updatedAt,
+    });
     await this.em.flush();
   }
 

@@ -55,6 +55,12 @@ export class WorkflowStepAction {
     this.data.updatedAt = now;
   }
 
+  completeWithTarget(targetId: string): void {
+    if (this.isSettled) return;
+    this.data.targetId = targetId;
+    this.complete();
+  }
+
   skip(): void {
     if (this.isSettled) return;
     const now = new Date();

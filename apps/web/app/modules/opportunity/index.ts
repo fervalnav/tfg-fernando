@@ -17,6 +17,7 @@ export { useTransitionStatusMutation } from './composables/api/useTransitionStat
 export { useUpdatePositionMutation } from './composables/api/useUpdatePositionMutation';
 export { useOpportunityFilters } from './composables/useOpportunityFilters';
 export { useOpportunityByIdQuery } from './composables/api/useOpportunityByIdQuery';
+export { useOpportunityAttachmentsQuery } from './composables/api/useOpportunityAttachmentsQuery';
 export {
   useOpportunityControlQuestionsQuery,
   useOpportunityCustomFieldsQuery,
@@ -26,4 +27,7 @@ export {
   useAnswerControlQuestionMutation,
   useSetCustomFieldValueMutation,
   useUpdateSummaryResultMutation,
+  useGenerateControlQuestionMutation,
+  useGenerateCustomFieldMutation,
+  useGenerateSummaryMutation,
 } from './composables/api/useOpportunityQualificationMutations';

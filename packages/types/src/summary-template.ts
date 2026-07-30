@@ -26,6 +26,9 @@ export type SummaryDto = {
   name: string;
   prompt: string;
   result: string | null;
+  generationStatus: AiGenerationStatus;
+  generationError: string | null;
+  generatedAt: string | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -38,3 +41,4 @@ export type AddSummaryToOpportunityPayload = {
   id: string;
   summaryTemplateId: string;
 };
+import type { AiGenerationStatus } from './ai';

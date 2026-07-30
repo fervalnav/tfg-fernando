@@ -3,6 +3,8 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { IdService } from '@/shared/domain/services/id.service';
 import { OpportunityModule } from '@/opportunity';
+import { AiModule } from '@/ai';
+import { AttachmentModule } from '@/attachment';
 import { SummaryTemplateOrmEntity } from './infrastructure/persistence/summary-template.orm-entity';
 import { MikroOrmSummaryTemplateRepository } from './infrastructure/persistence/mikro-orm-summary-template.repository';
 import { SummaryTemplateRepository } from './domain/summary-template.repository';
@@ -19,11 +21,17 @@ import { UpdateSummaryResultHandler } from './application/commands/update-summar
 import { FindOpportunitySummariesHandler } from './application/queries/find-opportunity-summaries';
 import { SummaryFromTemplateService } from './application/services/summary-from-template.service';
 import { AddSummaryToOpportunityHandler } from './application/commands/add-summary-to-opportunity';
+import { RequestSummaryAiGenerationHandler } from './application/commands/request-summary-ai-generation';
+import { GenerateSummaryWithAiHandler } from './application/commands/generate-summary-with-ai';
+import { SummaryAiGenerationRequestedHandler } from './application/events/summary-ai-generation-requested.handler';
+import { OpportunitySummaryGenerationRequestedHandler } from './application/events/opportunity-summary-generation-requested.handler';
 
 @Module({
   imports: [
     CqrsModule,
+    AiModule,
     forwardRef(() => OpportunityModule),
+    forwardRef(() => AttachmentModule),
     MikroOrmModule.forFeature([SummaryTemplateOrmEntity, SummaryOrmEntity]),
   ],
   controllers: [SummaryTemplateController, OpportunitySummaryController],
@@ -34,12 +42,16 @@ import { AddSummaryToOpportunityHandler } from './application/commands/add-summa
     FindSummaryTemplatesHandler,
     UpdateSummaryResultHandler,
     AddSummaryToOpportunityHandler,
+    RequestSummaryAiGenerationHandler,
+    GenerateSummaryWithAiHandler,
+    SummaryAiGenerationRequestedHandler,
+    OpportunitySummaryGenerationRequestedHandler,
     FindOpportunitySummariesHandler,
     SummaryFromTemplateService,
     IdService,
     { provide: SummaryTemplateRepository, useClass: MikroOrmSummaryTemplateRepository },
     { provide: SummaryRepository, useClass: MikroOrmSummaryRepository },
   ],
-  exports: [SummaryTemplateRepository, SummaryFromTemplateService],
+  exports: [SummaryTemplateRepository, SummaryRepository, SummaryFromTemplateService],
 })
 export class SummaryModule {}

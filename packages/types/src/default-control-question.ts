@@ -34,6 +34,11 @@ export type ControlQuestionDto = {
   answerType: AnswerType;
   passConditionPrompt: string | null;
   answer: ControlQuestionAnswer;
+  aiStatus: AiGenerationStatus;
+  aiError: string | null;
+  aiEvidence: string | null;
+  aiPassed: boolean | null;
+  aiGeneratedAt: string | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -46,3 +51,4 @@ export type AddControlQuestionToOpportunityPayload = {
   id: string;
   defaultControlQuestionId: string;
 };
+import type { AiGenerationStatus } from './ai';

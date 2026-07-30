@@ -28,6 +28,8 @@ export const useOpportunityControlQuestionsQuery = (opportunityId: MaybeRefOrGet
     queryKey: ['opportunities', 'qualification', opportunityId, 'control-questions'],
     queryFn: () => api<ControlQuestionDto[]>(`/opportunities/${toValue(opportunityId)}/control-questions`),
     enabled: computed(() => Boolean(toValue(opportunityId))),
+    refetchInterval: (query) =>
+      query.state.data?.some((item) => item.aiStatus === 'PENDING' || item.aiStatus === 'PROCESSING') ? 1500 : false,
   });
 };
 
@@ -37,6 +39,8 @@ export const useOpportunityCustomFieldsQuery = (opportunityId: MaybeRefOrGetter<
     queryKey: ['opportunities', 'qualification', opportunityId, 'custom-fields'],
     queryFn: () => api<CustomFieldDto[]>(`/opportunities/${toValue(opportunityId)}/custom-fields`),
     enabled: computed(() => Boolean(toValue(opportunityId))),
+    refetchInterval: (query) =>
+      query.state.data?.some((item) => item.aiStatus === 'PENDING' || item.aiStatus === 'PROCESSING') ? 1500 : false,
   });
 };
 
@@ -46,6 +50,10 @@ export const useOpportunitySummariesQuery = (opportunityId: MaybeRefOrGetter<str
     queryKey: ['opportunities', 'qualification', opportunityId, 'summaries'],
     queryFn: () => api<SummaryDto[]>(`/opportunities/${toValue(opportunityId)}/summaries`),
     enabled: computed(() => Boolean(toValue(opportunityId))),
+    refetchInterval: (query) =>
+      query.state.data?.some((item) => item.generationStatus === 'PENDING' || item.generationStatus === 'PROCESSING')
+        ? 1500
+        : false,
   });
 };
 
