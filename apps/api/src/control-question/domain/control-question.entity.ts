@@ -1,4 +1,10 @@
 import type { AiGenerationStatus, AnswerType, ControlQuestionAnswer } from '@tfg/types';
+import { AggregateRoot } from '@/shared/domain/aggregate-root';
+import {
+  OpportunityQualificationGenerationFailedEvent,
+  OpportunityQualificationUpdatedEvent,
+} from '@/opportunity/domain/events/opportunity-workflow.events';
+import { ControlQuestionAiGenerationRequestedEvent } from './events/control-question-ai.events';
 
 type Primitives = {
   id: string;
@@ -18,7 +24,7 @@ type Primitives = {
   updatedAt: Date;
 };
 
-export class ControlQuestion {
+export class ControlQuestion extends AggregateRoot {
   private constructor(
     private readonly _id: string,
     private readonly _accountId: string,
@@ -35,7 +41,9 @@ export class ControlQuestion {
     private _aiGeneratedAt: Date | null,
     private readonly _createdAt: Date,
     private _updatedAt: Date,
-  ) {}
+  ) {
+    super();
+  }
 
   static create(
     params: Omit<
@@ -89,6 +97,9 @@ export class ControlQuestion {
     if (!isValidText && !isValidBoolean) throw new Error('La respuesta no coincide con el tipo de la pregunta');
     this._answer = value;
     this._updatedAt = new Date();
+    this.record(
+      new OpportunityQualificationUpdatedEvent(this._opportunityId, this._accountId, 'control_question', this._id),
+    );
   }
 
   requestAiGeneration(): boolean {
@@ -96,6 +107,7 @@ export class ControlQuestion {
     this._aiStatus = 'PENDING';
     this._aiError = null;
     this._updatedAt = new Date();
+    this.record(new ControlQuestionAiGenerationRequestedEvent(this._opportunityId, this._accountId, this._id));
     return true;
   }
 
@@ -120,6 +132,15 @@ export class ControlQuestion {
     this._aiStatus = 'FAILED';
     this._aiError = message;
     this._updatedAt = new Date();
+    this.record(
+      new OpportunityQualificationGenerationFailedEvent(
+        this._opportunityId,
+        this._accountId,
+        'control_question',
+        this._id,
+        message,
+      ),
+    );
   }
 
   toPrimitives(): Primitives {

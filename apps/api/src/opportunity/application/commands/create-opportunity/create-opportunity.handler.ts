@@ -2,7 +2,6 @@ import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { CreateOpportunityCommand } from './create-opportunity.command';
 import { OpportunityRepository } from '../../../domain/opportunity.repository';
 import { Opportunity } from '../../../domain/opportunity.entity';
-import { OpportunityCreatedEvent } from '../../events/opportunity-workflow.events';
 
 @CommandHandler(CreateOpportunityCommand)
 export class CreateOpportunityHandler implements ICommandHandler<CreateOpportunityCommand, void> {
@@ -26,10 +25,11 @@ export class CreateOpportunityHandler implements ICommandHandler<CreateOpportuni
       pipelineStatusId: command.pipelineStatusId,
       sortPoints,
       workflowId: null,
+      workflowIdToAssign: command.workflowId,
       dueDate: command.dueDate,
     });
 
     await this.repo.save(opportunity);
-    this.eventBus.publish(new OpportunityCreatedEvent(command.id, command.accountId, command.workflowId));
+    await this.eventBus.publishAll(opportunity.pullDomainEvents());
   }
 }

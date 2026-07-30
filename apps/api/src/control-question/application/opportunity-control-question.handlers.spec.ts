@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { EventBus } from '@nestjs/cqrs';
-import { OpportunityFinder, OpportunityQualificationUpdatedEvent } from '@/opportunity';
+import {
+  OpportunityFinder,
+  OpportunityQualificationActionLifecycleService,
+  OpportunityQualificationUpdatedEvent,
+} from '@/opportunity';
 import { AddControlQuestionToOpportunityCommand } from './commands/add-control-question-to-opportunity/add-control-question-to-opportunity.command';
 import { AddControlQuestionToOpportunityHandler } from './commands/add-control-question-to-opportunity/add-control-question-to-opportunity.handler';
 import { AnswerControlQuestionCommand } from './commands/answer-control-question/answer-control-question.command';
@@ -55,14 +59,14 @@ describe('opportunity control-question use cases', () => {
       findById: jest.fn().mockResolvedValue(question),
       save: jest.fn().mockResolvedValue(undefined),
     } as unknown as jest.Mocked<ControlQuestionRepository>;
-    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const eventBus = { publishAll: jest.fn() } as unknown as jest.Mocked<EventBus>;
     const handler = new AnswerControlQuestionHandler(repo, eventBus);
 
     await handler.execute(new AnswerControlQuestionCommand(opportunityId, accountId, instanceId, true));
 
     expect(question.answerValue).toBe(true);
     expect(repo.save).toHaveBeenCalledWith(question);
-    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(OpportunityQualificationUpdatedEvent));
+    expect(eventBus.publishAll).toHaveBeenCalledWith([expect.any(OpportunityQualificationUpdatedEvent)]);
   });
 
   it('rejects answering an instance outside the requested opportunity', async () => {
@@ -77,7 +81,7 @@ describe('opportunity control-question use cases', () => {
     });
     const handler = new AnswerControlQuestionHandler(
       { findById: jest.fn().mockResolvedValue(foreign) } as unknown as ControlQuestionRepository,
-      { publish: jest.fn() } as unknown as EventBus,
+      { publishAll: jest.fn() } as unknown as EventBus,
     );
 
     await expect(
@@ -103,39 +107,49 @@ describe('opportunity control-question use cases', () => {
       findById: jest.fn().mockResolvedValue(question),
       save: jest.fn().mockResolvedValue(undefined),
     } as unknown as jest.Mocked<ControlQuestionRepository>;
-    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
-    const handler = new RequestControlQuestionAiGenerationHandler(repo, eventBus);
+    const eventBus = { publishAll: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const start = jest.fn().mockResolvedValue(undefined);
+    const handler = new RequestControlQuestionAiGenerationHandler(repo, eventBus, {
+      start,
+    } as unknown as OpportunityQualificationActionLifecycleService);
 
     await handler.execute(new RequestControlQuestionAiGenerationCommand(opportunityId, accountId, instanceId));
 
     expect(question.toPrimitives().aiStatus).toBe('PENDING');
-    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(ControlQuestionAiGenerationRequestedEvent));
+    expect(start).toHaveBeenCalledWith(opportunityId, accountId, 'control_question', instanceId);
+    expect(eventBus.publishAll).toHaveBeenCalledWith([expect.any(ControlQuestionAiGenerationRequestedEvent)]);
   });
 
   it('does not enqueue the same question while generation is already pending', async () => {
     const question = instance();
     question.requestAiGeneration();
+    question.pullDomainEvents();
     const repo = {
       findById: jest.fn().mockResolvedValue(question),
       save: jest.fn().mockResolvedValue(undefined),
     } as unknown as jest.Mocked<ControlQuestionRepository>;
-    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
-    const handler = new RequestControlQuestionAiGenerationHandler(repo, eventBus);
+    const eventBus = { publishAll: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const start = jest.fn();
+    const handler = new RequestControlQuestionAiGenerationHandler(repo, eventBus, {
+      start,
+    } as unknown as OpportunityQualificationActionLifecycleService);
 
     await handler.execute(new RequestControlQuestionAiGenerationCommand(opportunityId, accountId, instanceId));
 
     expect(repo.save).not.toHaveBeenCalled();
-    expect(eventBus.publish).not.toHaveBeenCalled();
+    expect(start).not.toHaveBeenCalled();
+    expect(eventBus.publishAll).not.toHaveBeenCalled();
   });
 
   it('stores the generated answer, evidence and pass result', async () => {
     const question = instance();
     question.requestAiGeneration();
+    question.pullDomainEvents();
     const repo = {
       findById: jest.fn().mockResolvedValue(question),
       save: jest.fn().mockResolvedValue(undefined),
     } as unknown as jest.Mocked<ControlQuestionRepository>;
-    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const eventBus = { publishAll: jest.fn() } as unknown as jest.Mocked<EventBus>;
     const handler = new GenerateControlQuestionAnswerWithAiHandler(
       repo,
       {
@@ -170,6 +184,6 @@ describe('opportunity control-question use cases', () => {
         aiPassed: true,
       }),
     );
-    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(OpportunityQualificationUpdatedEvent));
+    expect(eventBus.publishAll).toHaveBeenCalledWith([expect.any(OpportunityQualificationUpdatedEvent)]);
   });
 });

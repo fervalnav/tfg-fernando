@@ -2,11 +2,7 @@ import { CommandHandler, EventBus, type ICommandHandler } from '@nestjs/cqrs';
 import { z } from 'zod';
 import { AiGenerationService } from '@/ai';
 import { OpportunityAttachmentDocumentsService } from '@/attachment';
-import {
-  OpportunityFinder,
-  OpportunityQualificationGenerationFailedEvent,
-  OpportunityQualificationUpdatedEvent,
-} from '@/opportunity';
+import { OpportunityFinder } from '@/opportunity';
 import { CustomFieldRepository } from '../../../domain/custom-field.repository';
 import { CustomFieldNotFoundException } from '../../../domain/exceptions/custom-field-not-found.exception';
 import { GenerateCustomFieldValueWithAiCommand } from './generate-custom-field-value-with-ai.command';
@@ -64,22 +60,12 @@ export class GenerateCustomFieldValueWithAiHandler implements ICommandHandler<
       });
       field.completeAiGeneration(generated.value.value, generated.value.evidence);
       await this.fields.save(field);
-      this.eventBus.publish(
-        new OpportunityQualificationUpdatedEvent(command.opportunityId, command.accountId, 'custom_field', field.id),
-      );
+      await this.eventBus.publishAll(field.pullDomainEvents());
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Error inesperado al generar el campo';
       field.failAiGeneration(message);
       await this.fields.save(field);
-      this.eventBus.publish(
-        new OpportunityQualificationGenerationFailedEvent(
-          command.opportunityId,
-          command.accountId,
-          'custom_field',
-          field.id,
-          message,
-        ),
-      );
+      await this.eventBus.publishAll(field.pullDomainEvents());
     }
   }
 }

@@ -1,5 +1,6 @@
 import { EventBus } from '@nestjs/cqrs';
 import { OpportunityFinder, WorkflowStepActionRepository } from '@/opportunity';
+import { WorkflowStepAction } from '@/opportunity/domain/workflow-step-action.entity';
 import { AttachmentRepository } from '../domain/attachment.repository';
 import { AttachmentStorageService } from '../domain/attachment-storage.service';
 import { Attachment } from '../domain/attachment.entity';
@@ -16,17 +17,18 @@ describe('Attachment application', () => {
 
   it('stores the PDF and completes its workflow action with the attachment target', async () => {
     const saved: unknown[] = [];
-    const state = { status: 'PENDING', targetId: null as string | null };
-    const action = {
+    const action = WorkflowStepAction.create({
+      id: actionId,
+      accountId,
+      opportunityId,
       workflowStepId: 'step-id',
+      defaultWorkflowStepActionId: 'default-action-id',
+      name: 'Adjuntar PCAP',
       targetType: 'attachment',
-      isSettled: false,
-      toPrimitives: () => ({ accountId, ...state }),
-      completeWithTarget: (targetId: string) => {
-        state.targetId = targetId;
-        state.status = 'COMPLETED';
-      },
-    };
+      targetId: null,
+      metadata: null,
+      position: 1,
+    });
     const upload = jest.fn().mockResolvedValue(undefined);
     const storage = {
       upload,
@@ -47,7 +49,7 @@ describe('Attachment application', () => {
         findById: jest.fn().mockResolvedValue(action),
         save: jest.fn().mockResolvedValue(undefined),
       } as unknown as WorkflowStepActionRepository,
-      { publish: jest.fn() } as unknown as EventBus,
+      { publishAll: jest.fn() } as unknown as EventBus,
     );
 
     await handler.execute(
@@ -66,7 +68,7 @@ describe('Attachment application', () => {
 
     expect(upload).toHaveBeenCalledWith(expect.stringContaining(attachmentId), Buffer.from('%PDF'), 'application/pdf');
     expect(saved).toHaveLength(1);
-    expect(state).toEqual({ status: 'COMPLETED', targetId: attachmentId });
+    expect(action.toPrimitives()).toEqual(expect.objectContaining({ status: 'COMPLETED', targetId: attachmentId }));
   });
 
   it('loads the original buffer when preparing AI documents', async () => {

@@ -41,12 +41,14 @@ const actionTypeDefinitions: Record<ActionTargetType, { label: string; executor:
 
 const typeDefinition = computed(() => actionTypeDefinitions[props.definition.targetType]);
 const status = computed(() => props.action?.status ?? 'BLOCKED');
-const canOperate = computed(
+const canSkip = computed(
   () =>
     props.isCurrentStep &&
-    props.definition.targetType !== 'attachment' &&
     Boolean(props.action) &&
     !['COMPLETED', 'SKIPPED', 'IN_PROGRESS'].includes(props.action?.status ?? ''),
+);
+const canComplete = computed(
+  () => canSkip.value && props.action?.status !== 'FAILED' && props.definition.targetType !== 'attachment',
 );
 
 const statusLabel = computed(() => {
@@ -165,7 +167,11 @@ function run(operation: 'complete' | 'skip' | 'retry'): void {
           <p class="text-sm text-muted-foreground">{{ futureSprintLabel }}</p>
         </div>
 
-        <div v-if="canOperate && action" class="flex flex-wrap justify-end gap-2">
+        <div v-if="canSkip && action" class="flex flex-wrap justify-end gap-2">
+          <Button variant="outline" size="sm" :disabled="isPending" @click.stop="run('skip')">
+            <SkipForwardIcon class="mr-2 size-4" />
+            Omitir
+          </Button>
           <Button
             v-if="action.status === 'FAILED'"
             variant="outline"
@@ -176,16 +182,10 @@ function run(operation: 'complete' | 'skip' | 'retry'): void {
             <RotateCcwIcon class="mr-2 size-4" />
             Reintentar
           </Button>
-          <template v-else>
-            <Button variant="outline" size="sm" :disabled="isPending" @click.stop="run('skip')">
-              <SkipForwardIcon class="mr-2 size-4" />
-              Omitir
-            </Button>
-            <Button size="sm" :disabled="isPending" @click.stop="run('complete')">
-              <CheckIcon class="mr-2 size-4" />
-              Completar
-            </Button>
-          </template>
+          <Button v-if="canComplete" size="sm" :disabled="isPending" @click.stop="run('complete')">
+            <CheckIcon class="mr-2 size-4" />
+            Completar
+          </Button>
         </div>
       </div>
     </div>

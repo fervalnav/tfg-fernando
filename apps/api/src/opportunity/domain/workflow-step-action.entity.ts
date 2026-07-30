@@ -1,4 +1,10 @@
 import type { ActionTargetType, WorkflowStepActionStatus } from '@tfg/types';
+import { AggregateRoot } from '@/shared/domain/aggregate-root';
+import {
+  OpportunityQualificationGenerationRequestedEvent,
+  OpportunityStepActionsCreatedEvent,
+  WorkflowStepActionStatusChangedEvent,
+} from './events/opportunity-workflow.events';
 
 export type WorkflowStepActionPrimitives = {
   id: string;
@@ -18,8 +24,10 @@ export type WorkflowStepActionPrimitives = {
   updatedAt: Date;
 };
 
-export class WorkflowStepAction {
-  private constructor(private readonly data: WorkflowStepActionPrimitives) {}
+export class WorkflowStepAction extends AggregateRoot {
+  private constructor(private readonly data: WorkflowStepActionPrimitives) {
+    super();
+  }
 
   static create(
     params: Omit<WorkflowStepActionPrimitives, 'status' | 'errorMessage' | 'completedAt' | 'createdAt' | 'updatedAt'>,
@@ -46,6 +54,27 @@ export class WorkflowStepAction {
     this.data.updatedAt = new Date();
   }
 
+  startQualificationGeneration(): void {
+    this.start();
+    if (
+      this.data.status !== 'IN_PROGRESS' ||
+      !this.data.targetId ||
+      (this.data.targetType !== 'control_question' &&
+        this.data.targetType !== 'custom_field' &&
+        this.data.targetType !== 'summary')
+    ) {
+      return;
+    }
+    this.record(
+      new OpportunityQualificationGenerationRequestedEvent(
+        this.data.opportunityId,
+        this.data.accountId,
+        this.data.targetType,
+        this.data.targetId,
+      ),
+    );
+  }
+
   complete(): void {
     if (this.isSettled) return;
     const now = new Date();
@@ -53,6 +82,7 @@ export class WorkflowStepAction {
     this.data.errorMessage = null;
     this.data.completedAt = now;
     this.data.updatedAt = now;
+    this.recordStatusChanged();
   }
 
   completeWithTarget(targetId: string): void {
@@ -68,6 +98,7 @@ export class WorkflowStepAction {
     this.data.errorMessage = null;
     this.data.completedAt = now;
     this.data.updatedAt = now;
+    this.recordStatusChanged();
   }
 
   fail(message: string): void {
@@ -75,13 +106,21 @@ export class WorkflowStepAction {
     this.data.status = 'FAILED';
     this.data.errorMessage = message;
     this.data.updatedAt = new Date();
+    this.recordStatusChanged();
   }
 
-  retry(): void {
+  retry(requestAutoExecution = true): void {
     if (this.data.status !== 'FAILED') return;
     this.data.status = 'PENDING';
     this.data.errorMessage = null;
     this.data.updatedAt = new Date();
+    if (requestAutoExecution) {
+      this.record(new OpportunityStepActionsCreatedEvent(this.data.opportunityId, this.data.accountId));
+    }
+  }
+
+  private recordStatusChanged(): void {
+    this.record(new WorkflowStepActionStatusChangedEvent(this.data.opportunityId, this.data.accountId));
   }
 
   toPrimitives(): WorkflowStepActionPrimitives {

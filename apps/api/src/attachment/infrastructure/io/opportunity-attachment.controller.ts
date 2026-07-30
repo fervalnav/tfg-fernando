@@ -46,7 +46,9 @@ export class OpportunityAttachmentController {
       return await this.queryBus.execute(new FindOpportunityAttachmentsQuery(opportunityId, user.accountId));
     } catch (error) {
       if (error instanceof OpportunityNotFoundException) throw new NotFoundException(error.message);
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException('Internal server error', {
+        cause: error,
+      });
     }
   }
 
@@ -86,7 +88,9 @@ export class OpportunityAttachmentController {
       if (error instanceof AttachmentAlreadyExistsException || error instanceof OpportunityWorkflowConflictException) {
         throw new ConflictException(error.message);
       }
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException('Internal server error', {
+        cause: error,
+      });
     }
   }
 
@@ -101,7 +105,9 @@ export class OpportunityAttachmentController {
     } catch (error) {
       if (error instanceof AttachmentNotFoundException) throw new NotFoundException(error.message);
       if (error instanceof AttachmentLinkedToWorkflowException) throw new ConflictException(error.message);
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException('Internal server error', {
+        cause: error,
+      });
     }
   }
 
@@ -116,7 +122,9 @@ export class OpportunityAttachmentController {
       await this.commandBus.execute(new DeleteAttachmentCommand(id, opportunityId, user.accountId));
     } catch (error) {
       if (error instanceof AttachmentNotFoundException) throw new NotFoundException(error.message);
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException('Internal server error', {
+        cause: error,
+      });
     }
   }
 }

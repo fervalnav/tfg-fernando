@@ -66,9 +66,7 @@ export class RegisterHandler implements ICommandHandler<RegisterCommand, AuthRes
 
     await this.sessionService.createSessionByIds(user.id, account.id, command.res);
 
-    for (const event of account.pullEvents()) {
-      this.eventBus.publish(event);
-    }
+    await this.eventBus.publishAll(account.pullDomainEvents());
 
     return result;
   }

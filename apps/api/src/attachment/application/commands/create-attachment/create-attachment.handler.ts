@@ -1,10 +1,5 @@
 import { CommandHandler, EventBus, type ICommandHandler } from '@nestjs/cqrs';
-import {
-  OpportunityFinder,
-  OpportunityWorkflowConflictException,
-  WorkflowStepActionRepository,
-  WorkflowStepActionStatusChangedEvent,
-} from '@/opportunity';
+import { OpportunityFinder, OpportunityWorkflowConflictException, WorkflowStepActionRepository } from '@/opportunity';
 import { Attachment } from '../../../domain/attachment.entity';
 import { AttachmentRepository } from '../../../domain/attachment.repository';
 import { AttachmentStorageService } from '../../../domain/attachment-storage.service';
@@ -60,7 +55,7 @@ export class CreateAttachmentHandler implements ICommandHandler<CreateAttachment
       if (!action) return;
       action.completeWithTarget(command.id);
       await this.actions.save(action);
-      this.eventBus.publish(new WorkflowStepActionStatusChangedEvent(command.opportunityId, command.accountId));
+      await this.eventBus.publishAll(action.pullDomainEvents());
     } catch (error) {
       await this.storage.delete(fileKey);
       await this.attachments.delete(command.id);

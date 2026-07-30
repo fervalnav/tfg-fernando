@@ -129,7 +129,7 @@ describe('OpportunityWorkflowService', () => {
     const summaryFromTemplate = {
       createOrGet: jest.fn(),
     } as unknown as jest.Mocked<SummaryFromTemplateService>;
-    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const eventBus = { publishAll: jest.fn() } as unknown as jest.Mocked<EventBus>;
 
     return {
       service: new OpportunityWorkflowService(
@@ -163,7 +163,7 @@ describe('OpportunityWorkflowService', () => {
     overrides: Partial<{
       id: string;
       workflowStepId: string;
-      targetType: 'task' | 'control_question' | 'custom_field' | 'summary' | 'opportunity_status_update';
+      targetType: 'task' | 'attachment' | 'control_question' | 'custom_field' | 'summary' | 'opportunity_status_update';
       targetId: string | null;
       metadata: Record<string, unknown> | null;
     }> = {},
@@ -192,7 +192,9 @@ describe('OpportunityWorkflowService', () => {
     expect(actionRepo.saveMany).not.toHaveBeenCalled();
     expect(opportunity.workflowStepId).toBe(nextStepId);
 
-    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(OpportunityWorkflowStepEnteredEvent));
+    expect(eventBus.publishAll).toHaveBeenCalledWith(
+      expect.arrayContaining([expect.any(OpportunityWorkflowStepEnteredEvent)]),
+    );
   });
 
   it('creates the decision actions when a decision is true', async () => {
@@ -212,7 +214,9 @@ describe('OpportunityWorkflowService', () => {
 
     expect(actionRepo.saveMany).toHaveBeenCalledWith([expect.objectContaining({ workflowStepId: decisionStepId })]);
 
-    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(OpportunityStepActionsCreatedEvent));
+    expect(eventBus.publishAll).toHaveBeenCalledWith(
+      expect.arrayContaining([expect.any(OpportunityStepActionsCreatedEvent)]),
+    );
   });
 
   it('completes a pending qualification action when its instance is updated', async () => {
@@ -230,7 +234,7 @@ describe('OpportunityWorkflowService', () => {
       position: 1,
     });
     const { service, actionRepo, eventBus } = createService();
-    actionRepo.findByOpportunityId.mockResolvedValue([action]);
+    actionRepo.findByOpportunityAndStep.mockResolvedValue([action]);
     actionRepo.save = jest.fn().mockResolvedValue(undefined);
 
     await service.completeQualificationActions(
@@ -242,9 +246,39 @@ describe('OpportunityWorkflowService', () => {
 
     expect(action.status).toBe('COMPLETED');
 
-    expect(actionRepo.save).toHaveBeenCalledWith(action);
+    expect(actionRepo.saveMany).toHaveBeenCalledWith([action]);
 
-    expect(eventBus.publish).toHaveBeenCalled();
+    expect(eventBus.publishAll).toHaveBeenCalled();
+  });
+
+  it('completes a failed qualification action when its instance succeeds after a direct retry', async () => {
+    opportunity.assignWorkflow(workflowId, decisionStepId);
+    const action = WorkflowStepAction.create({
+      id: '019fa500-0000-7000-8000-000000000023',
+      accountId: opportunity.accountId,
+      opportunityId: opportunity.id,
+      workflowStepId: decisionStepId,
+      defaultWorkflowStepActionId: '019fa500-0000-7000-8000-000000000024',
+      name: 'Generate summary',
+      targetType: 'summary',
+      targetId: '019fa500-0000-7000-8000-000000000025',
+      metadata: null,
+      position: 1,
+    });
+    action.fail('Provider unavailable');
+    const { service, actionRepo, eventBus } = createService();
+    actionRepo.findByOpportunityAndStep.mockResolvedValue([action]);
+
+    await service.completeQualificationActions(
+      opportunity.id,
+      opportunity.accountId,
+      'summary',
+      '019fa500-0000-7000-8000-000000000025',
+    );
+
+    expect(action.status).toBe('COMPLETED');
+    expect(actionRepo.saveMany).toHaveBeenCalledWith([action]);
+    expect(eventBus.publishAll).toHaveBeenCalled();
   });
 
   it('links a workflow action to the existing qualification instance', async () => {
@@ -306,7 +340,9 @@ describe('OpportunityWorkflowService', () => {
     expect(opportunity.workflowStepId).toBe(decisionStepId);
     expect(opportunityRepo.save).toHaveBeenCalledWith(opportunity);
     expect(actionRepo.saveMany).toHaveBeenCalledWith([expect.objectContaining({ workflowStepId: nextStepId })]);
-    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(OpportunityWorkflowStepEnteredEvent));
+    expect(eventBus.publishAll).toHaveBeenCalledWith(
+      expect.arrayContaining([expect.any(OpportunityWorkflowStepEnteredEvent)]),
+    );
   });
 
   it('rejects assigning another workflow unless replacement is requested', async () => {
@@ -344,7 +380,7 @@ describe('OpportunityWorkflowService', () => {
     await service.initializeCurrentStep(opportunityId, accountId, decisionStepId);
 
     expect(decisionRepo.save).toHaveBeenCalledWith(expect.objectContaining({ workflowStepId: decisionStepId }));
-    expect(eventBus.publish).toHaveBeenCalledWith(expect.anything());
+    expect(eventBus.publishAll).toHaveBeenCalledWith(expect.anything());
   });
 
   it('initializes a normal current step by creating its actions', async () => {
@@ -370,7 +406,7 @@ describe('OpportunityWorkflowService', () => {
 
     expect(actionRepo.saveMany).not.toHaveBeenCalled();
     expect(decisionRepo.save).not.toHaveBeenCalled();
-    expect(eventBus.publish).not.toHaveBeenCalled();
+    expect(eventBus.publishAll).not.toHaveBeenCalled();
   });
 
   it('does not duplicate actions already linked to their workflow defaults', async () => {
@@ -435,7 +471,7 @@ describe('OpportunityWorkflowService', () => {
 
   it('completes and skips current pending actions', async () => {
     const completeAction = createAction({ id: 'complete-action' });
-    const skipAction = createAction({ id: 'skip-action' });
+    const skipAction = createAction({ id: 'skip-action', targetType: 'attachment' });
     const { service, actionRepo, eventBus } = createService();
     actionRepo.findById.mockResolvedValueOnce(completeAction).mockResolvedValueOnce(skipAction);
 
@@ -445,7 +481,19 @@ describe('OpportunityWorkflowService', () => {
     expect(completeAction.status).toBe('COMPLETED');
     expect(skipAction.status).toBe('SKIPPED');
     expect(actionRepo.save).toHaveBeenCalledTimes(2);
-    expect(eventBus.publish).toHaveBeenCalledTimes(2);
+    expect(eventBus.publishAll).toHaveBeenCalledTimes(2);
+  });
+
+  it('allows skipping a failed action instead of forcing another retry', async () => {
+    const action = createAction({ id: 'failed-action-to-skip', targetType: 'summary' });
+    action.fail('Provider unavailable');
+    const { service, actionRepo } = createService();
+    actionRepo.findById.mockResolvedValue(action);
+
+    await service.skipAction(opportunityId, accountId, action.id);
+
+    expect(action.status).toBe('SKIPPED');
+    expect(actionRepo.save).toHaveBeenCalledWith(action);
   });
 
   it('rejects completing or skipping an action in progress', async () => {
@@ -515,7 +563,9 @@ describe('OpportunityWorkflowService', () => {
     await service.autoExecute(opportunityId, accountId);
 
     expect(action.status).toBe('IN_PROGRESS');
-    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(OpportunityQualificationGenerationRequestedEvent));
+    expect(eventBus.publishAll).toHaveBeenCalledWith(
+      expect.arrayContaining([expect.any(OpportunityQualificationGenerationRequestedEvent)]),
+    );
   });
 
   it('marks an invalid automatic status transition as failed', async () => {
@@ -538,13 +588,15 @@ describe('OpportunityWorkflowService', () => {
 
     await service.checkAndAdvance(opportunityId, accountId);
 
-    expect(eventBus.publish).toHaveBeenCalledWith(expect.objectContaining({ opportunityId }));
+    expect(eventBus.publishAll).toHaveBeenCalledWith(
+      expect.arrayContaining([expect.objectContaining({ opportunityId })]),
+    );
 
     const pending = createAction({ workflowStepId: nextStepId });
-    eventBus.publish.mockClear();
+    eventBus.publishAll.mockClear();
     actionRepo.findByOpportunityAndStep.mockResolvedValue([pending]);
     await service.checkAndAdvance(opportunityId, accountId);
-    expect(eventBus.publish).not.toHaveBeenCalled();
+    expect(eventBus.publishAll).not.toHaveBeenCalled();
   });
 
   it('does not advance a decision until it evaluates true', async () => {
@@ -560,7 +612,7 @@ describe('OpportunityWorkflowService', () => {
 
     await service.checkAndAdvance(opportunityId, accountId);
 
-    expect(eventBus.publish).not.toHaveBeenCalled();
+    expect(eventBus.publishAll).not.toHaveBeenCalled();
   });
 
   it('advances to the next step and publishes completion at the end', async () => {
@@ -568,11 +620,15 @@ describe('OpportunityWorkflowService', () => {
 
     await service.advance(opportunityId, accountId);
     expect(opportunity.workflowStepId).toBe(nextStepId);
-    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(OpportunityWorkflowStepEnteredEvent));
+    expect(eventBus.publishAll).toHaveBeenCalledWith(
+      expect.arrayContaining([expect.any(OpportunityWorkflowStepEnteredEvent)]),
+    );
 
-    eventBus.publish.mockClear();
+    eventBus.publishAll.mockClear();
     await service.advance(opportunityId, accountId);
-    expect(eventBus.publish).toHaveBeenCalledWith(expect.objectContaining({ opportunityId }));
+    expect(eventBus.publishAll).toHaveBeenCalledWith(
+      expect.arrayContaining([expect.objectContaining({ opportunityId })]),
+    );
   });
 
   it('requests a new decision evaluation and resets an existing result', async () => {
@@ -592,7 +648,7 @@ describe('OpportunityWorkflowService', () => {
 
     expect(existing.status).toBe('PENDING');
     expect(decisionRepo.save).toHaveBeenCalledTimes(2);
-    expect(eventBus.publish).toHaveBeenCalledTimes(2);
+    expect(eventBus.publishAll).toHaveBeenCalledTimes(2);
   });
 
   it('rejects reevaluation for another step or while an action is in progress', async () => {

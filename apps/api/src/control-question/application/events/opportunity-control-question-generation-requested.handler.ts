@@ -1,8 +1,6 @@
 import { CommandBus, EventBus, EventsHandler, type IEventHandler } from '@nestjs/cqrs';
-import {
-  OpportunityQualificationGenerationFailedEvent,
-  OpportunityQualificationGenerationRequestedEvent,
-} from '@/opportunity';
+import { OpportunityQualificationGenerationRequestedEvent } from '@/opportunity';
+import { ControlQuestionRepository } from '../../domain/control-question.repository';
 import { RequestControlQuestionAiGenerationCommand } from '../commands/request-control-question-ai-generation';
 
 @EventsHandler(OpportunityQualificationGenerationRequestedEvent)
@@ -10,6 +8,7 @@ export class OpportunityControlQuestionGenerationRequestedHandler implements IEv
   constructor(
     private readonly commandBus: CommandBus,
     private readonly eventBus: EventBus,
+    private readonly questions: ControlQuestionRepository,
   ) {}
 
   async handle(event: OpportunityQualificationGenerationRequestedEvent): Promise<void> {
@@ -19,15 +18,11 @@ export class OpportunityControlQuestionGenerationRequestedHandler implements IEv
         new RequestControlQuestionAiGenerationCommand(event.opportunityId, event.accountId, event.targetId),
       );
     } catch (error) {
-      this.eventBus.publish(
-        new OpportunityQualificationGenerationFailedEvent(
-          event.opportunityId,
-          event.accountId,
-          event.targetType,
-          event.targetId,
-          error instanceof Error ? error.message : 'No se pudo solicitar la generación',
-        ),
-      );
+      const question = await this.questions.findById(event.targetId);
+      if (!question || question.accountId !== event.accountId || question.opportunityId !== event.opportunityId) return;
+      question.failAiGeneration(error instanceof Error ? error.message : 'No se pudo solicitar la generación');
+      await this.questions.save(question);
+      await this.eventBus.publishAll(question.pullDomainEvents());
     }
   }
 }

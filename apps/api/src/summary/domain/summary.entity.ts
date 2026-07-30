@@ -1,4 +1,10 @@
 import type { AiGenerationStatus } from '@tfg/types';
+import { AggregateRoot } from '@/shared/domain/aggregate-root';
+import {
+  OpportunityQualificationGenerationFailedEvent,
+  OpportunityQualificationUpdatedEvent,
+} from '@/opportunity/domain/events/opportunity-workflow.events';
+import { SummaryAiGenerationRequestedEvent } from './events/summary-ai.events';
 
 type Primitives = {
   id: string;
@@ -15,7 +21,7 @@ type Primitives = {
   updatedAt: Date;
 };
 
-export class Summary {
+export class Summary extends AggregateRoot {
   private constructor(
     private readonly data: Omit<
       Primitives,
@@ -26,7 +32,9 @@ export class Summary {
     private _generationError: string | null,
     private _generatedAt: Date | null,
     private _updatedAt: Date,
-  ) {}
+  ) {
+    super();
+  }
 
   static create(
     params: Omit<
@@ -47,6 +55,9 @@ export class Summary {
     if (!result.trim()) throw new Error('El resumen no puede estar vacío');
     this._result = result.trim();
     this._updatedAt = new Date();
+    this.record(
+      new OpportunityQualificationUpdatedEvent(this.data.opportunityId, this.data.accountId, 'summary', this.data.id),
+    );
   }
 
   requestAiGeneration(): boolean {
@@ -54,6 +65,7 @@ export class Summary {
     this._generationStatus = 'PENDING';
     this._generationError = null;
     this._updatedAt = new Date();
+    this.record(new SummaryAiGenerationRequestedEvent(this.data.opportunityId, this.data.accountId, this.data.id));
     return true;
   }
 
@@ -76,6 +88,15 @@ export class Summary {
     this._generationStatus = 'FAILED';
     this._generationError = message;
     this._updatedAt = new Date();
+    this.record(
+      new OpportunityQualificationGenerationFailedEvent(
+        this.data.opportunityId,
+        this.data.accountId,
+        'summary',
+        this.data.id,
+        message,
+      ),
+    );
   }
 
   toPrimitives(): Primitives {

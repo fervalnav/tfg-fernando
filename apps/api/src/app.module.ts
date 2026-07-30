@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
@@ -14,6 +14,7 @@ import { WorkflowModule } from '@/workflow';
 import { OpportunityModule } from '@/opportunity';
 import { AttachmentModule } from '@/attachment';
 import { JwtAuthGuard } from './auth/infrastructure/guards/jwt-auth.guard';
+import { HttpErrorLoggingInterceptor } from './shared/infrastructure/interceptors/http-error-logging.interceptor';
 
 @Module({
   imports: [
@@ -30,6 +31,9 @@ import { JwtAuthGuard } from './auth/infrastructure/guards/jwt-auth.guard';
     AttachmentModule,
   ],
   controllers: [HealthController],
-  providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],
+  providers: [
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: APP_INTERCEPTOR, useClass: HttpErrorLoggingInterceptor },
+  ],
 })
 export class AppModule {}
