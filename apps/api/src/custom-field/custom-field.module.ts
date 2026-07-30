@@ -3,6 +3,8 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { IdService } from '@/shared/domain/services/id.service';
 import { OpportunityModule } from '@/opportunity';
+import { AiModule } from '@/ai';
+import { AttachmentModule } from '@/attachment';
 import { DefaultCustomFieldOrmEntity } from './infrastructure/persistence/default-custom-field.orm-entity';
 import { MikroOrmDefaultCustomFieldRepository } from './infrastructure/persistence/mikro-orm-default-custom-field.repository';
 import { DefaultCustomFieldRepository } from './domain/default-custom-field.repository';
@@ -19,11 +21,17 @@ import { SetCustomFieldValueHandler } from './application/commands/set-custom-fi
 import { FindOpportunityCustomFieldsHandler } from './application/queries/find-opportunity-custom-fields';
 import { CustomFieldFromDefaultService } from './application/services/custom-field-from-default.service';
 import { AddCustomFieldToOpportunityHandler } from './application/commands/add-custom-field-to-opportunity';
+import { RequestCustomFieldAiGenerationHandler } from './application/commands/request-custom-field-ai-generation';
+import { GenerateCustomFieldValueWithAiHandler } from './application/commands/generate-custom-field-value-with-ai';
+import { CustomFieldAiGenerationRequestedHandler } from './application/events/custom-field-ai-generation-requested.handler';
+import { OpportunityCustomFieldGenerationRequestedHandler } from './application/events/opportunity-custom-field-generation-requested.handler';
 
 @Module({
   imports: [
     CqrsModule,
+    AiModule,
     forwardRef(() => OpportunityModule),
+    forwardRef(() => AttachmentModule),
     MikroOrmModule.forFeature([DefaultCustomFieldOrmEntity, CustomFieldOrmEntity]),
   ],
   controllers: [DefaultCustomFieldController, OpportunityCustomFieldController],
@@ -34,12 +42,16 @@ import { AddCustomFieldToOpportunityHandler } from './application/commands/add-c
     FindDefaultCustomFieldsHandler,
     SetCustomFieldValueHandler,
     AddCustomFieldToOpportunityHandler,
+    RequestCustomFieldAiGenerationHandler,
+    GenerateCustomFieldValueWithAiHandler,
+    CustomFieldAiGenerationRequestedHandler,
+    OpportunityCustomFieldGenerationRequestedHandler,
     FindOpportunityCustomFieldsHandler,
     CustomFieldFromDefaultService,
     IdService,
     { provide: DefaultCustomFieldRepository, useClass: MikroOrmDefaultCustomFieldRepository },
     { provide: CustomFieldRepository, useClass: MikroOrmCustomFieldRepository },
   ],
-  exports: [DefaultCustomFieldRepository, CustomFieldFromDefaultService],
+  exports: [DefaultCustomFieldRepository, CustomFieldRepository, CustomFieldFromDefaultService],
 })
 export class CustomFieldModule {}

@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { EventBus } from '@nestjs/cqrs';
-import { OpportunityFinder, OpportunityQualificationUpdatedEvent } from '@/opportunity';
+import {
+  OpportunityFinder,
+  OpportunityQualificationGenerationFailedEvent,
+  OpportunityQualificationUpdatedEvent,
+} from '@/opportunity';
 import { AddSummaryToOpportunityCommand } from './commands/add-summary-to-opportunity/add-summary-to-opportunity.command';
 import { AddSummaryToOpportunityHandler } from './commands/add-summary-to-opportunity/add-summary-to-opportunity.handler';
 import { UpdateSummaryResultCommand } from './commands/update-summary-result/update-summary-result.command';
@@ -11,6 +15,11 @@ import { SummaryFromTemplateService } from './services/summary-from-template.ser
 import { Summary } from '../domain/summary.entity';
 import { SummaryRepository } from '../domain/summary.repository';
 import { SummaryNotFoundException } from '../domain/exceptions/summary-not-found.exception';
+import { RequestSummaryAiGenerationCommand } from './commands/request-summary-ai-generation';
+import { RequestSummaryAiGenerationHandler } from './commands/request-summary-ai-generation/request-summary-ai-generation.handler';
+import { GenerateSummaryWithAiCommand } from './commands/generate-summary-with-ai';
+import { GenerateSummaryWithAiHandler } from './commands/generate-summary-with-ai/generate-summary-with-ai.handler';
+import { SummaryAiGenerationRequestedEvent } from './events/summary-ai.events';
 
 describe('opportunity summary use cases', () => {
   const accountId = 'account-id';
@@ -88,5 +97,99 @@ describe('opportunity summary use cases', () => {
 
     expect(repo.findByOpportunityId).toHaveBeenCalledWith(opportunityId, accountId);
     expect(result).toEqual([expect.objectContaining({ id: instanceId, name: 'Resumen ejecutivo' })]);
+  });
+
+  it('requests an asynchronous summary generation through a Nest event', async () => {
+    const summary = instance();
+    const repo = {
+      findById: jest.fn().mockResolvedValue(summary),
+      save: jest.fn().mockResolvedValue(undefined),
+    } as unknown as jest.Mocked<SummaryRepository>;
+    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const handler = new RequestSummaryAiGenerationHandler(repo, eventBus);
+
+    await handler.execute(new RequestSummaryAiGenerationCommand(opportunityId, accountId, instanceId));
+
+    expect(summary.toPrimitives().generationStatus).toBe('PENDING');
+    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(SummaryAiGenerationRequestedEvent));
+  });
+
+  it('does not enqueue the same summary while generation is already pending', async () => {
+    const summary = instance();
+    summary.requestAiGeneration();
+    const repo = {
+      findById: jest.fn().mockResolvedValue(summary),
+      save: jest.fn().mockResolvedValue(undefined),
+    } as unknown as jest.Mocked<SummaryRepository>;
+    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const handler = new RequestSummaryAiGenerationHandler(repo, eventBus);
+
+    await handler.execute(new RequestSummaryAiGenerationCommand(opportunityId, accountId, instanceId));
+
+    expect(repo.save).not.toHaveBeenCalled();
+    expect(eventBus.publish).not.toHaveBeenCalled();
+  });
+
+  it('generates and persists a summary with the configured AI provider', async () => {
+    const summary = instance();
+    summary.requestAiGeneration();
+    const repo = {
+      findById: jest.fn().mockResolvedValue(summary),
+      save: jest.fn().mockResolvedValue(undefined),
+    } as unknown as jest.Mocked<SummaryRepository>;
+    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const generateStructured = jest.fn().mockResolvedValue({
+      value: { result: 'Resumen generado' },
+      provider: 'fake',
+      model: 'fake',
+      durationMs: 1,
+      usage: { inputTokens: 1, outputTokens: 1, totalTokens: 2 },
+    });
+    const handler = new GenerateSummaryWithAiHandler(
+      repo,
+      {
+        find: jest.fn().mockResolvedValue({
+          title: 'Oportunidad',
+          description: 'Descripción',
+          amount: 1000,
+          currency: 'EUR',
+          dueDate: null,
+        }),
+      } as unknown as OpportunityFinder,
+      { generateStructured },
+      { find: jest.fn().mockResolvedValue([]) } as never,
+      eventBus,
+    );
+
+    await handler.execute(new GenerateSummaryWithAiCommand(opportunityId, accountId, instanceId));
+
+    expect(summary.toPrimitives()).toEqual(
+      expect.objectContaining({ result: 'Resumen generado', generationStatus: 'COMPLETED' }),
+    );
+    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(OpportunityQualificationUpdatedEvent));
+  });
+
+  it('persists the provider error and emits a workflow failure event', async () => {
+    const summary = instance();
+    summary.requestAiGeneration();
+    const repo = {
+      findById: jest.fn().mockResolvedValue(summary),
+      save: jest.fn().mockResolvedValue(undefined),
+    } as unknown as jest.Mocked<SummaryRepository>;
+    const eventBus = { publish: jest.fn() } as unknown as jest.Mocked<EventBus>;
+    const handler = new GenerateSummaryWithAiHandler(
+      repo,
+      { find: jest.fn().mockResolvedValue({ title: 'Oportunidad' }) } as unknown as OpportunityFinder,
+      { generateStructured: jest.fn().mockRejectedValue(new Error('Proveedor no disponible')) },
+      { find: jest.fn().mockResolvedValue([]) } as never,
+      eventBus,
+    );
+
+    await handler.execute(new GenerateSummaryWithAiCommand(opportunityId, accountId, instanceId));
+
+    expect(summary.toPrimitives()).toEqual(
+      expect.objectContaining({ generationStatus: 'FAILED', generationError: 'Proveedor no disponible' }),
+    );
+    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(OpportunityQualificationGenerationFailedEvent));
   });
 });

@@ -1,5 +1,6 @@
 import {
   Body,
+  ConflictException,
   Controller,
   Get,
   HttpCode,
@@ -20,6 +21,8 @@ import { SetCustomFieldValueDto } from './dto/set-custom-field-value.dto';
 import { AddCustomFieldToOpportunityCommand } from '../../application/commands/add-custom-field-to-opportunity';
 import { DefaultCustomFieldNotFoundException } from '../../domain/exceptions/default-custom-field-not-found.exception';
 import { AddCustomFieldToOpportunityDto } from './dto/add-custom-field-to-opportunity.dto';
+import { RequestCustomFieldAiGenerationCommand } from '../../application/commands/request-custom-field-ai-generation';
+import { CustomFieldAiGenerationUnavailableException } from '../../domain/exceptions/custom-field-ai-generation-unavailable.exception';
 
 @Controller('opportunities/:opportunityId/custom-fields')
 export class OpportunityCustomFieldController {
@@ -69,6 +72,24 @@ export class OpportunityCustomFieldController {
       await this.commandBus.execute(new SetCustomFieldValueCommand(opportunityId, user.accountId, id, dto.value));
     } catch (error) {
       if (error instanceof CustomFieldNotFoundException) throw new NotFoundException(error.message);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  @Post(':id/generate')
+  @HttpCode(202)
+  async generate(
+    @CurrentUser() user: JwtPayload,
+    @Param('opportunityId') opportunityId: string,
+    @Param('id') id: string,
+  ): Promise<void> {
+    try {
+      await this.commandBus.execute(new RequestCustomFieldAiGenerationCommand(opportunityId, user.accountId, id));
+    } catch (error) {
+      if (error instanceof CustomFieldNotFoundException) throw new NotFoundException(error.message);
+      if (error instanceof CustomFieldAiGenerationUnavailableException) {
+        throw new ConflictException(error.message);
+      }
       throw new InternalServerErrorException();
     }
   }

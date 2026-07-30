@@ -50,6 +50,10 @@ export type CustomFieldDto = {
   automatic: boolean;
   aiPrompt: string | null;
   value: CustomFieldValue;
+  aiStatus: AiGenerationStatus;
+  aiError: string | null;
+  aiEvidence: string | null;
+  aiGeneratedAt: string | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -62,3 +66,4 @@ export type AddCustomFieldToOpportunityPayload = {
   id: string;
   defaultCustomFieldId: string;
 };
+import type { AiGenerationStatus } from './ai';

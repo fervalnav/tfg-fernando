@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { BotIcon, CheckCircle2Icon, CircleHelpIcon, SaveIcon } from 'lucide-vue-next';
+import {
+  BotIcon,
+  CheckCircle2Icon,
+  CircleHelpIcon,
+  LoaderCircleIcon,
+  SaveIcon,
+  SparklesIcon,
+  XCircleIcon,
+} from 'lucide-vue-next';
 import { toast } from 'vue-sonner';
 import { v7 as uuidv7 } from 'uuid';
 import type { ControlQuestionAnswer } from '@tfg/types';
@@ -10,6 +18,7 @@ import {
 import {
   useAddControlQuestionToOpportunityMutation,
   useAnswerControlQuestionMutation,
+  useGenerateControlQuestionMutation,
 } from '../composables/api/useOpportunityQualificationMutations';
 import OpportunityAddTemplatesDialog from './OpportunityAddTemplatesDialog.vue';
 
@@ -18,6 +27,7 @@ const { data: questions, isLoading } = useOpportunityControlQuestionsQuery(() =>
 const { data: templates } = useControlQuestionTemplatesQuery();
 const { mutate: answerQuestion, isPending } = useAnswerControlQuestionMutation();
 const { mutate: addQuestion } = useAddControlQuestionToOpportunityMutation();
+const { mutate: generateQuestion, isPending: isRequestingGeneration } = useGenerateControlQuestionMutation();
 const draftAnswers = ref<Record<string, Exclude<ControlQuestionAnswer, null>>>({});
 const pendingTemplateId = ref<string>();
 const installedTemplateIds = computed(() => questions.value?.map((item) => item.defaultControlQuestionId) ?? []);
@@ -79,6 +89,16 @@ function add(templateId: string): void {
     },
   );
 }
+
+function generate(id: string): void {
+  generateQuestion(
+    { opportunityId: props.opportunityId, controlQuestionId: id },
+    {
+      onSuccess: () => toast.success('Generación iniciada'),
+      onError: () => toast.error('No se pudo iniciar la generación'),
+    },
+  );
+}
 </script>
 
 <template>
@@ -124,13 +144,33 @@ function add(templateId: string): void {
                 {{ question.passConditionPrompt }}
               </CardDescription>
             </div>
-            <Badge v-if="question.answer !== null" variant="secondary" class="gap-1 text-emerald-700">
+            <Badge
+              v-if="question.aiStatus === 'PENDING' || question.aiStatus === 'PROCESSING'"
+              variant="secondary"
+              class="gap-1 text-blue-700"
+            >
+              <LoaderCircleIcon class="size-3.5 animate-spin" />
+              Generando
+            </Badge>
+            <Badge v-else-if="question.aiStatus === 'FAILED'" variant="destructive" class="gap-1">
+              <XCircleIcon class="size-3.5" />
+              Error
+            </Badge>
+            <Badge v-else-if="question.answer !== null" variant="secondary" class="gap-1 text-emerald-700">
               <CheckCircle2Icon class="size-3.5" />
               Respondida
             </Badge>
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent class="space-y-3">
+          <div v-if="question.aiEvidence" class="rounded-md border bg-muted/30 p-3 text-sm">
+            <p class="font-medium">Evidencia de IA</p>
+            <p class="mt-1 text-muted-foreground">{{ question.aiEvidence }}</p>
+            <p v-if="question.aiPassed !== null" class="mt-2 font-medium">
+              Criterio: {{ question.aiPassed ? 'Cumplido' : 'No cumplido' }}
+            </p>
+          </div>
+          <p v-if="question.aiError" class="text-sm text-destructive">{{ question.aiError }}</p>
           <div class="flex flex-col gap-3 sm:flex-row">
             <Input
               v-if="question.answerType === 'TEXT'"
@@ -152,6 +192,17 @@ function add(templateId: string): void {
                 <SelectItem value="false">No</SelectItem>
               </SelectContent>
             </Select>
+            <Button
+              variant="outline"
+              class="shrink-0"
+              :disabled="
+                isRequestingGeneration || question.aiStatus === 'PENDING' || question.aiStatus === 'PROCESSING'
+              "
+              @click="generate(question.id)"
+            >
+              <SparklesIcon class="mr-2 size-4" />
+              {{ question.aiStatus === 'COMPLETED' ? 'Regenerar' : 'Responder con IA' }}
+            </Button>
             <Button :disabled="isPending" class="shrink-0" @click="save(question.id)">
               <SaveIcon class="mr-2 size-4" />
               Guardar

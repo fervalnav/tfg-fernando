@@ -17,6 +17,7 @@ import {
 import { toast } from 'vue-sonner';
 import { useWorkflowActionMutation } from '../composables/api/useOpportunityWorkflowMutations';
 import OpportunityQualificationActionContent from './OpportunityQualificationActionContent.vue';
+import OpportunityAttachmentActionContent from './OpportunityAttachmentActionContent.vue';
 
 const props = defineProps<{
   definition: DefaultWorkflowStepActionDto;
@@ -43,6 +44,7 @@ const status = computed(() => props.action?.status ?? 'BLOCKED');
 const canOperate = computed(
   () =>
     props.isCurrentStep &&
+    props.definition.targetType !== 'attachment' &&
     Boolean(props.action) &&
     !['COMPLETED', 'SKIPPED', 'IN_PROGRESS'].includes(props.action?.status ?? ''),
 );
@@ -66,8 +68,7 @@ const statusClass = computed(() => {
 
 const futureSprintLabel = computed(() => {
   const type = props.definition.targetType;
-  if (type === 'task' || type === 'attachment')
-    return 'El contenido específico de esta acción se conectará en el Sprint 9.';
+  if (type === 'task') return 'El contenido específico de esta acción se conectará en un sprint posterior.';
   if (type === 'email_notification') return 'El detalle del envío automático se conectará en un sprint posterior.';
   return 'Esta acción actualiza automáticamente el estado de la oportunidad.';
 });
@@ -148,6 +149,13 @@ function run(operation: 'complete' | 'skip' | 'retry'): void {
 
         <OpportunityQualificationActionContent
           v-if="action && ['control_question', 'custom_field', 'summary'].includes(definition.targetType)"
+          :opportunity-id="opportunityId"
+          :definition="definition"
+          :action="action"
+        />
+
+        <OpportunityAttachmentActionContent
+          v-else-if="action && definition.targetType === 'attachment'"
           :opportunity-id="opportunityId"
           :definition="definition"
           :action="action"

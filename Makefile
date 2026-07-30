@@ -11,6 +11,12 @@ down:
 logs:
 	docker compose logs -f
 
+ai-up:
+	docker compose --profile ai up -d ollama ollama-model
+
+ai-down:
+	docker compose --profile ai stop ollama ollama-model
+
 # ── Migrations ────────────────────────────────────────────────────────────────
 
 migration-create:
@@ -26,7 +32,7 @@ migration-status:
 	cd $(API_DIR) && npx mikro-orm migration:list
 
 db-refresh:
-	cd $(API_DIR) && npx mikro-orm schema:drop --run && npx mikro-orm migration:up
+	cd $(API_DIR) && npx mikro-orm migration:fresh --seed DatabaseSeeder
 
 # ── Seeds ─────────────────────────────────────────────────────────────────────
 
@@ -40,4 +46,4 @@ setup:
 	cp apps/web/.env.example apps/web/.env; \
 	$(MAKE) up
 
-.PHONY: up down logs migration-create migration-up migration-down migration-status db-refresh seed setup
+.PHONY: up down logs ai-up ai-down migration-create migration-up migration-down migration-status db-refresh seed setup

@@ -1,5 +1,5 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
-import type { CustomFieldType, CustomFieldValue } from '@tfg/types';
+import type { AiGenerationStatus, CustomFieldType, CustomFieldValue } from '@tfg/types';
 import { CustomField } from '../../domain/custom-field.entity';
 
 @Entity({ tableName: 'custom_fields' })
@@ -16,6 +16,11 @@ export class CustomFieldOrmEntity {
   @Property({ type: 'boolean' }) automatic!: boolean;
   @Property({ type: 'text', nullable: true, fieldName: 'ai_prompt' }) aiPrompt!: string | null;
   @Property({ type: 'json', nullable: true }) value!: CustomFieldValue;
+  @Property({ type: 'varchar', length: 20, fieldName: 'ai_status', default: 'IDLE' })
+  aiStatus!: AiGenerationStatus;
+  @Property({ type: 'text', nullable: true, fieldName: 'ai_error' }) aiError!: string | null;
+  @Property({ type: 'text', nullable: true, fieldName: 'ai_evidence' }) aiEvidence!: string | null;
+  @Property({ type: 'datetime', nullable: true, fieldName: 'ai_generated_at' }) aiGeneratedAt!: Date | null;
   @Property({ type: 'datetime', defaultRaw: 'CURRENT_TIMESTAMP', fieldName: 'created_at' }) createdAt!: Date;
   @Property({ type: 'datetime', defaultRaw: 'CURRENT_TIMESTAMP', fieldName: 'updated_at', onUpdate: () => new Date() })
   updatedAt!: Date;

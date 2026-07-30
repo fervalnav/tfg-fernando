@@ -41,7 +41,14 @@ export class MikroOrmCustomFieldRepository implements CustomFieldRepository {
       await this.em.persistAndFlush(new CustomFieldOrmEntity(primitives));
       return;
     }
-    wrap(existing).assign({ value: primitives.value, updatedAt: primitives.updatedAt });
+    wrap(existing).assign({
+      value: primitives.value,
+      aiStatus: primitives.aiStatus,
+      aiError: primitives.aiError,
+      aiEvidence: primitives.aiEvidence,
+      aiGeneratedAt: primitives.aiGeneratedAt,
+      updatedAt: primitives.updatedAt,
+    });
     await this.em.flush();
   }
 

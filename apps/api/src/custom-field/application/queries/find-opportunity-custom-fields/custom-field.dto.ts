@@ -1,5 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import type { CustomFieldDto as ICustomFieldDto, CustomFieldType, CustomFieldValue } from '@tfg/types';
+import type {
+  AiGenerationStatus,
+  CustomFieldDto as ICustomFieldDto,
+  CustomFieldType,
+  CustomFieldValue,
+} from '@tfg/types';
 import type { CustomField } from '../../../domain/custom-field.entity';
 
 export class CustomFieldDto implements ICustomFieldDto {
@@ -15,6 +20,10 @@ export class CustomFieldDto implements ICustomFieldDto {
   @ApiProperty() automatic!: boolean;
   @ApiProperty({ nullable: true }) aiPrompt!: string | null;
   @ApiProperty({ nullable: true }) value!: CustomFieldValue;
+  @ApiProperty() aiStatus!: AiGenerationStatus;
+  @ApiProperty({ nullable: true }) aiError!: string | null;
+  @ApiProperty({ nullable: true }) aiEvidence!: string | null;
+  @ApiProperty({ nullable: true }) aiGeneratedAt!: string | null;
   @ApiProperty() createdAt!: string;
   @ApiProperty() updatedAt!: string;
 
@@ -23,6 +32,7 @@ export class CustomFieldDto implements ICustomFieldDto {
     const dto = new CustomFieldDto();
     Object.assign(dto, {
       ...primitives,
+      aiGeneratedAt: primitives.aiGeneratedAt?.toISOString() ?? null,
       createdAt: primitives.createdAt.toISOString(),
       updatedAt: primitives.updatedAt.toISOString(),
     });

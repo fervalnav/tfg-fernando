@@ -96,3 +96,39 @@ export const useAddSummaryToOpportunityMutation = () => {
     onSuccess: (_, params) => invalidate(params.opportunityId),
   });
 };
+
+export const useGenerateControlQuestionMutation = () => {
+  const api = useApi();
+  const invalidate = useInvalidateQualification();
+  return useMutation({
+    mutationFn: (params: { opportunityId: string; controlQuestionId: string }) =>
+      api(`/opportunities/${params.opportunityId}/control-questions/${params.controlQuestionId}/generate`, {
+        method: 'POST',
+      }),
+    onSuccess: (_, params) => invalidate(params.opportunityId),
+  });
+};
+
+export const useGenerateCustomFieldMutation = () => {
+  const api = useApi();
+  const invalidate = useInvalidateQualification();
+  return useMutation({
+    mutationFn: (params: { opportunityId: string; customFieldId: string }) =>
+      api(`/opportunities/${params.opportunityId}/custom-fields/${params.customFieldId}/generate`, {
+        method: 'POST',
+      }),
+    onSuccess: (_, params) => invalidate(params.opportunityId),
+  });
+};
+
+export const useGenerateSummaryMutation = () => {
+  const api = useApi();
+  const invalidate = useInvalidateQualification();
+  return useMutation({
+    mutationFn: (params: { opportunityId: string; summaryId: string }) =>
+      api(`/opportunities/${params.opportunityId}/summaries/${params.summaryId}/generate`, {
+        method: 'POST',
+      }),
+    onSuccess: (_, params) => invalidate(params.opportunityId),
+  });
+};

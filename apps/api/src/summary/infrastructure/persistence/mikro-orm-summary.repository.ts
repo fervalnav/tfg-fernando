@@ -35,7 +35,13 @@ export class MikroOrmSummaryRepository implements SummaryRepository {
       await this.em.persistAndFlush(new SummaryOrmEntity(primitives));
       return;
     }
-    wrap(existing).assign({ result: primitives.result, updatedAt: primitives.updatedAt });
+    wrap(existing).assign({
+      result: primitives.result,
+      generationStatus: primitives.generationStatus,
+      generationError: primitives.generationError,
+      generatedAt: primitives.generatedAt,
+      updatedAt: primitives.updatedAt,
+    });
     await this.em.flush();
   }
 

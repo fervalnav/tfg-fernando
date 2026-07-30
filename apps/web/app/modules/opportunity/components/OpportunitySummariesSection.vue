@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BotIcon, FileTextIcon, SaveIcon, SparklesIcon } from 'lucide-vue-next';
+import { BotIcon, FileTextIcon, LoaderCircleIcon, SaveIcon, SparklesIcon, XCircleIcon } from 'lucide-vue-next';
 import { toast } from 'vue-sonner';
 import { v7 as uuidv7 } from 'uuid';
 import {
@@ -8,6 +8,7 @@ import {
 } from '../composables/api/useOpportunityQualificationQueries';
 import {
   useAddSummaryToOpportunityMutation,
+  useGenerateSummaryMutation,
   useUpdateSummaryResultMutation,
 } from '../composables/api/useOpportunityQualificationMutations';
 import OpportunityAddTemplatesDialog from './OpportunityAddTemplatesDialog.vue';
@@ -17,6 +18,7 @@ const { data: summaries, isLoading } = useOpportunitySummariesQuery(() => props.
 const { data: templates } = useSummaryTemplatesForOpportunityQuery();
 const { mutate: updateSummary, isPending } = useUpdateSummaryResultMutation();
 const { mutate: addSummary } = useAddSummaryToOpportunityMutation();
+const { mutate: generateSummary, isPending: isRequestingGeneration } = useGenerateSummaryMutation();
 const draftResults = ref<Record<string, string>>({});
 const pendingTemplateId = ref<string>();
 const installedTemplateIds = computed(() => summaries.value?.map((item) => item.summaryTemplateId) ?? []);
@@ -67,6 +69,16 @@ function add(templateId: string): void {
     },
   );
 }
+
+function generate(id: string): void {
+  generateSummary(
+    { opportunityId: props.opportunityId, summaryId: id },
+    {
+      onSuccess: () => toast.success('Generación iniciada'),
+      onError: () => toast.error('No se pudo iniciar la generación'),
+    },
+  );
+}
 </script>
 
 <template>
@@ -110,15 +122,43 @@ function add(templateId: string): void {
               <CardTitle class="text-base">{{ summary.name }}</CardTitle>
               <CardDescription class="mt-1">{{ summary.prompt }}</CardDescription>
             </div>
-            <Badge variant="secondary" class="gap-1 text-violet-700">
+            <Badge
+              v-if="summary.generationStatus === 'PENDING' || summary.generationStatus === 'PROCESSING'"
+              variant="secondary"
+              class="gap-1 text-blue-700"
+            >
+              <LoaderCircleIcon class="size-3.5 animate-spin" />
+              Generando
+            </Badge>
+            <Badge v-else-if="summary.generationStatus === 'FAILED'" variant="destructive" class="gap-1">
+              <XCircleIcon class="size-3.5" />
+              Error
+            </Badge>
+            <Badge v-else variant="secondary" class="gap-1 text-violet-700">
               <SparklesIcon class="size-3.5" />
               Asistido por IA
             </Badge>
           </div>
         </CardHeader>
         <CardContent class="space-y-3">
+          <p v-if="summary.generationError" class="text-sm text-destructive">
+            {{ summary.generationError }}
+          </p>
           <Textarea v-model="draftResults[summary.id]" placeholder="El resultado se mostrará aquí..." />
-          <div class="flex justify-end">
+          <div class="flex flex-wrap justify-end gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              :disabled="
+                isRequestingGeneration ||
+                summary.generationStatus === 'PENDING' ||
+                summary.generationStatus === 'PROCESSING'
+              "
+              @click="generate(summary.id)"
+            >
+              <SparklesIcon class="mr-2 size-4" />
+              {{ summary.generationStatus === 'COMPLETED' ? 'Regenerar' : 'Generar con IA' }}
+            </Button>
             <Button size="sm" :disabled="isPending" @click="save(summary.id)">
               <SaveIcon class="mr-2 size-4" />
               Guardar revisión

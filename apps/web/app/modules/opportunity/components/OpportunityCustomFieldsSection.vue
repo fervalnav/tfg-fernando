@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { BotIcon, CheckCircle2Icon, ListChecksIcon, SaveIcon, SparklesIcon } from 'lucide-vue-next';
+import {
+  BotIcon,
+  CheckCircle2Icon,
+  ListChecksIcon,
+  LoaderCircleIcon,
+  SaveIcon,
+  SparklesIcon,
+  XCircleIcon,
+} from 'lucide-vue-next';
 import { toast } from 'vue-sonner';
 import { v7 as uuidv7 } from 'uuid';
 import type { CustomFieldDto, CustomFieldValue } from '@tfg/types';
@@ -9,6 +17,7 @@ import {
 } from '../composables/api/useOpportunityQualificationQueries';
 import {
   useAddCustomFieldToOpportunityMutation,
+  useGenerateCustomFieldMutation,
   useSetCustomFieldValueMutation,
 } from '../composables/api/useOpportunityQualificationMutations';
 import OpportunityAddTemplatesDialog from './OpportunityAddTemplatesDialog.vue';
@@ -18,6 +27,7 @@ const { data: fields, isLoading } = useOpportunityCustomFieldsQuery(() => props.
 const { data: templates } = useCustomFieldTemplatesQuery();
 const { mutate: setValue, isPending } = useSetCustomFieldValueMutation();
 const { mutate: addField } = useAddCustomFieldToOpportunityMutation();
+const { mutate: generateField, isPending: isRequestingGeneration } = useGenerateCustomFieldMutation();
 const draftValues = ref<Record<string, Exclude<CustomFieldValue, null>>>({});
 const pendingTemplateId = ref<string>();
 const installedTemplateIds = computed(() => fields.value?.map((item) => item.defaultCustomFieldId) ?? []);
@@ -101,6 +111,16 @@ function add(templateId: string): void {
     },
   );
 }
+
+function generate(fieldId: string): void {
+  generateField(
+    { opportunityId: props.opportunityId, customFieldId: fieldId },
+    {
+      onSuccess: () => toast.success('Generación iniciada'),
+      onError: () => toast.error('No se pudo iniciar la generación'),
+    },
+  );
+}
 </script>
 
 <template>
@@ -144,7 +164,19 @@ function add(templateId: string): void {
               <CardTitle class="text-base">{{ field.name }}</CardTitle>
               <CardDescription v-if="field.description" class="mt-1">{{ field.description }}</CardDescription>
             </div>
-            <Badge v-if="field.automatic" variant="secondary" class="gap-1 text-violet-700">
+            <Badge
+              v-if="field.aiStatus === 'PENDING' || field.aiStatus === 'PROCESSING'"
+              variant="secondary"
+              class="gap-1 text-blue-700"
+            >
+              <LoaderCircleIcon class="size-3.5 animate-spin" />
+              Generando
+            </Badge>
+            <Badge v-else-if="field.aiStatus === 'FAILED'" variant="destructive" class="gap-1">
+              <XCircleIcon class="size-3.5" />
+              Error
+            </Badge>
+            <Badge v-else-if="field.automatic" variant="secondary" class="gap-1 text-violet-700">
               <SparklesIcon class="size-3.5" />
               IA
             </Badge>
@@ -155,6 +187,11 @@ function add(templateId: string): void {
           </div>
         </CardHeader>
         <CardContent class="space-y-3">
+          <div v-if="field.aiEvidence" class="rounded-md border bg-muted/30 p-3 text-sm">
+            <p class="font-medium">Evidencia de IA</p>
+            <p class="mt-1 text-muted-foreground">{{ field.aiEvidence }}</p>
+          </div>
+          <p v-if="field.aiError" class="text-sm text-destructive">{{ field.aiError }}</p>
           <Input
             v-if="field.type === 'TEXT' || field.type === 'DATE' || field.type === 'NUMBER'"
             :type="field.type === 'DATE' ? 'date' : field.type === 'NUMBER' ? 'number' : 'text'"
@@ -197,7 +234,17 @@ function add(templateId: string): void {
             </label>
           </div>
 
-          <div class="flex justify-end">
+          <div class="flex flex-wrap justify-end gap-2">
+            <Button
+              v-if="field.automatic"
+              variant="outline"
+              size="sm"
+              :disabled="isRequestingGeneration || field.aiStatus === 'PENDING' || field.aiStatus === 'PROCESSING'"
+              @click="generate(field.id)"
+            >
+              <SparklesIcon class="mr-2 size-4" />
+              {{ field.aiStatus === 'COMPLETED' ? 'Regenerar' : 'Generar con IA' }}
+            </Button>
             <Button size="sm" :disabled="isPending" @click="save(field)">
               <SaveIcon class="mr-2 size-4" />
               Guardar

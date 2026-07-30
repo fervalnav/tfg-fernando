@@ -5,6 +5,8 @@ import { WorkflowModule } from '@/workflow';
 import { ControlQuestionModule } from '@/control-question';
 import { CustomFieldModule } from '@/custom-field';
 import { SummaryModule } from '@/summary';
+import { AiModule } from '@/ai';
+import { AttachmentModule } from '@/attachment';
 
 import { OpportunityOrmEntity } from './infrastructure/persistence/opportunity.orm-entity';
 import { WorkflowStepActionOrmEntity } from './infrastructure/persistence/workflow-step-action.orm-entity';
@@ -40,12 +42,15 @@ import { FindOpportunityStepActionsHandler } from './application/queries/find-op
 import { FindOpportunityDecisionResultsHandler } from './application/queries/find-opportunity-decision-results';
 import { OpportunityCreatedWorkflowHandler } from './application/events/opportunity-created-workflow.handler';
 import { OpportunityQualificationUpdatedHandler } from './application/events/opportunity-qualification-updated.handler';
+import { OpportunityQualificationGenerationFailedHandler } from './application/events/opportunity-qualification-generation-failed.handler';
 import { OpportunityStepActionsCreatedHandler } from './application/events/opportunity-step-actions-created.handler';
 import { OpportunityWorkflowStepEnteredHandler } from './application/events/opportunity-workflow-step-entered.handler';
 import { WorkflowDecisionEvaluatedHandler } from './application/events/workflow-decision-evaluated.handler';
 import { WorkflowStepActionStatusChangedHandler } from './application/events/workflow-step-action-status-changed.handler';
 import { OpportunityWorkflowService } from './application/services/opportunity-workflow.service';
 import { OpportunityFinder } from './application/services/opportunity.finder';
+import { EvaluateWorkflowDecisionWithAiHandler } from './application/commands/evaluate-workflow-decision-with-ai';
+import { WorkflowDecisionEvaluationRequestedHandler } from './application/events/workflow-decision-evaluation-requested.handler';
 
 const commandHandlers = [
   CreateOpportunityHandler,
@@ -61,6 +66,7 @@ const commandHandlers = [
   CheckAndAdvanceOpportunityWorkflowStepHandler,
   TriggerOpportunityStepAutoExecuteHandler,
   ReEvaluateWorkflowDecisionHandler,
+  EvaluateWorkflowDecisionWithAiHandler,
 ];
 
 const queryHandlers = [
@@ -80,11 +86,15 @@ const eventHandlers = [
   WorkflowStepActionStatusChangedHandler,
   WorkflowDecisionEvaluatedHandler,
   OpportunityQualificationUpdatedHandler,
+  OpportunityQualificationGenerationFailedHandler,
+  WorkflowDecisionEvaluationRequestedHandler,
 ];
 
 @Module({
   imports: [
     CqrsModule,
+    AiModule,
+    forwardRef(() => AttachmentModule),
     WorkflowModule,
     forwardRef(() => ControlQuestionModule),
     forwardRef(() => CustomFieldModule),
@@ -103,6 +113,6 @@ const eventHandlers = [
     { provide: WorkflowStepActionRepository, useClass: MikroOrmWorkflowStepActionRepository },
     { provide: WorkflowDecisionResultRepository, useClass: MikroOrmWorkflowDecisionResultRepository },
   ],
-  exports: [OpportunityFinder],
+  exports: [OpportunityFinder, WorkflowStepActionRepository],
 })
 export class OpportunityModule {}

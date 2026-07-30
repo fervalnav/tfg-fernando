@@ -24,6 +24,7 @@ import { WorkflowRuntimeActionNotFoundException } from '../../domain/exceptions/
 import { OpportunityWorkflowService } from './opportunity-workflow.service';
 import {
   OpportunityStepActionsCreatedEvent,
+  OpportunityQualificationGenerationRequestedEvent,
   OpportunityWorkflowStepEnteredEvent,
   WorkflowDecisionEvaluatedEvent,
 } from '../events/opportunity-workflow.events';
@@ -162,7 +163,7 @@ describe('OpportunityWorkflowService', () => {
     overrides: Partial<{
       id: string;
       workflowStepId: string;
-      targetType: 'task' | 'opportunity_status_update';
+      targetType: 'task' | 'control_question' | 'custom_field' | 'summary' | 'opportunity_status_update';
       targetId: string | null;
       metadata: Record<string, unknown> | null;
     }> = {},
@@ -501,6 +502,20 @@ describe('OpportunityWorkflowService', () => {
     expect(opportunity.pipelineId).toBe('019fa500-0000-7000-8000-000000000071');
     expect(opportunity.pipelineStatusId).toBe('019fa500-0000-7000-8000-000000000070');
     expect(opportunityRepo.save).toHaveBeenCalledWith(opportunity);
+  });
+
+  it('starts qualification actions and requests their AI generation through Nest events', async () => {
+    const action = createAction({
+      targetType: 'summary',
+      targetId: '019fa500-0000-7000-8000-000000000072',
+    });
+    const { service, actionRepo, eventBus } = createService();
+    actionRepo.findByOpportunityAndStep.mockResolvedValue([action]);
+
+    await service.autoExecute(opportunityId, accountId);
+
+    expect(action.status).toBe('IN_PROGRESS');
+    expect(eventBus.publish).toHaveBeenCalledWith(expect.any(OpportunityQualificationGenerationRequestedEvent));
   });
 
   it('marks an invalid automatic status transition as failed', async () => {

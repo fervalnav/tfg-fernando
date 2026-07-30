@@ -1,4 +1,4 @@
-import type { AnswerType, ControlQuestionAnswer } from '@tfg/types';
+import type { AiGenerationStatus, AnswerType, ControlQuestionAnswer } from '@tfg/types';
 
 type Primitives = {
   id: string;
@@ -9,6 +9,11 @@ type Primitives = {
   answerType: AnswerType;
   passConditionPrompt: string | null;
   answer: ControlQuestionAnswer;
+  aiStatus: AiGenerationStatus;
+  aiError: string | null;
+  aiEvidence: string | null;
+  aiPassed: boolean | null;
+  aiGeneratedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -23,11 +28,21 @@ export class ControlQuestion {
     private readonly _answerType: AnswerType,
     private readonly _passConditionPrompt: string | null,
     private _answer: ControlQuestionAnswer,
+    private _aiStatus: AiGenerationStatus,
+    private _aiError: string | null,
+    private _aiEvidence: string | null,
+    private _aiPassed: boolean | null,
+    private _aiGeneratedAt: Date | null,
     private readonly _createdAt: Date,
     private _updatedAt: Date,
   ) {}
 
-  static create(params: Omit<Primitives, 'answer' | 'createdAt' | 'updatedAt'>): ControlQuestion {
+  static create(
+    params: Omit<
+      Primitives,
+      'answer' | 'aiStatus' | 'aiError' | 'aiEvidence' | 'aiPassed' | 'aiGeneratedAt' | 'createdAt' | 'updatedAt'
+    >,
+  ): ControlQuestion {
     const now = new Date();
     return new ControlQuestion(
       params.id,
@@ -37,6 +52,11 @@ export class ControlQuestion {
       params.question,
       params.answerType,
       params.passConditionPrompt,
+      null,
+      'IDLE',
+      null,
+      null,
+      null,
       null,
       now,
       now,
@@ -53,6 +73,11 @@ export class ControlQuestion {
       data.answerType,
       data.passConditionPrompt,
       data.answer,
+      data.aiStatus,
+      data.aiError,
+      data.aiEvidence,
+      data.aiPassed,
+      data.aiGeneratedAt,
       data.createdAt,
       data.updatedAt,
     );
@@ -66,6 +91,37 @@ export class ControlQuestion {
     this._updatedAt = new Date();
   }
 
+  requestAiGeneration(): boolean {
+    if (this._aiStatus === 'PENDING' || this._aiStatus === 'PROCESSING') return false;
+    this._aiStatus = 'PENDING';
+    this._aiError = null;
+    this._updatedAt = new Date();
+    return true;
+  }
+
+  startAiGeneration(): boolean {
+    if (this._aiStatus !== 'PENDING') return false;
+    this._aiStatus = 'PROCESSING';
+    this._aiError = null;
+    this._updatedAt = new Date();
+    return true;
+  }
+
+  completeAiGeneration(answer: Exclude<ControlQuestionAnswer, null>, evidence: string, passed: boolean | null): void {
+    this.answer(answer);
+    this._aiStatus = 'COMPLETED';
+    this._aiError = null;
+    this._aiEvidence = evidence.trim();
+    this._aiPassed = passed;
+    this._aiGeneratedAt = new Date();
+  }
+
+  failAiGeneration(message: string): void {
+    this._aiStatus = 'FAILED';
+    this._aiError = message;
+    this._updatedAt = new Date();
+  }
+
   toPrimitives(): Primitives {
     return {
       id: this._id,
@@ -76,6 +132,11 @@ export class ControlQuestion {
       answerType: this._answerType,
       passConditionPrompt: this._passConditionPrompt,
       answer: this._answer,
+      aiStatus: this._aiStatus,
+      aiError: this._aiError,
+      aiEvidence: this._aiEvidence,
+      aiPassed: this._aiPassed,
+      aiGeneratedAt: this._aiGeneratedAt,
       createdAt: this._createdAt,
       updatedAt: this._updatedAt,
     };

@@ -20,6 +20,7 @@ import { UpdateSummaryResultDto } from './dto/update-summary-result.dto';
 import { AddSummaryToOpportunityCommand } from '../../application/commands/add-summary-to-opportunity';
 import { SummaryTemplateNotFoundException } from '../../domain/exceptions/summary-template-not-found.exception';
 import { AddSummaryToOpportunityDto } from './dto/add-summary-to-opportunity.dto';
+import { RequestSummaryAiGenerationCommand } from '../../application/commands/request-summary-ai-generation';
 
 @Controller('opportunities/:opportunityId/summaries')
 export class OpportunitySummaryController {
@@ -64,6 +65,21 @@ export class OpportunitySummaryController {
   ): Promise<void> {
     try {
       await this.commandBus.execute(new UpdateSummaryResultCommand(opportunityId, user.accountId, id, dto.result));
+    } catch (error) {
+      if (error instanceof SummaryNotFoundException) throw new NotFoundException(error.message);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  @Post(':id/generate')
+  @HttpCode(202)
+  async generate(
+    @CurrentUser() user: JwtPayload,
+    @Param('opportunityId') opportunityId: string,
+    @Param('id') id: string,
+  ): Promise<void> {
+    try {
+      await this.commandBus.execute(new RequestSummaryAiGenerationCommand(opportunityId, user.accountId, id));
     } catch (error) {
       if (error instanceof SummaryNotFoundException) throw new NotFoundException(error.message);
       throw new InternalServerErrorException();

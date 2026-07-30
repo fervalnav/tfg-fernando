@@ -10,6 +10,7 @@ import {
   InfoIcon,
   ListChecksIcon,
   MoreHorizontalIcon,
+  PaperclipIcon,
   PencilIcon,
   RotateCcwIcon,
   SparklesIcon,
@@ -41,11 +42,13 @@ import OpportunityControlQuestionsSection from './OpportunityControlQuestionsSec
 import OpportunityCustomFieldsSection from './OpportunityCustomFieldsSection.vue';
 import OpportunityDetailsSection from './OpportunityDetailsSection.vue';
 import OpportunitySummariesSection from './OpportunitySummariesSection.vue';
+import OpportunityAttachmentsSection from './OpportunityAttachmentsSection.vue';
 import {
   useOpportunityControlQuestionsQuery,
   useOpportunityCustomFieldsQuery,
   useOpportunitySummariesQuery,
 } from '../composables/api/useOpportunityQualificationQueries';
+import { useOpportunityAttachmentsQuery } from '../composables/api/useOpportunityAttachmentsQuery';
 import type { OpportunityDetailSection } from '../opportunity-detail.types';
 
 const props = defineProps<{
@@ -64,6 +67,7 @@ const { mutate: reEvaluate, isPending: isReEvaluating } = useReEvaluateWorkflowD
 const { data: controlQuestions } = useOpportunityControlQuestionsQuery(opportunityId);
 const { data: customFields } = useOpportunityCustomFieldsQuery(opportunityId);
 const { data: summaries } = useOpportunitySummariesQuery(opportunityId);
+const { data: attachments } = useOpportunityAttachmentsQuery(opportunityId);
 
 type NavigationItem = {
   id: OpportunityDetailSection;
@@ -75,7 +79,10 @@ type NavigationItem = {
 const navigationGroups = computed<{ label: string; items: NavigationItem[] }[]>(() => [
   {
     label: 'Oportunidad',
-    items: [{ id: 'details', label: 'Detalles', icon: InfoIcon }],
+    items: [
+      { id: 'details', label: 'Detalles', icon: InfoIcon },
+      { id: 'attachments', label: 'Documentación', icon: PaperclipIcon, count: attachments.value?.length },
+    ],
   },
   {
     label: 'Cualificación inteligente',
@@ -337,8 +344,9 @@ function selectSection(section: OpportunityDetailSection): void {
               v-else-if="section === 'control-questions'"
               :opportunity-id="opportunity.id"
             />
+            <OpportunityAttachmentsSection v-else-if="section === 'attachments'" :opportunity-id="opportunity.id" />
             <OpportunityCustomFieldsSection v-else-if="section === 'custom-fields'" :opportunity-id="opportunity.id" />
-            <OpportunitySummariesSection v-else :opportunity-id="opportunity.id" />
+            <OpportunitySummariesSection v-else-if="section === 'summaries'" :opportunity-id="opportunity.id" />
           </div>
 
           <template v-else>

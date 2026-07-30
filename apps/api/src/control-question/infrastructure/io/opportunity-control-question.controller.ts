@@ -20,6 +20,7 @@ import { AnswerControlQuestionDto } from './dto/answer-control-question.dto';
 import { AddControlQuestionToOpportunityCommand } from '../../application/commands/add-control-question-to-opportunity';
 import { DefaultControlQuestionNotFoundException } from '../../domain/exceptions/default-control-question-not-found.exception';
 import { AddControlQuestionToOpportunityDto } from './dto/add-control-question-to-opportunity.dto';
+import { RequestControlQuestionAiGenerationCommand } from '../../application/commands/request-control-question-ai-generation';
 
 @Controller('opportunities/:opportunityId/control-questions')
 export class OpportunityControlQuestionController {
@@ -67,6 +68,21 @@ export class OpportunityControlQuestionController {
   ): Promise<void> {
     try {
       await this.commandBus.execute(new AnswerControlQuestionCommand(opportunityId, user.accountId, id, dto.answer));
+    } catch (error) {
+      if (error instanceof ControlQuestionNotFoundException) throw new NotFoundException(error.message);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  @Post(':id/generate')
+  @HttpCode(202)
+  async generate(
+    @CurrentUser() user: JwtPayload,
+    @Param('opportunityId') opportunityId: string,
+    @Param('id') id: string,
+  ): Promise<void> {
+    try {
+      await this.commandBus.execute(new RequestControlQuestionAiGenerationCommand(opportunityId, user.accountId, id));
     } catch (error) {
       if (error instanceof ControlQuestionNotFoundException) throw new NotFoundException(error.message);
       throw new InternalServerErrorException();

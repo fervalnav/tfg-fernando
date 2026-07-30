@@ -19,7 +19,7 @@ export default defineConfig({
   extensions: [Migrator, SeedManager],
   seeder: {
     path: './src/shared/infrastructure/seeds',
-    glob: '!(*.d).{js,ts}',
+    glob: '!(*.d|*.spec).{js,ts}',
     defaultSeeder: 'DatabaseSeeder',
   },
   migrations: {
