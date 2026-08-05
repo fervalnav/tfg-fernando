@@ -39,9 +39,19 @@ export class Pipeline {
     };
   }
 
-  get id(): string { return this._id; }
-  get accountId(): string { return this._accountId; }
-  get name(): string { return this._name; }
-  get createdAt(): Date { return this._createdAt; }
-  get updatedAt(): Date { return this._updatedAt; }
+  get id(): string {
+    return this._id;
+  }
+  get accountId(): string {
+    return this._accountId;
+  }
+  get name(): string {
+    return this._name;
+  }
+  get createdAt(): Date {
+    return this._createdAt;
+  }
+  get updatedAt(): Date {
+    return this._updatedAt;
+  }
 }

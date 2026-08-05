@@ -14,7 +14,7 @@ import {
 import OpportunityAddTemplatesDialog from './OpportunityAddTemplatesDialog.vue';
 
 const props = defineProps<{ opportunityId: string }>();
-const { data: summaries, isLoading } = useOpportunitySummariesQuery(() => props.opportunityId);
+const { data: summaries, isLoading, isError, refetch } = useOpportunitySummariesQuery(() => props.opportunityId);
 const { data: templates } = useSummaryTemplatesForOpportunityQuery();
 const { mutate: updateSummary, isPending } = useUpdateSummaryResultMutation();
 const { mutate: addSummary } = useAddSummaryToOpportunityMutation();
@@ -106,6 +106,7 @@ function generate(id: string): void {
     </div>
 
     <div v-if="isLoading" class="py-12 text-center text-sm text-muted-foreground">Cargando resúmenes...</div>
+    <QueryErrorState v-else-if="isError" message="No se pudieron cargar los resúmenes." @retry="refetch()" />
     <Card v-else-if="!summaries?.length">
       <CardContent class="flex flex-col items-center py-12 text-center">
         <FileTextIcon class="size-9 text-muted-foreground/50" />

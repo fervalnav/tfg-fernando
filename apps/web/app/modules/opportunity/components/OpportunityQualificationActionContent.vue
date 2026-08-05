@@ -162,11 +162,11 @@ function requestSummaryGeneration(): void {
         Guardar respuesta
       </Button>
     </div>
-    <div v-if="field.aiEvidence" class="rounded-md border bg-background p-3 text-sm">
+    <div v-if="question.aiEvidence" class="rounded-md border bg-background p-3 text-sm">
       <p class="font-medium">Evidencia de IA</p>
-      <p class="mt-1 text-muted-foreground">{{ field.aiEvidence }}</p>
+      <p class="mt-1 text-muted-foreground">{{ question.aiEvidence }}</p>
     </div>
-    <p v-if="field.aiError" class="text-sm text-destructive">{{ field.aiError }}</p>
+    <p v-if="question.aiError" class="text-sm text-destructive">{{ question.aiError }}</p>
   </div>
 
   <div v-else-if="definition.targetType === 'custom_field' && field" class="space-y-4">
@@ -195,7 +195,7 @@ function requestSummaryGeneration(): void {
     <Select
       v-else
       :model-value="typeof fieldDraft === 'string' ? fieldDraft : undefined"
-      @update:model-value="fieldDraft = $event"
+      @update:model-value="fieldDraft = typeof $event === 'string' ? $event : ''"
     >
       <SelectTrigger><SelectValue placeholder="Selecciona una opción" /></SelectTrigger>
       <SelectContent>

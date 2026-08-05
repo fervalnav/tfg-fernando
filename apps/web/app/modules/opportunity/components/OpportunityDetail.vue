@@ -61,7 +61,12 @@ const props = defineProps<{
 
 const opportunityId = computed(() => props.opportunity.id);
 const hasWorkflow = computed(() => Boolean(props.opportunity.workflowId));
-const { data: runtime, isLoading: isWorkflowLoading } = useOpportunityWorkflowQuery(opportunityId, hasWorkflow);
+const {
+  data: runtime,
+  isLoading: isWorkflowLoading,
+  isError: isWorkflowError,
+  refetch: refetchWorkflow,
+} = useOpportunityWorkflowQuery(opportunityId, hasWorkflow);
 const { mutate: assignWorkflow, isPending: isAssigning } = useAssignOpportunityWorkflowMutation();
 const { mutate: reEvaluate, isPending: isReEvaluating } = useReEvaluateWorkflowDecisionMutation();
 const { data: controlQuestions } = useOpportunityControlQuestionsQuery(opportunityId);
@@ -379,6 +384,13 @@ function selectSection(section: OpportunityDetailSection): void {
             >
               Cargando workflow...
             </div>
+
+            <QueryErrorState
+              v-else-if="isWorkflowError"
+              class="mx-auto max-w-2xl"
+              message="No se pudo cargar el workflow de la oportunidad."
+              @retry="refetchWorkflow()"
+            />
 
             <div
               v-else-if="runtime"

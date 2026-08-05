@@ -8,16 +8,33 @@ import {
   useDownloadOpportunityAttachmentMutation,
   useUploadOpportunityAttachmentMutation,
 } from '../composables/api/useOpportunityAttachmentMutations';
+import { validatePdfFile } from '~/modules/shared/lib/formValidation';
 
 const props = defineProps<{ opportunityId: string }>();
 const selectedFile = ref<File>();
-const { data: attachments, isLoading } = useOpportunityAttachmentsQuery(() => props.opportunityId);
+const fileInputKey = ref(0);
+const { data: attachments, isLoading, isError, refetch } = useOpportunityAttachmentsQuery(() => props.opportunityId);
 const { mutate: upload, isPending: isUploading } = useUploadOpportunityAttachmentMutation();
 const { mutate: remove, isPending: isDeleting } = useDeleteOpportunityAttachmentMutation();
 const { mutate: download } = useDownloadOpportunityAttachmentMutation();
 
 function selectFile(event: Event): void {
-  selectedFile.value = (event.target as HTMLInputElement).files?.[0];
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (!file) {
+    selectedFile.value = undefined;
+    return;
+  }
+
+  const validationError = validatePdfFile(file);
+  if (validationError) {
+    selectedFile.value = undefined;
+    input.value = '';
+    toast.error(validationError);
+    return;
+  }
+
+  selectedFile.value = file;
 }
 
 function uploadFile(): void {
@@ -27,6 +44,7 @@ function uploadFile(): void {
     {
       onSuccess: () => {
         selectedFile.value = undefined;
+        fileInputKey.value += 1;
         toast.success('Documento adjuntado');
       },
       onError: () => toast.error('No se pudo adjuntar el documento'),
@@ -75,7 +93,13 @@ function formatSize(size: number): string {
         <div class="flex flex-col gap-3 sm:flex-row sm:items-end">
           <div class="flex-1 space-y-2">
             <Label for="opportunity-attachment">Selecciona un PDF (máximo 30 MB)</Label>
-            <Input id="opportunity-attachment" type="file" accept="application/pdf,.pdf" @change="selectFile" />
+            <Input
+              id="opportunity-attachment"
+              :key="fileInputKey"
+              type="file"
+              accept="application/pdf,.pdf"
+              @change="selectFile"
+            />
           </div>
           <Button :disabled="!selectedFile || isUploading" @click="uploadFile">
             <UploadIcon class="mr-2 size-4" />
@@ -85,6 +109,7 @@ function formatSize(size: number): string {
       </div>
 
       <p v-if="isLoading" class="py-8 text-center text-sm text-muted-foreground">Cargando documentación...</p>
+      <QueryErrorState v-else-if="isError" message="No se pudo cargar la documentación." @retry="refetch()" />
       <div v-else-if="attachments?.length" class="divide-y rounded-lg border">
         <div v-for="attachment in attachments" :key="attachment.id" class="flex items-center gap-3 p-4">
           <span class="flex size-10 shrink-0 items-center justify-center rounded-lg bg-red-500/10 text-red-600">

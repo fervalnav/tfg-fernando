@@ -5,7 +5,9 @@ type ApiError = {
   message: string;
 };
 
-let isRefreshing = false;
+export type ApiClient = <T = unknown>(request: string, options?: FetchOptions) => Promise<T>;
+
+let refreshPromise: Promise<unknown> | null = null;
 
 export const useApi = () => {
   const config = useRuntimeConfig();
@@ -14,43 +16,43 @@ export const useApi = () => {
   const apiFetch = $fetch.create({
     baseURL,
     credentials: 'include',
-    onResponseError: async ({ request, response, options }) => {
-      if (response.status !== 401) return;
+  }) as unknown as ApiClient;
 
-      // Evitar bucle infinito en la llamada de refresh
-      const url = typeof request === 'string' ? request : request.toString();
-      if (url.includes('/auth/refresh') || url.includes('/auth/login')) return;
+  const client: ApiClient = async <T = unknown>(request: string, options?: FetchOptions): Promise<T> => {
+    try {
+      return await apiFetch<T>(request, options);
+    } catch (error) {
+      const isAuthenticationRequest = request.includes('/auth/refresh') || request.includes('/auth/login');
+      if (!isFetchError(error, 401) || isAuthenticationRequest) throw error;
 
-      if (isRefreshing) return;
-      isRefreshing = true;
+      const activeRefresh = refreshPromise ?? apiFetch('/auth/refresh', { method: 'POST' });
+      refreshPromise = activeRefresh;
 
       try {
-        await $fetch('/auth/refresh', {
-          baseURL,
-          method: 'POST',
-          credentials: 'include',
-        });
-
-        // Reintentar la petición original
-        const retryOptions: FetchOptions = {
-          ...options,
-          credentials: 'include',
-        };
-        await $fetch(request, retryOptions);
-      } catch {
-        // Refresh falló — redirigir a login
+        await activeRefresh;
+        return await apiFetch<T>(request, options);
+      } catch (refreshError) {
         await navigateTo('/auth/login');
+        throw refreshError;
       } finally {
-        isRefreshing = false;
+        if (refreshPromise === activeRefresh) refreshPromise = null;
       }
-    },
-  });
+    }
+  };
 
-  return apiFetch;
+  return client;
 };
 
 export function isFetchError(error: unknown, status: number): boolean {
-  return error instanceof Error && 'status' in error && (error as { status: number }).status === status;
+  if (!(error instanceof Error)) return false;
+
+  const candidate = error as Error & {
+    status?: number;
+    statusCode?: number;
+    response?: { status?: number };
+  };
+
+  return candidate.status === status || candidate.statusCode === status || candidate.response?.status === status;
 }
 
 export type { ApiError };

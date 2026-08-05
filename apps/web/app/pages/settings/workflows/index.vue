@@ -11,7 +11,8 @@ import {
 
 definePageMeta({ layout: 'settings', middleware: 'auth' });
 
-const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useWorkflowsInfiniteQuery();
+const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } =
+  useWorkflowsInfiniteQuery();
 const items = computed(() => data.value?.pages.flatMap((p) => p.items) ?? []);
 const total = computed(() => data.value?.pages[0]?.total ?? 0);
 
@@ -61,6 +62,8 @@ function handleDuplicate(id: string) {
     <div v-if="isLoading" class="space-y-2">
       <div v-for="i in 3" :key="i" class="h-14 rounded-lg bg-muted animate-pulse" />
     </div>
+
+    <QueryErrorState v-else-if="isError" message="No se pudieron cargar los workflows." @retry="refetch()" />
 
     <div v-else-if="!items.length" class="text-center py-16 text-muted-foreground text-sm">
       Sin workflows. Crea el primero para configurar tus procesos.

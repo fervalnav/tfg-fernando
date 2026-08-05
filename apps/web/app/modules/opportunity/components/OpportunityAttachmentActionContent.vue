@@ -4,6 +4,7 @@ import { v7 as uuidv7 } from 'uuid';
 import { toast } from 'vue-sonner';
 import type { DefaultWorkflowStepActionDto, WorkflowStepActionDto } from '@tfg/types';
 import { useUploadOpportunityAttachmentMutation } from '../composables/api/useOpportunityAttachmentMutations';
+import { validatePdfFile } from '~/modules/shared/lib/formValidation';
 
 const props = defineProps<{
   opportunityId: string;
@@ -11,6 +12,7 @@ const props = defineProps<{
   action: WorkflowStepActionDto;
 }>();
 const selectedFile = ref<File>();
+const fileInputKey = ref(0);
 const { mutate: upload, isPending } = useUploadOpportunityAttachmentMutation();
 const expectedLabel = computed(() => {
   const label = props.definition.metadata?.['label'];
@@ -18,7 +20,22 @@ const expectedLabel = computed(() => {
 });
 
 function selectFile(event: Event): void {
-  selectedFile.value = (event.target as HTMLInputElement).files?.[0];
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (!file) {
+    selectedFile.value = undefined;
+    return;
+  }
+
+  const validationError = validatePdfFile(file);
+  if (validationError) {
+    selectedFile.value = undefined;
+    input.value = '';
+    toast.error(validationError);
+    return;
+  }
+
+  selectedFile.value = file;
 }
 
 function submit(): void {
@@ -31,7 +48,11 @@ function submit(): void {
       file: selectedFile.value,
     },
     {
-      onSuccess: () => toast.success(`${expectedLabel.value} adjuntado`),
+      onSuccess: () => {
+        selectedFile.value = undefined;
+        fileInputKey.value += 1;
+        toast.success(`${expectedLabel.value} adjuntado`);
+      },
       onError: () => toast.error('No se pudo adjuntar el documento'),
     },
   );
@@ -52,7 +73,7 @@ function submit(): void {
       <p class="text-sm text-muted-foreground">Solo PDF, máximo 30 MB.</p>
     </div>
     <div class="flex flex-col gap-3 sm:flex-row sm:items-end">
-      <Input type="file" accept="application/pdf,.pdf" class="flex-1" @change="selectFile" />
+      <Input :key="fileInputKey" type="file" accept="application/pdf,.pdf" class="flex-1" @change="selectFile" />
       <Button :disabled="!selectedFile || isPending" @click="submit">
         <UploadIcon class="mr-2 size-4" />
         {{ isPending ? 'Subiendo...' : 'Adjuntar' }}

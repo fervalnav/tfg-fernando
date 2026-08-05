@@ -12,10 +12,11 @@ import {
   useUpdateDefaultControlQuestionMutation,
   useDeleteDefaultControlQuestionMutation,
 } from '~/modules/control-question';
+import { requiredString } from '~/modules/shared/lib/formValidation';
 
 definePageMeta({ layout: 'settings', middleware: 'auth' });
 
-const { data, isLoading } = useDefaultControlQuestionsQuery();
+const { data, isLoading, isError, refetch } = useDefaultControlQuestionsQuery();
 const items = computed(() => data.value?.pages.flatMap((p) => p.items) ?? []);
 const total = computed(() => data.value?.pages[0]?.total ?? 0);
 
@@ -30,7 +31,7 @@ const ANSWER_TYPES = [
 
 const schema = toTypedSchema(
   z.object({
-    question: z.string().min(1, 'La pregunta es obligatoria'),
+    question: requiredString('La pregunta es obligatoria'),
     answerType: z.enum(['TEXT', 'BOOLEAN']).default('TEXT'),
     passConditionPrompt: z.string().optional(),
   }),
@@ -114,6 +115,8 @@ function handleDelete(id: string) {
     <div v-if="isLoading" class="space-y-2">
       <div v-for="i in 3" :key="i" class="h-14 rounded-lg bg-muted animate-pulse" />
     </div>
+
+    <QueryErrorState v-else-if="isError" message="No se pudieron cargar las preguntas de control." @retry="refetch()" />
 
     <div v-else-if="!items.length" class="text-center py-16 text-muted-foreground text-sm">
       Sin preguntas de control. Crea la primera.

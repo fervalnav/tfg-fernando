@@ -4,7 +4,8 @@ import { PipelineCard, PipelineCreateDialog, usePipelinesInfiniteQuery } from '~
 
 definePageMeta({ layout: 'settings', middleware: 'auth' });
 
-const { data, isLoading, isFetchingNextPage, hasNextPage, fetchNextPage } = usePipelinesInfiniteQuery();
+const { data, isLoading, isError, isFetchingNextPage, hasNextPage, fetchNextPage, refetch } =
+  usePipelinesInfiniteQuery();
 
 const pipelines = computed(() => data.value?.pages.flatMap((p) => p.items) ?? []);
 const total = computed(() => data.value?.pages[0]?.total ?? 0);
@@ -33,6 +34,8 @@ useIntersectionObserver(sentinel, ([entry]) => {
     <div v-if="isLoading" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div v-for="i in 4" :key="i" class="h-32 rounded-xl bg-muted animate-pulse" />
     </div>
+
+    <QueryErrorState v-else-if="isError" message="No se pudieron cargar los pipelines." @retry="refetch()" />
 
     <template v-else>
       <div v-if="!pipelines.length" class="text-center py-16 text-muted-foreground">

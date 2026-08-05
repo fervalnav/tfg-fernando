@@ -13,20 +13,21 @@ import {
 } from '~/modules/auth';
 import { useAuthStore } from '~/modules/shared/stores/auth.store';
 import { isFetchError } from '~/modules/shared/composables/useApi';
+import { requiredEmail } from '~/modules/shared/lib/formValidation';
 
 definePageMeta({ layout: 'settings', middleware: 'auth' });
 
 const authStore = useAuthStore();
 const showInviteDialog = ref(false);
 
-const { data: members, isLoading } = useMembersQuery();
+const { data: members, isLoading, isError, refetch } = useMembersQuery();
 const { mutate: removeMember } = useRemoveMemberMutation();
 const { mutate: updateRole } = useUpdateMemberRoleMutation();
 const { mutate: inviteMember, isPending: isInviting } = useInviteMemberMutation();
 
 const inviteSchema = toTypedSchema(
   z.object({
-    email: z.string().email('Email inválido'),
+    email: requiredEmail(),
     role: z.enum(['ADMIN', 'MEMBER']),
   }),
 );
@@ -51,6 +52,10 @@ const onInvite = inviteForm.handleSubmit((values) => {
       toast.error('Error al enviar la invitación');
     },
   });
+});
+
+watch(showInviteDialog, (open) => {
+  if (!open) inviteForm.resetForm();
 });
 
 function handleRemove(userId: string) {
@@ -85,9 +90,7 @@ function handleRoleChange(userId: string, role: string) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Invitar a un miembro</DialogTitle>
-            <DialogDescription>
-              Se enviará un email de invitación a la dirección indicada.
-            </DialogDescription>
+            <DialogDescription> Se enviará un email de invitación a la dirección indicada. </DialogDescription>
           </DialogHeader>
           <form class="space-y-4 mt-4" @submit="onInvite">
             <FormField v-slot="{ componentField }" name="email">
@@ -119,9 +122,7 @@ function handleRoleChange(userId: string, role: string) {
             </FormField>
 
             <DialogFooter>
-              <Button type="button" variant="outline" @click="showInviteDialog = false">
-                Cancelar
-              </Button>
+              <Button type="button" variant="outline" @click="showInviteDialog = false"> Cancelar </Button>
               <Button type="submit" :disabled="isInviting">
                 {{ isInviting ? 'Enviando...' : 'Enviar invitación' }}
               </Button>
@@ -133,6 +134,13 @@ function handleRoleChange(userId: string, role: string) {
 
     <div class="bg-card rounded-xl border">
       <div v-if="isLoading" class="p-6 text-center text-muted-foreground text-sm">Cargando miembros...</div>
+
+      <QueryErrorState
+        v-else-if="isError"
+        class="m-4"
+        message="No se pudieron cargar los miembros."
+        @retry="refetch()"
+      />
 
       <div v-else-if="!members?.length" class="p-6 text-center text-muted-foreground text-sm">
         No hay miembros en esta cuenta.
@@ -150,16 +158,20 @@ function handleRoleChange(userId: string, role: string) {
             <div>
               <p class="text-sm font-medium">
                 {{ member.user.firstName }} {{ member.user.lastName }}
-                <span v-if="member.userId === authStore.currentUser?.id"
-                  class="text-xs text-muted-foreground ml-1">(tú)</span>
+                <span v-if="member.userId === authStore.currentUser?.id" class="text-xs text-muted-foreground ml-1"
+                  >(tú)</span
+                >
               </p>
               <p class="text-xs text-muted-foreground">{{ member.user.email }}</p>
             </div>
           </div>
 
           <div class="flex items-center gap-2">
-            <Select :model-value="member.role" :disabled="member.userId === authStore.currentUser?.id"
-              @update:model-value="(val) => val && handleRoleChange(member.userId, val as 'ADMIN' | 'MEMBER')">
+            <Select
+              :model-value="member.role"
+              :disabled="member.userId === authStore.currentUser?.id"
+              @update:model-value="(val) => val && handleRoleChange(member.userId, val as 'ADMIN' | 'MEMBER')"
+            >
               <SelectTrigger class="w-28 h-8 text-xs">
                 <SelectValue />
               </SelectTrigger>
@@ -169,8 +181,13 @@ function handleRoleChange(userId: string, role: string) {
               </SelectContent>
             </Select>
 
-            <Button v-if="member.userId !== authStore.currentUser?.id" variant="ghost" size="sm"
-              class="text-destructive hover:text-destructive" @click="handleRemove(member.userId)">
+            <Button
+              v-if="member.userId !== authStore.currentUser?.id"
+              variant="ghost"
+              size="sm"
+              class="text-destructive hover:text-destructive"
+              @click="handleRemove(member.userId)"
+            >
               <TrashIcon class="mr-1 size-4" />
               Eliminar
             </Button>

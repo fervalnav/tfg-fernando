@@ -6,6 +6,7 @@ import { toast } from 'vue-sonner';
 import { useAcceptInvitationMutation, useJoinViaInvitationMutation } from '~/modules/auth';
 import { isFetchError } from '~/modules/shared/composables/useApi';
 import { useAuthStore } from '~/modules/shared/stores/auth.store';
+import { requiredString } from '~/modules/shared/lib/formValidation';
 
 definePageMeta({ layout: 'auth' });
 
@@ -44,9 +45,12 @@ const handleJoin = () => {
 // — Flujo para usuario no registrado —
 const schema = toTypedSchema(
   z.object({
-    firstName: z.string().min(1, 'El nombre es obligatorio'),
-    lastName: z.string().min(1, 'El apellido es obligatorio'),
-    password: z.string().min(8, 'Mínimo 8 caracteres'),
+    firstName: requiredString('El nombre es obligatorio'),
+    lastName: requiredString('El apellido es obligatorio'),
+    password: z
+      .string({ required_error: 'La contraseña es obligatoria' })
+      .min(1, 'La contraseña es obligatoria')
+      .min(8, 'Mínimo 8 caracteres'),
   }),
 );
 
@@ -82,10 +86,14 @@ const onSubmit = form.handleSubmit((values) => {
 <template>
   <div>
     <div class="mb-8 text-center">
-      <img src="/images/logos/logoA_tendios_darkblue.svg" alt="Logo" class="h-10 mx-auto mb-6">
+      <img src="/images/logos/logoA_tendios_darkblue.svg" alt="Logo" class="h-10 mx-auto mb-6" >
       <h1 class="text-2xl font-bold text-foreground">Aceptar invitacion</h1>
       <p class="text-muted-foreground mt-2">
-        {{ authStore.isAuthenticated ? `Hola, ${authStore.currentUser?.firstName}. Haz clic para unirte a la cuenta.` : 'Crea tu cuenta para unirte.' }}
+        {{
+          authStore.isAuthenticated
+            ? `Hola, ${authStore.currentUser?.firstName}. Haz clic para unirte a la cuenta.`
+            : 'Crea tu cuenta para unirte.'
+        }}
       </p>
     </div>
 
@@ -143,7 +151,10 @@ const onSubmit = form.handleSubmit((values) => {
 
       <p class="text-center text-sm text-muted-foreground mt-4">
         ¿Ya tienes cuenta?
-        <NuxtLink :to="{ path: '/auth/login', query: { redirect: `/auth/accept-invitation?token=${token}` } }" class="text-primary hover:underline">
+        <NuxtLink
+          :to="{ path: '/auth/login', query: { redirect: `/auth/accept-invitation?token=${token}` } }"
+          class="text-primary hover:underline"
+        >
           Inicia sesion
         </NuxtLink>
       </p>

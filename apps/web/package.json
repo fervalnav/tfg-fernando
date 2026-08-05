@@ -9,9 +9,11 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
+    "check-types": "nuxt typecheck",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:cov": "vitest run --coverage"
+    "test:cov": "vitest run --coverage",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@lucide/vue": "^1.25.0",
@@ -46,6 +48,7 @@
     "@nuxt/eslint": "^1.4.1",
     "@nuxt/eslint-config": "^1.15.2",
     "@nuxt/test-utils": "^4.1.0",
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/vite": "^4.3.0",
     "@vitest/coverage-v8": "^4.1.10",
     "@vue/test-utils": "^2.4.11",
@@ -53,6 +56,7 @@
     "happy-dom": "^20.11.1",
     "tailwindcss": "^4.3.0",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.10",
+    "vue-tsc": "^3.3.9"
   }
 }

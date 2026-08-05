@@ -40,10 +40,7 @@ const queryHandlers = [FindAllPipelinesHandler, FindPipelineByIdHandler];
 const eventHandlers = [AccountCreatedHandler];
 
 @Module({
-  imports: [
-    CqrsModule,
-    MikroOrmModule.forFeature([PipelineOrmEntity, PipelineStatusOrmEntity]),
-  ],
+  imports: [CqrsModule, MikroOrmModule.forFeature([PipelineOrmEntity, PipelineStatusOrmEntity])],
   controllers: [PipelineController],
   providers: [
     ...commandHandlers,

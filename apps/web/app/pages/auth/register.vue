@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { toast } from 'vue-sonner';
 import { useRegisterMutation } from '~/modules/auth';
 import { isFetchError } from '~/modules/shared/composables/useApi';
+import { requiredEmail, requiredString } from '~/modules/shared/lib/formValidation';
 
 definePageMeta({ layout: 'auth', middleware: 'guest' });
 
@@ -13,11 +14,14 @@ const redirectTo = computed(() => route.query['redirect'] as string | undefined)
 
 const schema = toTypedSchema(
   z.object({
-    firstName: z.string().min(1, 'El nombre es obligatorio'),
-    lastName: z.string().min(1, 'El apellido es obligatorio'),
-    email: z.string().email('Email inválido'),
-    password: z.string().min(8, 'Mínimo 8 caracteres'),
-    accountName: z.string().min(1, 'El nombre de la empresa es obligatorio'),
+    firstName: requiredString('El nombre es obligatorio'),
+    lastName: requiredString('El apellido es obligatorio'),
+    email: requiredEmail(),
+    password: z
+      .string({ required_error: 'La contraseña es obligatoria' })
+      .min(1, 'La contraseña es obligatoria')
+      .min(8, 'Mínimo 8 caracteres'),
+    accountName: requiredString('El nombre de la empresa es obligatorio'),
   }),
 );
 
@@ -41,7 +45,7 @@ const onSubmit = form.handleSubmit((values) => {
 <template>
   <div>
     <div class="mb-8 text-center">
-      <img src="/images/logos/logoA_tendios_darkblue.svg" alt="Logo" class="h-10 mx-auto mb-6" />
+      <img src="/images/logos/logoA_tendios_darkblue.svg" alt="Logo" class="h-10 mx-auto mb-6" >
       <h1 class="text-2xl font-bold text-foreground">Crear cuenta</h1>
       <p class="text-muted-foreground mt-2">Empieza gratis hoy</p>
     </div>
@@ -108,7 +112,12 @@ const onSubmit = form.handleSubmit((values) => {
 
     <p class="text-center text-sm text-muted-foreground mt-4">
       ¿Ya tienes cuenta?
-      <NuxtLink :to="{ path: '/auth/login', query: redirectTo ? { redirect: redirectTo } : {} }" class="text-primary hover:underline"> Inicia sesion </NuxtLink>
+      <NuxtLink
+        :to="{ path: '/auth/login', query: redirectTo ? { redirect: redirectTo } : {} }"
+        class="text-primary hover:underline"
+      >
+        Inicia sesion
+      </NuxtLink>
     </p>
   </div>
 </template>

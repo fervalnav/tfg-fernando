@@ -9,6 +9,7 @@ import { useWorkflowEditorContext } from '../../composables/useWorkflowEditorCon
 import { useCreateDefaultStepActionMutation } from '../../composables/api/useCreateDefaultStepActionMutation';
 import { useUpdateDefaultStepActionMutation } from '../../composables/api/useUpdateDefaultStepActionMutation';
 import { usePipelinesQuery } from '~/modules/pipeline';
+import { requiredString } from '~/modules/shared/lib/formValidation';
 
 const props = defineProps<{ editing?: DefaultWorkflowStepActionDto }>();
 const emit = defineEmits<{ saved: []; cancel: [] }>();
@@ -28,8 +29,8 @@ const { data: pipelines } = usePipelinesQuery();
 
 const schema = toTypedSchema(
   z.object({
-    pipelineId: z.string().min(1, 'Selecciona un pipeline'),
-    statusId: z.string().min(1, 'Selecciona un estado'),
+    pipelineId: requiredString('Selecciona un pipeline'),
+    statusId: requiredString('Selecciona un estado'),
   }),
 );
 

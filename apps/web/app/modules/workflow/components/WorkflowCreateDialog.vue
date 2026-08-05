@@ -7,6 +7,7 @@ import { toast } from 'vue-sonner';
 import type { WorkflowDto } from '@tfg/types';
 import { useCreateWorkflowMutation } from '../composables/api/useCreateWorkflowMutation';
 import { useUpdateWorkflowMutation } from '../composables/api/useUpdateWorkflowMutation';
+import { requiredString } from '~/modules/shared/lib/formValidation';
 
 const props = defineProps<{
   open: boolean;
@@ -23,7 +24,7 @@ const isPending = computed(() => isCreating.value || isUpdating.value);
 
 const schema = toTypedSchema(
   z.object({
-    name: z.string().min(1, 'El nombre es obligatorio'),
+    name: requiredString('El nombre es obligatorio'),
     description: z.string().optional(),
   }),
 );

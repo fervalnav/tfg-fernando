@@ -6,7 +6,7 @@ export const useRemoveMemberMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (userId: string) => api(`/auth/account/members/${userId}`, { method: 'DELETE' }),
+    mutationFn: (userId: string) => api<unknown>(`/auth/account/members/${userId}`, { method: 'DELETE' }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['members'] });
     },

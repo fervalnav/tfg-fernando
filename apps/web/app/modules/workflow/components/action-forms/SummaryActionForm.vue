@@ -22,7 +22,7 @@ const { mutate: create, isPending: isCreating } = useCreateDefaultStepActionMuta
 const { mutate: update, isPending: isUpdating } = useUpdateDefaultStepActionMutation();
 const isPending = computed(() => isCreating.value || isUpdating.value);
 
-const { data } = useSummaryTemplatesQuery();
+const { data, isError, refetch } = useSummaryTemplatesQuery();
 const allItems = computed(() => data.value?.pages.flatMap((p) => p.items) ?? []);
 
 const search = ref('');
@@ -99,7 +99,13 @@ function handleSelect(templateId: string, name: string) {
     </div>
 
     <div class="flex-1 overflow-y-auto">
-      <div v-if="!allItems.length" class="flex flex-col items-center justify-center h-full py-12 text-center">
+      <QueryErrorState
+        v-if="isError"
+        class="m-4"
+        message="No se pudieron cargar las plantillas de resumen."
+        @retry="refetch()"
+      />
+      <div v-else-if="!allItems.length" class="flex flex-col items-center justify-center h-full py-12 text-center">
         <p class="text-sm text-muted-foreground">No hay plantillas de resumen configuradas.</p>
         <NuxtLink to="/settings/summaries" class="text-sm text-primary mt-1 hover:underline">
           Ir a configuración

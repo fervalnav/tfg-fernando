@@ -5,14 +5,19 @@ import { z } from 'zod';
 import { toast } from 'vue-sonner';
 import { v7 as uuidv7 } from 'uuid';
 import { useCreatePipelineMutation } from '../composables/api/useCreatePipelineMutation';
+import { requiredString } from '~/modules/shared/lib/formValidation';
 
 const emit = defineEmits<{ created: [] }>();
 
 const isOpen = ref(false);
 
-const schema = toTypedSchema(z.object({ name: z.string().min(1, 'El nombre es obligatorio') }));
+const schema = toTypedSchema(z.object({ name: requiredString('El nombre es obligatorio') }));
 const form = useForm({ validationSchema: schema });
 const { mutate: createPipeline, isPending } = useCreatePipelineMutation();
+
+watch(isOpen, (open) => {
+  if (!open) form.resetForm();
+});
 
 const onSubmit = form.handleSubmit((values) => {
   createPipeline(

@@ -30,7 +30,7 @@ const { mutate: create, isPending: isCreating } = useCreateDefaultStepActionMuta
 const { mutate: update, isPending: isUpdating } = useUpdateDefaultStepActionMutation();
 const isPending = computed(() => isCreating.value || isUpdating.value);
 
-const { data } = useDefaultCustomFieldsQuery();
+const { data, isError, refetch } = useDefaultCustomFieldsQuery();
 const allItems = computed(() => data.value?.pages.flatMap((p) => p.items) ?? []);
 
 const search = ref('');
@@ -107,7 +107,13 @@ function handleSelect(cfId: string, name: string) {
     </div>
 
     <div class="flex-1 overflow-y-auto">
-      <div v-if="!allItems.length" class="flex flex-col items-center justify-center h-full py-12 text-center">
+      <QueryErrorState
+        v-if="isError"
+        class="m-4"
+        message="No se pudieron cargar los campos personalizados."
+        @retry="refetch()"
+      />
+      <div v-else-if="!allItems.length" class="flex flex-col items-center justify-center h-full py-12 text-center">
         <p class="text-sm text-muted-foreground">No hay campos personalizados configurados.</p>
         <NuxtLink to="/settings/custom-fields" class="text-sm text-primary mt-1 hover:underline">
           Ir a configuración

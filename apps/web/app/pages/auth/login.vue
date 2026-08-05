@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { toast } from 'vue-sonner';
 import { useLoginMutation } from '~/modules/auth';
 import { isFetchError } from '~/modules/shared/composables/useApi';
+import { requiredEmail, requiredString } from '~/modules/shared/lib/formValidation';
 
 definePageMeta({ layout: 'auth', middleware: 'guest' });
 
@@ -13,8 +14,8 @@ const redirectTo = computed(() => route.query['redirect'] as string | undefined)
 
 const schema = toTypedSchema(
   z.object({
-    email: z.string().email('Email inválido'),
-    password: z.string().min(1, 'La contraseña es obligatoria'),
+    email: requiredEmail(),
+    password: requiredString('La contraseña es obligatoria'),
   }),
 );
 
@@ -38,7 +39,7 @@ const onSubmit = form.handleSubmit((values) => {
 <template>
   <div>
     <div class="mb-8 text-center">
-      <img src="/images/logos/logoA_tendios_darkblue.svg" alt="Logo" class="h-10 mx-auto mb-6">
+      <img src="/images/logos/logoA_tendios_darkblue.svg" alt="Logo" class="h-10 mx-auto mb-6" >
       <h1 class="text-2xl font-bold text-foreground">Iniciar sesion</h1>
       <p class="text-muted-foreground mt-2">Accede a tu cuenta</p>
     </div>
@@ -73,7 +74,12 @@ const onSubmit = form.handleSubmit((values) => {
 
     <p class="text-center text-sm text-muted-foreground mt-4">
       ¿No tienes cuenta?
-      <NuxtLink :to="{ path: '/auth/register', query: redirectTo ? { redirect: redirectTo } : {} }" class="text-primary hover:underline"> Registrate </NuxtLink>
+      <NuxtLink
+        :to="{ path: '/auth/register', query: redirectTo ? { redirect: redirectTo } : {} }"
+        class="text-primary hover:underline"
+      >
+        Registrate
+      </NuxtLink>
     </p>
   </div>
 </template>

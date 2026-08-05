@@ -2,7 +2,7 @@ import { setActivePinia, createPinia } from 'pinia';
 import { computed, ref } from 'vue';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mockNuxtImport } from '@nuxt/test-utils/runtime';
-import type { AuthResponseDto } from '@tfg/types';
+import type { AuthResponseDto, LoginPayload, RegisterPayload } from '@tfg/types';
 import { useAuthStore } from './auth.store';
 
 const { fetchMock } = vi.hoisted(() => ({ fetchMock: vi.fn() }));
@@ -47,7 +47,8 @@ describe('useAuthStore', () => {
     fetchMock.mockResolvedValue({ user, accountId: 'account-id' });
     const store = useAuthStore();
 
-    await store[action](payload);
+    if (action === 'login') await store.login(payload as LoginPayload);
+    else await store.register(payload as RegisterPayload);
 
     expect(store.currentUser).toEqual(user);
     expect(store.currentAccountId).toBe('account-id');

@@ -11,6 +11,8 @@
     "check-types": "turbo run check-types",
     "test": "turbo run test",
     "test:cov": "turbo run test:cov",
+    "test:e2e:api": "pnpm --filter @tfg/api test:e2e",
+    "test:e2e:browser": "pnpm --filter @tfg/web test:e2e",
     "prepare": "husky"
   },
   "devDependencies": {
