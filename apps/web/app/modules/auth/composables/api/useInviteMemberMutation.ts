@@ -8,7 +8,7 @@ export const useInviteMemberMutation = () => {
 
   return useMutation({
     mutationFn: (payload: InviteMemberPayload) =>
-      api('/auth/account/members/invite', { method: 'POST', body: payload }),
+      api<unknown>('/auth/account/members/invite', { method: 'POST', body: payload }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['members'] });
     },

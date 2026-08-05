@@ -35,9 +35,12 @@ export class PipelineStatus {
   ) {}
 
   private static validate(isInitial: boolean, isTerminal: boolean, outcomeType: OutcomeType): void {
-    if (isInitial && isTerminal) throw new InvalidPipelineStatusException('A status cannot be both initial and terminal');
-    if (!isTerminal && outcomeType !== 'NONE') throw new InvalidPipelineStatusException('Non-terminal status must have outcomeType NONE');
-    if (isTerminal && outcomeType === 'NONE') throw new InvalidPipelineStatusException('Terminal status must have a non-NONE outcomeType');
+    if (isInitial && isTerminal)
+      throw new InvalidPipelineStatusException('A status cannot be both initial and terminal');
+    if (!isTerminal && outcomeType !== 'NONE')
+      throw new InvalidPipelineStatusException('Non-terminal status must have outcomeType NONE');
+    if (isTerminal && outcomeType === 'NONE')
+      throw new InvalidPipelineStatusException('Terminal status must have a non-NONE outcomeType');
   }
 
   static create(params: {
@@ -59,19 +62,37 @@ export class PipelineStatus {
     PipelineStatus.validate(isInitial, isTerminal, outcomeType);
     const now = new Date();
     return new PipelineStatus(
-      params.id, params.pipelineId, params.name,
-      params.description ?? null, params.backgroundColor ?? null, params.textColor ?? null,
-      isInitial, isTerminal, outcomeType, params.showInKanban ?? true,
-      params.sortPoints, now, now,
+      params.id,
+      params.pipelineId,
+      params.name,
+      params.description ?? null,
+      params.backgroundColor ?? null,
+      params.textColor ?? null,
+      isInitial,
+      isTerminal,
+      outcomeType,
+      params.showInKanban ?? true,
+      params.sortPoints,
+      now,
+      now,
     );
   }
 
   static fromPrimitives(data: PipelineStatusPrimitives): PipelineStatus {
     return new PipelineStatus(
-      data.id, data.pipelineId, data.name,
-      data.description, data.backgroundColor, data.textColor,
-      data.isInitial, data.isTerminal, data.outcomeType, data.showInKanban,
-      data.sortPoints, data.createdAt, data.updatedAt,
+      data.id,
+      data.pipelineId,
+      data.name,
+      data.description,
+      data.backgroundColor,
+      data.textColor,
+      data.isInitial,
+      data.isTerminal,
+      data.outcomeType,
+      data.showInKanban,
+      data.sortPoints,
+      data.createdAt,
+      data.updatedAt,
     );
   }
 
@@ -99,7 +120,8 @@ export class PipelineStatus {
   }
 
   setInitial(value: boolean): void {
-    if (value && this._isTerminal) throw new InvalidPipelineStatusException('A terminal status cannot be set as initial');
+    if (value && this._isTerminal)
+      throw new InvalidPipelineStatusException('A terminal status cannot be set as initial');
     this._isInitial = value;
     this._updatedAt = new Date();
   }
@@ -111,25 +133,59 @@ export class PipelineStatus {
 
   toPrimitives(): PipelineStatusPrimitives {
     return {
-      id: this._id, pipelineId: this._pipelineId, name: this._name,
-      description: this._description, backgroundColor: this._backgroundColor, textColor: this._textColor,
-      isInitial: this._isInitial, isTerminal: this._isTerminal, outcomeType: this._outcomeType,
-      showInKanban: this._showInKanban, sortPoints: this._sortPoints,
-      createdAt: this._createdAt, updatedAt: this._updatedAt,
+      id: this._id,
+      pipelineId: this._pipelineId,
+      name: this._name,
+      description: this._description,
+      backgroundColor: this._backgroundColor,
+      textColor: this._textColor,
+      isInitial: this._isInitial,
+      isTerminal: this._isTerminal,
+      outcomeType: this._outcomeType,
+      showInKanban: this._showInKanban,
+      sortPoints: this._sortPoints,
+      createdAt: this._createdAt,
+      updatedAt: this._updatedAt,
     };
   }
 
-  get id(): string { return this._id; }
-  get pipelineId(): string { return this._pipelineId; }
-  get name(): string { return this._name; }
-  get description(): string | null { return this._description; }
-  get backgroundColor(): string | null { return this._backgroundColor; }
-  get textColor(): string | null { return this._textColor; }
-  get isInitial(): boolean { return this._isInitial; }
-  get isTerminal(): boolean { return this._isTerminal; }
-  get outcomeType(): OutcomeType { return this._outcomeType; }
-  get showInKanban(): boolean { return this._showInKanban; }
-  get sortPoints(): number { return this._sortPoints; }
-  get createdAt(): Date { return this._createdAt; }
-  get updatedAt(): Date { return this._updatedAt; }
+  get id(): string {
+    return this._id;
+  }
+  get pipelineId(): string {
+    return this._pipelineId;
+  }
+  get name(): string {
+    return this._name;
+  }
+  get description(): string | null {
+    return this._description;
+  }
+  get backgroundColor(): string | null {
+    return this._backgroundColor;
+  }
+  get textColor(): string | null {
+    return this._textColor;
+  }
+  get isInitial(): boolean {
+    return this._isInitial;
+  }
+  get isTerminal(): boolean {
+    return this._isTerminal;
+  }
+  get outcomeType(): OutcomeType {
+    return this._outcomeType;
+  }
+  get showInKanban(): boolean {
+    return this._showInKanban;
+  }
+  get sortPoints(): number {
+    return this._sortPoints;
+  }
+  get createdAt(): Date {
+    return this._createdAt;
+  }
+  get updatedAt(): Date {
+    return this._updatedAt;
+  }
 }

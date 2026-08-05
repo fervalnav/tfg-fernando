@@ -1,0 +1,9 @@
+process.env['NODE_ENV'] = 'test';
+process.env['DATABASE_HOST'] = process.env['E2E_DATABASE_HOST'] ?? 'localhost';
+process.env['DATABASE_PORT'] = process.env['E2E_DATABASE_PORT'] ?? '5432';
+process.env['DATABASE_USER'] = process.env['E2E_DATABASE_USER'] ?? 'tfg_user';
+process.env['DATABASE_PASSWORD'] = process.env['E2E_DATABASE_PASSWORD'] ?? 'tfg_password';
+process.env['DATABASE_NAME'] = process.env['E2E_DATABASE_NAME'] ?? 'tfg_e2e';
+process.env['JWT_SECRET'] = 'e2e-only-secret-with-at-least-32-characters';
+process.env['JWT_EXPIRES_IN'] = '1h';
+process.env['AI_PROVIDER'] = 'fake';

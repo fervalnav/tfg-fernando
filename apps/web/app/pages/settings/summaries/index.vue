@@ -12,10 +12,11 @@ import {
   useUpdateSummaryTemplateMutation,
   useDeleteSummaryTemplateMutation,
 } from '~/modules/summary';
+import { requiredString } from '~/modules/shared/lib/formValidation';
 
 definePageMeta({ layout: 'settings', middleware: 'auth' });
 
-const { data, isLoading } = useSummaryTemplatesQuery();
+const { data, isLoading, isError, refetch } = useSummaryTemplatesQuery();
 const items = computed(() => data.value?.pages.flatMap((p) => p.items) ?? []);
 const total = computed(() => data.value?.pages[0]?.total ?? 0);
 
@@ -25,8 +26,8 @@ const { mutate: deleteItem } = useDeleteSummaryTemplateMutation();
 
 const schema = toTypedSchema(
   z.object({
-    name: z.string().min(1, 'El nombre es obligatorio'),
-    prompt: z.string().min(1, 'El prompt es obligatorio'),
+    name: requiredString('El nombre es obligatorio'),
+    prompt: requiredString('El prompt es obligatorio'),
   }),
 );
 
@@ -97,6 +98,12 @@ function handleDelete(id: string) {
     <div v-if="isLoading" class="space-y-2">
       <div v-for="i in 3" :key="i" class="h-14 rounded-lg bg-muted animate-pulse" />
     </div>
+
+    <QueryErrorState
+      v-else-if="isError"
+      message="No se pudieron cargar las plantillas de resumen."
+      @retry="refetch()"
+    />
 
     <div v-else-if="!items.length" class="text-center py-16 text-muted-foreground text-sm">
       Sin plantillas de resumen. Crea la primera para usarla en workflows.

@@ -157,7 +157,11 @@ const userInitials = computed(() => {
                   class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
                   <Avatar class="size-8 shrink-0">
-                    <AvatarImage :src="authStore.currentUser?.avatarUrl ?? undefined" alt="Avatar" />
+                    <AvatarImage
+                      v-if="authStore.currentUser?.avatarUrl"
+                      :src="authStore.currentUser.avatarUrl"
+                      alt="Avatar"
+                    />
                     <AvatarFallback class="text-xs">{{ userInitials }}</AvatarFallback>
                   </Avatar>
                   <div class="grid flex-1 text-left text-sm leading-tight">

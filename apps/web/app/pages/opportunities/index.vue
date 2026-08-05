@@ -3,7 +3,7 @@ import { usePipelinesQuery } from '~/modules/pipeline';
 
 definePageMeta({ middleware: 'auth' });
 
-const { data: pipelines, isLoading } = usePipelinesQuery();
+const { data: pipelines, isLoading, isError, refetch } = usePipelinesQuery();
 
 watch(
   pipelines,
@@ -20,6 +20,7 @@ watch(
 <template>
   <div class="flex items-center justify-center h-full">
     <div v-if="isLoading" class="text-sm text-muted-foreground">Cargando...</div>
+    <QueryErrorState v-else-if="isError" message="No se pudieron cargar los pipelines." @retry="refetch()" />
     <div v-else-if="!pipelines?.length" class="text-center space-y-2">
       <p class="text-sm text-muted-foreground">No tienes pipelines configurados.</p>
       <Button as-child size="sm" variant="outline">

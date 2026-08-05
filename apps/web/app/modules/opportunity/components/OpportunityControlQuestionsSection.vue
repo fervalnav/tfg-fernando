@@ -23,7 +23,7 @@ import {
 import OpportunityAddTemplatesDialog from './OpportunityAddTemplatesDialog.vue';
 
 const props = defineProps<{ opportunityId: string }>();
-const { data: questions, isLoading } = useOpportunityControlQuestionsQuery(() => props.opportunityId);
+const { data: questions, isLoading, isError, refetch } = useOpportunityControlQuestionsQuery(() => props.opportunityId);
 const { data: templates } = useControlQuestionTemplatesQuery();
 const { mutate: answerQuestion, isPending } = useAnswerControlQuestionMutation();
 const { mutate: addQuestion } = useAddControlQuestionToOpportunityMutation();
@@ -126,6 +126,7 @@ function generate(id: string): void {
     </div>
 
     <div v-if="isLoading" class="py-12 text-center text-sm text-muted-foreground">Cargando preguntas...</div>
+    <QueryErrorState v-else-if="isError" message="No se pudieron cargar las preguntas de control." @retry="refetch()" />
     <Card v-else-if="!questions?.length">
       <CardContent class="flex flex-col items-center py-12 text-center">
         <CircleHelpIcon class="size-9 text-muted-foreground/50" />

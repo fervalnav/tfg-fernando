@@ -8,7 +8,7 @@ definePageMeta({ layout: 'settings', middleware: 'auth' });
 const route = useRoute();
 const id = computed(() => route.params['id'] as string);
 
-const { data: workflow, isLoading } = useWorkflowQuery(id);
+const { data: workflow, isLoading, isError, refetch } = useWorkflowQuery(id);
 
 const steps = computed(() => workflow.value?.steps ?? []);
 provideWorkflowEditorContext(id, steps);
@@ -33,6 +33,8 @@ provideWorkflowEditorContext(id, steps);
     <div v-if="isLoading" class="space-y-3">
       <div v-for="i in 3" :key="i" class="h-20 rounded-lg bg-muted animate-pulse" />
     </div>
+
+    <QueryErrorState v-else-if="isError" message="No se pudo cargar el workflow." @retry="refetch()" />
 
     <div v-else-if="!workflow" class="text-center py-16 text-muted-foreground text-sm">Workflow no encontrado.</div>
 

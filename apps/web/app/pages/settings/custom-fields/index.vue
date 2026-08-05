@@ -12,10 +12,11 @@ import {
   useUpdateDefaultCustomFieldMutation,
   useDeleteDefaultCustomFieldMutation,
 } from '~/modules/custom-field';
+import { requiredString } from '~/modules/shared/lib/formValidation';
 
 definePageMeta({ layout: 'settings', middleware: 'auth' });
 
-const { data, isLoading } = useDefaultCustomFieldsQuery();
+const { data, isLoading, isError, refetch } = useDefaultCustomFieldsQuery();
 const items = computed(() => data.value?.pages.flatMap((p) => p.items) ?? []);
 const total = computed(() => data.value?.pages[0]?.total ?? 0);
 
@@ -41,7 +42,7 @@ const TYPE_LABELS: Record<CustomFieldType, string> = {
 
 const schema = toTypedSchema(
   z.object({
-    name: z.string().min(1, 'El nombre es obligatorio'),
+    name: requiredString('El nombre es obligatorio'),
     description: z.string().optional(),
     type: z.enum(['TEXT', 'NUMBER', 'DATE', 'BOOLEAN', 'CLASSIFIER']).default('TEXT'),
     canSelectMultiple: z.boolean().default(false),
@@ -157,6 +158,12 @@ function handleDelete(id: string) {
     <div v-if="isLoading" class="space-y-2">
       <div v-for="i in 3" :key="i" class="h-14 rounded-lg bg-muted animate-pulse" />
     </div>
+
+    <QueryErrorState
+      v-else-if="isError"
+      message="No se pudieron cargar los campos personalizados."
+      @retry="refetch()"
+    />
 
     <div v-else-if="!items.length" class="text-center py-16 text-muted-foreground text-sm">
       Sin campos personalizados. Crea el primero.

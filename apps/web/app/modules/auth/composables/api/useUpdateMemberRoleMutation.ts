@@ -8,7 +8,7 @@ export const useUpdateMemberRoleMutation = () => {
 
   return useMutation({
     mutationFn: ({ userId, payload }: { userId: string; payload: UpdateMemberRolePayload }) =>
-      api(`/auth/account/members/${userId}/role`, { method: 'PATCH', body: payload }),
+      api<unknown>(`/auth/account/members/${userId}/role`, { method: 'PATCH', body: payload }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['members'] });
     },

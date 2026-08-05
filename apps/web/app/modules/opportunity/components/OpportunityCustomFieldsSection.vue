@@ -23,7 +23,7 @@ import {
 import OpportunityAddTemplatesDialog from './OpportunityAddTemplatesDialog.vue';
 
 const props = defineProps<{ opportunityId: string }>();
-const { data: fields, isLoading } = useOpportunityCustomFieldsQuery(() => props.opportunityId);
+const { data: fields, isLoading, isError, refetch } = useOpportunityCustomFieldsQuery(() => props.opportunityId);
 const { data: templates } = useCustomFieldTemplatesQuery();
 const { mutate: setValue, isPending } = useSetCustomFieldValueMutation();
 const { mutate: addField } = useAddCustomFieldToOpportunityMutation();
@@ -148,6 +148,11 @@ function generate(fieldId: string): void {
     </div>
 
     <div v-if="isLoading" class="py-12 text-center text-sm text-muted-foreground">Cargando campos...</div>
+    <QueryErrorState
+      v-else-if="isError"
+      message="No se pudieron cargar los campos personalizados."
+      @retry="refetch()"
+    />
     <Card v-else-if="!fields?.length">
       <CardContent class="flex flex-col items-center py-12 text-center">
         <ListChecksIcon class="size-9 text-muted-foreground/50" />
@@ -214,7 +219,7 @@ function generate(fieldId: string): void {
           <Select
             v-else-if="!field.canSelectMultiple"
             :model-value="stringValue(field.id)"
-            @update:model-value="draftValues[field.id] = $event"
+            @update:model-value="draftValues[field.id] = typeof $event === 'string' ? $event : ''"
           >
             <SelectTrigger><SelectValue placeholder="Selecciona una opción" /></SelectTrigger>
             <SelectContent>

@@ -8,6 +8,7 @@ import type { DefaultWorkflowStepActionDto } from '@tfg/types';
 import { useWorkflowEditorContext } from '../../composables/useWorkflowEditorContext';
 import { useCreateDefaultStepActionMutation } from '../../composables/api/useCreateDefaultStepActionMutation';
 import { useUpdateDefaultStepActionMutation } from '../../composables/api/useUpdateDefaultStepActionMutation';
+import { requiredString } from '~/modules/shared/lib/formValidation';
 
 const props = defineProps<{ editing?: DefaultWorkflowStepActionDto }>();
 const emit = defineEmits<{ saved: []; cancel: [] }>();
@@ -25,8 +26,8 @@ const isPending = computed(() => isCreating.value || isUpdating.value);
 
 const schema = toTypedSchema(
   z.object({
-    subject: z.string().min(1, 'El asunto es obligatorio'),
-    message: z.string().min(1, 'El mensaje es obligatorio'),
+    subject: requiredString('El asunto es obligatorio'),
+    message: requiredString('El mensaje es obligatorio'),
   }),
 );
 

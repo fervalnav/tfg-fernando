@@ -120,7 +120,7 @@ function setResponsible(value: unknown): void {
           :model-value="dueDateFrom ?? ''"
           class="h-8 w-32 border-0 px-1 shadow-none focus-visible:ring-0"
           aria-label="Fecha límite desde"
-          @update:model-value="(value: string) => setFilter('dueDateFrom', value || undefined)"
+          @update:model-value="(value: string | number) => setFilter('dueDateFrom', String(value) || undefined)"
         />
         <span class="text-xs text-muted-foreground">—</span>
         <Input
@@ -128,7 +128,7 @@ function setResponsible(value: unknown): void {
           :model-value="dueDateTo ?? ''"
           class="h-8 w-32 border-0 px-1 shadow-none focus-visible:ring-0"
           aria-label="Fecha límite hasta"
-          @update:model-value="(value: string) => setFilter('dueDateTo', value || undefined)"
+          @update:model-value="(value: string | number) => setFilter('dueDateTo', String(value) || undefined)"
         />
       </div>
 

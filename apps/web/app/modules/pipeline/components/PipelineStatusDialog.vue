@@ -7,6 +7,7 @@ import { v7 as uuidv7 } from 'uuid';
 import type { PipelineStatusDto } from '@tfg/types';
 import { useCreatePipelineStatusMutation } from '../composables/api/useCreatePipelineStatusMutation';
 import { useUpdatePipelineStatusMutation } from '../composables/api/useUpdatePipelineStatusMutation';
+import { requiredString } from '~/modules/shared/lib/formValidation';
 
 const props = defineProps<{
   pipelineId: string;
@@ -26,7 +27,7 @@ const OUTCOME_OPTIONS = [
 
 const schema = toTypedSchema(
   z.object({
-    name: z.string().min(1, 'El nombre es obligatorio'),
+    name: requiredString('El nombre es obligatorio'),
     description: z.string().optional(),
     backgroundColor: z.string().optional(),
     textColor: z.string().optional(),
@@ -78,7 +79,7 @@ const onSubmit = form.handleSubmit((values) => {
           isOpen.value = false;
           emit('saved');
         },
-        onError: (e) => toast.error(e.message ?? 'Error al actualizar el estado'),
+        onError: () => toast.error('Error al actualizar el estado'),
       },
     );
   } else {
@@ -91,7 +92,7 @@ const onSubmit = form.handleSubmit((values) => {
           form.resetForm();
           emit('saved');
         },
-        onError: (e) => toast.error(e.message ?? 'Error al crear el estado'),
+        onError: () => toast.error('Error al crear el estado'),
       },
     );
   }

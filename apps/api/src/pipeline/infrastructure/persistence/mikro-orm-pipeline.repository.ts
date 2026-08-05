@@ -11,11 +11,15 @@ export class MikroOrmPipelineRepository implements PipelineRepository {
 
   async findAllByAccountId(accountId: string, page: number, limit: number): Promise<Pipeline[]> {
     const offset = (page - 1) * limit;
-    const orms = await this.em.find(PipelineOrmEntity, { accountId }, {
-      orderBy: { createdAt: 'ASC' },
-      limit,
-      offset,
-    });
+    const orms = await this.em.find(
+      PipelineOrmEntity,
+      { accountId },
+      {
+        orderBy: { createdAt: 'ASC' },
+        limit,
+        offset,
+      },
+    );
     return orms.map((o) => o.toDomainEntity());
   }
 

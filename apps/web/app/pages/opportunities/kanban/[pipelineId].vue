@@ -15,12 +15,12 @@ const route = useRoute();
 const pipelineId = computed(() => route.params['pipelineId'] as string);
 
 const { data: pipelines } = usePipelinesQuery();
-const { data: pipeline } = usePipelineQuery(pipelineId);
+const { data: pipeline, isError: isPipelineError, refetch: refetchPipeline } = usePipelineQuery(pipelineId);
 const { data: members } = useMembersQuery();
 const { filters } = useOpportunityFilters();
 
 function handlePipelineChange(id: string) {
-  void navigateTo(`/opportunities/kanban/${id}`, { query: route.query });
+  void navigateTo({ path: `/opportunities/kanban/${id}`, query: route.query });
 }
 
 function goToList() {
@@ -51,6 +51,12 @@ function goToList() {
     <!-- Kanban -->
     <div class="min-h-0 flex-1 overflow-hidden">
       <OpportunityKanban v-if="pipeline" :pipeline="pipeline" :filters="filters" />
+      <QueryErrorState
+        v-else-if="isPipelineError"
+        class="m-4"
+        message="No se pudo cargar el pipeline."
+        @retry="refetchPipeline()"
+      />
       <div v-else class="flex items-center justify-center h-full">
         <div class="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>

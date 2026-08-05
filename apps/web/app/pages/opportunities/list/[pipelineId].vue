@@ -29,7 +29,7 @@ const queryFilters = computed(() => ({
   limit: 20,
 }));
 
-const { data, isLoading } = useOpportunitiesQuery(queryFilters);
+const { data, isLoading, isError, refetch } = useOpportunitiesQuery(queryFilters);
 
 // Reset page on filter change
 watch(filters, () => {
@@ -37,7 +37,7 @@ watch(filters, () => {
 });
 
 function handlePipelineChange(id: string) {
-  void navigateTo(`/opportunities/list/${id}`, { query: route.query });
+  void navigateTo({ path: `/opportunities/list/${id}`, query: route.query });
 }
 
 function goToKanban() {
@@ -67,10 +67,11 @@ function goToKanban() {
 
     <!-- List -->
     <div class="min-h-0 flex-1 overflow-auto p-4">
-      <OpportunityListTable :opportunities="data?.items ?? []" :is-loading="isLoading" :pipeline="pipeline" />
+      <QueryErrorState v-if="isError" message="No se pudieron cargar las oportunidades." @retry="refetch()" />
+      <OpportunityListTable v-else :opportunities="data?.items ?? []" :is-loading="isLoading" :pipeline="pipeline" />
 
       <!-- Pagination -->
-      <div v-if="(data?.total ?? 0) > 20" class="flex items-center justify-center gap-3 mt-4">
+      <div v-if="!isError && (data?.total ?? 0) > 20" class="flex items-center justify-center gap-3 mt-4">
         <Button size="sm" variant="outline" :disabled="page === 1" @click="page--">Anterior</Button>
         <span class="text-sm text-muted-foreground">Página {{ page }}</span>
         <Button size="sm" variant="outline" :disabled="!data || data.items.length < 20" @click="page++"

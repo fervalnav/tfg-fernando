@@ -18,7 +18,7 @@ const queryClient = useQueryClient();
 const pipelineId = computed(() => props.pipeline.id);
 const filters = computed(() => props.filters);
 
-const { data: kanbanItems, isLoading } = useKanbanOpportunitiesQuery(pipelineId, filters);
+const { data: kanbanItems, isLoading, isError, refetch } = useKanbanOpportunitiesQuery(pipelineId, filters);
 const { data: totals } = usePipelineStatusTotalsQuery(pipelineId, filters);
 const { mutate: transitionStatus } = useTransitionStatusMutation();
 const { mutate: updatePosition } = useUpdatePositionMutation();
@@ -54,7 +54,7 @@ function computeCrossColumnSortPoints(toStatusId: string, newIndex: number): num
   const predecessor = destItems[newIndex - 1];
   const successor = destItems[newIndex];
   if (!predecessor && !successor) return 1000;
-  if (!predecessor) return successor.sortPoints - 1000;
+  if (!predecessor) return (successor?.sortPoints ?? 2000) - 1000;
   if (!successor) return predecessor.sortPoints + 1000;
   return (predecessor.sortPoints + successor.sortPoints) / 2;
 }
@@ -106,6 +106,13 @@ function handleDrop(event: {
     <template v-if="isLoading">
       <div v-for="i in 4" :key="i" class="w-72 shrink-0 h-48 rounded-lg bg-muted animate-pulse" />
     </template>
+
+    <QueryErrorState
+      v-else-if="isError"
+      class="w-full self-start"
+      message="No se pudo cargar el kanban."
+      @retry="refetch()"
+    />
 
     <template v-else>
       <OpportunityKanbanColumn

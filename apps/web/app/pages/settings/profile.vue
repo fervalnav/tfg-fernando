@@ -6,6 +6,7 @@ import { toast } from 'vue-sonner';
 import { SaveIcon } from 'lucide-vue-next';
 import { useUpdateProfileMutation, useUpdateAvatarMutation } from '~/modules/auth';
 import { useAuthStore } from '~/modules/shared/stores/auth.store';
+import { requiredString, validateAvatarFile } from '~/modules/shared/lib/formValidation';
 
 definePageMeta({ layout: 'settings', middleware: 'auth' });
 
@@ -13,8 +14,8 @@ const authStore = useAuthStore();
 
 const schema = toTypedSchema(
   z.object({
-    firstName: z.string().min(1, 'El nombre es obligatorio'),
-    lastName: z.string().min(1, 'El apellido es obligatorio'),
+    firstName: requiredString('El nombre es obligatorio'),
+    lastName: requiredString('El apellido es obligatorio'),
   }),
 );
 
@@ -41,6 +42,13 @@ function handleAvatarChange(event: Event) {
   const file = input.files?.[0];
   if (!file) return;
 
+  const validationError = validateAvatarFile(file);
+  if (validationError) {
+    input.value = '';
+    toast.error(validationError);
+    return;
+  }
+
   updateAvatar(file, {
     onSuccess: () => toast.success('Avatar actualizado'),
     onError: () => toast.error('Error al subir el avatar'),
@@ -57,7 +65,7 @@ function handleAvatarChange(event: Event) {
       <h2 class="text-sm font-medium text-foreground mb-4">Foto de perfil</h2>
       <div class="flex items-center gap-4">
         <Avatar class="size-16 text-xl">
-          <AvatarImage :src="authStore.currentUser?.avatarUrl ?? undefined" alt="Avatar" />
+          <AvatarImage v-if="authStore.currentUser?.avatarUrl" :src="authStore.currentUser.avatarUrl" alt="Avatar" />
           <AvatarFallback class="text-xl font-semibold">
             {{ authStore.currentUser?.firstName?.charAt(0) }}
           </AvatarFallback>

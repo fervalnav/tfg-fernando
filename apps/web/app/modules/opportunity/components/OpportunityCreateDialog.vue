@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { toast } from 'vue-sonner';
 import { v7 as uuidv7 } from 'uuid';
 import { useCreateOpportunityMutation } from '../composables/api/useCreateOpportunityMutation';
+import { requiredString } from '~/modules/shared/lib/formValidation';
 
 const props = defineProps<{
   pipelineId: string;
@@ -15,7 +16,7 @@ const open = defineModel<boolean>('open', { default: false });
 
 const schema = toTypedSchema(
   z.object({
-    title: z.string().min(1, 'El título es obligatorio'),
+    title: requiredString('El título es obligatorio'),
     description: z.string().optional(),
     amount: z.number({ invalid_type_error: 'Debe ser un número' }).min(0).optional(),
     currency: z.string().default('EUR'),
@@ -23,7 +24,7 @@ const schema = toTypedSchema(
   }),
 );
 
-const form = useForm({ validationSchema: schema });
+const form = useForm({ validationSchema: schema, initialValues: { currency: 'EUR' } });
 const { mutate: createOpportunity, isPending } = useCreateOpportunityMutation();
 
 const onSubmit = form.handleSubmit((values) => {

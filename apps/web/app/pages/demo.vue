@@ -3,14 +3,8 @@ import { ref } from 'vue';
 import { useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
 import { z } from 'zod';
-import {
-  CheckIcon,
-  AlertCircleIcon,
-  InfoIcon,
-  StarIcon,
-  UserIcon,
-  BellIcon,
-} from 'lucide-vue-next';
+import { requiredEmail, requiredString } from '~/modules/shared/lib/formValidation';
+import { CheckIcon, AlertCircleIcon, InfoIcon, StarIcon, UserIcon, BellIcon } from 'lucide-vue-next';
 
 definePageMeta({ layout: 'default', middleware: 'auth' });
 
@@ -19,8 +13,8 @@ const dialogOpen = ref(false);
 const form = useForm({
   validationSchema: toTypedSchema(
     z.object({
-      name: z.string().min(1, 'El nombre es obligatorio'),
-      email: z.string().email('Email inválido'),
+      name: requiredString('El nombre es obligatorio'),
+      email: requiredEmail(),
     }),
   ),
 });
@@ -42,22 +36,26 @@ const onFormSubmit = form.handleSubmit(() => {
     <section>
       <h2 class="text-lg font-semibold mb-4">Paleta de colores</h2>
       <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <div v-for="color in [
-          { name: 'background', cls: 'bg-background border' },
-          { name: 'foreground', cls: 'bg-foreground' },
-          { name: 'primary', cls: 'bg-primary' },
-          { name: 'primary-foreground', cls: 'bg-primary-foreground border' },
-          { name: 'secondary', cls: 'bg-secondary' },
-          { name: 'muted', cls: 'bg-muted' },
-          { name: 'accent', cls: 'bg-accent' },
-          { name: 'destructive', cls: 'bg-destructive' },
-          { name: 'card', cls: 'bg-card border' },
-          { name: 'border', cls: 'bg-border' },
-          { name: 'brand-navy', cls: 'bg-brand-navy' },
-          { name: 'brand-yellow', cls: 'bg-brand-yellow' },
-          { name: 'brand-blue', cls: 'bg-brand-blue' },
-          { name: 'sidebar', cls: 'bg-sidebar' },
-        ]" :key="color.name" class="flex flex-col gap-1">
+        <div
+          v-for="color in [
+            { name: 'background', cls: 'bg-background border' },
+            { name: 'foreground', cls: 'bg-foreground' },
+            { name: 'primary', cls: 'bg-primary' },
+            { name: 'primary-foreground', cls: 'bg-primary-foreground border' },
+            { name: 'secondary', cls: 'bg-secondary' },
+            { name: 'muted', cls: 'bg-muted' },
+            { name: 'accent', cls: 'bg-accent' },
+            { name: 'destructive', cls: 'bg-destructive' },
+            { name: 'card', cls: 'bg-card border' },
+            { name: 'border', cls: 'bg-border' },
+            { name: 'brand-navy', cls: 'bg-brand-navy' },
+            { name: 'brand-yellow', cls: 'bg-brand-yellow' },
+            { name: 'brand-blue', cls: 'bg-brand-blue' },
+            { name: 'sidebar', cls: 'bg-sidebar' },
+          ]"
+          :key="color.name"
+          class="flex flex-col gap-1"
+        >
           <div :class="[color.cls, 'h-12 rounded-lg']" />
           <span class="text-xs text-muted-foreground font-mono">{{ color.name }}</span>
         </div>
