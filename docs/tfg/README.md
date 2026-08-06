@@ -15,7 +15,9 @@ docs/tfg/
 │   ├── metadata.tex
 │   └── preamble.tex
 ├── context/
-│   └── registered-proposal.md
+│   ├── registered-proposal.md
+│   ├── memory-writing-guide.md
+│   └── memory-sprint-plan.md
 ├── figure-sources/
 │   └── tikz/
 ├── frontmatter/
@@ -32,6 +34,13 @@ docs/tfg/
 
 Los datos académicos y la fecha de la portada se editan únicamente en
 `config/metadata.tex`.
+
+## Guía de redacción
+
+- `context/memory-writing-guide.md` recoge la estructura, fuentes, reglas de
+  veracidad y criterios de calidad que debe seguir Codex.
+- `context/memory-sprint-plan.md` organiza la memoria en iteraciones y mantiene
+  el backlog técnico que debe completarse antes de documentar resultados.
 
 ## Logotipo
 
