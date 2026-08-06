@@ -126,6 +126,14 @@
       "lcov",
       "json-summary"
     ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 33,
+        "functions": 37,
+        "lines": 60,
+        "statements": 60
+      }
+    },
     "testEnvironment": "node"
   }
 }

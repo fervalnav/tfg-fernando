@@ -10,6 +10,12 @@ export default defineVitestConfig({
       reporter: ['text', 'html', 'lcov', 'json-summary'],
       include: ['app/**/*.{ts,vue}'],
       exclude: ['app/**/*.d.ts', 'app/**/*.spec.ts', 'app/**/index.ts', 'app/modules/shared/components/ui/**'],
+      thresholds: {
+        branches: 8,
+        functions: 3,
+        lines: 8,
+        statements: 7,
+      },
     },
   },
 });
