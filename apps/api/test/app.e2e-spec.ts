@@ -39,6 +39,8 @@ const IDS = {
   attachment: '0198f6b3-1fd7-7fba-8e79-53161b649907',
   summaryTemplate: '0198f6b3-1fd7-7fba-8e79-53161b649908',
   summary: '0198f6b3-1fd7-7fba-8e79-53161b649909',
+  controlQuestionTemplate: '0198f6b3-1fd7-7fba-8e79-53161b649910',
+  controlQuestion: '0198f6b3-1fd7-7fba-8e79-53161b649911',
 } as const;
 
 describe('TFG API (e2e)', () => {
@@ -249,6 +251,45 @@ describe('TFG API (e2e)', () => {
     await outsider.get(`/api/opportunities/${IDS.opportunity}`).expect(404);
     await outsider.patch(`/api/opportunities/${IDS.opportunity}`).send({ title: 'Intrusión' }).expect(404);
     await outsider.delete(`/api/opportunities/${IDS.opportunity}`).expect(404);
+  });
+
+  it('isolates attachments, workflows and qualification instances between accounts', async () => {
+    const owner = request.agent(app.getHttpServer());
+    const outsider = request.agent(app.getHttpServer());
+    await register(owner, 'resources-owner@example.test', 'Cuenta Recursos');
+    await createPipeline(owner);
+    await createWorkflow(owner);
+    await owner.post('/api/opportunities').send(opportunityPayload()).expect(201);
+    await owner
+      .post(`/api/opportunities/${IDS.opportunity}/attachments`)
+      .field('id', IDS.attachment)
+      .attach('file', Buffer.from('%PDF-1.4\nPrivate fixture'), {
+        filename: 'privado.pdf',
+        contentType: 'application/pdf',
+      })
+      .expect(201);
+    await owner
+      .post('/api/control-questions/defaults')
+      .send({
+        id: IDS.controlQuestionTemplate,
+        question: '¿Cumple la solvencia?',
+        answerType: 'BOOLEAN',
+      })
+      .expect(201);
+    await owner
+      .post(`/api/opportunities/${IDS.opportunity}/control-questions`)
+      .send({ id: IDS.controlQuestion, defaultControlQuestionId: IDS.controlQuestionTemplate })
+      .expect(201);
+
+    await register(outsider, 'resources-outsider@example.test', 'Cuenta Ajena');
+
+    await outsider.get(`/api/opportunities/${IDS.opportunity}/attachments`).expect(404);
+    await outsider.get(`/api/workflows/${IDS.workflow}`).expect(404);
+    await outsider.get(`/api/opportunities/${IDS.opportunity}/control-questions`).expect(200, []);
+    await outsider
+      .patch(`/api/opportunities/${IDS.opportunity}/control-questions/${IDS.controlQuestion}`)
+      .send({ answer: true })
+      .expect(404);
   });
 
   async function register(agent: TestAgent, email: string, accountName: string): Promise<AuthBody> {
