@@ -52,6 +52,7 @@
     "@tailwindcss/vite": "^4.3.0",
     "@vitest/coverage-v8": "^4.1.10",
     "@vue/test-utils": "^2.4.11",
+    "eslint": "^9.39.1",
     "eslint-plugin-boundaries": "^6.0.2",
     "happy-dom": "^20.11.1",
     "tailwindcss": "^4.3.0",
