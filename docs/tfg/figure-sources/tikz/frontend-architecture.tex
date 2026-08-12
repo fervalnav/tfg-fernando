@@ -1,0 +1,41 @@
+\begin{tikzpicture}[
+  every node/.style={font=\small\sffamily},
+  layer/.style={
+    draw=TFGBlue,
+    rounded corners=2pt,
+    fill=TFGLightBlue,
+    text width=11.6cm,
+    minimum height=1.05cm,
+    align=center,
+    inner sep=7pt
+  },
+  secondary/.style={layer, fill=white},
+  flow/.style={-{Latex[length=2.5mm]}, semithick, draw=TFGAccent}
+]
+  \node[layer] (pages) at (0,3.3) {
+    \textbf{Rutas, layouts y middleware}\\
+    composición de vistas, navegación protegida y selección de cuenta
+  };
+  \node[layer] (modules) at (0,1.65) {
+    \textbf{Módulos funcionales autocontenidos}\\
+    autenticación \;·\; pipelines \;·\; workflows \;·\; oportunidades \;·\; cualificación
+  };
+  \node[secondary] (state) at (0,0) {
+    \textbf{Acceso a datos y estado}\\
+    composables de consulta/mutación \\
+    TanStack Query \;·\; Pinia \;·\; validación Zod
+  };
+  \node[secondary] (transport) at (0,-1.65) {
+    \textbf{Cliente HTTP común}\\
+    URL de ejecución, cookies, renovación de sesión y reintento de la petición
+  };
+  \node[layer] (contracts) at (0,-3.3) {
+    \textbf{Contrato con la API}\\
+    DTO y payloads de \texttt{@tfg/types}
+  };
+
+  \draw[flow] (pages) -- (modules);
+  \draw[flow] (modules) -- (state);
+  \draw[flow] (state) -- (transport);
+  \draw[flow] (transport) -- (contracts);
+\end{tikzpicture}

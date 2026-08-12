@@ -1,71 +1,59 @@
 \begin{tikzpicture}[
-  node distance=0.85cm and 1.2cm,
   every node/.style={font=\small\sffamily},
   component/.style={
     draw=TFGBlue,
     rounded corners=2pt,
     fill=TFGLightBlue,
-    minimum height=1.1cm,
-    text width=3.5cm,
+    minimum height=1.05cm,
+    text width=3.25cm,
     align=center,
     inner sep=6pt
   },
-  shared/.style={
-    component,
-    fill=TFGLightGray
-  },
-  infrastructure/.style={
-    component,
-    fill=white
-  },
-  connection/.style={
-    -{Latex[length=2.5mm]},
-    semithick,
-    draw=TFGAccent
-  },
-  bidirectional/.style={
-    {Latex[length=2.5mm]}-{Latex[length=2.5mm]},
-    semithick,
-    draw=TFGAccent
-  }
+  shared/.style={component, fill=TFGLightGray},
+  infrastructure/.style={component, fill=white},
+  inactive/.style={infrastructure, draw=TFGMuted, dashed, text=TFGMuted},
+  connection/.style={-{Latex[length=2.5mm]}, semithick, draw=TFGAccent},
+  bidirectional/.style={{Latex[length=2.5mm]}-{Latex[length=2.5mm]}, semithick, draw=TFGAccent}
 ]
-  \node[component] (web) {
+  \node[component] (web) at (-3.8,0.4) {
     \textbf{Aplicación web}\\
     Nuxt 4 y Vue 3
   };
-  \node[component, right=4cm of web] (api) {
+  \node[component] (api) at (3.8,0.4) {
     \textbf{API}\\
-    NestJS
+    NestJS y CQRS
   };
-  \path (web) -- (api) coordinate[midway] (application-center);
-  \node[shared, above=0.8cm of application-center] (types) {
-    \textbf{Tipos compartidos}\\
+  \node[shared] (types) at (0,2.15) {
+    \textbf{Contratos compartidos}\\
     Paquete TypeScript
   };
 
-  \node[infrastructure, below=1.5cm of web] (postgres) {
-    \textbf{Persistencia}\\
+  \node[infrastructure] (postgres) at (-3.8,-2.05) {
+    \textbf{Datos transaccionales}\\
     PostgreSQL y MikroORM
   };
-  \node[infrastructure, below=1.5cm of application-center] (rabbitmq) {
-    \textbf{Mensajería}\\
-    RabbitMQ
-  };
-  \node[infrastructure, below=1.5cm of api] (storage) {
+  \node[infrastructure] (storage) at (0,-2.05) {
     \textbf{Adjuntos}\\
     S3 / MinIO
   };
+  \node[infrastructure] (ai) at (3.8,-2.05) {
+    \textbf{Generación estructurada}\\
+    Google u OpenAI compatible
+  };
+  \node[inactive, text width=3.05cm] (rabbitmq) at (3.8,-4.05) {
+    \textbf{RabbitMQ}\\
+    Disponible, no conectado
+  };
 
-  \draw[bidirectional] (web) -- node[above, font=\scriptsize\sffamily] {HTTP} (api);
+  \draw[bidirectional] (web) -- node[above, font=\scriptsize\sffamily] {HTTP/JSON y cookies} (api);
   \draw[connection] (types.south west) -- (web.north east);
   \draw[connection] (types.south east) -- (api.north west);
 
-  \coordinate[above=0.45cm of rabbitmq] (infra-hub);
-  \draw[semithick, draw=TFGAccent] (api.south) |- (infra-hub);
-  \fill[TFGAccent] (infra-hub) circle (1.3pt);
-  \draw[connection] (infra-hub) -- (postgres.north);
-  \draw[connection] (infra-hub) -- (rabbitmq.north);
-  \draw[connection] (infra-hub) -- (storage.north);
+  \coordinate (infra-hub) at (3.8,-0.78);
+  \draw[semithick, draw=TFGAccent] (api.south) -- (infra-hub);
+  \draw[bidirectional] (infra-hub) -- (postgres.north east);
+  \draw[bidirectional] (infra-hub) -- (storage.north east);
+  \draw[bidirectional] (infra-hub) -- (ai.north);
 
   \node[
     draw=TFGMuted,
@@ -75,4 +63,5 @@
     inner sep=10pt,
     label={[font=\scriptsize\sffamily\color{TFGMuted}]above:Monorepositorio Turborepo}
   ] {};
+
 \end{tikzpicture}

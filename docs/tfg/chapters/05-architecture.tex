@@ -1,33 +1,382 @@
 \chapter{Arquitectura del sistema}
 \label{chap:architecture}
 
+Este capítulo describe cómo se distribuyen las responsabilidades técnicas de
+LIA y cómo colaboran sus componentes. La arquitectura materializa el diseño
+funcional del \Cref{chap:analysis}, pero evita entrar todavía en el
+detalle de clases o fragmentos de código, que se reserva para el
+\Cref{chap:implementation}.
+
+La solución combina una aplicación de página única, una API modular y varios
+servicios de infraestructura. Las decisiones principales persiguen cuatro
+propiedades: separar la lógica de negocio de las tecnologías externas,
+mantener un contrato común entre cliente y servidor, aislar los datos de cada
+cuenta y permitir sustituir el proveedor de inteligencia artificial sin
+reescribir los casos de uso.
+
 \section{Visión general}
 
-La solución se organiza como un monorepositorio gestionado mediante
-Turborepo. En él se separan la aplicación web desarrollada con Nuxt 4 y Vue 3,
-la API implementada con NestJS y el paquete TypeScript que contiene los tipos
-compartidos. La API se comunica con PostgreSQL mediante MikroORM, utiliza
-RabbitMQ para la mensajería y emplea almacenamiento compatible con S3 para los
-adjuntos.
+La \Cref{fig:system-architecture} presenta la vista de componentes de mayor
+nivel. El navegador ejecuta una aplicación web desarrollada con Nuxt 4 y
+Vue 3. Esta aplicación consume mediante HTTP una API NestJS, responsable de la
+autenticación, la lógica de negocio y la coordinación de los módulos. Ambos
+proyectos comparten las definiciones de sus mensajes mediante un paquete
+TypeScript del mismo monorepositorio.
 
 \begin{figure}[htbp]
   \centering
   \resizebox{\textwidth}{!}{
     \input{figure-sources/tikz/system-architecture}
   }
-  \caption{Vista general de los componentes técnicos comprobados en el
-    repositorio.}
+  \caption{Vista general de los componentes técnicos de LIA.}
   \label{fig:system-architecture}
 \end{figure}
 
-La \Cref{fig:system-architecture} muestra únicamente tecnologías y relaciones
-generales respaldadas por la configuración actual del repositorio. La
-arquitectura interna de cada componente se desarrolla en las siguientes
-secciones.
+La API persiste los datos transaccionales en PostgreSQL, almacena los archivos
+en un servicio compatible con S3 y delega la generación estructurada en el
+proveedor configurado. La coordinación entre casos de uso se realiza mediante
+el \emph{EventBus} interno de NestJS CQRS. RabbitMQ forma parte del entorno
+local preparado, pero no actúa como transporte en la versión desarrollada; se
+muestra discontinuo para distinguir una posible evolución de una dependencia
+operativa.
+
+\section{Organización del monorepositorio}
+\label{sec:monorepo-architecture}
+
+El código se organiza como un espacio de trabajo de \texttt{pnpm} coordinado
+por Turborepo. La unidad de versionado contiene las dos aplicaciones y los
+paquetes compartidos, lo que permite aplicar en una misma revisión la
+evolución de la API, el cliente y sus contratos. Turborepo define las tareas de
+compilación, comprobación de tipos, análisis estático y pruebas, y reutiliza el
+grafo de dependencias para ejecutarlas en el orden adecuado.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Responsabilidades de las unidades del monorepositorio.}
+  \label{tab:monorepo-units}
+  \begin{tabular}{L{0.24\textwidth} L{0.68\textwidth}}
+    \toprule
+    \textbf{Unidad} & \textbf{Responsabilidad} \\
+    \midrule
+    \texttt{apps/api} & Exponer la API HTTP, ejecutar los casos de uso, aplicar las reglas de dominio y adaptar persistencia, almacenamiento, correo e IA. \\
+    \texttt{apps/web} & Proporcionar la interfaz SPA, gestionar la sesión del navegador y componer los recorridos de configuración y cualificación. \\
+    \texttt{packages/types} & Definir DTO, payloads y tipos de paginación consumidos en ambos extremos del contrato. \\
+    \texttt{typescript-config} & Centralizar las opciones estrictas de TypeScript utilizadas por los paquetes. \\
+    \texttt{eslint-config} & Reunir reglas comunes de estilo y calidad estática. \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+El paquete \texttt{@tfg/types} contiene TypeScript sin dependencias de NestJS,
+Nuxt ni MikroORM. Los DTO de respuesta de la API implementan sus tipos y los
+composables del frontend los consumen directamente. Esta frontera evita
+duplicar contratos, pero no comparte entidades de dominio: una oportunidad de
+la capa de dominio puede contener comportamiento y estados internos que no
+deben llegar al navegador. Las fechas se serializan como cadenas y los payloads
+de creación incluyen el identificador UUID generado por el cliente.
+
+Cada módulo de ambas aplicaciones expone además un archivo \texttt{index.ts}
+como API pública. Las reglas de ESLint impiden que otro módulo importe
+directamente componentes, manejadores o repositorios privados. La restricción
+convierte la encapsulación en una propiedad comprobable durante el análisis
+estático, no solo en una convención documental.
 
 \section{Arquitectura del backend}
+\label{sec:backend-architecture}
+
+\subsection{Módulos funcionales}
+
+La API se divide por capacidades de negocio y no por tipos técnicos globales.
+Los módulos de autenticación, pipelines, workflows, oportunidades, preguntas
+de control, campos personalizados, resúmenes y adjuntos mantienen sus propias
+capas. El módulo de oportunidades coordina el recorrido de cualificación y se
+relaciona con los catálogos y con la ejecución del workflow mediante las API
+públicas de esos módulos.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Módulos principales de la API y dependencias relevantes.}
+  \label{tab:backend-modules}
+  \begin{tabular}{L{0.22\textwidth} L{0.40\textwidth} L{0.29\textwidth}}
+    \toprule
+    \textbf{Módulo} & \textbf{Responsabilidad} & \textbf{Colaboraciones} \\
+    \midrule
+    Autenticación & Identidad, sesión, cuentas, miembros, invitaciones y roles. & PostgreSQL, correo y almacenamiento de avatares. \\
+    Pipelines & Definición del proceso comercial y sus estados ordenados. & Oportunidades. \\
+    Workflows & Definición reutilizable de pasos, decisiones y acciones. & Catálogos de cualificación. \\
+    Oportunidades & Cartera, filtros, estado, responsables y ejecución del proceso asignado. & Pipelines, workflows, cualificación, adjuntos e IA. \\
+    Cualificación & Plantillas e instancias de preguntas, campos y resúmenes. & Oportunidades, adjuntos e IA. \\
+    Adjuntos & Metadatos, carga, descarga y recuperación de documentos para el análisis. & Oportunidades y almacenamiento S3. \\
+    IA & Puerto de generación estructurada y selección del adaptador. & Google, API compatible con OpenAI o proveedor de pruebas. \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Algunos módulos presentan dependencias circulares propias del flujo: una
+oportunidad crea instancias de cualificación a partir del workflow y, cuando
+una instancia cambia, debe actualizar el estado de su acción. NestJS resuelve
+estos enlaces mediante referencias adelantadas, mientras que los servicios
+públicos limitan la superficie compartida. Esta solución mantiene los módulos
+separados, aunque evidencia que oportunidad, workflow y cualificación forman
+un único proceso de negocio estrechamente relacionado.
+
+\subsection{Capas y puertos}
+
+El backend adopta una arquitectura hexagonal. En este patrón, la aplicación
+define puertos para las conversaciones que necesita y los adaptadores traducen
+las tecnologías externas a esos puertos \cite{cockburn2005hexagonal}. En LIA,
+la capa de dominio contiene entidades, agregados, excepciones, eventos y
+abstracciones de repositorio. La capa de aplicación contiene comandos,
+consultas, manejadores y servicios que orquestan esos elementos. La
+infraestructura aporta controladores HTTP, entidades ORM, repositorios
+MikroORM y adaptadores de servicios externos.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/backend-hexagonal-architecture}
+  }
+  \caption{Capas, puertos y adaptadores del backend.}
+  \label{fig:backend-hexagonal}
+\end{figure}
+
+La dirección de dependencia de la \Cref{fig:backend-hexagonal} apunta hacia el
+interior. El dominio no importa NestJS, MikroORM ni el SDK de IA. Por ejemplo,
+el almacenamiento de adjuntos se expresa mediante un servicio abstracto y el
+adaptador de MinIO implementa sus operaciones; de forma análoga, los casos de
+uso dependen de un puerto de generación y no de Google u Ollama. Esta
+separación permite probar la lógica con repositorios o proveedores
+deterministas y sustituir una tecnología periférica sin alterar las reglas.
+
+\subsection{CQRS y eventos de dominio}
+
+Los controladores traducen cada petición de escritura a un comando y cada
+lectura a una consulta. El bus de CQRS entrega el mensaje a un manejador único,
+que obtiene las entidades necesarias mediante puertos de repositorio y guarda
+el resultado. NestJS presenta CQRS como una separación explícita de las
+operaciones de lectura y escritura y proporciona buses para comandos,
+consultas y eventos \cite{nestjsCqrs}.
+
+LIA no mantiene dos bases de datos ni dos modelos físicos independientes. La
+separación es lógica: comandos y consultas tienen responsabilidades distintas,
+pero utilizan PostgreSQL como fuente común. Esta adaptación evita la
+complejidad de sincronizar proyecciones separadas, al tiempo que mantiene casos
+de uso pequeños y rastreables.
+
+Los agregados registran eventos cuando se produce un cambio significativo. Una
+vez persistido el agregado, el manejador publica esos eventos en el
+\emph{EventBus} interno. Los manejadores de eventos encadenan acciones como la
+instanciación de un workflow, la solicitud de una generación o la actualización
+del estado de una acción. Esta coordinación desacopla el origen del cambio de
+sus consecuencias, pero se ejecuta dentro del proceso de la API: no proporciona
+la durabilidad, el reparto de carga ni la recuperación independiente que
+aportaría un intermediario externo.
+
+\subsection{Autenticación y aislamiento por cuenta}
+\label{subsec:account-isolation-architecture}
+
+La API aplica una guarda JWT de forma global y marca explícitamente las rutas
+públicas. Tras validar la sesión, el payload autenticado aporta tanto el
+identificador del usuario como el de la cuenta activa. Los controladores no
+aceptan el \texttt{accountId} desde el cuerpo de las operaciones ordinarias:
+lo incorporan a comandos, consultas y filtros a partir de la identidad
+validada.
+
+El aislamiento continúa en la persistencia. Las entidades funcionales guardan
+la cuenta propietaria y los repositorios combinan su identificador con el del
+recurso en búsquedas, modificaciones y borrados. Por tanto, conocer un UUID de
+otra cuenta no es suficiente para recuperar el registro. El cambio de cuenta
+comprueba la membresía y emite una sesión asociada al nuevo contexto. Esta
+defensa en varias capas reduce el riesgo de que una ruta nueva omita el filtro
+multiempresa.
+
 \section{Arquitectura del frontend}
-\section{Persistencia y mensajería}
+\label{sec:frontend-architecture}
+
+La aplicación web se configura como una SPA mediante \texttt{ssr: false}. Este
+modo ejecuta la interfaz en el navegador y resulta apropiado para aplicaciones
+interactivas de gestión que no dependen de la indexación pública
+\cite{nuxtRendering}. La API permanece como única autoridad de la lógica y los
+datos; el frontend conserva estado de interfaz, sesión y caché de consultas.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{0.96\textwidth}{!}{
+    \input{figure-sources/tikz/frontend-architecture}
+  }
+  \caption{Capas de composición y acceso a datos del frontend.}
+  \label{fig:frontend-architecture}
+\end{figure}
+
+Las páginas generadas por el sistema de rutas son deliberadamente finas:
+seleccionan el layout y componen componentes de los módulos. La lógica
+específica se agrupa por dominio en autenticación, pipelines, workflows,
+oportunidades, preguntas, campos y resúmenes. Los componentes compartidos, el
+cliente HTTP y el estado transversal se sitúan en el módulo común. Igual que
+en el backend, las importaciones externas deben atravesar el \emph{barrel}
+público de cada módulo.
+
+Las consultas remotas se gestionan con TanStack Query. Cada operación dispone
+de un composable que define la clave de caché, ejecuta la petición y, cuando una
+mutación termina, invalida los datos afectados. Pinia se reserva para estado
+global del navegador, principalmente la identidad y la cuenta activa. Esta
+separación evita copiar respuestas de la API a un almacén global y mantiene
+diferenciados el estado remoto y el estado de interfaz.
+
+El cliente HTTP común incorpora la URL de ejecución y envía las cookies de
+sesión. Si una petición recibe un error de autenticación, coordina una única
+renovación aunque existan varias solicitudes concurrentes, reintenta la
+operación original y redirige al acceso si la renovación falla. Los middleware
+de ruta impiden entrar en vistas privadas sin una sesión inicializada y evitan
+mostrar de nuevo el formulario de acceso a un usuario autenticado.
+
+\section{Persistencia de datos}
+\label{sec:persistence-architecture}
+
+PostgreSQL almacena usuarios, cuentas, membresías, pipelines, workflows,
+oportunidades, catálogos, instancias y estados de ejecución. MikroORM adapta
+estos registros al modelo de dominio. Cada módulo define una entidad ORM
+separada de su entidad de negocio y un repositorio que realiza la conversión en
+ambos sentidos. El descubrimiento por patrón incorpora automáticamente las
+entidades terminadas en \texttt{orm-entity}, y las migraciones versionan la
+evolución del esquema.
+
+La persistencia emplea borrado físico. Esta elección simplifica los filtros y
+es coherente con el alcance actual, pero obliga a validar las relaciones antes
+de eliminar y no conserva un historial recuperable por sí mismo. En los
+workflows se preservan, no obstante, las instancias y resultados necesarios
+para explicar la ejecución de cada oportunidad; las plantillas configurables
+no actúan como el resultado vivo de una licitación.
+
+PostgreSQL conserva los metadatos de un adjunto, pero no el binario. Esta
+separación evita introducir documentos potencialmente voluminosos en las
+transacciones de negocio y permite que el almacenamiento de objetos tenga su
+propio ciclo de vida.
+
+\section{Almacenamiento y contexto documental}
+\label{sec:attachment-architecture}
+
+El dominio de adjuntos depende de un puerto con cuatro capacidades: cargar,
+descargar, generar una URL temporal y borrar. El adaptador actual utiliza el
+cliente S3 de AWS y se conecta a MinIO durante el desarrollo local. La clave
+interna del objeto permanece en la API; el navegador recibe los metadatos
+necesarios y solicita una URL prefirmada cuando quiere descargarlo.
+
+La creación de un adjunto coordina dos recursos: el objeto binario y su
+registro en PostgreSQL. La eliminación retira ambos. Al no existir una
+transacción distribuida entre PostgreSQL y S3, un fallo intermedio debe
+tratarse explícitamente para evitar registros sin archivo u objetos huérfanos.
+Esta limitación se acepta en la arquitectura actual y se cubre con validación y
+pruebas de los manejadores.
+
+Cuando una operación de IA necesita documentación, un servicio de aplicación
+busca exclusivamente los adjuntos de la oportunidad y la cuenta activas,
+descarga sus buffers y construye documentos con nombre, tipo MIME y contenido.
+No se extrae ni persiste una versión textual intermedia. Como consecuencia, el
+adaptador configurado debe aceptar PDF como entrada; si no lo hace, la
+generación falla de forma visible y puede reintentarse o completarse
+manualmente.
+
 \section{Integración de inteligencia artificial}
-\section{Despliegue e infraestructura}
-\section{Decisiones arquitectónicas}
+\label{sec:ai-architecture}
+
+La integración de IA se concentra tras \texttt{AiGenerationService}. El puerto
+recibe un esquema Zod, un nombre de esquema, instrucciones de sistema, un
+\emph{prompt}, documentos opcionales y un límite de salida. Devuelve un valor
+ya validado junto con proveedor, modelo, duración y uso de tokens cuando el
+servicio externo proporciona esas métricas.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/ai-ports-adapters}
+  }
+  \caption{Puerto y adaptadores de generación estructurada.}
+  \label{fig:ai-ports-adapters}
+\end{figure}
+
+La factoría del módulo selecciona el adaptador a partir de variables de
+entorno. El adaptador de Google utiliza su proveedor específico y admite el
+envío directo de documentos. El adaptador compatible con OpenAI permite
+conectar Ollama en local u otro servicio que implemente esa API. Un tercer
+adaptador determinista se limita a pruebas y está bloqueado en producción. Los
+casos de uso no contienen condicionales dependientes de estas opciones.
+
+Las respuestas se solicitan con temperatura cero, un esquema de salida y un
+número máximo configurable de tokens y reintentos. El resultado nunca se
+considera una decisión autónoma: el caso de uso lo incorpora a una pregunta,
+campo, resumen o decisión de workflow que mantiene estado, evidencia y una
+ruta de revisión. Si el proveedor lanza un error o devuelve una salida no
+válida, se persiste un estado fallido y la interfaz permite reintentar o
+completar el trabajo manualmente.
+
+El adaptador ya devuelve proveedor, modelo, duración y tokens, pero estas
+métricas no se almacenan todavía como un registro histórico de uso. Por ello,
+la arquitectura soporta la futura comparación de proveedores, aunque el
+control de cuotas y la evaluación acumulada de coste y rendimiento permanecen
+pendientes.
+
+\section{Ejecución e infraestructura local}
+\label{sec:local-infrastructure}
+
+La configuración reproducible verificada es local. La aplicación web escucha
+por defecto en el puerto 3001 y la API en el 3000. Docker Compose levanta
+PostgreSQL, MinIO y MailHog; también define RabbitMQ y un perfil opcional para
+Ollama. Las variables de entorno separan credenciales, URLs, proveedor, modelo
+y límites del código fuente.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{0.96\textwidth}{!}{
+    \input{figure-sources/tikz/local-infrastructure}
+  }
+  \caption{Topología del entorno local de desarrollo.}
+  \label{fig:local-infrastructure}
+\end{figure}
+
+MailHog captura en desarrollo los mensajes de invitación sin enviarlos a
+destinatarios reales. MinIO proporciona una API compatible con S3 y crea el
+contenedor de objetos utilizado por la aplicación. Ollama puede iniciarse con
+un perfil separado porque la inferencia consume recursos diferentes a los de
+la API. Si se elige Google, la llamada sale del entorno local hacia el servicio
+externo configurado.
+
+No se ha validado un despliegue de producción. En consecuencia, la
+\Cref{fig:local-infrastructure} no presupone un proveedor de alojamiento, un
+proxy inverso, certificados, copias de seguridad ni escalado horizontal. Esos
+elementos deberán documentarse únicamente si se implementa y verifica un
+entorno final.
+
+\section{Decisiones y compromisos arquitectónicos}
+\label{sec:architecture-decisions}
+
+La \Cref{tab:architecture-decisions} resume las decisiones que condicionan la
+solución. Las alternativas se incluyen solo cuando el repositorio conserva una
+elección explícita o una evolución prevista.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Decisiones arquitectónicas y compromisos asociados.}
+  \label{tab:architecture-decisions}
+  \begin{tabular}{L{0.23\textwidth} L{0.32\textwidth} L{0.36\textwidth}}
+    \toprule
+    \textbf{Decisión} & \textbf{Beneficio buscado} & \textbf{Compromiso o límite} \\
+    \midrule
+    Monorepositorio con contratos compartidos & Evolución coordinada de cliente, API y tipos. & Aumenta el alcance de las comprobaciones y exige respetar límites entre paquetes. \\
+    Backend hexagonal y modular & Mantener las reglas independientes del ORM y de servicios externos. & Introduce más puertos, adaptadores y conversiones que una estructura CRUD directa. \\
+    CQRS lógico sobre una base común & Casos de uso explícitos y separación entre lectura y escritura. & No ofrece por sí solo escalado independiente ni proyecciones especializadas. \\
+    Eventos internos de NestJS & Desacoplar consecuencias dentro de una única API sin infraestructura adicional. & No son una cola durable; RabbitMQ queda como evolución si se necesita distribución o recuperación. \\
+    SPA sin renderizado de servidor & Simplificar una interfaz privada y altamente interactiva. & La primera carga depende del JavaScript y no se optimiza para indexación pública. \\
+    PostgreSQL y S3 separados & Adecuar datos transaccionales y binarios a almacenamientos distintos. & No existe una transacción atómica entre ambos servicios. \\
+    IA mediante un puerto propio & Cambiar proveedor y probar sin llamadas reales. & Las diferencias de capacidad entre modelos, especialmente con PDF, siguen requiriendo validación. \\
+    Contexto PDF sin extracción persistida & Evitar duplicar contenido y conservar el documento original. & El proveedor debe admitir archivos y cada generación vuelve a transferir el contexto necesario. \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+La arquitectura resultante prioriza la trazabilidad y la capacidad de
+sustitución frente a una infraestructura distribuida prematura. El núcleo se
+ejecuta como una API modular y conserva puntos de extensión concretos para
+mensajería durable, almacenamiento S3 gestionado y nuevos proveedores de IA.
+El capítulo siguiente describe cómo estas fronteras se materializan en los
+flujos de implementación más relevantes.

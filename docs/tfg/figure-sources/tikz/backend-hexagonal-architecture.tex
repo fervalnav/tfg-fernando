@@ -1,0 +1,50 @@
+\begin{tikzpicture}[
+  every node/.style={font=\small\sffamily},
+  box/.style={
+    draw=TFGBlue,
+    rounded corners=2pt,
+    align=center,
+    inner sep=6pt,
+    minimum height=1cm
+  },
+  adapter/.style={box, fill=white, text width=3.1cm},
+  application/.style={box, fill=TFGLightBlue, text width=4.1cm},
+  domainbox/.style={box, fill=TFGBlue, text=white, text width=4.1cm},
+  dependency/.style={-{Latex[length=2.5mm]}, semithick, draw=TFGAccent},
+  port/.style={-{Latex[length=2.2mm]}, dashed, draw=TFGMuted}
+]
+  \node[domainbox] (domain) at (0,0) {
+    \textbf{Dominio}\\
+    agregados, entidades, reglas, eventos y puertos
+  };
+  \node[application] (application) at (0,2.05) {
+    \textbf{Aplicación}\\
+    comandos, consultas, manejadores y servicios
+  };
+  \node[adapter] (input) at (-5.05,2.05) {
+    \textbf{Adaptadores de entrada}\\
+    controladores REST, validación y guardas
+  };
+  \node[adapter] (persistence) at (5.05,2.95) {
+    \textbf{Persistencia}\\
+    repositorios MikroORM
+  };
+  \node[adapter] (services) at (5.05,1.15) {
+    \textbf{Servicios externos}\\
+    IA, S3/MinIO y correo
+  };
+
+  \draw[dependency] (input) -- node[above, font=\scriptsize\sffamily] {buses CQRS} (application);
+  \draw[dependency] (application) -- (domain);
+  \draw[port] (persistence.west) -- (application.east);
+  \draw[port] (services.west) -- (domain.east);
+
+  \node[
+    draw=TFGMuted,
+    dashed,
+    rounded corners=3pt,
+    fit=(application)(domain),
+    inner sep=10pt,
+    label={[font=\scriptsize\sffamily\color{TFGMuted}]below:Independiente de HTTP, ORM y proveedor de IA}
+  ] {};
+\end{tikzpicture}
