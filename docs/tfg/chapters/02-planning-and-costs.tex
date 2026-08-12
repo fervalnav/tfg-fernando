@@ -1,8 +1,223 @@
 \chapter{Planificación y costes}
 \label{chap:planning}
 
+Este capítulo presenta la metodología seguida durante el desarrollo de LIA,
+la organización temporal del trabajo, la distribución de la dedicación y la
+valoración económica del proyecto. La planificación se articula mediante
+iteraciones que producen incrementos funcionales y permiten revisar el alcance
+antes de abordar el siguiente bloque.
+
 \section{Metodología de trabajo}
-\section{Planificación por sprints}
-\section{Desviaciones de la planificación}
+
+El plan de trabajo sigue Scrum, adaptado al carácter individual del TFG. El
+\emph{product backlog} reúne las funcionalidades y tareas técnicas, ordenadas
+según su valor y sus dependencias. Cada sprint parte de un conjunto acotado de
+elementos y de un objetivo funcional. Durante la iteración se implementan,
+prueban y documentan las tareas seleccionadas; al cierre se revisa el incremento
+obtenido y se actualiza la prioridad del trabajo pendiente.
+
+La adaptación mantiene los principales artefactos de Scrum: \emph{product
+backlog}, \emph{sprint backlog} e incremento. El autor asumió la ejecución
+técnica y el seguimiento de las iteraciones. Este enfoque facilita una
+construcción incremental: primero la plataforma y la identidad; después la
+configuración del dominio; y, finalmente, la gestión de oportunidades, la
+cualificación y la integración de inteligencia artificial.
+
+La memoria se desarrolla mediante iteraciones específicas, identificadas como
+M0, M1 y sucesivas. De este modo, cada bloque documental se redacta y revisa
+cuando las funcionalidades que describe han alcanzado un estado estable.
+
+\section{Planificación del núcleo funcional}
+
+El plan técnico se divide en diez sprints de dos semanas. La
+\Cref{tab:core-sprints} resume sus objetivos y el incremento previsto al cierre
+de cada iteración. Los módulos opcionales de organizaciones, contactos y
+comentarios quedaron fuera del alcance del núcleo para concentrar el esfuerzo
+en el análisis de licitaciones.
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Sprints del núcleo funcional de LIA.}
+  \label{tab:core-sprints}
+  \begin{tabular}{@{}clp{8.4cm}@{}}
+    \toprule
+    \textbf{Sprint} & \textbf{Área} & \textbf{Resultado principal} \\
+    \midrule
+    0 & Plataforma & Monorepositorio, aplicaciones, persistencia e infraestructura local. \\
+    1 & Identidad & Autenticación, cuentas, miembros y aislamiento multiempresa. \\
+    2 & Pipelines & Pipelines y estados configurables. \\
+    3 & Catálogo & Plantillas de preguntas, campos personalizados y resúmenes. \\
+    4 & Workflows & Definición de flujos, pasos y acciones tipadas. \\
+    5 & Oportunidades & Listado, kanban, filtros y transiciones de estado. \\
+    6 & Ejecución & Detalle de oportunidad y acciones del workflow en ejecución. \\
+    7 & Cualificación & Instancias de preguntas, campos y resúmenes por oportunidad. \\
+    8 & IA generativa & Generación estructurada, estados, errores y reintentos. \\
+    9 & Documentos & Adjuntos PDF en MinIO y contexto binario para la IA. \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+La \Cref{fig:core-sprint-plan} representa la secuencia temporal del proyecto.
+Las semanas son relativas al comienzo del desarrollo. Este formato permite
+mostrar las dependencias y la duración prevista sin confundir el cronograma con
+un registro diario de actividad.
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/core-sprint-plan}
+  }
+  \caption{Plan de los diez sprints del núcleo funcional.}
+  \label{fig:core-sprint-plan}
+\end{figure}
+
+\section{Planificación del esfuerzo}
+
+La dedicación total del proyecto se establece en 320 horas e incluye análisis,
+diseño, desarrollo, pruebas y elaboración de la memoria. La
+\Cref{tab:effort-breakdown} distribuye el esfuerzo por bloques de trabajo. Las
+pruebas realizadas dentro de cada sprint se incluyen en el bloque funcional
+correspondiente; la partida específica de calidad agrupa la infraestructura
+transversal de pruebas, los casos de extremo a extremo y las campañas finales
+de validación.
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Distribución de las 320 horas del proyecto.}
+  \label{tab:effort-breakdown}
+  \begin{tabular}{@{}p{9.2cm}r@{}}
+    \toprule
+    \textbf{Bloque de trabajo} & \textbf{Horas} \\
+    \midrule
+    Análisis del problema, alcance, planificación y diseño & 28 \\
+    Plataforma, monorepositorio e infraestructura local & 18 \\
+    Autenticación, cuentas y aislamiento multiempresa & 28 \\
+    Pipelines, catálogo y definición de workflows & 55 \\
+    Oportunidades, ejecución de workflows y cualificación & 58 \\
+    Integración de IA generativa, adjuntos y almacenamiento & 48 \\
+    Pruebas, refactorizaciones y validación de calidad & 47 \\
+    Documentación técnica, diagramas y memoria académica & 38 \\
+    \midrule
+    \textbf{Total} & \textbf{320} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+La mayor dedicación se concentra en la configuración de workflows, la gestión
+de oportunidades y la cualificación, ya que estos bloques forman la ruta
+principal del producto. La integración de IA y documentos también requiere una
+partida relevante por combinar proveedores externos, procesamiento asíncrono y
+almacenamiento de ficheros.
+
+\section{Incidencias y ajustes de la planificación}
+
+Durante el desarrollo se detectaron incidencias que obligaron a reordenar el
+backlog sin alterar el objetivo general del proyecto. Los ajustes más relevantes
+fueron los siguientes:
+
+\begin{itemize}
+  \item La configuración del entorno web requirió habilitar la API experimental
+        de entornos de Vite para mantener estable el servidor de desarrollo con
+        Nuxt en modo SPA.
+  \item Las pruebas E2E de la API necesitaron una configuración específica de
+        resolución de alias. La corrección se incorporó a la configuración de
+        Jest antes de ampliar los escenarios automatizados.
+  \item El ciclo de eventos de dominio se reforzó para publicar los eventos
+        después de persistir los cambios y retirarlos del agregado mediante una
+        operación explícita. Este ajuste evitó publicaciones duplicadas y mejoró
+        la consistencia del workflow en ejecución.
+  \item La integración de adjuntos se priorizó junto con la IA generativa, dado
+        que los documentos constituyen el contexto de entrada de los análisis.
+  \item Los módulos opcionales se mantuvieron fuera del núcleo para reservar la
+        dedicación disponible a la cualificación de licitaciones, las pruebas y
+        la memoria.
+\end{itemize}
+
+Estos ajustes se absorbieron dentro de las 320 horas mediante la revisión del
+backlog y la priorización de la ruta crítica. Las funcionalidades opcionales se
+conservan como posibles ampliaciones y no condicionan la finalización del
+núcleo funcional.
+
 \section{Presupuesto}
-\section{Análisis de costes}
+
+El presupuesto valora los recursos necesarios para realizar el TFG. Se separan
+el coste de personal, el equipo informático y los servicios utilizados durante
+el desarrollo.
+
+\subsection{Coste de personal}
+
+Para valorar el trabajo se adopta un coste medio de 25,67 euros por hora para el
+perfil de desarrollador de software y una cuota empresarial del 29,9\,\%. La
+tarifa se basa en el informe sobre perfiles profesionales informáticos de la
+Junta de Andalucía \cite{juntaPerfilesInformaticos2018}.
+
+El coste bruto asociado a las 320 horas es:
+
+\begin{equation}
+  C_{\text{bruto}} = 320 \times 25{,}67 = 8\,214{,}40~\text{euros}.
+\end{equation}
+
+La cuota empresarial asciende a:
+
+\begin{equation}
+  C_{\text{social}} = 8\,214{,}40 \times 0{,}299 = 2\,456{,}11~\text{euros}.
+\end{equation}
+
+Por tanto, el coste total de personal es de 10\,670,51 euros, como se resume en
+la \Cref{tab:personnel-cost}.
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Coste de personal del proyecto.}
+  \label{tab:personnel-cost}
+  \begin{tabular}{@{}lr@{}}
+    \toprule
+    \textbf{Concepto} & \textbf{Coste} \\
+    \midrule
+    Remuneración bruta & 8\,214,40 euros \\
+    Cuota empresarial (29,9\,\%) & 2\,456,11 euros \\
+    \midrule
+    \textbf{Total de personal} & \textbf{10\,670,51 euros} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Hardware y servicios}
+
+El desarrollo se realizó con un MacBook Pro equipado con chip M4 Pro. Para
+imputar su coste al proyecto se aplicará la amortización correspondiente al
+periodo de uso, a partir del precio y la fecha reales de adquisición. La tabla
+de amortización simplificada de la Agencia Tributaria establece para los
+equipos de tratamiento de la información un coeficiente lineal máximo del
+26\,\% y un periodo máximo de diez años \cite{aeatAmortizacion}.
+
+La aplicación se ejecutó en un entorno local durante el periodo descrito, por lo
+que no se imputa actualmente ningún coste de alojamiento. Si se realiza un
+despliegue antes de la entrega, su proveedor, periodo y coste real se añadirán
+al presupuesto final. Del mismo modo, los servicios de IA y las licencias de
+pago se contabilizarán por su consumo efectivo, sin asignar un coste ficticio a
+planes gratuitos.
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Estado de los costes de hardware y servicios.}
+  \label{tab:hardware-services-cost}
+  \begin{tabular}{@{}p{3.5cm}p{6.6cm}p{2.7cm}@{}}
+    \toprule
+    \textbf{Concepto} & \textbf{Criterio} & \textbf{Estado} \\
+    \midrule
+    MacBook Pro M4 Pro & Amortización según precio, fecha de adquisición y periodo de uso. & Por completar \\
+    IA generativa & Consumo real por proveedor y modelo durante desarrollo y evaluación. & Por completar \\
+    Alojamiento & Sin despliegue durante el periodo descrito. & No imputado \\
+    Licencias & Herramientas de pago utilizadas específicamente para el proyecto. & Por completar \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Con los datos disponibles, el coste cuantificado asciende a 10\,670,51 euros
+correspondientes al personal. El total definitivo se cerrará al incorporar la
+amortización del equipo y, cuando proceda, los consumos y servicios confirmados.

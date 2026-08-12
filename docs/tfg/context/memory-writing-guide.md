@@ -15,6 +15,9 @@ referencia facilitadas por el autor:
 - `docs/refs/TFG__José_Luis_ENTREGA___Premiun.pdf` (81 páginas).
 - `docs/refs/example.tex`, usado como referencia adicional de estilo y formato.
 
+El análisis específico del resumen y del capítulo de introducción se conserva
+en `context/reference-m1-analysis.md`.
+
 No se debe copiar texto, figuras, resultados ni decisiones de estas memorias.
 Se utilizan exclusivamente para identificar patrones de organización y
 profundidad.
@@ -219,10 +222,10 @@ Codex debe aplicar el siguiente orden:
 6. Memorias de referencia solo para estructura y nivel de detalle.
 
 Cuando dos fuentes se contradigan, se detiene la afirmación y se solicita una
-decisión. Existe una discrepancia abierta: la propuesta registrada centra LIA
-en licitaciones públicas, mientras que una versión del documento de alcance las
-declara fuera del TFG. No se puede cerrar introducción, requisitos ni
-conclusiones hasta resolverla.
+decisión. La discrepancia histórica sobre las licitaciones se resolvió en la
+iteración M0: forman parte central del TFG, mientras que su descubrimiento o
+importación automática queda fuera del alcance. El detalle verificable se
+mantiene en `context/scope-evidence-inventory.md`.
 
 ## Reglas de redacción
 
@@ -239,6 +242,35 @@ conclusiones hasta resolverla.
   nombres de clientes ni documentos confidenciales.
 - Evitar lenguaje promocional y afirmaciones absolutas sobre la IA.
 - No mencionar ni reproducir código interno de Tendios.
+- Antes de fijar una decisión documental relevante, Codex debe presentar la
+  cuestión al autor y esperar su confirmación. Esta regla incluye fechas del
+  proyecto, ceremonias y roles de la metodología, incidencias, distribución de
+  esfuerzo, criterios de presupuesto, actores, alcance y resultados de
+  evaluación.
+- El repositorio y las memorias de referencia pueden aportar evidencias y
+  alternativas, pero no sustituyen la confirmación del autor cuando una
+  decisión admita varias interpretaciones razonables.
+
+### Uso interno de las memorias modelo
+
+Las memorias conservadas en `docs/refs` se utilizan exclusivamente como apoyo
+interno para comprender la estructura, el nivel de detalle y el estilo
+académico esperado. Su consulta nunca debe hacerse visible en el documento
+entregable.
+
+- No mencionar en capítulos, preliminares, anexos, títulos, pies de figura ni
+  tablas que LIA se basa, se guía o toma como referencia otros TFG.
+- No incluir las memorias modelo en la bibliografía ni citarlas para justificar
+  decisiones del proyecto.
+- No nombrar a sus autores, títulos o proyectos en el texto de la memoria.
+- Cuando una memoria modelo conduzca a un dato externo, localizar y citar la
+  fuente original, primaria u oficial que respalda ese dato.
+- Usar los patrones observados únicamente para decidir la organización y la
+  profundidad del contenido; toda afirmación sobre LIA debe proceder del autor,
+  del sistema comprobado o de una fuente externa legítima.
+- Antes de cerrar cada iteración, buscar expresiones como «memoria de
+  referencia», «otro TFG», «proyecto de referencia» o «siguiendo el ejemplo» en
+  todas las fuentes LaTeX publicables y eliminarlas.
 
 ## Criterio de cierre de cada iteración
 

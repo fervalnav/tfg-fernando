@@ -1,6 +1,6 @@
-# TFG — Plataforma de Gestión de Oportunidades Comerciales
+# LIA — Integración de IA para análisis automático de licitaciones
 
-Plataforma web SaaS B2B para gestión de oportunidades comerciales con CRM, pipelines configurables y workflows automatizados con IA.
+Plataforma web multiempresa para gestionar y cualificar licitaciones públicas como oportunidades comerciales mediante pipelines, workflows configurables, documentos PDF e inteligencia artificial generativa.
 
 Monorepo Turborepo con NestJS (backend) + Nuxt 4 SPA (frontend). Arquitectura Hexagonal + DDD + CQRS.
 
@@ -10,9 +10,9 @@ Monorepo Turborepo con NestJS (backend) + Nuxt 4 SPA (frontend). Arquitectura He
 |------|-----------|
 | Backend | NestJS 11, MikroORM 6, PostgreSQL |
 | Frontend | Nuxt 4 SPA, Vue 3, Pinia, TanStack Query |
-| Mensajería | RabbitMQ |
+| Coordinación asíncrona | Eventos internos de NestJS CQRS |
 | Almacenamiento | AWS S3 (MinIO en local) |
-| IA | Vercel AI SDK, OpenAI |
+| IA | Vercel AI SDK, Google Generative AI y proveedores compatibles con OpenAI/Ollama |
 | Monorepo | Turborepo, pnpm workspaces |
 
 ## Estructura
@@ -84,13 +84,14 @@ curl http://localhost:3000/api/health
 - **Pipelines** — Procesos de venta con estados configurables, vista kanban
 - **Workflows** — Pasos y acciones que guían la ejecución de una oportunidad, con auto-ejecución por IA
 - **Oportunidades** — Núcleo de la plataforma; vistas kanban, listado y detalle
-- **CRM** — Organizaciones y contactos vinculados a oportunidades
 - **Custom Fields** — Campos personalizados por cuenta, con relleno automático por IA
 - **Control Questions** — Preguntas de verificación con respuesta manual o por IA
 - **Summaries** — Resúmenes generados por IA o editables manualmente
-- **Attachments** — Archivos vinculados a oportunidades, almacenados en S3
-- **Tasks** — Tareas con prioridad y asignación de usuarios
-- **Comments** — Comentarios con threading y menciones
+- **Attachments** — Documentos PDF vinculados a oportunidades, almacenados en S3/MinIO y utilizados como contexto de IA
+
+La importación automática de licitaciones, el CRM de organizaciones y
+contactos, las tareas, los comentarios, las notificaciones y la exportación a
+PDF no forman parte del núcleo implementado.
 
 ## Arquitectura
 

@@ -15,18 +15,21 @@
 \usepackage{amssymb}
 \usepackage{array}
 \usepackage{booktabs}
+\usepackage{longtable}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{xcolor}
 \usepackage{tikz}
 \usepackage{listings}
-\usepackage{apacite}
 \usepackage[hidelinks]{hyperref}
+\usepackage{apacite}
 \usepackage[nameinlink,noabbrev]{cleveref}
 
 \usetikzlibrary{arrows.meta,fit,positioning}
 
 \graphicspath{{assets/}{figures/}}
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 \definecolor{TFGBlue}{HTML}{17324D}
 \definecolor{TFGAccent}{HTML}{2F80ED}

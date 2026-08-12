@@ -14,6 +14,9 @@ requisitos y evidencias.
 
 ## Iteración M0 - Alcance, fuentes e inventario de evidencias
 
+**Estado:** completada el 6 de agosto de 2026. El resultado se conserva en
+`context/scope-evidence-inventory.md`.
+
 ### Objetivo
 
 Crear una base fiable para que los capítulos posteriores no se contradigan.
@@ -21,7 +24,8 @@ Crear una base fiable para que los capítulos posteriores no se contradigan.
 ### Trabajo
 
 - Resolver la discrepancia sobre si las licitaciones públicas forman parte del
-  alcance implementado del TFG.
+  alcance implementado del TFG. Resuelto: constituyen el dominio central; su
+  descubrimiento o importación automática queda excluido.
 - Sincronizar el estado real de los sprints 8 y 9 con el repositorio.
 - Confirmar que los sprints opcionales 10 y 11 quedan fuera del núcleo.
 - Crear una matriz de funcionalidades: implementada, parcial, futura o fuera de
@@ -36,6 +40,10 @@ Crear una base fiable para que los capítulos posteriores no se contradigan.
 Alcance congelado, fuentes jerarquizadas y lista de preguntas abiertas.
 
 ## Iteración M1 - Contexto, motivación y objetivos
+
+**Estado:** completada el 6 de agosto de 2026. El análisis de las memorias de
+referencia se conserva en `context/reference-m1-analysis.md`; el resumen y el
+abstract permanecen deliberadamente provisionales hasta la iteración M8.
 
 ### Capítulos
 
@@ -57,6 +65,12 @@ provisional hasta conocer los resultados finales.
 
 ## Iteración M2 - Planificación, esfuerzo y costes
 
+**Estado:** en curso. La metodología Scrum, el plan de diez sprints, la
+distribución de 320 horas y el coste de personal están redactados. La
+valoración económica queda pendiente de completar con el precio y la fecha de
+adquisición del MacBook Pro M4 Pro y con los servicios de pago realmente
+utilizados.
+
 ### Capítulos
 
 - Capítulo 2: planificación y costes.
@@ -68,7 +82,7 @@ provisional hasta conocer los resultados finales.
 - Preparar cronograma o Gantt.
 - Distribuir con el autor las 320 horas totales entre desarrollo, pruebas,
   memoria y defensa.
-- Distinguir estimación inicial, esfuerzo reconstruido y desviación.
+- Documentar incidencias y ajustes reales de la planificación.
 - Calcular costes solo con precios, amortizaciones y proveedores confirmados.
 
 ### Dependencias
@@ -76,6 +90,12 @@ provisional hasta conocer los resultados finales.
 Estado real de los sprints y decisiones de alcance cerradas en M0.
 
 ## Iteración M3 - Requisitos y trazabilidad
+
+**Estado:** completada el 12 de agosto de 2026. El catálogo de actores, requisitos funcionales, requisitos
+de información, reglas de negocio y requisitos no funcionales está redactado.
+La trazabilidad identifica tres huecos: autorización administrativa por rol,
+evaluación documental de solvencia y persistencia y comparación de métricas de
+IA.
 
 ### Capítulos
 
@@ -89,6 +109,15 @@ Estado real de los sprints y decisiones de alcance cerradas en M0.
 - Relacionar los objetivos registrados con los requisitos.
 - Construir la matriz objetivo-requisito-módulo-prueba.
 - Identificar requisitos sin implementación o sin prueba.
+
+### Backlog técnico detectado
+
+1. Restringir a `ADMIN` las invitaciones, cambios de rol y eliminaciones de
+   miembros, y añadir pruebas E2E para `ADMIN` y `MEMBER`.
+2. Ejecutar el banco de evaluación de solvencia con documentos y respuestas
+   esperadas definidos previamente.
+3. Persistir proveedor, modelo, duración, tokens y coste de las generaciones, y
+   ejecutar la comparación de calidad, latencia y coste.
 
 ### Salida
 
@@ -238,12 +267,10 @@ de navegador.
 
 ### Prioridad crítica para defender el núcleo
 
-1. **Resolver alcance y documentación contradictoria.** La propuesta registrada
-   y el documento de alcance no pueden describir proyectos distintos.
-2. **Completar la evaluación de IA.** Seleccionar documentos permitidos, fijar
+1. **Completar la evaluación de IA.** Seleccionar documentos permitidos, fijar
    respuestas esperadas y ejecutar la rúbrica definida para medir calidad,
    repetibilidad, fallos, latencia y coste.
-3. **Confirmar la CI publicada.** Repetir el workflow hasta obtener una
+2. **Confirmar la CI publicada.** Repetir el workflow hasta obtener una
    ejecución completa; la cancelación por falta de runner no valida ni invalida
    el código.
 
@@ -277,8 +304,9 @@ de navegador.
 
 ## Orden recomendado inmediato
 
-1. Publicar la tanda final de testing y confirmar una ejecución completa de CI.
-2. Ejecutar M0 y cerrar alcance.
-3. Crear el catálogo de requisitos de M3 en paralelo con M1 y M2.
+1. Confirmar una ejecución completa de CI cuando GitHub asigne un runner.
+2. Ejecutar M1 y redactar el contexto, la motivación y los objetivos con fuentes
+   verificadas.
+3. Crear el catálogo de requisitos de M3 en paralelo con M2.
 4. Redactar M4-M5 con la evidencia ya estable.
 5. Ejecutar la evaluación experimental de IA y cerrar M6-M8.
