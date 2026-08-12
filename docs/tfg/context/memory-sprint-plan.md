@@ -155,6 +155,11 @@ Conjunto pequeño de diagramas legibles y coherentes con el código.
 
 ## Iteración M5 - Arquitectura e implementación
 
+**Estado:** en curso. El capítulo 5 documenta la vista de componentes, el
+monorepositorio, las arquitecturas del backend y el frontend, la persistencia,
+los adjuntos, la integración de IA y la topología local verificada. La
+iteración continuará con el capítulo 6 de implementación.
+
 ### Capítulos
 
 - Capítulo 5: arquitectura.

@@ -1,0 +1,42 @@
+\begin{tikzpicture}[
+  every node/.style={font=\small\sffamily},
+  service/.style={
+    draw=TFGBlue,
+    rounded corners=2pt,
+    fill=TFGLightBlue,
+    text width=3cm,
+    minimum height=1cm,
+    align=center,
+    inner sep=6pt
+  },
+  container/.style={service, fill=white},
+  optional/.style={container, draw=TFGMuted, dashed, text=TFGMuted},
+  connection/.style={{Latex[length=2.3mm]}-{Latex[length=2.3mm]}, semithick, draw=TFGAccent},
+  future/.style={-{Latex[length=2.2mm]}, dashed, draw=TFGMuted}
+]
+  \node[service] (browser) at (-5.1,2.25) {\textbf{Navegador}};
+  \node[service] (web) at (-1.7,2.25) {\textbf{Web}\\Nuxt, puerto 3001};
+  \node[service] (api) at (2.1,2.25) {\textbf{API}\\NestJS, puerto 3000};
+
+  \node[container] (postgres) at (-3.8,0) {\textbf{PostgreSQL}\\puerto 5432};
+  \node[container] (minio) at (0,0) {\textbf{MinIO}\\API 9000, consola 9001};
+  \node[container] (mailhog) at (3.8,0) {\textbf{MailHog}\\SMTP 1025, UI 8025};
+  \node[optional] (ollama) at (0,-2.1) {\textbf{Ollama opcional}\\puerto 11434};
+  \node[optional] (rabbit) at (3.8,-2.1) {\textbf{RabbitMQ}\\disponible, sin consumidor};
+
+  \draw[connection] (browser) -- (web);
+  \draw[connection] (web) -- (api);
+  \draw[connection] (api) -- (postgres);
+  \draw[connection] (api) -- (minio);
+  \draw[connection] (api) -- (mailhog);
+  \draw[future] (api.south) -- (ollama.north east);
+
+  \node[
+    draw=TFGMuted,
+    dashed,
+    rounded corners=3pt,
+    fit=(postgres)(minio)(mailhog)(ollama)(rabbit),
+    inner sep=9pt,
+    label={[font=\scriptsize\sffamily\color{TFGMuted}]below:Servicios reproducibles mediante Docker Compose}
+  ] {};
+\end{tikzpicture}

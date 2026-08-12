@@ -1,0 +1,52 @@
+\begin{tikzpicture}[
+  every node/.style={font=\small\sffamily},
+  box/.style={
+    draw=TFGBlue,
+    rounded corners=2pt,
+    fill=TFGLightBlue,
+    text width=3.25cm,
+    minimum height=1cm,
+    align=center,
+    inner sep=6pt
+  },
+  external/.style={box, fill=white},
+  port/.style={box, fill=TFGBlue, text=white},
+  flow/.style={-{Latex[length=2.5mm]}, semithick, draw=TFGAccent},
+  optional/.style={-{Latex[length=2.2mm]}, dashed, draw=TFGMuted}
+]
+  \node[box] (case) at (-5.2,1.3) {
+    \textbf{Caso de uso}\\
+    pregunta, campo, resumen o decisión
+  };
+  \node[external] (documents) at (-5.2,-1.3) {
+    \textbf{Contexto}\\
+    oportunidad y buffers PDF
+  };
+  \node[port] (port) at (-0.9,0) {
+    \textbf{Puerto de generación}\\
+    esquema, instrucciones y documentos
+  };
+  \node[box] (selection) at (3.25,0) {
+    \textbf{Selección por entorno}\\
+    proveedor, modelo, límites y reintentos
+  };
+  \node[external] (google) at (7.25,1.65) {Google Generative AI};
+  \node[external] (compatible) at (7.25,0) {API compatible con OpenAI / Ollama};
+  \node[external, draw=TFGMuted, dashed, text=TFGMuted] (fake) at (7.25,-1.65) {Proveedor determinista de pruebas};
+
+  \draw[flow] (case) -- (port);
+  \draw[flow] (documents) -- (port);
+  \draw[flow] (port) -- (selection);
+  \draw[flow] (selection) -- (google);
+  \draw[flow] (selection) -- (compatible);
+  \draw[optional] (selection) -- (fake);
+
+  \node[
+    draw=TFGMuted,
+    dashed,
+    rounded corners=3pt,
+    fit=(port)(selection),
+    inner sep=9pt,
+    label={[font=\scriptsize\sffamily\color{TFGMuted}]below:Salida estructurada validada y métricas devueltas al caso de uso}
+  ] {};
+\end{tikzpicture}
