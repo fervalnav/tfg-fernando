@@ -1,7 +1,470 @@
-\chapter{Análisis del sistema}
+\chapter{Análisis y diseño del sistema}
 \label{chap:analysis}
 
-\section{Modelo de dominio}
-\section{Casos de uso}
+Este capítulo transforma los requisitos del \Cref{chap:requirements} en una
+propuesta funcional anterior a las decisiones de implementación. Su finalidad
+es definir qué conceptos forman el sistema, cómo interactúan los usuarios con
+ellos, qué secuencias deben soportarse y cómo se organiza la navegación. Las
+tecnologías y los patrones empleados para materializar este diseño se abordan
+en el \Cref{chap:architecture}.
+
+Los prototipos incluidos son wireframes de baja fidelidad. Representan la
+distribución y la jerarquía esperadas de cada vista, pero no fijan colores,
+tipografías ni detalles visuales definitivos. Por este motivo no se utilizan
+capturas de la aplicación: estas se reservan para el manual de usuario, donde
+se documenta el resultado final.
+
+\section{Modelo conceptual del dominio}
+
+El núcleo del sistema está formado por la cuenta, las oportunidades y los
+procesos configurables con los que se analizan. Una cuenta agrupa usuarios,
+pipelines, workflows y catálogos reutilizables. Cada oportunidad se sitúa en un
+estado de un pipeline, puede tener responsables y reúne tanto la documentación
+de la licitación como los elementos que permiten cualificarla.
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/domain-model-overview}
+  }
+  \caption{Modelo conceptual general de LIA.}
+  \label{fig:domain-model-overview}
+\end{figure}
+
+La \Cref{fig:domain-model-overview} distingue la definición de un proceso de su
+aplicación a una oportunidad concreta. El pipeline determina el estado
+comercial, mientras que el workflow establece la secuencia de análisis. Esta
+separación permite que dos oportunidades recorran el mismo proceso sin
+compartir respuestas, resultados ni documentos.
+
+La cualificación requiere además diferenciar los catálogos configurables de
+las instancias vinculadas a una licitación. Las plantillas expresan qué se desea
+obtener; las instancias conservan el valor, el estado de generación y las
+evidencias propias de una oportunidad.
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/qualification-domain-model}
+  }
+  \caption{Detalle conceptual de la cualificación y la ejecución de workflows.}
+  \label{fig:qualification-domain-model}
+\end{figure}
+
+Como muestra la \Cref{fig:qualification-domain-model}, una acción de workflow
+puede dirigirse a una pregunta de control, un campo personalizado, un resumen
+o un documento. La acción representa el trabajo pendiente dentro del paso; el
+elemento instanciado conserva el contenido que el usuario revisa. Esta
+distinción evita que la modificación de una plantilla altere retroactivamente
+el análisis ya realizado sobre otras oportunidades.
+
+\section{Historias de usuario}
+
+Las historias de usuario agrupan los requisitos en objetivos de interacción
+comprensibles y sirven como entrada para el diseño de procesos y pantallas. Se
+mantienen deliberadamente independientes de tecnologías concretas.
+
+\footnotesize
+\begin{longtable}{L{1.1cm} L{2.05cm} L{4.05cm} L{4.05cm} L{1.15cm}}
+  \caption{Historias de usuario del sistema.}
+  \label{tab:user-stories}\\
+  \toprule
+  \textbf{ID} & \textbf{Actor} & \textbf{Necesidad} & \textbf{Finalidad} & \textbf{RF} \\
+  \midrule
+  \endfirsthead
+  \multicolumn{5}{l}{\footnotesize\itshape Continuación de la
+    \Cref{tab:user-stories}.}\\
+  \toprule
+  \textbf{ID} & \textbf{Actor} & \textbf{Necesidad} & \textbf{Finalidad} & \textbf{RF} \\
+  \midrule
+  \endhead
+  \bottomrule
+  \endfoot
+
+  HU-001 & Visitante & Registrarse, aceptar una invitación o iniciar sesión. &
+    Acceder de forma identificada a una cuenta. & RF-001--003 \\
+  HU-002 & Miembro & Consultar y actualizar su perfil. & Mantener correcta su
+    información personal. & RF-001 \\
+  HU-003 & Administrador & Invitar miembros y administrar sus roles. & Formar el
+    equipo que participa en las oportunidades. & RF-003 \\
+  HU-004 & Miembro & Configurar pipelines y estados ordenados. & Adaptar la
+    cartera al proceso comercial de la cuenta. & RF-004 \\
+  HU-005 & Miembro & Definir workflows con pasos, condiciones y acciones. &
+    Estandarizar el procedimiento de análisis. & RF-005 \\
+  HU-006 & Miembro & Gestionar los catálogos de preguntas, campos y resúmenes. &
+    Reutilizar una configuración común de cualificación. & RF-006 \\
+  HU-007 & Miembro & Crear, filtrar y mover oportunidades. & Priorizar y seguir
+    las licitaciones de la cartera. & RF-007--008 \\
+  HU-008 & Miembro & Consultar y editar el detalle de una oportunidad. &
+    Centralizar su información, estado y responsables. & RF-007 \\
+  HU-009 & Miembro & Incorporar, descargar y retirar documentos PDF. & Reunir
+    los pliegos que sustentan el análisis y la IA. & RF-013--014 \\
+  HU-010 & Miembro & Responder preguntas de control manualmente o con IA. &
+    Comprobar condiciones y conservar evidencia revisable. & RF-010--012,
+    RF-017 \\
+  HU-011 & Miembro & Completar campos personalizados manualmente o con IA. &
+    Estructurar información relevante de la licitación. & RF-010--011,
+    RF-017 \\
+  HU-012 & Miembro & Elaborar y revisar resúmenes asistidos por IA. & Obtener un
+    documento de análisis útil para la decisión. & RF-010--011, RF-017 \\
+  HU-013 & Miembro & Ejecutar el workflow y revisar sus decisiones. & Avanzar de
+    forma controlada por el proceso de cualificación. & RF-009, RF-015 \\
+  HU-014 & Administrador & Seleccionar proveedor y modelo y consultar sus
+    métricas comparativas. & Equilibrar calidad, latencia y coste. & RF-016 \\
+\end{longtable}
+\normalsize
+
+La tabla no introduce funcionalidades distintas de los requisitos. Su función
+es mostrar la relación entre el valor esperado por cada actor y los grupos de
+comportamiento definidos anteriormente.
+
 \section{Procesos de negocio}
-\section{Diseño de la interfaz de usuario}
+
+\subsection{Gestión de la cartera}
+
+El proceso comienza con la creación manual de una oportunidad. El usuario
+selecciona el pipeline, el estado inicial y, cuando corresponde, los miembros
+responsables. Desde la cartera puede consultar las oportunidades en formato de
+tablero o lista, aplicar filtros y cambiar su estado. El descubrimiento
+automático de licitaciones queda fuera de este proceso: LIA empieza a actuar
+cuando el equipo decide registrar la oportunidad.
+
+\subsection{Cualificación de una licitación}
+
+La cualificación combina preparación documental, configuración del proceso,
+ejecución de acciones y revisión humana. No se reduce a una única generación
+de texto ni a una sola pantalla.
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/qualification-process}
+  }
+  \caption{Proceso funcional de cualificación de una licitación.}
+  \label{fig:qualification-process}
+\end{figure}
+
+En la \Cref{fig:qualification-process}, los documentos constituyen el contexto
+de las acciones posteriores. El workflow instancia únicamente los elementos
+necesarios para sus pasos. El usuario puede aportar valores manuales o solicitar
+asistencia de IA, pero debe conservar la capacidad de revisar y corregir el
+resultado. Cuando un paso contiene una condición, el sistema evalúa la
+información disponible y permite revisar la evidencia antes de continuar.
+
+\section{Diagramas de secuencia}
+
+Se seleccionan cuatro secuencias porque introducen colaboraciones diferentes:
+control de acceso, creación de una ejecución, almacenamiento binario y
+comunicación con un proveedor externo. Los listados y operaciones de edición
+convencionales siguen patrones más simples y no requieren un diagrama propio.
+
+\subsection{Autenticación}
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/sequence-authentication}
+  }
+  \caption{Secuencia conceptual de inicio de sesión.}
+  \label{fig:sequence-authentication}
+\end{figure}
+
+La \Cref{fig:sequence-authentication} muestra que la identidad no es suficiente
+por sí sola: el acceso debe quedar asociado a la cuenta a la que pertenece el
+usuario. Los errores de validación o credenciales se devuelven sin crear una
+sesión.
+
+\subsection{Asignación de un workflow}
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/sequence-workflow-assignment}
+  }
+  \caption{Secuencia conceptual de asignación de un workflow.}
+  \label{fig:sequence-workflow-assignment}
+\end{figure}
+
+La asignación representada en la \Cref{fig:sequence-workflow-assignment} no se
+limita a guardar una referencia. Debe crear el estado de ejecución y las
+instancias vinculadas por las acciones del proceso, de modo que la oportunidad
+pueda evolucionar de forma independiente.
+
+\subsection{Incorporación de documentos}
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/sequence-document-upload}
+  }
+  \caption{Secuencia conceptual de incorporación de un documento PDF.}
+  \label{fig:sequence-document-upload}
+\end{figure}
+
+Antes de registrar un documento, el sistema valida que su formato y tamaño se
+encuentren dentro de los límites establecidos. La
+\Cref{fig:sequence-document-upload} diferencia el almacenamiento del contenido
+binario y la persistencia de los metadatos necesarios para recuperarlo.
+
+\subsection{Generación asistida por inteligencia artificial}
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/sequence-ai-qualification}
+  }
+  \caption{Secuencia conceptual de una generación de cualificación mediante IA.}
+  \label{fig:sequence-ai-qualification}
+\end{figure}
+
+En la \Cref{fig:sequence-ai-qualification}, la petición combina la instrucción
+del elemento, el esquema de salida esperado y los documentos de la
+oportunidad. La respuesta solo se almacena después de validarla. Si el proveedor
+falla o devuelve una salida inválida, el elemento conserva un estado de error y
+el usuario puede repetir la operación o completarla manualmente.
+
+\section{Diseño de navegación}
+
+La navegación parte de la cartera de oportunidades y mantiene un acceso
+separado a la configuración. Dentro de una oportunidad se utiliza una
+navegación contextual estable para evitar que la cualificación se fragmente en
+recorridos inconexos.
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/navigation-map}
+  }
+  \caption{Mapa de navegación propuesto.}
+  \label{fig:navigation-map}
+\end{figure}
+
+La \Cref{fig:navigation-map} incluye todas las áreas funcionales principales.
+Las preguntas, campos y resúmenes se configuran primero como catálogos y se
+consultan después como instancias dentro de una oportunidad. Esta relación se
+mantiene visible en los wireframes siguientes.
+
+\section{Wireframes de la interfaz}
+
+\subsection{Acceso y pertenencia a una cuenta}
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/wireframes-access}
+  }
+  \caption{Wireframes de inicio de sesión, registro y aceptación de invitación.}
+  \label{fig:wireframes-access}
+\end{figure}
+
+La \Cref{fig:wireframes-access} diferencia el alta de una nueva cuenta de la
+incorporación a una ya existente. En ambos casos se solicitan únicamente los
+datos necesarios para identificar al usuario y establecer sus credenciales.
+
+\subsection{Cartera y datos generales de una oportunidad}
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/wireframes-opportunity-portfolio}
+  }
+  \caption{Wireframe de la cartera de oportunidades.}
+  \label{fig:wireframe-opportunity-portfolio}
+\end{figure}
+
+La cartera de la \Cref{fig:wireframe-opportunity-portfolio} combina filtros,
+selección de pipeline y cambio entre tablero y lista. El alta de una oportunidad
+se inicia desde esta vista y solicita los datos generales, el estado inicial y
+los responsables.
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/wireframe-opportunity-details}
+  }
+  \caption{Wireframe de los datos generales de una oportunidad.}
+  \label{fig:wireframe-opportunity-details}
+\end{figure}
+
+La \Cref{fig:wireframe-opportunity-details} establece una cabecera común con el
+estado, el importe y las acciones generales. El menú lateral permanece durante
+toda la cualificación y separa información, análisis y proceso.
+
+\subsection{Documentación}
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/wireframe-qualification-documents}
+  }
+  \caption{Wireframe de la sección de documentación.}
+  \label{fig:wireframe-qualification-documents}
+\end{figure}
+
+La \Cref{fig:wireframe-qualification-documents} permite incorporar, identificar,
+descargar y retirar los PDFs asociados. El listado debe mostrar metadatos
+suficientes para evitar que el usuario confunda versiones o documentos.
+
+\subsection{Preguntas de control}
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/wireframe-qualification-questions}
+  }
+  \caption{Wireframe de la sección de preguntas de control.}
+  \label{fig:wireframe-qualification-questions}
+\end{figure}
+
+Cada pregunta de la \Cref{fig:wireframe-qualification-questions} conserva su
+tipo de respuesta, el valor confirmado y, cuando existe, la evidencia obtenida
+mediante IA. La edición manual y la generación asistida se presentan como
+alternativas compatibles.
+
+\subsection{Campos personalizados}
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/wireframe-qualification-fields}
+  }
+  \caption{Wireframe de la sección de campos personalizados.}
+  \label{fig:wireframe-qualification-fields}
+\end{figure}
+
+La \Cref{fig:wireframe-qualification-fields} adapta el control al tipo del
+campo. Los campos marcados como automáticos admiten generación mediante IA,
+pero el valor permanece editable antes de confirmarlo.
+
+\subsection{Resúmenes}
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/wireframe-qualification-summaries}
+  }
+  \caption{Wireframe de la sección de resúmenes.}
+  \label{fig:wireframe-qualification-summaries}
+\end{figure}
+
+El resumen de la \Cref{fig:wireframe-qualification-summaries} muestra la
+instrucción utilizada, el contenido editable y el estado de la generación. El
+usuario puede revisar el texto antes de incorporarlo al análisis.
+
+\subsection{Ejecución del workflow}
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/wireframe-qualification-workflow}
+  }
+  \caption{Wireframe de ejecución del workflow de una oportunidad.}
+  \label{fig:wireframe-qualification-workflow}
+\end{figure}
+
+La \Cref{fig:wireframe-qualification-workflow} combina una visión global del
+progreso con el detalle del paso seleccionado. Las acciones, decisiones y
+evidencias se muestran en el mismo contexto para que el usuario comprenda por
+qué el proceso avanza o permanece bloqueado.
+
+\subsection{Configuración de la cuenta y del proceso}
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/wireframes-account-profile}
+  }
+  \caption{Wireframes del perfil y de la gestión de miembros.}
+  \label{fig:wireframes-account-profile}
+\end{figure}
+
+La \Cref{fig:wireframes-account-profile} separa la edición del perfil propio de
+la administración de miembros. La invitación, el cambio de rol y la eliminación
+se reservan conceptualmente al administrador.
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/wireframes-config-pipelines-workflows}
+  }
+  \caption{Wireframes de configuración de pipelines y workflows.}
+  \label{fig:wireframes-config-pipelines-workflows}
+\end{figure}
+
+Los editores de la \Cref{fig:wireframes-config-pipelines-workflows} permiten
+ordenar los estados del pipeline y componer un workflow mediante pasos,
+condiciones y acciones. Ambos diseños hacen visible el orden porque determina
+el recorrido posterior de las oportunidades.
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/wireframes-config-catalogs}
+  }
+  \caption{Wireframes de los catálogos de cualificación.}
+  \label{fig:wireframes-config-catalogs}
+\end{figure}
+
+Por último, la \Cref{fig:wireframes-config-catalogs} cubre por separado las
+preguntas de control, los campos personalizados y las plantillas de resumen.
+Cada catálogo permite crear, consultar, editar y eliminar definiciones que
+después podrán incorporarse a los workflows y oportunidades.
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/wireframe-config-ai}
+  }
+  \caption{Wireframe de configuración y comparación de proveedores de IA.}
+  \label{fig:wireframe-config-ai}
+\end{figure}
+
+La \Cref{fig:wireframe-config-ai} completa el objetivo de optimización del uso
+de IA. El diseño permite seleccionar proveedor y modelo y consultar, cuando se
+haya ejecutado una evaluación controlada, calidad, latencia, consumo y coste.
+No se muestran valores ficticios: mientras la campaña comparativa permanezca
+pendiente, la vista debe indicarlo expresamente.
+
+\section{Cobertura del diseño}
+
+La \Cref{tab:design-coverage} resume la correspondencia entre las áreas del
+sistema y los artefactos del capítulo. Su objetivo es comprobar que el diseño
+no se limita a las pantallas más vistosas ni deja la cualificación incompleta.
+
+\footnotesize
+\begin{longtable}{L{3.5cm} L{4.15cm} L{5.7cm}}
+  \caption{Cobertura de áreas funcionales en el diseño.}
+  \label{tab:design-coverage}\\
+  \toprule
+  \textbf{Área} & \textbf{Historias} & \textbf{Artefactos principales} \\
+  \midrule
+  \endfirsthead
+  \toprule
+  \textbf{Área} & \textbf{Historias} & \textbf{Artefactos principales} \\
+  \midrule
+  \endhead
+  \bottomrule
+  \endfoot
+  Acceso y cuenta & HU-001--003 & Secuencia de autenticación; wireframes de
+    acceso, perfil y miembros. \\
+  Pipelines y cartera & HU-004, HU-007--008 & Modelo conceptual; cartera;
+    detalle; configuración de pipelines. \\
+  Workflows & HU-005, HU-013 & Asignación; proceso de cualificación; ejecución y
+    configuración del workflow. \\
+  Catálogos & HU-006 & Wireframes de preguntas, campos y resúmenes
+    configurables. \\
+  Documentación & HU-009 & Secuencia de incorporación; wireframe documental. \\
+  Preguntas de control & HU-010 & Modelo de cualificación; wireframe de preguntas;
+    catálogo configurable. \\
+  Campos personalizados & HU-011 & Modelo de cualificación; wireframe de campos;
+    catálogo configurable. \\
+  Resúmenes & HU-012 & Secuencia de IA; wireframe de resúmenes; catálogo
+    configurable. \\
+  Asistencia mediante IA & HU-010--012, HU-014 & Secuencia de generación;
+    estados, evidencia y reintento; selección y comparación de proveedores. \\
+\end{longtable}
+\normalsize
+
+Con esta cobertura, el diseño describe el recorrido desde el acceso y la
+configuración hasta la revisión final de una licitación. El capítulo siguiente
+explica cómo se organiza técnicamente la solución para satisfacer este modelo.

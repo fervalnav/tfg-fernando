@@ -1,12 +1,12 @@
 \begin{tikzpicture}[
-  node distance=0.5cm,
+  node distance=0.46cm,
   every node/.style={font=\small\sffamily},
   flowbox/.style={
     draw=TFGBlue,
     rounded corners=2pt,
     fill=TFGLightBlue,
-    minimum height=1.75cm,
-    text width=2.6cm,
+    minimum height=1.72cm,
+    text width=2.58cm,
     align=center,
     inner sep=5pt
   },
@@ -39,7 +39,8 @@
   };
   \node[result, right=of criteria] (decision) {
     \textbf{Resultado}\\[2pt]
-    Documento de análisis para apoyar la decisión
+    Documento revisado\\[-1pt]
+    para apoyar la decisión
   };
 
   \draw[flow] (documents) -- (extraction);

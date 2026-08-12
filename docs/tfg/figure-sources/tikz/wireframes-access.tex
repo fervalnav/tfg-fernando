@@ -1,0 +1,31 @@
+\input{figure-sources/tikz/wireframe-styles}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \foreach \x/\title in {0/Inicio de sesión,5.45/Registro,10.9/Aceptación de invitación} {
+    \draw[wf window] (\x,0) rectangle ++(5.05,6.5);
+    \fill[TFGLightGray] (\x,5.95) rectangle ++(5.05,0.55);
+    \node[wf title, anchor=west] at (\x+0.25,6.22) {LIA};
+    \node[wf title] at (\x+2.525,5.3) {\title};
+  }
+  \node[wf muted] at (2.525,4.82) {Acceso mediante correo y contraseña};
+  \node[wf muted, anchor=west] at (0.65,4.3) {Correo electrónico};
+  \draw[wf field] (0.65,3.72) rectangle ++(3.75,0.48);
+  \node[wf muted, anchor=west] at (0.65,3.3) {Contraseña};
+  \draw[wf field] (0.65,2.72) rectangle ++(3.75,0.48);
+  \node[wf button] at (2.525,2.05) {Iniciar sesión};
+  \node[wf muted] at (2.525,1.35) {Crear una cuenta};
+
+  \node[wf muted, anchor=west] at (6.05,4.72) {Nombre y apellidos};
+  \draw[wf field] (6.05,4.15) rectangle ++(3.85,0.48);
+  \node[wf muted, anchor=west] at (6.05,3.73) {Empresa};
+  \draw[wf field] (6.05,3.16) rectangle ++(3.85,0.48);
+  \node[wf muted, anchor=west] at (6.05,2.74) {Correo y contraseña};
+  \draw[wf field] (6.05,2.17) rectangle ++(3.85,0.48);
+  \node[wf button] at (7.975,1.47) {Crear cuenta};
+
+  \node[wf muted, align=center] at (13.425,4.65) {Invitación a una cuenta existente\\y rol asignado};
+  \node[wf muted, anchor=west] at (11.5,3.75) {Nombre y apellidos};
+  \draw[wf field] (11.5,3.18) rectangle ++(3.85,0.48);
+  \node[wf muted, anchor=west] at (11.5,2.76) {Contraseña};
+  \draw[wf field] (11.5,2.19) rectangle ++(3.85,0.48);
+  \node[wf button] at (13.425,1.47) {Aceptar invitación};
+\end{tikzpicture}

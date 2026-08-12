@@ -1,0 +1,35 @@
+\begin{tikzpicture}[
+  every node/.style={font=\scriptsize\sffamily},
+  entity/.style={draw=TFGBlue, rounded corners=2pt, fill=TFGLightBlue,
+    minimum height=0.76cm, text width=2.28cm, align=center, inner sep=4pt},
+  core/.style={entity, fill=TFGBlue, text=white},
+  relation/.style={-{Latex[length=2mm]}, semithick, draw=TFGAccent}
+]
+  \node[entity] (user) at (-4.8,0) {Usuario};
+  \node[entity] (member) at (-4.8,-1.45) {Membresía y rol};
+  \node[core] (account) at (0,0) {Cuenta};
+  \node[entity] (pipeline) at (-1.8,-1.45) {Pipeline};
+  \node[entity] (workflow) at (1.8,-1.45) {Workflow};
+  \node[entity] (catalogs) at (4.8,0) {Catálogos de cualificación};
+  \node[entity] (status) at (-1.8,-2.9) {Estado};
+  \node[entity] (step) at (1.8,-2.9) {Pasos y acciones};
+  \node[core] (opportunity) at (0,-4.35) {Oportunidad};
+  \node[entity] (attachment) at (-4.8,-5.85) {Documento PDF};
+  \node[entity] (question) at (-1.6,-5.85) {Pregunta de control};
+  \node[entity] (field) at (1.6,-5.85) {Campo personalizado};
+  \node[entity] (summary) at (4.8,-5.85) {Resumen};
+
+  \draw[relation] (user) -- (member);
+  \draw[relation] (account) -- (member);
+  \draw[relation] (account) -- (pipeline);
+  \draw[relation] (account) -- (workflow);
+  \draw[relation] (account) -- (catalogs);
+  \draw[relation] (pipeline) -- (status);
+  \draw[relation] (workflow) -- (step);
+  \draw[relation] (status) -- (opportunity);
+  \draw[relation] (step) -- (opportunity);
+  \draw[relation] (opportunity) -- (attachment);
+  \draw[relation] (opportunity) -- (question);
+  \draw[relation] (opportunity) -- (field);
+  \draw[relation] (opportunity) -- (summary);
+\end{tikzpicture}

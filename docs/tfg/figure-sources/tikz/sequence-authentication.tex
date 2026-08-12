@@ -1,0 +1,22 @@
+\begin{tikzpicture}[
+  every node/.style={font=\footnotesize\sffamily},
+  participant/.style={draw=TFGBlue, fill=TFGLightBlue, rounded corners=2pt,
+    minimum width=2.25cm, minimum height=0.65cm, align=center},
+  lifeline/.style={dashed, draw=TFGMuted},
+  message/.style={-{Latex[length=2mm]}, semithick, draw=TFGAccent},
+  return/.style={-{Latex[length=2mm]}, dashed, draw=TFGMuted},
+  message label/.style={fill=white, inner xsep=2pt, inner ysep=1pt,
+    text=black, align=center}
+]
+  \node[participant] (user) at (0,0) {Usuario};
+  \node[participant] (web) at (4,0) {Aplicación web};
+  \node[participant] (api) at (8,0) {Servicio de acceso};
+  \node[participant] (db) at (12,0) {Persistencia};
+  \foreach \x in {0,4,8,12} \draw[lifeline] (\x,-0.35) -- (\x,-5.25);
+  \draw[message] (0,-0.85) -- node[message label, above]{introduce credenciales} (4,-0.85);
+  \draw[message] (4,-1.65) -- node[message label, above]{solicita autenticación} (8,-1.65);
+  \draw[message] (8,-2.45) -- node[message label, above]{consulta identidad y cuenta} (12,-2.45);
+  \draw[return] (12,-3.25) -- node[message label, above]{datos de acceso} (8,-3.25);
+  \draw[return] (8,-4.05) -- node[message label, above]{sesión iniciada o error} (4,-4.05);
+  \draw[return] (4,-4.85) -- node[message label, above]{acceso o mensaje de validación} (0,-4.85);
+\end{tikzpicture}

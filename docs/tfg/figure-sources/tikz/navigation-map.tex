@@ -1,0 +1,61 @@
+\begin{tikzpicture}[
+  every node/.style={font=\scriptsize\sffamily},
+  page/.style={draw=TFGBlue, rounded corners=2pt, fill=white,
+    minimum height=0.68cm, text width=2.55cm, align=center, inner sep=3pt},
+  group/.style={page, fill=TFGLightBlue, font=\scriptsize\bfseries\sffamily},
+  root/.style={page, fill=TFGBlue, text=white,
+    font=\scriptsize\bfseries\sffamily, text width=3.2cm},
+  flow/.style={-{Latex[length=1.8mm]}, semithick, draw=TFGAccent},
+  branch/.style={semithick, draw=TFGAccent}
+]
+  \node[root] (root) at (6.6,1.65) {Navegación principal};
+  \node[group] (auth) at (0,0) {Acceso};
+  \node[group] (portfolio) at (4.4,0) {Oportunidades};
+  \node[group] (detail) at (8.8,0) {Detalle};
+  \node[group] (settings) at (13.2,0) {Configuración};
+
+  \node[page] (login) at (0,-1.25) {Inicio de sesión};
+  \node[page] (register) at (0,-2.35) {Registro};
+  \node[page] (invitation) at (0,-3.45) {Invitación};
+
+  \node[page] (kanban) at (4.4,-1.25) {Tablero kanban};
+  \node[page] (list) at (4.4,-2.35) {Vista de lista};
+  \node[page] (create) at (4.4,-3.45) {Alta de oportunidad};
+
+  \node[page] (details) at (8.8,-1.25) {Datos generales};
+  \node[page] (documents) at (8.8,-2.35) {Documentación};
+  \node[page] (questions) at (8.8,-3.45) {Preguntas de control};
+  \node[page] (fields) at (8.8,-4.55) {Campos personalizados};
+  \node[page] (summaries) at (8.8,-5.65) {Resúmenes};
+  \node[page] (workflow) at (8.8,-6.75) {Workflow};
+
+  \node[page] (profile) at (13.2,-1.25) {Perfil y miembros};
+  \node[page] (pipelines) at (13.2,-2.35) {Pipelines y estados};
+  \node[page] (workflows) at (13.2,-3.45) {Workflows y acciones};
+  \node[page] (catalogs) at (13.2,-4.55) {Catálogos de cualificación};
+  \node[page] (ai) at (13.2,-5.65) {Proveedores de IA};
+
+  \draw[branch] (root.south) -- (6.6,0.82);
+  \draw[branch] (0,0.82) -- (13.2,0.82);
+  \coordinate (nav-branch) at (0,0.82);
+  \foreach \target in {auth,portfolio,detail,settings} {
+    \draw[flow] (\target |- nav-branch) -- (\target.north);
+  }
+  \draw[flow] (auth) -- (login);
+  \draw[flow] (login) -- (register);
+  \draw[flow] (register) -- (invitation);
+  \draw[flow] (portfolio) -- (kanban);
+  \draw[flow] (kanban) -- (list);
+  \draw[flow] (list) -- (create);
+  \draw[flow] (detail) -- (details);
+  \draw[flow] (details) -- (documents);
+  \draw[flow] (documents) -- (questions);
+  \draw[flow] (questions) -- (fields);
+  \draw[flow] (fields) -- (summaries);
+  \draw[flow] (summaries) -- (workflow);
+  \draw[flow] (settings) -- (profile);
+  \draw[flow] (profile) -- (pipelines);
+  \draw[flow] (pipelines) -- (workflows);
+  \draw[flow] (workflows) -- (catalogs);
+  \draw[flow] (catalogs) -- (ai);
+\end{tikzpicture}

@@ -1,0 +1,28 @@
+\begin{tikzpicture}[
+  every node/.style={font=\footnotesize\sffamily},
+  participant/.style={draw=TFGBlue, fill=TFGLightBlue, rounded corners=2pt,
+    minimum width=2.15cm, minimum height=0.65cm, align=center},
+  lifeline/.style={dashed, draw=TFGMuted},
+  message/.style={-{Latex[length=2mm]}, semithick, draw=TFGAccent},
+  return/.style={-{Latex[length=2mm]}, dashed, draw=TFGMuted},
+  message label/.style={fill=white, inner xsep=2pt, inner ysep=1pt,
+    text=black, align=center}
+]
+  \node[participant] (user) at (0,0) {Miembro};
+  \node[participant] (web) at (3.3,0) {Aplicación web};
+  \node[participant] (qualification) at (6.6,0) {Cualificación};
+  \node[participant] (storage) at (9.9,0) {Documentos};
+  \node[participant] (ai) at (13.2,0) {Proveedor de IA};
+  \node[participant] (db) at (16.5,0) {Persistencia};
+  \foreach \x in {0,3.3,6.6,9.9,13.2,16.5} \draw[lifeline] (\x,-0.35) -- (\x,-7.05);
+  \draw[message] (0,-0.7) -- node[message label, above]{solicita una generación} (3.3,-0.7);
+  \draw[message] (3.3,-1.35) -- node[message label, above]{inicia la generación del elemento} (6.6,-1.35);
+  \draw[message] (6.6,-2) -- node[message label, above]{solicita los PDF asociados} (9.9,-2);
+  \draw[return] (9.9,-2.65) -- node[message label, above]{documentos y metadatos} (6.6,-2.65);
+  \draw[message] (6.6,-3.3) -- node[message label, above]{instrucción, esquema y documentos} (13.2,-3.3);
+  \draw[return] (13.2,-3.95) -- node[message label, above]{salida estructurada o error} (6.6,-3.95);
+  \draw[message] (6.6,-4.6) -- node[message label, above]{registra resultado y estado} (16.5,-4.6);
+  \draw[return] (16.5,-5.25) -- node[message label, above]{registro confirmado} (6.6,-5.25);
+  \draw[return] (6.6,-5.9) -- node[message label, above]{resultado o error revisable} (3.3,-5.9);
+  \draw[return] (3.3,-6.55) -- node[message label, above]{muestra el estado de la generación} (0,-6.55);
+\end{tikzpicture}

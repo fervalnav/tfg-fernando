@@ -1,0 +1,44 @@
+\input{figure-sources/tikz/wireframe-styles}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \foreach \x/\title/\action in {0/Preguntas de control/Nueva pregunta,5.45/Campos personalizados/Nuevo campo,10.9/Plantillas de resumen/Nueva plantilla} {
+    \draw[wf window] (\x,0) rectangle ++(5.05,7.2);
+    \fill[TFGLightGray] (\x,6.55) rectangle ++(5.05,0.65);
+    \node[wf title] at (\x+2.525,6.87) {\title};
+    \node[wf button] at (\x+2.525,5.95) {\action};
+    \foreach \y in {4.65,3.25,1.85} {
+      \draw[wf panel] (\x+0.35,\y) rectangle ++(4.35,1.05);
+    }
+  }
+  \node[wf text, anchor=west] at (0.55,5.35) {Pregunta};
+  \node[wf muted, anchor=west] at (0.55,4.95) {tipo y condición};
+  \node[wf muted, anchor=east] at (4.45,5.35) {Editar · Eliminar};
+  \node[wf text, anchor=west] at (0.55,3.95) {Pregunta};
+  \node[wf muted, anchor=west] at (0.55,3.55) {tipo y condición};
+  \node[wf muted, anchor=east] at (4.45,3.95) {Editar · Eliminar};
+  \node[wf text, anchor=west] at (0.55,2.55) {Pregunta};
+  \node[wf muted, anchor=west] at (0.55,2.15) {tipo y condición};
+  \node[wf muted, anchor=east] at (4.45,2.55) {Editar · Eliminar};
+
+  \node[wf text, anchor=west] at (6.0,5.35) {Campo};
+  \node[wf muted, anchor=west] at (6.0,4.95) {tipo · automático · prompt};
+  \node[wf muted, anchor=east] at (9.9,5.35) {Editar · Eliminar};
+  \node[wf text, anchor=west] at (6.0,3.95) {Campo};
+  \node[wf muted, anchor=west] at (6.0,3.55) {tipo · clasificadores};
+  \node[wf muted, anchor=east] at (9.9,3.95) {Editar · Eliminar};
+  \node[wf text, anchor=west] at (6.0,2.55) {Campo};
+  \node[wf muted, anchor=west] at (6.0,2.15) {tipo · selección múltiple};
+  \node[wf muted, anchor=east] at (9.9,2.55) {Editar · Eliminar};
+
+  \node[wf text, anchor=west] at (11.45,5.35) {Resumen};
+  \node[wf muted, anchor=west] at (11.45,4.95) {nombre e instrucción};
+  \node[wf muted, anchor=east] at (15.35,5.35) {Editar · Eliminar};
+  \node[wf text, anchor=west] at (11.45,3.95) {Resumen};
+  \node[wf muted, anchor=west] at (11.45,3.55) {nombre e instrucción};
+  \node[wf muted, anchor=east] at (15.35,3.95) {Editar · Eliminar};
+  \node[wf text, anchor=west] at (11.45,2.55) {Resumen};
+  \node[wf muted, anchor=west] at (11.45,2.15) {nombre e instrucción};
+  \node[wf muted, anchor=east] at (15.35,2.55) {Editar · Eliminar};
+  \foreach \x in {0,5.45,10.9} {
+    \node[wf muted] at (\x+2.525,0.75) {Catálogo reutilizable por la cuenta};
+  }
+\end{tikzpicture}

@@ -1,0 +1,30 @@
+\begin{tikzpicture}[
+  node distance=0.48cm,
+  every node/.style={font=\scriptsize\sffamily},
+  activity/.style={draw=TFGBlue, rounded corners=2pt, fill=TFGLightBlue,
+    minimum height=0.78cm, text width=3.15cm, align=center, inner sep=4pt},
+  decision/.style={draw=TFGAccent, diamond, aspect=2.1, fill=white,
+    text width=2.1cm, align=center, inner sep=1pt},
+  flow/.style={-{Latex[length=2mm]}, semithick, draw=TFGAccent}
+]
+  \node[activity] (create) {Registrar la oportunidad};
+  \node[activity, right=of create] (documents) {Incorporar pliegos y documentos PDF};
+  \node[activity, right=of documents] (assign) {Asignar pipeline, estado y workflow};
+  \node[activity, below=0.8cm of assign] (instantiate) {Instanciar preguntas, campos y resúmenes del workflow};
+  \node[activity, left=of instantiate] (execute) {Completar acciones manualmente o solicitar IA};
+  \node[decision, left=0.75cm of execute] (decision) {¿Condición satisfecha?};
+  \node[activity, below=0.85cm of decision] (next) {Avanzar al siguiente paso};
+  \node[activity, right=of next] (review) {Revisar resultados y evidencias};
+  \node[activity, right=of review] (close) {Finalizar cualificación y apoyar la decisión};
+
+  \draw[flow] (create) -- (documents);
+  \draw[flow] (documents) -- (assign);
+  \draw[flow] (assign) -- (instantiate);
+  \draw[flow] (instantiate) -- (execute);
+  \draw[flow] (execute) -- (decision);
+  \draw[flow] (decision) -- node[left]{sí} (next);
+  \draw[flow] (next) -- (review);
+  \draw[flow] (review) -- (close);
+  \draw[flow] (decision.north) -- ++(0,0.28cm)
+    -| node[pos=0.3, above]{no: revisar} (execute.north);
+\end{tikzpicture}

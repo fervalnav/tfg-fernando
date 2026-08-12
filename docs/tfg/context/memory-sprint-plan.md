@@ -125,6 +125,12 @@ Catálogo estable y trazable. Los huecos detectados alimentan el backlog técnic
 
 ## Iteración M4 - Análisis y diseño
 
+**Estado:** completada el 12 de agosto de 2026. El diseño adopta la perspectiva
+previa al desarrollo y reserva las capturas reales para el manual de usuario.
+Los modelos, secuencias y wireframes cubren por separado todas las secciones de
+cualificación, además del acceso, la cartera de oportunidades, la configuración
+que las alimenta y la selección y comparación de proveedores de IA.
+
 ### Capítulos
 
 - Capítulo 4: análisis del sistema.
@@ -139,6 +145,9 @@ Catálogo estable y trazable. Los huecos detectados alimentan el backlog técnic
   por IA y subida de documentos.
 - Proceso de negocio de cualificación de una licitación.
 - Diagrama de navegación e interfaces principales.
+- Wireframes conceptuales de acceso, oportunidades, detalle, documentación,
+  preguntas de control, campos personalizados, resúmenes, workflow y catálogos
+  de configuración.
 
 ### Salida
 

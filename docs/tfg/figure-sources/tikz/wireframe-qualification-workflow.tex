@@ -1,0 +1,29 @@
+\input{figure-sources/tikz/wireframe-styles}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \draw[wf window] (0,0) rectangle (16.2,8.2);
+  \fill[TFGLightGray] (0,7.45) rectangle (16.2,8.2);
+  \node[wf title, anchor=west] at (0.35,7.82) {Detalle de oportunidad · Workflow de cualificación};
+  \draw[wf panel] (0.45,0.45) rectangle (5.45,7.0);
+  \node[wf title, anchor=west] at (0.8,6.6) {Progreso del workflow};
+  \draw[TFGMuted] (0.8,6.05) rectangle (5.05,6.28);
+  \fill[TFGAccent] (0.8,6.05) rectangle (3.35,6.28);
+  \foreach \y/\n/\name in {5.35/1/Recepción documental,4.25/2/Solvencia,3.15/3/Análisis técnico,2.05/4/Decisión} {
+    \draw[TFGBlue, fill=TFGLightBlue] (1.05,\y) circle (0.28);
+    \node[wf text] at (1.05,\y) {\n};
+    \node[wf text, anchor=west] at (1.55,\y+0.12) {\name};
+    \node[wf muted, anchor=west] at (1.55,\y-0.22) {acciones completadas / totales};
+  }
+  \draw[wf panel] (5.8,0.45) rectangle (15.75,7.0);
+  \node[wf muted, anchor=west] at (6.2,6.55) {Paso 2};
+  \node[wf title, anchor=west] at (6.2,6.15) {Comprobación de solvencia};
+  \node[wf muted, anchor=east] at (15.35,6.25) {Paso actual};
+  \draw[wf panel] (6.2,3.95) rectangle ++(9.15,1.65);
+  \node[wf text, anchor=west] at (6.55,5.2) {Acción: responder pregunta de control};
+  \node[wf muted, anchor=west] at (6.55,4.72) {Edición manual o generación asistida por IA};
+  \node[wf button, anchor=east] at (14.95,4.45) {Completar acción};
+  \draw[wf panel] (6.2,1.85) rectangle ++(9.15,1.65);
+  \node[wf text, anchor=west] at (6.55,3.1) {Decisión del paso};
+  \node[wf muted, anchor=west] at (6.55,2.62) {Resultado, evidencia y opción de reevaluación};
+  \node[wf secondary, anchor=east] at (14.95,2.35) {Reevaluar};
+  \node[wf muted, anchor=west] at (6.2,1.15) {El avance depende de las acciones y condiciones configuradas.};
+\end{tikzpicture}

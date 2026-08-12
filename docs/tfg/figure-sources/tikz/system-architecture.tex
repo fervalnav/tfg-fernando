@@ -60,14 +60,12 @@
   \draw[connection] (types.south west) -- (web.north east);
   \draw[connection] (types.south east) -- (api.north west);
 
-  \coordinate[above=0.35cm of postgres] (bus-left);
-  \coordinate[above=0.35cm of rabbitmq] (bus-center);
-  \coordinate[above=0.35cm of storage] (bus-right);
-  \draw[semithick, draw=TFGAccent] (bus-left) -- (bus-right);
-  \draw[semithick, draw=TFGAccent] (api.south) -- (bus-right);
-  \draw[semithick, draw=TFGAccent] (bus-left) -- (postgres.north);
-  \draw[semithick, draw=TFGAccent] (bus-center) -- (rabbitmq.north);
-  \draw[semithick, draw=TFGAccent] (bus-right) -- (storage.north);
+  \coordinate[above=0.45cm of rabbitmq] (infra-hub);
+  \draw[semithick, draw=TFGAccent] (api.south) |- (infra-hub);
+  \fill[TFGAccent] (infra-hub) circle (1.3pt);
+  \draw[connection] (infra-hub) -- (postgres.north);
+  \draw[connection] (infra-hub) -- (rabbitmq.north);
+  \draw[connection] (infra-hub) -- (storage.north);
 
   \node[
     draw=TFGMuted,

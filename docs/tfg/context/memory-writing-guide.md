@@ -129,6 +129,13 @@ implementado. Una ruta HTTP o una clase no equivale por sí sola a un requisito.
 
 No es necesario crear un diagrama por cada endpoint. Se priorizan los modelos
 que expliquen decisiones o relaciones que no sean evidentes mediante texto.
+Esta selección no puede ocultar partes relevantes del producto: cada área
+funcional debe quedar representada al menos una vez. En particular, la
+cualificación de una oportunidad se documentará separando documentación,
+preguntas de control, campos personalizados, resúmenes y ejecución del
+workflow. Los prototipos de este capítulo son diseños conceptuales previos a la
+implementación; las capturas de la aplicación terminada se reservan para el
+manual de usuario.
 
 ### 5. Arquitectura del sistema
 
@@ -238,6 +245,9 @@ mantiene en `context/scope-evidence-inventory.md`.
   bibliográfica, pero sí evidencia verificable.
 - Mantener identificadores estables para requisitos, figuras y tablas.
 - Referenciar toda figura o tabla desde el texto y explicar que demuestra.
+- No sustituir una cobertura completa por una selección excesivamente
+  resumida. Antes de redactar cada capítulo se inventariarán todas sus áreas y
+  se comprobará explícitamente que ninguna queda sin explicar.
 - Usar capturas reales con datos ficticios. No incorporar secretos, tokens,
   nombres de clientes ni documentos confidenciales.
 - Evitar lenguaje promocional y afirmaciones absolutas sobre la IA.
