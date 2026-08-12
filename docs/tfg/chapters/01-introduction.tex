@@ -3,12 +3,30 @@
 
 \section{Contexto}
 
-La contratación pública genera oportunidades comerciales cuyo análisis exige
-procesar documentación técnica y administrativa de gran extensión. Entre esta
-documentación se encuentran los pliegos de condiciones, los anuncios de
-licitación y las memorias explicativas. Su revisión permite identificar los
-requisitos que debe satisfacer la empresa licitadora, valorar la viabilidad
-económica del contrato y estudiar los criterios que determinan la adjudicación.
+La contratación pública constituye una parte relevante de la actividad
+económica española. En 2024 representó el 10,92\,\% del producto interior bruto
+y se licitaron 206.242 contratos por un presupuesto base, sin impuestos, de
+113.091,40 millones de euros \cite{oirescon2025}. Estas cifras permiten
+dimensionar el dominio en el que se enmarca LIA, pero no implican que todas las
+licitaciones presenten la misma complejidad ni que sean oportunidades adecuadas
+para cualquier empresa.
+
+La participación en un procedimiento requiere interpretar la documentación del
+expediente. La Ley 9/2017 de Contratos del Sector Público establece que los
+criterios y requisitos mínimos de solvencia económica y financiera, así como de
+solvencia técnica o profesional, deben indicarse en el anuncio o la invitación y
+detallarse en los pliegos. También exige especificar los medios admitidos y los
+umbrales aplicables para acreditarlos \cite{lcsp2017}. Por tanto, cualificar una
+licitación no consiste únicamente en localizar una cifra: exige relacionar los
+requisitos concretos del contrato con la información disponible sobre la
+empresa licitadora.
+
+Además de la solvencia, el análisis debe considerar el objeto del contrato, sus
+condiciones de ejecución, los importes y plazos relevantes y los criterios de
+adjudicación. Esta información puede encontrarse distribuida entre anuncios,
+pliegos administrativos, prescripciones técnicas y documentación
+complementaria. La revisión conjunta de esas fuentes permite decidir si resulta
+razonable preparar una oferta y qué aspectos requieren un estudio posterior.
 
 La cualificación de una licitación es, por tanto, una actividad intensiva en
 conocimiento. Los equipos responsables deben localizar información distribuida
@@ -23,6 +41,15 @@ organización de oportunidades mediante pipelines configurables y flujos de
 trabajo estructurados con el uso de inteligencia artificial generativa para
 apoyar las tareas de mayor carga cognitiva del proceso de análisis.
 
+Los modelos generativos pueden producir respuestas plausibles que sean
+incorrectas o inconsistentes, un riesgo que el NIST denomina
+\emph{confabulación} \cite{autio2024}. En consecuencia, LIA plantea la IA como
+un mecanismo de apoyo integrado en un proceso controlado: recibe el contexto
+documental seleccionado, produce resultados estructurados, registra sus estados
+de ejecución y permite que el usuario revise, edite o reintente el resultado.
+La decisión final sobre la presentación a una licitación permanece fuera del
+ámbito de automatización del sistema.
+
 \begin{figure}[htbp]
   \centering
   \resizebox{\textwidth}{!}{
@@ -33,36 +60,33 @@ apoyar las tareas de mayor carga cognitiva del proceso de análisis.
 \end{figure}
 
 La \Cref{fig:tender-analysis-flow} resume el flujo funcional descrito en la
-propuesta registrada del proyecto. La figura representa el planteamiento del
-sistema y no presupone que todas las etapas estén implementadas en el estado
-actual del desarrollo.
-
-% TODO: incorporar fuentes bibliográficas sobre contratación pública,
-% cualificación de licitaciones e IA generativa antes de cerrar el capítulo.
+propuesta registrada del proyecto. Los bloques representan actividades de
+análisis y no decisiones completamente autónomas: el resultado es un documento
+de apoyo que debe ser revisado por el usuario.
 
 \section{Motivación}
 
 La motivación principal del proyecto parte de la necesidad de reducir el
-esfuerzo dedicado a revisar y cualificar licitaciones públicas. La
-automatización de las tareas repetitivas de extracción y organización de
-información puede permitir que los equipos de consultoras y empresas
-licitadoras concentren su trabajo en la valoración de la oportunidad y en la
-toma de decisiones.
+esfuerzo dedicado a revisar y cualificar licitaciones públicas. Cuando la
+información relevante está repartida entre varios documentos, el equipo debe
+localizarla, contrastarla y trasladarla a un criterio de decisión. Estructurar
+esta actividad reduce la dependencia de revisiones informales y permite
+conservar el estado y el resultado de cada paso del análisis.
 
-La inteligencia artificial generativa ofrece la posibilidad de analizar
-documentos, extraer información relevante y elaborar contenidos de apoyo. Sin
-embargo, su incorporación a un proceso empresarial requiere integrarla dentro
-de un flujo de trabajo controlado. Por este motivo, LIA no se plantea
-únicamente como una herramienta de consulta aislada, sino como una plataforma
-que relaciona las capacidades de inteligencia artificial con la gestión de la
-cartera de oportunidades y con las distintas etapas del análisis de una
-licitación.
+La inteligencia artificial generativa ofrece un mecanismo para producir
+respuestas a partir de instrucciones y documentación de contexto. Sin embargo,
+la posibilidad de obtener resultados incorrectos impide tratarla como una
+fuente infalible. Por este motivo, LIA no se plantea como una conversación
+aislada con un modelo, sino como una plataforma que relaciona cada generación
+con una oportunidad, una acción del workflow, unos documentos seleccionados y
+un estado verificable.
 
 Otro aspecto que motiva el proyecto es la necesidad de equilibrar la capacidad
-de los proveedores de inteligencia artificial generativa con el coste
-asociado a su utilización. La plataforma contempla este aspecto como parte de
-su diseño, con el objetivo de buscar una relación adecuada entre el rendimiento
-obtenido y los recursos consumidos.
+de los proveedores de inteligencia artificial generativa con el coste y la
+latencia asociados a su utilización. Este objetivo requiere una evaluación
+reproducible con los mismos documentos y criterios. La memoria no atribuirá una
+mejor relación coste-rendimiento a ningún proveedor hasta completar esa fase
+experimental.
 
 \section{Objetivos del proyecto}
 
@@ -83,6 +107,12 @@ específicos:
         de análisis de licitaciones.
 \end{itemize}
 
+Estos objetivos reproducen el alcance registrado del TFG. Su grado de
+consecución se evaluará al final de la memoria mediante requisitos, pruebas y
+resultados experimentales. En particular, la detección de solvencia y la
+comparación entre proveedores no se considerarán validadas únicamente porque
+exista una integración técnica con modelos generativos.
+
 \section{Alcance}
 
 El proyecto comprende el desarrollo de una plataforma web orientada a equipos
@@ -95,12 +125,18 @@ análisis.
 
 La implementación se organiza como un monorepositorio gestionado con
 Turborepo. La interfaz web utiliza Vue 3 y la API se desarrolla con NestJS. El
-detalle de las funcionalidades finalmente implementadas y de aquellas que
-formen parte del trabajo futuro se documentará conforme avance el desarrollo,
-sin atribuir al resultado capacidades que no hayan sido verificadas.
+núcleo funcional comprende la gestión multiempresa de oportunidades,
+pipelines y workflows; la configuración de preguntas de control, campos
+personalizados y resúmenes; la generación estructurada mediante inteligencia
+artificial; y la gestión de documentos PDF utilizados como contexto del
+análisis.
 
-% TODO: confirmar las exclusiones explícitas del alcance antes de cerrar esta
-% sección.
+El alcance no incluye el descubrimiento ni la importación automática de
+licitaciones desde plataformas externas. Tampoco comprende módulos de
+organizaciones y contactos, tareas, comentarios, notificaciones, facturación
+o exportación de informes a PDF. Estas capacidades se consideran posibles
+líneas de trabajo futuro y no se presentan como parte del resultado
+implementado.
 
 \section{Estructura de la memoria}
 

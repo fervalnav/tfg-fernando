@@ -1,0 +1,33 @@
+\begin{tikzpicture}[
+  x=0.39cm,
+  y=0.56cm,
+  every node/.style={font=\scriptsize\sffamily},
+  bar/.style={draw=TFGBlue, fill=TFGLightBlue, rounded corners=1pt},
+  aiBar/.style={draw=TFGBlue, fill=TFGAccent!30, rounded corners=1pt}
+]
+  \foreach \week in {1,...,20} {
+    \node[anchor=south] at (\week,0.55) {\week};
+    \draw[TFGLightGray] (\week-0.5,0.35) -- (\week-0.5,-9.5);
+  }
+  \draw[TFGLightGray] (20.5,0.35) -- (20.5,-9.5);
+  \node[anchor=east,font=\scriptsize\sffamily\bfseries] at (0.1,0.75) {Semana};
+
+  \foreach \sprint/\start/\finish/\row in {
+    0/1/2/0,
+    1/3/4/1,
+    2/5/6/2,
+    3/7/8/3,
+    4/9/10/4,
+    5/11/12/5,
+    6/13/14/6,
+    7/15/16/7
+  } {
+    \node[anchor=east] at (0.1,-\row) {Sprint \sprint};
+    \draw[bar] (\start-0.42,-\row-0.27) rectangle (\finish+0.42,-\row+0.27);
+  }
+
+  \node[anchor=east] at (0.1,-8) {Sprint 8};
+  \draw[aiBar] (16.58,-8.27) rectangle (18.42,-7.73);
+  \node[anchor=east] at (0.1,-9) {Sprint 9};
+  \draw[aiBar] (18.58,-9.27) rectangle (20.42,-8.73);
+\end{tikzpicture}
