@@ -1,0 +1,36 @@
+\input{figure-sources/tikz/wireframe-styles}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \draw[wf window] (0,0) rectangle (16.2,8.5);
+  \fill[TFGLightGray] (0,7.65) rectangle (16.2,8.5);
+  \node[wf title, anchor=west] at (0.35,8.08) {Oportunidad: suministro tecnológico};
+  \node[wf muted, anchor=west] at (0.35,7.82) {Importe y estado actual};
+  \node[wf secondary, anchor=east] at (15.8,8.08) {Editar};
+  \fill[TFGLightGray] (0,0) rectangle (3.25,7.65);
+  \node[wf title, anchor=west] at (0.35,7.15) {Oportunidad};
+  \node[wf active, anchor=west] at (0.5,6.6) {Datos generales};
+  \node[wf muted, anchor=west] at (0.5,6.1) {Documentación};
+  \node[wf title, anchor=west] at (0.35,5.35) {Cualificación};
+  \node[wf muted, anchor=west] at (0.5,4.85) {Preguntas de control};
+  \node[wf muted, anchor=west] at (0.5,4.35) {Campos personalizados};
+  \node[wf muted, anchor=west] at (0.5,3.85) {Resúmenes};
+  \node[wf title, anchor=west] at (0.35,3.1) {Proceso};
+  \node[wf muted, anchor=west] at (0.5,2.6) {Workflow};
+  \node[wf title, anchor=west] at (3.75,7.15) {Datos generales};
+  \draw[wf panel] (3.75,4.55) rectangle ++(5.75,2.1);
+  \node[wf muted, anchor=west] at (4.05,6.25) {Título};
+  \node[wf text, anchor=west] at (4.05,5.85) {Suministro tecnológico};
+  \node[wf muted, anchor=west] at (4.05,5.3) {Descripción y referencia externa};
+  \draw[wf panel] (9.85,4.55) rectangle ++(5.95,2.1);
+  \node[wf muted, anchor=west] at (10.15,6.25) {Pipeline y estado};
+  \node[wf text, anchor=west] at (10.15,5.85) {Licitaciones · En análisis};
+  \node[wf muted, anchor=west] at (10.15,5.3) {Responsables};
+  \draw[wf panel] (3.75,1.15) rectangle ++(12.05,2.85);
+  \node[wf title, anchor=west] at (4.05,3.6) {Información económica};
+  \node[wf muted, anchor=west] at (4.05,3.05) {Importe};
+  \draw[wf field] (4.05,2.35) rectangle ++(3.2,0.52);
+  \node[wf muted, anchor=west] at (7.7,3.05) {Moneda};
+  \draw[wf field] (7.7,2.35) rectangle ++(2.2,0.52);
+  \node[wf muted, anchor=west] at (10.35,3.05) {Fecha límite};
+  \draw[wf field] (10.35,2.35) rectangle ++(2.8,0.52);
+  \node[wf muted, anchor=west] at (4.05,1.75) {Los valores se editan desde la acción general de la cabecera.};
+\end{tikzpicture}

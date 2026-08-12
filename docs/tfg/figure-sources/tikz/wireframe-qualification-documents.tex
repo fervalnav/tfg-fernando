@@ -1,0 +1,28 @@
+\input{figure-sources/tikz/wireframe-styles}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \draw[wf window] (0,0) rectangle (16.2,8.2);
+  \fill[TFGLightGray] (0,7.45) rectangle (16.2,8.2);
+  \node[wf title, anchor=west] at (0.35,7.82) {Detalle de oportunidad};
+  \fill[TFGLightGray] (0,0) rectangle (3.2,7.45);
+  \node[wf muted, anchor=west] at (0.45,6.8) {Datos generales};
+  \node[wf active, anchor=west] at (0.45,6.25) {Documentación};
+  \node[wf muted, anchor=west] at (0.45,5.7) {Preguntas de control};
+  \node[wf muted, anchor=west] at (0.45,5.15) {Campos personalizados};
+  \node[wf muted, anchor=west] at (0.45,4.6) {Resúmenes};
+  \node[wf muted, anchor=west] at (0.45,4.05) {Workflow};
+  \node[wf title, anchor=west] at (3.7,6.95) {Documentación};
+  \node[wf muted, anchor=west] at (3.7,6.55) {Pliegos y anexos utilizados durante la cualificación};
+  \node[wf button, anchor=east] at (15.7,6.8) {Subir PDF};
+  \draw[wf panel] (3.7,4.55) rectangle ++(12,1.45);
+  \node[wf text, anchor=west] at (4.05,5.55) {Pliego de cláusulas administrativas.pdf};
+  \node[wf muted, anchor=west] at (4.05,5.1) {PDF · tamaño · fecha de incorporación};
+  \node[wf danger, anchor=east] at (14.0,5.28) {Retirar};
+  \node[wf secondary, anchor=east] at (15.35,5.28) {Descargar};
+  \draw[wf panel] (3.7,2.65) rectangle ++(12,1.45);
+  \node[wf text, anchor=west] at (4.05,3.65) {Pliego de prescripciones técnicas.pdf};
+  \node[wf muted, anchor=west] at (4.05,3.2) {PDF · tamaño · fecha de incorporación};
+  \node[wf danger, anchor=east] at (14.0,3.38) {Retirar};
+  \node[wf secondary, anchor=east] at (15.35,3.38) {Descargar};
+  \draw[dashed, draw=TFGMuted, rounded corners=2pt] (3.7,0.75) rectangle ++(12,1.25);
+  \node[wf muted, align=center] at (9.7,1.38) {Zona de incorporación de documentos PDF\\con validación de formato y tamaño};
+\end{tikzpicture}

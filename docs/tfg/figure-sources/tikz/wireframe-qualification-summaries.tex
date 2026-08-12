@@ -1,0 +1,26 @@
+\input{figure-sources/tikz/wireframe-styles}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \draw[wf window] (0,0) rectangle (16.2,8.2);
+  \fill[TFGLightGray] (0,7.45) rectangle (16.2,8.2);
+  \node[wf title, anchor=west] at (0.35,7.82) {Detalle de oportunidad};
+  \fill[TFGLightGray] (0,0) rectangle (3.2,7.45);
+  \node[wf muted, anchor=west] at (0.45,6.8) {Datos generales};
+  \node[wf muted, anchor=west] at (0.45,6.25) {Documentación};
+  \node[wf muted, anchor=west] at (0.45,5.7) {Preguntas de control};
+  \node[wf muted, anchor=west] at (0.45,5.15) {Campos personalizados};
+  \node[wf active, anchor=west] at (0.45,4.6) {Resúmenes};
+  \node[wf muted, anchor=west] at (0.45,4.05) {Workflow};
+  \node[wf title, anchor=west] at (3.7,6.95) {Resúmenes};
+  \node[wf muted, anchor=west] at (3.7,6.55) {Documentos de análisis generados a partir del contexto disponible};
+  \node[wf secondary, anchor=east] at (15.7,6.8) {Añadir desde catálogo};
+  \draw[wf panel] (3.7,1.0) rectangle ++(12,5.05);
+  \node[wf text, anchor=west] at (4.05,5.65) {Resumen ejecutivo};
+  \node[wf muted, anchor=west] at (4.05,5.22) {Instrucción utilizada para elaborar el resultado};
+  \draw[wf field] (4.05,2.15) rectangle ++(11.25,2.65);
+  \node[wf muted, anchor=north west, align=left] at (4.25,4.55)
+    {Resultado editable generado por IA o redactado manualmente.\\El usuario conserva la revisión y la decisión final.};
+  \node[wf badge, anchor=west] at (4.05,1.62) {Pendiente};
+  \node[wf muted, anchor=west] at (5.55,1.62) {Procesando, completado o error};
+  \node[wf secondary] at (11.95,1.55) {Generar con IA};
+  \node[wf button] at (14.35,1.55) {Guardar resumen};
+\end{tikzpicture}

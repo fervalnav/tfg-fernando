@@ -5,6 +5,16 @@
   bar/.style={draw=TFGBlue, fill=TFGLightBlue, rounded corners=1pt},
   aiBar/.style={draw=TFGBlue, fill=TFGAccent!30, rounded corners=1pt}
 ]
+  \node[font=\tiny\bfseries\sffamily, text=TFGMuted, align=center] at (4.5,1.95)
+    {Base y configuración};
+  \node[font=\tiny\bfseries\sffamily, text=TFGMuted, align=center] at (12.5,1.95)
+    {Cartera y\\cualificación};
+  \node[font=\tiny\bfseries\sffamily, text=TFGMuted, align=center] at (18.5,1.95)
+    {IA y\\documentos};
+  \draw[TFGMuted] (0.5,1.25) -- (8.5,1.25);
+  \draw[TFGMuted] (8.5,1.25) -- (16.5,1.25);
+  \draw[TFGMuted] (16.5,1.25) -- (20.5,1.25);
+
   \foreach \week in {1,...,20} {
     \node[anchor=south] at (\week,0.55) {\week};
     \draw[TFGLightGray] (\week-0.5,0.35) -- (\week-0.5,-9.5);

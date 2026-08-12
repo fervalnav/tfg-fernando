@@ -1,0 +1,30 @@
+\input{figure-sources/tikz/wireframe-styles}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \draw[wf window] (0,0) rectangle (16.2,8.5);
+  \fill[TFGLightGray] (0,7.85) rectangle (16.2,8.5);
+  \node[wf title, anchor=west] at (0.35,8.17) {LIA};
+  \node[wf text, anchor=east] at (15.85,8.17) {Cuenta y perfil};
+  \fill[TFGLightGray] (0,0) rectangle (2.65,7.85);
+  \node[wf title, anchor=west] at (0.3,7.35) {Navegación};
+  \node[wf active, anchor=west] at (0.35,6.75) {Oportunidades};
+  \node[wf muted, anchor=west] at (0.35,6.25) {Configuración};
+  \node[wf title, anchor=west] at (3.05,7.35) {Cartera de oportunidades};
+  \node[wf button, anchor=east] at (15.8,7.35) {Nueva oportunidad};
+  \draw[wf field] (3.05,6.5) rectangle ++(3.7,0.5);
+  \node[wf muted, anchor=west] at (3.22,6.75) {Buscar};
+  \draw[wf field] (6.95,6.5) rectangle ++(2.5,0.5);
+  \node[wf muted] at (8.2,6.75) {Pipeline};
+  \draw[wf field] (9.65,6.5) rectangle ++(2.5,0.5);
+  \node[wf muted] at (10.9,6.75) {Responsable};
+  \node[wf secondary] at (13.1,6.75) {Lista};
+  \node[wf button] at (14.55,6.75) {Kanban};
+  \foreach \x/\name in {3.05/Nuevas,7.35/En análisis,11.65/Decisión} {
+    \draw[wf panel] (\x,1.05) rectangle ++(3.85,4.9);
+    \node[wf title, anchor=west] at (\x+0.25,5.6) {\name};
+    \foreach \y in {4.6,3.35,2.1} {
+      \draw[wf panel] (\x+0.25,\y) rectangle ++(3.35,0.9);
+      \node[wf text, anchor=west] at (\x+0.42,\y+0.58) {Oportunidad};
+      \node[wf muted, anchor=west] at (\x+0.42,\y+0.25) {Importe · responsable};
+    }
+  }
+\end{tikzpicture}

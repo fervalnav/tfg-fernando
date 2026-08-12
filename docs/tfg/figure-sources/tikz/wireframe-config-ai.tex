@@ -1,0 +1,30 @@
+\input{figure-sources/tikz/wireframe-styles}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \draw[wf window] (0,0) rectangle (16.2,7.5);
+  \fill[TFGLightGray] (0,6.85) rectangle (16.2,7.5);
+  \node[wf title, anchor=west] at (0.35,7.18) {Configuración de inteligencia artificial};
+  \fill[TFGLightGray] (0,0) rectangle (3.2,6.85);
+  \node[wf muted, anchor=west] at (0.45,6.2) {Pipelines};
+  \node[wf muted, anchor=west] at (0.45,5.7) {Workflows};
+  \node[wf muted, anchor=west] at (0.45,5.2) {Catálogos};
+  \node[wf active, anchor=west] at (0.45,4.7) {Proveedores de IA};
+  \node[wf title, anchor=west] at (3.7,6.3) {Proveedor y modelo activos};
+  \node[wf muted, anchor=west] at (3.7,5.75) {Proveedor};
+  \draw[wf field] (3.7,5.05) rectangle ++(4.6,0.55);
+  \node[wf muted, anchor=west] at (8.75,5.75) {Modelo};
+  \draw[wf field] (8.75,5.05) rectangle ++(4.6,0.55);
+  \node[wf button, anchor=east] at (15.7,5.32) {Guardar selección};
+  \node[wf title, anchor=west] at (3.7,4.25) {Comparación de evaluaciones};
+  \draw[wf panel] (3.7,1.4) rectangle ++(12,2.45);
+  \node[wf text, anchor=west] at (4.05,3.45) {Proveedor};
+  \node[wf text, anchor=west] at (6.1,3.45) {Modelo};
+  \node[wf text, anchor=west] at (8.1,3.45) {Calidad};
+  \node[wf text, anchor=west] at (10.0,3.45) {Latencia};
+  \node[wf text, anchor=west] at (12.0,3.45) {Tokens};
+  \node[wf text, anchor=west] at (14.0,3.45) {Coste};
+  \draw[wf divider] (4.0,3.05) -- (15.35,3.05);
+  \node[wf muted, align=center] at (9.7,2.25)
+    {Sin resultados hasta ejecutar el banco de evaluación definido.};
+  \node[wf muted, anchor=west] at (3.7,0.85)
+    {Las métricas se muestran con su fecha y conjunto de evaluación.};
+\end{tikzpicture}

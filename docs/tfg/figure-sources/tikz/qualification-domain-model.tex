@@ -1,0 +1,38 @@
+\begin{tikzpicture}[
+  every node/.style={font=\scriptsize\sffamily},
+  entity/.style={draw=TFGBlue, rounded corners=2pt, fill=white,
+    minimum height=0.78cm, text width=1.92cm, align=center, inner sep=3pt},
+  template/.style={entity, fill=TFGLightGray},
+  instance/.style={entity, fill=TFGLightBlue},
+  core/.style={entity, fill=TFGBlue, text=white},
+  relation/.style={-{Latex[length=2mm]}, semithick, draw=TFGAccent}
+]
+  \node[core] (opportunity) at (0,0) {Oportunidad};
+  \node[instance] (attachment) at (-5.5,-1.6) {Adjunto};
+  \node[instance] (question) at (-3.3,-1.6) {Pregunta\\instanciada};
+  \node[instance] (field) at (-1.1,-1.6) {Campo\\instanciado};
+  \node[instance] (summary) at (1.1,-1.6) {Resumen\\instanciado};
+  \node[instance] (runtime) at (3.3,-1.6) {Ejecución de\\workflow};
+  \node[instance] (runtime-action) at (5.5,-1.6) {Acción\\del paso};
+
+  \node[template] (question-template) at (-3.3,-3.3) {Plantilla de\\pregunta};
+  \node[template] (field-template) at (-1.1,-3.3) {Plantilla de\\campo};
+  \node[template] (summary-template) at (1.1,-3.3) {Plantilla de\\resumen};
+  \node[template] (workflow) at (3.3,-3.3) {Definición de\\workflow};
+  \node[template] (action-definition) at (5.5,-3.3) {Definición de\\acción};
+
+  \draw[relation] (opportunity) -- (attachment);
+  \draw[relation] (opportunity) -- (question);
+  \draw[relation] (opportunity) -- (field);
+  \draw[relation] (opportunity) -- (summary);
+  \draw[relation] (opportunity) -- (runtime);
+  \draw[relation] (question-template) -- (question);
+  \draw[relation] (field-template) -- (field);
+  \draw[relation] (summary-template) -- (summary);
+  \draw[relation] (workflow) -- (runtime);
+  \draw[relation] (runtime) -- (runtime-action);
+  \draw[relation] (action-definition) -- (runtime-action);
+
+  \node[font=\scriptsize\sffamily\color{TFGMuted}, anchor=west] at
+    (-5.5,-4.25) {Gris: catálogo configurable \quad Azul claro: instancia de la oportunidad};
+\end{tikzpicture}
