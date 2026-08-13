@@ -1,0 +1,781 @@
+[
+  {
+    "blindId": "blind-01188c434fa4",
+    "caseId": "fictitious-electric-buses-05",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": true,
+      "evidence": "El candidato cumple con los requisitos establecidos: 1. Plazo de entrega: Según el PCAP 4.3 el plazo máximo es de 210 días naturales, y el DOSSIER 6.2 compromete la entrega en 190 días, lo cual es inferior al máximo permitido. 2. Autonomía: Según el PPT 4.1 la autonomía mínima exigida es de 280 km WLTP, y el DOSSIER 6.2 confirma una autonomía de 295 km WLTP, superando el mínimo requerido."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-01d7b5b7ea4c",
+    "caseId": "fictitious-electric-buses-05",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": true,
+      "evidence": "Según el PCAP 4.3, el plazo máximo de entrega es de 210 días naturales desde la formalización. El Dossier 6.2 indica que el candidato compromete la entrega de las seis unidades en 190 días naturales, lo cual es inferior al plazo máximo permitido.",
+      "passed": true
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-036556aaaa7d",
+    "caseId": "fictitious-it-support-01",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El objeto de la licitación consiste en la prestación de un servicio integral de soporte informático, tanto remoto como presencial, para 850 puestos de trabajo (PCAP 1.2). El presupuesto base es de 240.000 EUR sin IVA (PCAP 1.2) y la duración inicial del contrato se establece en 24 meses (PCAP 4.1). Respecto a la solvencia técnica, se requiere acreditar al menos dos contratos de soporte TI con un valor individual igual o superior a 80.000 EUR y con ejecución satisfactoria (PCAP 7.3). El candidato cumple con este requisito, ya que presenta dos contratos ejecutados satisfactoriamente: soporte a Red Norte por 95.000 EUR y a Consorcio Delta por 87.000 EUR (DOSSIER 2.1), concluyendo que el perfil cumple con las condiciones exigidas."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-073ae46d62e5",
+    "caseId": "fictitious-solar-maintenance-03",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": [
+        "Lote Norte",
+        "Lote Sur"
+      ],
+      "evidence": "PCAP 2.1 - División en lotes: Lote Norte: 22 instalaciones. Lote Sur: 20 instalaciones."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-0a564c964eb3",
+    "caseId": "fictitious-solar-maintenance-03",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El alcance del proyecto consiste en la prestación de servicios de mantenimiento preventivo y correctivo para 42 instalaciones fotovoltaicas (PCAP 1.2). El contrato está dividido en dos lotes: el Lote Norte, que abarca 22 instalaciones, y el Lote Sur, que incluye 20 instalaciones, permitiéndose la licitación a uno o a ambos (PCAP 2.1). Se exige una garantía provisional equivalente al 2 % del presupuesto base, la cual no es subsanable si no se presenta (PCAP 6.4). El candidato es excluido por no aportar aval, seguro de caución ni ninguna otra garantía provisional necesaria para la admisión de la oferta (DOSSIER 4.2)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-0cc57a01e537",
+    "caseId": "fictitious-it-support-01",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": true,
+      "evidence": "El presupuesto base de licitación es de 240.000 EUR, superando el mínimo requerido de 200.000 EUR según el PCAP 1.2. La solvencia técnica se cumple según el PCAP 7.3, que exige dos contratos de al menos 80.000 EUR ejecutados satisfactoriamente; el DOSSIER 2.1 acredita dos contratos (Red Norte por 95.000 EUR y Consorcio Delta por 87.000 EUR) ambos con ejecución satisfactoria."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-1b4387e99498",
+    "caseId": "fictitious-it-support-01",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": 24,
+      "evidence": "PCAP 4.1 - Duración: La duración inicial del contrato es de 24 meses."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-1e74bf642c67",
+    "caseId": "fictitious-it-support-01",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": 24,
+      "evidence": "PCAP 4.1 - Duración: La duración inicial del contrato es de 24 meses."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-2139b82194fa",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": "55523100-3",
+      "evidence": "PCAP 1.4 - Clasificación Código CPV principal: 55523100-3, servicios de comidas para escuelas."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-21db6d8153c5",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": true,
+      "evidence": "El PCAP 5.2 establece la obligatoriedad de presentar un registro sanitario vigente en la fecha límite. Según el DOSSIER 3.1, la entidad candidata presenta el registro sanitario RS-AN-2024-1187, con validez hasta el 10 de enero de 2028, lo cual cubre la fecha límite de presentación del 2 de noviembre de 2026."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-24b9b792c9d3",
+    "caseId": "fictitious-it-support-01",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": 24,
+      "evidence": "La duración inicial del contrato es de 24 meses."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-29d72b3f9c77",
+    "caseId": "fictitious-it-support-01",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": true,
+      "evidence": "Según PCAP 7.3, se exigen al menos dos contratos de soporte TI de importe igual o superior a 80.000 EUR. El DOSSIER 2.1 confirma que el candidato acredita dos contratos: soporte a Red Norte por 95.000 EUR y soporte a Consorcio Delta por 87.000 EUR, ambos con ejecución satisfactoria.",
+      "passed": true
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-2b6b426b253a",
+    "caseId": "fictitious-solar-maintenance-03",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "Alcance: El contrato abarca el mantenimiento preventivo y correctivo de 42 instalaciones fotovoltaicas (PCAP 1.2). Lotes: Se divide en Lote Norte (22 instalaciones) y Lote Sur (20 instalaciones), permitiéndose licitar a uno o ambos (PCAP 2.1). Garantía exigida: Es obligatorio presentar una garantía provisional del 2% del presupuesto base, siendo un requisito no subsanable (PCAP 6.4). Motivo de exclusión: El candidato será excluido debido a que no ha aportado aval, seguro de caución ni ninguna otra garantía provisional en la documentación presentada (DOSSIER 4.2)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-2c7712df26f8",
+    "caseId": "fictitious-solar-maintenance-03",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": false,
+      "evidence": "Según el documento DOSSIER 4.2, el candidato indica explícitamente: 'No se aporta aval, seguro de caución ni otra garantía provisional', incumpliendo así el requisito establecido en PCAP 6.4 que exige una garantía provisional del 2 % del presupuesto base.",
+      "passed": false
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-2e864bf75f80",
+    "caseId": "fictitious-archive-digitization-04",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El proyecto comprende la digitalización, indexación y control de calidad de 320.000 páginas (TS 2.2). El presupuesto base es de 98.000 EUR sin IVA (AC 1.3), con un plazo de ejecución inicial de 10 meses (AC 1.3). Es obligatoria la presentación de un certificado actual ISO/IEC 27001 o equivalente en seguridad de la información (AC 5.5). Actualmente, el candidato ha aportado un certificado ISO/IEC 27001 que expiró el 30 de junio de 2026, sin incluir ninguna renovación o documento equivalente (CANDIDATE 5.1)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-39983f47b05a",
+    "caseId": "fictitious-electric-buses-05",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El contrato contempla el suministro de seis minibuses eléctricos (PCAP 1.2), con un presupuesto base de 1.320.000 EUR sin IVA (PCAP 1.2). Los vehículos deben acreditar una autonomía mínima de 280 km (PPT 4.1), aunque la oferta del candidato confirma una autonomía homologada superior de 295 km (DOSSIER 2.1; DOSSIER 6.2). Respecto al plazo de entrega, se establece un máximo de 210 días naturales (PCAP 4.3), comprometiéndose el candidato a una entrega en 190 días naturales (DOSSIER 6.2). En cuanto a la capacidad, las unidades deben incluir rampa y espacio reservado (PPT 5.2), lo cual es acreditado en la oferta técnica del candidato (DOSSIER 2.1)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-3db8fe66080d",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El servicio de comedor escolar sostenible está destinado a los centros Alameda, Horizonte y Marisma (PCAP 1.1). El presupuesto base es de 510.000 EUR sin IVA y la duración inicial del contrato es de 18 meses (PCAP 1.3). Respecto a los requisitos, es obligatorio presentar un registro sanitario vigente en la fecha límite de presentación (PCAP 5.2). La entidad candidata, Cocina Circular (DOSSIER 1.1), cumple con este requisito al contar con el registro sanitario RS-AN-2024-1187, válido hasta el 10 de enero de 2028 (DOSSIER 3.1)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-40d61810148d",
+    "caseId": "fictitious-it-support-01",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": true,
+      "evidence": "Según el PCAP 7.3, se requieren dos contratos de soporte TI de al menos 80.000 EUR ejecutados satisfactoriamente. El DOSSIER 2.1 confirma que el candidato aporta dos contratos (Red Norte por 95.000 EUR y Consorcio Delta por 87.000 EUR), ambos con ejecución satisfactoria, cumpliendo así con los criterios exigidos.",
+      "passed": true
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-476361386c62",
+    "caseId": "fictitious-it-support-01",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": true,
+      "evidence": "El presupuesto base es de 240.000 EUR, superando el requisito de 200.000 EUR según el PCAP 1.2. Respecto a la solvencia técnica, el PCAP 7.3 exige dos contratos de al menos 80.000 EUR ejecutados satisfactoriamente, y el DOSSIER 2.1 confirma que el candidato acredita dos contratos (95.000 EUR y 87.000 EUR) con ejecución satisfactoria."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-478eda2f66eb",
+    "caseId": "fictitious-electric-buses-05",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": true,
+      "evidence": "El candidato cumple con ambos requisitos: respecto al plazo de entrega, la oferta compromete 190 días naturales (DOSSIER 6.2), lo cual es inferior al plazo máximo de 210 días naturales estipulado en PCAP 4.3. Respecto a la autonomía, la oferta confirma 295 km (DOSSIER 6.2), lo cual supera el mínimo de 280 km exigido en PPT 4.1."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-490587093249",
+    "caseId": "fictitious-archive-digitization-04",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El proyecto contempla la digitalización, indexación y control de calidad de 320.000 páginas (TS 2.2). El presupuesto base es de 98.000 EUR sin IVA, con un plazo de ejecución inicial de 10 meses (AC 1.3). Es obligatorio contar con un certificado ISO/IEC 27001 vigente o equivalente (AC 5.5). Respecto a la situación del candidato, este ha presentado un certificado ISO/IEC 27001 que expiró el 30 de junio de 2026, sin aportar renovaciones ni documentos equivalentes (CANDIDATE 5.1)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-4910830ae64f",
+    "caseId": "fictitious-solar-maintenance-03",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": false,
+      "evidence": "La sección PCAP 6.4 establece que la oferta debe incorporar una garantía provisional obligatoria. Según la sección DOSSIER 4.2, el candidato no ha aportado aval, seguro de caución ni ninguna otra garantía provisional, por lo que no cumple con el requisito exigido."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-4b05b6750007",
+    "caseId": "fictitious-solar-maintenance-03",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": false,
+      "evidence": "Según el apartado DOSSIER 4.2 del documento presentado, se indica explícitamente que 'No se aporta aval, seguro de caución ni otra garantía provisional', incumpliendo así el requisito establecido en la sección PCAP 6.4, que exige una garantía provisional equivalente al 2 % del presupuesto base.",
+      "passed": false
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-506e15df406b",
+    "caseId": "fictitious-archive-digitization-04",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": false,
+      "evidence": "Según la sección AC 5.5, el pliego exige una certificación ISO/IEC 27001 vigente o equivalente. La sección CANDIDATE 5.1 indica que el certificado proporcionado por el candidato caducó el 30 de junio de 2026 y no se incluye ninguna renovación ni certificación equivalente, por lo que no cumple con el requisito de vigencia.",
+      "passed": false
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-5375943bff2f",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": "55523100-3",
+      "evidence": "PCAP 1.4 - Clasificación: Código CPV principal: 55523100-3, servicios de comidas para escuelas."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-5dedff717b66",
+    "caseId": "fictitious-it-support-01",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": 24,
+      "evidence": "PCAP 4.1 - Duración\nLa duración inicial del contrato es de 24 meses."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-5fa4c54c9329",
+    "caseId": "fictitious-archive-digitization-04",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": 300,
+      "evidence": "TS 3.4 - Image quality: Capture shall use a minimum resolution of 300 dots per inch."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-697a87e88df6",
+    "caseId": "fictitious-it-support-01",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El objeto del contrato es la prestación de un servicio integral de soporte informático, tanto remoto como presencial, para un total de 850 puestos de trabajo (PCAP 1.2). El presupuesto base de licitación asciende a 240.000 EUR sin IVA (PCAP 1.2), con un plazo de ejecución inicial de 24 meses (PCAP 4.1). En cuanto a la solvencia técnica, se requiere acreditar al menos dos contratos de soporte tecnológico de importe igual o superior a 80.000 EUR cada uno, ejecutados satisfactoriamente (PCAP 7.3). El candidato cumple con estos requisitos al presentar dos contratos comparables: soporte a Red Norte por 95.000 EUR y a Consorcio Delta por 87.000 EUR, ambos con ejecución satisfactoria (DOSSIER 2.1), concluyendo que el perfil del candidato es adecuado y cumple con la solvencia técnica exigida."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-6cddbf8c65f1",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": true,
+      "evidence": "Según el DOSSIER 3.1, el candidato cuenta con el registro sanitario RS-AN-2024-1187, con validez desde el 10 de enero de 2024 hasta el 10 de enero de 2028. Dado que la fecha límite de presentación es el 2 de noviembre de 2026 (según la información proporcionada), el registro se encuentra vigente.",
+      "passed": true
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-6d6c83e82a9a",
+    "caseId": "fictitious-it-support-01",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": true,
+      "evidence": "El apartado PCAP 7.3 exige al menos dos contratos de soporte TI de importe igual o superior a 80.000 EUR. Según el DOSSIER 2.1, el candidato acredita dos contratos que cumplen estos requisitos: soporte a Red Norte por 95.000 EUR y soporte a Consorcio Delta por 87.000 EUR, ambos con ejecución satisfactoria.",
+      "passed": true
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-77046da65ca7",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": "El candidato dispone de un registro sanitario vigente (RS-AN-2024-1187) que cubre la fecha límite de presentación (2 de noviembre de 2026), ya que su validez es hasta el 10 de enero de 2028.",
+      "evidence": "Según el PCAP 5.2, es obligatorio presentar un registro sanitario vigente en la fecha límite de presentación. Según el DOSSIER 3.1, el candidato presenta el registro sanitario RS-AN-2024-1187, con validez desde el 10 de enero de 2024 hasta el 10 de enero de 2028. Dado que la fecha límite es el 2 de noviembre de 2026, el registro está vigente.",
+      "passed": true
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-7c012a24ca3e",
+    "caseId": "fictitious-it-support-01",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": true,
+      "evidence": "Se cumple la condición de solvencia técnica según el 'DOSSIER 2.1', donde el candidato acredita dos contratos de soporte (95.000 EUR y 87.000 EUR) que superan el requisito de 80.000 EUR establecido en el 'PCAP 7.3'. Asimismo, el presupuesto base de 240.000 EUR especificado en el 'PCAP 1.2' cumple con la condición de ser al menos 200.000 EUR."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-7e0210377e5f",
+    "caseId": "fictitious-solar-maintenance-03",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": [
+        "Lote Norte",
+        "Lote Sur"
+      ],
+      "evidence": "PCAP 2.1 - División en lotes: Lote Norte: 22 instalaciones. Lote Sur: 20 instalaciones."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-88ea1b91662b",
+    "caseId": "fictitious-solar-maintenance-03",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": [
+        "Lote Norte",
+        "Lote Sur"
+      ],
+      "evidence": "PCAP 2.1 - División en lotes: Lote Norte: 22 instalaciones. Lote Sur: 20 instalaciones."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-9172502a060f",
+    "caseId": "fictitious-it-support-01",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": true,
+      "evidence": "El candidato acredita dos contratos de soporte TI en el apartado DOSSIER 2.1 (Red Norte por 95.000 EUR y Consorcio Delta por 87.000 EUR). Ambos superan el umbral de 80.000 EUR y cuentan con ejecuci3n satisfactoria, cumpliendo los requisitos definidos en el PCAP 7.3.",
+      "passed": true
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-92a9e5bbf91d",
+    "caseId": "fictitious-solar-maintenance-03",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": false,
+      "evidence": "Según el PCAP 6.4, es obligatorio incorporar una garantía provisional (2 % del presupuesto base) y su ausencia no es subsanable. En el DOSSIER 4.2 se confirma explícitamente que no se aporta aval, seguro de caución ni otra garantía provisional."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-93d98e1e66a9",
+    "caseId": "fictitious-it-support-01",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El objeto del contrato es el servicio integral de soporte remoto y presencial para 850 puestos de trabajo (PCAP 1.2). El presupuesto base de licitación asciende a 240.000 EUR sin IVA (PCAP 1.2) con un plazo de ejecución inicial de 24 meses, sin incluir prórrogas (PCAP 4.1). En cuanto a la solvencia técnica, se requieren al menos dos contratos previos de soporte TI por un importe mínimo de 80.000 EUR cada uno (PCAP 7.3). Como conclusión del perfil, el candidato cumple con los requisitos al acreditar dos contratos ejecutados satisfactoriamente: uno con Red Norte por 95.000 EUR y otro con Consorcio Delta por 87.000 EUR (DOSSIER 2.1)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-93e9bdc0f517",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "Los centros incluidos para el servicio son Alameda, Horizonte y Marisma (PCAP 1.1). El presupuesto base es de 510.000 EUR y la duración inicial del servicio es de 18 meses (PCAP 1.3). Como requisito sanitario, es obligatorio presentar un registro sanitario vigente en la fecha límite de presentación (PCAP 5.2). La entidad candidata, Cocina Circular, acredita su aptitud mediante el registro sanitario RS-AN-2024-1187, el cual tiene validez hasta el 10 de enero de 2028 (DOSSIER 3.1)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-9afda703369a",
+    "caseId": "fictitious-electric-buses-05",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": 280,
+      "evidence": "PPT 4.1 - Prestaciones: Cada vehículo debe acreditar una autonomía mínima de 280 km según ciclo WLTP."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-9c3f651a7b0c",
+    "caseId": "fictitious-archive-digitization-04",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": false,
+      "evidence": "Segun la seccion AC 5.5, es obligatorio contar con una certificacion ISO/IEC 27001 o equivalente vigente. Sin embargo, la seccion CANDIDATE 5.1 indica que la certificacion proporcionada por el candidato expiro el 30 de junio de 2026 y no se ha incluido ninguna renovacion o certificado equivalente."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-a2f2061652b1",
+    "caseId": "fictitious-electric-buses-05",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El proyecto contempla el suministro de seis minibuses eléctricos accesibles (PCAP 1.2), con un presupuesto base de 1.320.000 EUR sin IVA (PCAP 1.2). Los vehículos deben contar con una autonomía mínima de 280 km (PPT 4.1), aunque la oferta del candidato acredita una autonomía homologada de 295 km WLTP (DOSSIER 2.1; DOSSIER 6.2). Respecto al plazo, el máximo estipulado es de 210 días naturales (PCAP 4.3), y el candidato se compromete a realizar la entrega en 190 días naturales (DOSSIER 6.2). En cuanto a la capacidad, las unidades deben incorporar rampa y espacio reservado (PPT 5.2), características que el candidato cumple al incluir rampa eléctrica en su ficha técnica (DOSSIER 2.1)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-a952a3cae6a9",
+    "caseId": "fictitious-solar-maintenance-03",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": false,
+      "evidence": "Según el documento DOSSIER 4.2, el candidato no ha aportado aval, seguro de caución ni ninguna otra garantía provisional, incumpliendo el requisito establecido en PCAP 6.4, que exige una garantía provisional del 2 % del presupuesto base.",
+      "passed": false
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-a957ef997bce",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": true,
+      "evidence": "El PCAP 5.2 establece la obligatoriedad de presentar un registro sanitario vigente en la fecha límite de presentación. Según el DOSSIER 3.1, la entidad candidata Cocina Circular cuenta con el registro sanitario RS-AN-2024-1187, con vigencia del 10 de enero de 2024 al 10 de enero de 2028, lo cual cubre la fecha límite de presentación especificada en la solicitud (2026-11-02)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-b4aead38456a",
+    "caseId": "fictitious-it-support-01",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": true,
+      "evidence": "Según la sección DOSSIER 2.1, el candidato acredita dos contratos de soporte (Red Norte por 95.000 EUR y Consorcio Delta por 87.000 EUR), ambos con ejecución satisfactoria, lo cual cumple con los requisitos de la sección PCAP 7.3.",
+      "passed": true
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-ba7dca7a7758",
+    "caseId": "fictitious-electric-buses-05",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": true,
+      "evidence": "El candidato cumple con ambos requisitos. En cuanto al plazo de entrega, el PCAP 4.3 establece un máximo de 210 días naturales, y el DOSSIER 6.2 confirma un compromiso de entrega de 190 días. Respecto a la autonomía, el PPT 4.1 exige un mínimo de 280 km según ciclo WLTP, mientras que el DOSSIER 6.2 y el DOSSIER 2.1 confirman una autonomía homologada de 295 km WLTP, superando el requisito exigido."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-baf60a3bada5",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": true,
+      "evidence": "Según el DOSSIER 3.1, el candidato cuenta con el registro sanitario RS-AN-2024-1187, con validez desde el 10 de enero de 2024 hasta el 10 de enero de 2028. Dado que la fecha límite de presentación es el 2 de noviembre de 2026, el registro se encuentra vigente en la fecha requerida, cumpliendo con la obligación establecida en el PCAP 5.2.",
+      "passed": true
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-bdbab81f5ba9",
+    "caseId": "fictitious-it-support-01",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El objeto del contrato es proporcionar soporte informático integral, tanto remoto como presencial, para 850 puestos de trabajo (PCAP 1.2). El presupuesto base de licitación se establece en 240.000 EUR sin IVA (PCAP 1.2), con un plazo de ejecución inicial de 24 meses, excluyendo prórrogas (PCAP 4.1). Respecto a la solvencia técnica, se requiere acreditar al menos dos contratos previos de soporte TI, cada uno por un importe igual o superior a 80.000 EUR, ejecutados satisfactoriamente (PCAP 7.3). El candidato cumple con estos requisitos al presentar dos contratos comparables: uno con Red Norte por 95.000 EUR y otro con Consorcio Delta por 87.000 EUR, ambos con ejecución satisfactoria certificada (DOSSIER 2.1)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-c17e0fc66d84",
+    "caseId": "fictitious-archive-digitization-04",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": false,
+      "evidence": "Segón la sección AC 5.5, es obligatorio contar con una certificación ISO/IEC 27001 vigente. Sin embargo, la sección CANDIDATE 5.1 indica que el certificado presentado caducó el 30 de junio de 2026 y no se ha incluido ninguna renovación o certificado equivalente."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-c20c20b52992",
+    "caseId": "fictitious-it-support-01",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El objeto del contrato es un servicio integral de soporte remoto y presencial para 850 puestos de trabajo (PCAP 1.2). El presupuesto base de licitación asciende a 240.000 EUR sin IVA (PCAP 1.2) con un plazo de ejecución inicial de 24 meses, sin incluir prórrogas (PCAP 4.1). En cuanto a la solvencia técnica, se requieren al menos dos contratos de soporte TI previos, cada uno de importe igual o superior a 80.000 EUR (PCAP 7.3). El candidato cumple con estos requisitos al acreditar experiencia en los proyectos 'Red Norte' (95.000 EUR) y 'Consorcio Delta' (87.000 EUR), ambos con ejecución satisfactoria (DOSSIER 2.1). En conclusión, el perfil del candidato es apto para la licitación al superar los umbrales técnicos exigidos."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-cc5f39462e6c",
+    "caseId": "fictitious-archive-digitization-04",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El proyecto contempla la digitalización, indexación y control de calidad de un volumen de 320.000 páginas (TS 2.2). El presupuesto base asciende a 98.000 EUR sin IVA (AC 1.3), con un plazo de ejecución inicial de 10 meses (AC 1.3). Es obligatoria la presentación de un certificado ISO/IEC 27001 en vigor o equivalente (AC 5.5). En cuanto a la situación del candidato, este ha presentado un certificado ISO/IEC 27001 caducado el 30 de junio de 2026, sin aportar renovaciones ni certificados equivalentes (CANDIDATE 5.1)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-d35f77b48891",
+    "caseId": "fictitious-archive-digitization-04",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": false,
+      "evidence": "Según la sección AC 5.5, se requiere una certificación ISO/IEC 27001 vigente. Sin embargo, la sección CANDIDATE 5.1 indica que el certificado presentado por el candidato expiró el 30 de junio de 2026 y no se incluye ninguna renovación ni certificación equivalente.",
+      "passed": false
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-d787bf6f066f",
+    "caseId": "fictitious-archive-digitization-04",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": 300,
+      "evidence": "TS 3.4 - Image quality. Capture shall use a minimum resolution of 300 dots per inch."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-d8697cb020f8",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": true,
+      "evidence": "El candidato presenta un registro sanitario RS-AN-2024-1187, con vigencia desde el 10 de enero de 2024 hasta el 10 de enero de 2028 (DOSSIER 3.1). Dado que la fecha límite de presentación es el 2 de noviembre de 2026, el registro se encuentra plenamente vigente para cumplir con el requisito establecido en el PCAP 5.2."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-d9f7696981ad",
+    "caseId": "fictitious-it-support-01",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": true,
+      "evidence": "El presupuesto base de licitacion es de 240.000 EUR (PCAP 1.2), superando el umbral de 200.000 EUR. Ademas, se cumple la solvencia tecnica (PCAP 7.3) ya que el candidato acredita dos contratos de 95.000 EUR y 87.000 EUR, superando el minimo exigido de dos contratos de al menos 80.000 EUR cada uno (DOSSIER 2.1)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-dc8575da3ac4",
+    "caseId": "fictitious-electric-buses-05",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": 280,
+      "evidence": "PPT 4.1 - Prestaciones: Cada vehículo debe acreditar una autonomía mínima de 280 km según ciclo WLTP."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-df58e70636e7",
+    "caseId": "fictitious-it-support-01",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": 24,
+      "evidence": "PCAP 4.1 - Duración: La duración inicial del contrato es de 24 meses."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-e1118aab2874",
+    "caseId": "fictitious-it-support-01",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": 24,
+      "evidence": "La duración inicial del contrato es de 24 meses."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-e18293a2019c",
+    "caseId": "fictitious-solar-maintenance-03",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El alcance del contrato comprende el mantenimiento preventivo y correctivo de un total de 42 instalaciones fotovoltaicas (PCAP 1.2). La licitación se divide en dos lotes: el Lote Norte, que abarca 22 instalaciones, y el Lote Sur, que incluye 20, permitiéndose la participación en uno o ambos lotes (PCAP 2.1). Se exige una garantía provisional equivalente al 2% del presupuesto base, cuya falta de presentación no es subsanable (PCAP 6.4). El candidato analizado será excluido debido a que no aporta aval, seguro de caución ni ninguna otra garantía provisional en su documentación presentada (DOSSIER 4.2)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-e856c3275eb8",
+    "caseId": "fictitious-it-support-01",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El objeto del contrato es el servicio integral de soporte remoto y presencial para 850 puestos de trabajo (PCAP 1.2). El presupuesto base de licitación asciende a 240.000 EUR sin IVA (PCAP 1.2) con un plazo de ejecución inicial de 24 meses, sin incluir prórrogas (PCAP 4.1). En cuanto a la solvencia técnica, se requieren al menos dos contratos previos de soporte TI por un importe mínimo de 80.000 EUR cada uno (PCAP 7.3). El candidato cumple con este requisito al acreditar experiencia en Red Norte (95.000 EUR) y Consorcio Delta (87.000 EUR), ambos ejecutados satisfactoriamente (DOSSIER 2.1). Conclusión: El perfil del candidato es apto para la licitación al superar los umbrales de solvencia exigidos."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-ecb2cbb9c1d6",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": "55523100-3",
+      "evidence": "PCAP 1.4 - Clasificación: Código CPV principal: 55523100-3, servicios de comidas para escuelas."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-ecfb3d05773f",
+    "caseId": "fictitious-electric-buses-05",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": 280,
+      "evidence": "PPT 4.1 - Prestaciones: Cada vehículo debe acreditar una autonomía mínima de 280 km según ciclo WLTP."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-ede41e29401c",
+    "caseId": "fictitious-archive-digitization-04",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": 300,
+      "evidence": "TS 3.4 - Image quality. Capture shall use a minimum resolution of 300 dots per inch."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-ef7aa8bd5442",
+    "caseId": "fictitious-electric-buses-05",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El proyecto contempla el suministro de seis minibuses eléctricos (PCAP 1.2) con un presupuesto base de 1.320.000 EUR sin IVA (PCAP 1.2). Los requisitos técnicos exigen una autonomía mínima de 280 km (PPT 4.1) y un plazo máximo de entrega de 210 días naturales (PCAP 4.3). En cuanto a la capacidad del candidato, se compromete a la entrega de las seis unidades en 190 días naturales (DOSSIER 6.2) y confirma una autonomía homologada de 295 km WLTP (DOSSIER 2.1, DOSSIER 6.2)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-f3f57bf40e8e",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El servicio de comedor escolar sostenible se prestará en los centros Alameda, Horizonte y Marisma (PCAP 1.1). El presupuesto base es de 510.000 EUR sin IVA y la duración inicial del contrato es de 18 meses (PCAP 1.3). Respecto al requisito sanitario, es obligatorio contar con un registro sanitario vigente en la fecha límite de presentación (PCAP 5.2). La entidad candidata es Cocina Circular (DOSSIER 1.1), que acredita su aptitud mediante el registro sanitario RS-AN-2024-1187, válido hasta el 10 de enero de 2028 (DOSSIER 3.1)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-f432de3a414e",
+    "caseId": "fictitious-electric-buses-05",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": true,
+      "evidence": "El PCAP 4.3 establece que el plazo máximo de entrega es de 210 días naturales desde la formalización. Según la sección DOSSIER 6.2 del documento de oferta, el candidato compromete la entrega de las seis unidades en 190 días naturales, lo cual cumple con el requisito establecido.",
+      "passed": true
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-f68dd072542f",
+    "caseId": "fictitious-it-support-01",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": true,
+      "evidence": "Según PCAP 7.3, se requiere acreditar al menos dos contratos de soporte de TI con un importe igual o superior a 80.000 EUR, ejecutados satisfactoriamente. En la sección DOSSIER 2.1, el candidato presenta dos contratos: soporte a Red Norte por 95.000 EUR y soporte a Consorcio Delta por 87.000 EUR, ambos con ejecución satisfactoria.",
+      "passed": true
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-f7d36c4da42e",
+    "caseId": "fictitious-archive-digitization-04",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": false,
+      "evidence": "Según la sección 'AC 5.5 - Information security' (página 3), es obligatorio presentar un certificado ISO/IEC 27001 vigente. La sección 'CANDIDATE 5.1 - Certificate' indica que el candidato presentó un certificado que caducó el 30 de junio de 2026 y no incluye ninguna renovación o certificado equivalente.",
+      "passed": false
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-fb7ad04d00f1",
+    "caseId": "fictitious-electric-buses-05",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": true,
+      "evidence": "Según el PCAP 4.3, el plazo máximo de entrega es de 210 días naturales. En el documento DOSSIER 6.2, el candidato compromete la entrega de las unidades en 190 días naturales, lo cual es inferior al plazo máximo establecido.",
+      "passed": true
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-fc277a01ae68",
+    "caseId": "fictitious-solar-maintenance-03",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": false,
+      "evidence": "Según el apartado PCAP 6.4, la garantía provisional es obligatoria y su ausencia no es subsanable. En el apartado DOSSIER 4.2 se confirma explícitamente que no se aporta aval, seguro de caución ni otra garantía provisional."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-fcde0805eb99",
+    "caseId": "fictitious-archive-digitization-04",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": false,
+      "evidence": "Segón la sección AC 5.5, se requiere una certificación ISO/IEC 27001 vigente. Sin embargo, la sección CANDIDATE 5.1 indica que el certificado proporcionado caducó el 30 de junio de 2026 y no se ha incluido ninguna renovación o equivalente válido."
+    },
+    "error": null
+  }
+]

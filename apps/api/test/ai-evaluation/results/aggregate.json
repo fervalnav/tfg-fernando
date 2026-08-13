@@ -1,0 +1,38 @@
+[
+  {
+    "model": "gemini-3-flash-preview",
+    "completed": 10,
+    "planned": 60,
+    "structurallyValid": 10,
+    "validRate": 1,
+    "qualityMean": 7.8,
+    "qualityStdDev": 0.39999999999999997,
+    "latencyMedianMs": 1726,
+    "latencyP95Ms": 4352,
+    "inputTokensMean": 1201.7,
+    "outputTokensMean": 113.4,
+    "costMeanUsd": 0.00094105,
+    "costTotalUsd": 0.0094105,
+    "hallucinations": 0,
+    "criticalHallucinations": 0,
+    "formatErrors": 0
+  },
+  {
+    "model": "gemini-3.1-flash-lite",
+    "completed": 60,
+    "planned": 60,
+    "structurallyValid": 60,
+    "validRate": 1,
+    "qualityMean": 7.533333333333333,
+    "qualityStdDev": 1.334998959633386,
+    "latencyMedianMs": 2663,
+    "latencyP95Ms": 5687,
+    "inputTokensMean": 1836,
+    "outputTokensMean": 227.36666666666667,
+    "costMeanUsd": 0.0008000499999999998,
+    "costTotalUsd": 0.04800299999999999,
+    "hallucinations": 2,
+    "criticalHallucinations": 2,
+    "formatErrors": 1
+  }
+]

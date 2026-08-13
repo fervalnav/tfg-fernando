@@ -41,9 +41,8 @@ versión funcional que finalmente documente el manual.
   caché de Turborepo.
 - [x] El lint mantiene 13 avisos no bloqueantes en componentes reutilizables
   de la interfaz.
-- [ ] CI remota validada. La ejecución `31686791310` llega hasta los E2E de API
-  y revela que faltaba `REFRESH_TOKEN_SECRET` en el entorno E2E aislado; las
-  fases anteriores pasan. La corrección está preparada, pendiente de publicar.
+- [x] CI remota validada. La ejecución `31687608812` finaliza correctamente en
+  la revisión `edaf585`, incluidas las 12 pruebas API E2E que antes fallaban.
 
 ## Bloqueos antes de redactar resultados
 
@@ -56,8 +55,8 @@ versión funcional que finalmente documente el manual.
 - [x] Alinear la versión de PostgreSQL: Docker local y la definición de CI usan
   `postgres:16-alpine`. Falta publicar y ejecutar la revisión para confirmar si
   esta diferencia explicaba el HTTP 500.
-- [ ] Obtener al menos una ejecución completa y satisfactoria del workflow de
-  CI sobre la revisión que vaya a citarse en el capítulo 7.
+- [x] Obtener al menos una ejecución completa y satisfactoria del workflow de
+  CI sobre la revisión `edaf585` que se citará en el capítulo 7.
 - [ ] Registrar la revisión definitiva de Git y el resultado remoto. La fecha,
   los comandos y los resultados locales ya se conservan en
   `chapter-7-local-evidence-2026-08-13.md` sobre la base `d8a12ee`.
@@ -80,12 +79,16 @@ versión funcional que finalmente documente el manual.
   `gemini-3.1-flash-lite` mediante credenciales de Google disponibles.
 - [x] Asignar la segunda revisión ciega a un agente Codex independiente y
   documentar expresamente que no se trata de una revisión humana.
-- [ ] Ejecutar tres repeticiones por caso y operación, conservando resultados
-  estructurados, errores, latencia y tokens ausentes como datos ausentes.
+- [ ] Ejecutar tres repeticiones por caso y operación. Flash-Lite ha completado
+  60/60 y Flash 10/60; las 50 salidas de Flash restantes están pendientes del
+  reinicio de su cuota diaria gratuita. Resultados, latencia, tokens y piloto de
+  cuota se conservan por separado.
 - [x] Obtener y congelar las tarifas oficiales de Google vigentes el 13 de
   agosto de 2026, con fuente, USD y modelo exacto.
-- [ ] Calcular calidad, validez estructural, fallos, latencia, tokens, coste y
-  alucinaciones según una rúbrica cerrada antes de la ejecución.
+- [ ] Calcular la comparación final cuando termine Flash. Los 70 resultados
+  disponibles ya tienen dos revisiones independientes reconciliadas: Flash-Lite
+  obtiene 7,53/8, 100 % de validez y dos alucinaciones críticas; Flash obtiene
+  provisionalmente 7,80/8 y 100 % de validez en 10 salidas.
 
 ### 4. Métricas operativas de IA
 

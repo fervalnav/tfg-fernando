@@ -1,10 +1,8 @@
 # Evidencia local previa al capítulo 7 — 13 de agosto de 2026
 
 Este resumen conserva la regeneración local realizada antes de cerrar el
-capítulo 7. La base de Git era
-`d8a12ee415bbc46b96246ffc5e94a26adcd9702e`, con cambios de trabajo todavía sin
-confirmar. Debe sustituirse por la revisión definitiva después del commit y de
-una ejecución satisfactoria de CI.
+capítulo 7. El cierre técnico se publicó en `532d85c` y la corrección definitiva
+del entorno E2E y el banco experimental v2 en `edaf585`.
 
 ## Entorno
 
@@ -62,8 +60,21 @@ git diff --check
 ## CI remota
 
 La ejecución histórica `31639676403` superó tipos, lint, pruebas, cobertura y
-build, pero falló en el registro de los E2E de API. Su log envolvía el error real
-en un HTTP 500. En la revisión de trabajo se han serializado dos escrituras que
-compartían `EntityManager`, se ha conservado la causa interna en el error de
-registro y se ha alineado la CI con PostgreSQL 16. La corrección no se considera
-validada hasta publicar la revisión y obtener un workflow satisfactorio.
+build, pero ocultó la causa del HTTP 500 de registro. La ejecución
+`31686791310`, con el registro de causa mejorado, identificó que faltaba
+`REFRESH_TOKEN_SECRET` en el entorno E2E aislado. Tras añadir un secreto
+exclusivo de prueba, la ejecución
+[31687608812](https://github.com/fervalnav/tfg-fernando/actions/runs/31687608812)
+finalizó correctamente sobre `edaf585`: instalación, tipos, lint, unitarias,
+cobertura, build y 12 pruebas API E2E superadas.
+
+## Evaluación experimental de IA
+
+- Banco v2 aprobado por un segundo agente antes de revisar salidas: cinco casos,
+  siete PDF, 16 páginas y hashes SHA-256 congelados.
+- `gemini-3.1-flash-lite`: 60 de 60 salidas ejecutadas, todas con esquema válido.
+- `gemini-3-flash-preview`: 10 de 60 salidas ejecutadas, todas con esquema válido;
+  quedan 50 pendientes porque la clave gratuita alcanzó el límite diario de 20
+  solicitudes contando el piloto de calibración.
+- El piloto de cuota se conserva separado y no se agrega a la comparación final.
+- Las 70 salidas disponibles se han aleatorizado para dos revisiones ciegas.

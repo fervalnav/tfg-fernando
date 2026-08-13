@@ -1,0 +1,282 @@
+[
+  {
+    "blindId": "blind-01188c434fa4",
+    "runId": "fictitious-electric-buses-05|workflow_decision|gemini-3.1-flash-lite|1"
+  },
+  {
+    "blindId": "blind-01d7b5b7ea4c",
+    "runId": "fictitious-electric-buses-05|control_question|gemini-3.1-flash-lite|3"
+  },
+  {
+    "blindId": "blind-036556aaaa7d",
+    "runId": "fictitious-it-support-01|summary|gemini-3.1-flash-lite|1"
+  },
+  {
+    "blindId": "blind-073ae46d62e5",
+    "runId": "fictitious-solar-maintenance-03|custom_field|gemini-3.1-flash-lite|3"
+  },
+  {
+    "blindId": "blind-0a564c964eb3",
+    "runId": "fictitious-solar-maintenance-03|summary|gemini-3.1-flash-lite|1"
+  },
+  {
+    "blindId": "blind-0cc57a01e537",
+    "runId": "fictitious-it-support-01|workflow_decision|gemini-3.1-flash-lite|2"
+  },
+  {
+    "blindId": "blind-1b4387e99498",
+    "runId": "fictitious-it-support-01|custom_field|gemini-3.1-flash-lite|1"
+  },
+  {
+    "blindId": "blind-1e74bf642c67",
+    "runId": "fictitious-it-support-01|custom_field|gemini-3.1-flash-lite|3"
+  },
+  {
+    "blindId": "blind-2139b82194fa",
+    "runId": "fictitious-school-meals-02|custom_field|gemini-3.1-flash-lite|1"
+  },
+  {
+    "blindId": "blind-21db6d8153c5",
+    "runId": "fictitious-school-meals-02|workflow_decision|gemini-3.1-flash-lite|1"
+  },
+  {
+    "blindId": "blind-24b9b792c9d3",
+    "runId": "fictitious-it-support-01|custom_field|gemini-3-flash-preview|1"
+  },
+  {
+    "blindId": "blind-29d72b3f9c77",
+    "runId": "fictitious-it-support-01|control_question|gemini-3.1-flash-lite|2"
+  },
+  {
+    "blindId": "blind-2b6b426b253a",
+    "runId": "fictitious-solar-maintenance-03|summary|gemini-3.1-flash-lite|3"
+  },
+  {
+    "blindId": "blind-2c7712df26f8",
+    "runId": "fictitious-solar-maintenance-03|control_question|gemini-3.1-flash-lite|2"
+  },
+  {
+    "blindId": "blind-2e864bf75f80",
+    "runId": "fictitious-archive-digitization-04|summary|gemini-3.1-flash-lite|3"
+  },
+  {
+    "blindId": "blind-39983f47b05a",
+    "runId": "fictitious-electric-buses-05|summary|gemini-3.1-flash-lite|3"
+  },
+  {
+    "blindId": "blind-3db8fe66080d",
+    "runId": "fictitious-school-meals-02|summary|gemini-3.1-flash-lite|3"
+  },
+  {
+    "blindId": "blind-40d61810148d",
+    "runId": "fictitious-it-support-01|control_question|gemini-3.1-flash-lite|3"
+  },
+  {
+    "blindId": "blind-476361386c62",
+    "runId": "fictitious-it-support-01|workflow_decision|gemini-3.1-flash-lite|1"
+  },
+  {
+    "blindId": "blind-478eda2f66eb",
+    "runId": "fictitious-electric-buses-05|workflow_decision|gemini-3.1-flash-lite|2"
+  },
+  {
+    "blindId": "blind-490587093249",
+    "runId": "fictitious-archive-digitization-04|summary|gemini-3.1-flash-lite|1"
+  },
+  {
+    "blindId": "blind-4910830ae64f",
+    "runId": "fictitious-solar-maintenance-03|workflow_decision|gemini-3.1-flash-lite|3"
+  },
+  {
+    "blindId": "blind-4b05b6750007",
+    "runId": "fictitious-solar-maintenance-03|control_question|gemini-3.1-flash-lite|1"
+  },
+  {
+    "blindId": "blind-506e15df406b",
+    "runId": "fictitious-archive-digitization-04|control_question|gemini-3.1-flash-lite|3"
+  },
+  {
+    "blindId": "blind-5375943bff2f",
+    "runId": "fictitious-school-meals-02|custom_field|gemini-3.1-flash-lite|3"
+  },
+  {
+    "blindId": "blind-5dedff717b66",
+    "runId": "fictitious-it-support-01|custom_field|gemini-3-flash-preview|3"
+  },
+  {
+    "blindId": "blind-5fa4c54c9329",
+    "runId": "fictitious-archive-digitization-04|custom_field|gemini-3.1-flash-lite|2"
+  },
+  {
+    "blindId": "blind-697a87e88df6",
+    "runId": "fictitious-it-support-01|summary|gemini-3.1-flash-lite|2"
+  },
+  {
+    "blindId": "blind-6cddbf8c65f1",
+    "runId": "fictitious-school-meals-02|control_question|gemini-3.1-flash-lite|2"
+  },
+  {
+    "blindId": "blind-6d6c83e82a9a",
+    "runId": "fictitious-it-support-01|control_question|gemini-3-flash-preview|1"
+  },
+  {
+    "blindId": "blind-77046da65ca7",
+    "runId": "fictitious-school-meals-02|control_question|gemini-3.1-flash-lite|3"
+  },
+  {
+    "blindId": "blind-7c012a24ca3e",
+    "runId": "fictitious-it-support-01|workflow_decision|gemini-3.1-flash-lite|3"
+  },
+  {
+    "blindId": "blind-7e0210377e5f",
+    "runId": "fictitious-solar-maintenance-03|custom_field|gemini-3.1-flash-lite|2"
+  },
+  {
+    "blindId": "blind-88ea1b91662b",
+    "runId": "fictitious-solar-maintenance-03|custom_field|gemini-3.1-flash-lite|1"
+  },
+  {
+    "blindId": "blind-9172502a060f",
+    "runId": "fictitious-it-support-01|control_question|gemini-3-flash-preview|2"
+  },
+  {
+    "blindId": "blind-92a9e5bbf91d",
+    "runId": "fictitious-solar-maintenance-03|workflow_decision|gemini-3.1-flash-lite|2"
+  },
+  {
+    "blindId": "blind-93d98e1e66a9",
+    "runId": "fictitious-it-support-01|summary|gemini-3-flash-preview|1"
+  },
+  {
+    "blindId": "blind-93e9bdc0f517",
+    "runId": "fictitious-school-meals-02|summary|gemini-3.1-flash-lite|1"
+  },
+  {
+    "blindId": "blind-9afda703369a",
+    "runId": "fictitious-electric-buses-05|custom_field|gemini-3.1-flash-lite|2"
+  },
+  {
+    "blindId": "blind-9c3f651a7b0c",
+    "runId": "fictitious-archive-digitization-04|workflow_decision|gemini-3.1-flash-lite|3"
+  },
+  {
+    "blindId": "blind-a2f2061652b1",
+    "runId": "fictitious-electric-buses-05|summary|gemini-3.1-flash-lite|2"
+  },
+  {
+    "blindId": "blind-a952a3cae6a9",
+    "runId": "fictitious-solar-maintenance-03|control_question|gemini-3.1-flash-lite|3"
+  },
+  {
+    "blindId": "blind-a957ef997bce",
+    "runId": "fictitious-school-meals-02|workflow_decision|gemini-3.1-flash-lite|3"
+  },
+  {
+    "blindId": "blind-b4aead38456a",
+    "runId": "fictitious-it-support-01|control_question|gemini-3-flash-preview|3"
+  },
+  {
+    "blindId": "blind-ba7dca7a7758",
+    "runId": "fictitious-electric-buses-05|workflow_decision|gemini-3.1-flash-lite|3"
+  },
+  {
+    "blindId": "blind-baf60a3bada5",
+    "runId": "fictitious-school-meals-02|control_question|gemini-3.1-flash-lite|1"
+  },
+  {
+    "blindId": "blind-bdbab81f5ba9",
+    "runId": "fictitious-it-support-01|summary|gemini-3.1-flash-lite|3"
+  },
+  {
+    "blindId": "blind-c17e0fc66d84",
+    "runId": "fictitious-archive-digitization-04|workflow_decision|gemini-3.1-flash-lite|2"
+  },
+  {
+    "blindId": "blind-c20c20b52992",
+    "runId": "fictitious-it-support-01|summary|gemini-3-flash-preview|2"
+  },
+  {
+    "blindId": "blind-cc5f39462e6c",
+    "runId": "fictitious-archive-digitization-04|summary|gemini-3.1-flash-lite|2"
+  },
+  {
+    "blindId": "blind-d35f77b48891",
+    "runId": "fictitious-archive-digitization-04|control_question|gemini-3.1-flash-lite|2"
+  },
+  {
+    "blindId": "blind-d787bf6f066f",
+    "runId": "fictitious-archive-digitization-04|custom_field|gemini-3.1-flash-lite|3"
+  },
+  {
+    "blindId": "blind-d8697cb020f8",
+    "runId": "fictitious-school-meals-02|workflow_decision|gemini-3.1-flash-lite|2"
+  },
+  {
+    "blindId": "blind-d9f7696981ad",
+    "runId": "fictitious-it-support-01|workflow_decision|gemini-3-flash-preview|1"
+  },
+  {
+    "blindId": "blind-dc8575da3ac4",
+    "runId": "fictitious-electric-buses-05|custom_field|gemini-3.1-flash-lite|3"
+  },
+  {
+    "blindId": "blind-df58e70636e7",
+    "runId": "fictitious-it-support-01|custom_field|gemini-3.1-flash-lite|2"
+  },
+  {
+    "blindId": "blind-e1118aab2874",
+    "runId": "fictitious-it-support-01|custom_field|gemini-3-flash-preview|2"
+  },
+  {
+    "blindId": "blind-e18293a2019c",
+    "runId": "fictitious-solar-maintenance-03|summary|gemini-3.1-flash-lite|2"
+  },
+  {
+    "blindId": "blind-e856c3275eb8",
+    "runId": "fictitious-it-support-01|summary|gemini-3-flash-preview|3"
+  },
+  {
+    "blindId": "blind-ecb2cbb9c1d6",
+    "runId": "fictitious-school-meals-02|custom_field|gemini-3.1-flash-lite|2"
+  },
+  {
+    "blindId": "blind-ecfb3d05773f",
+    "runId": "fictitious-electric-buses-05|custom_field|gemini-3.1-flash-lite|1"
+  },
+  {
+    "blindId": "blind-ede41e29401c",
+    "runId": "fictitious-archive-digitization-04|custom_field|gemini-3.1-flash-lite|1"
+  },
+  {
+    "blindId": "blind-ef7aa8bd5442",
+    "runId": "fictitious-electric-buses-05|summary|gemini-3.1-flash-lite|1"
+  },
+  {
+    "blindId": "blind-f3f57bf40e8e",
+    "runId": "fictitious-school-meals-02|summary|gemini-3.1-flash-lite|2"
+  },
+  {
+    "blindId": "blind-f432de3a414e",
+    "runId": "fictitious-electric-buses-05|control_question|gemini-3.1-flash-lite|1"
+  },
+  {
+    "blindId": "blind-f68dd072542f",
+    "runId": "fictitious-it-support-01|control_question|gemini-3.1-flash-lite|1"
+  },
+  {
+    "blindId": "blind-f7d36c4da42e",
+    "runId": "fictitious-archive-digitization-04|control_question|gemini-3.1-flash-lite|1"
+  },
+  {
+    "blindId": "blind-fb7ad04d00f1",
+    "runId": "fictitious-electric-buses-05|control_question|gemini-3.1-flash-lite|2"
+  },
+  {
+    "blindId": "blind-fc277a01ae68",
+    "runId": "fictitious-solar-maintenance-03|workflow_decision|gemini-3.1-flash-lite|1"
+  },
+  {
+    "blindId": "blind-fcde0805eb99",
+    "runId": "fictitious-archive-digitization-04|workflow_decision|gemini-3.1-flash-lite|1"
+  }
+]
