@@ -1,0 +1,32 @@
+\begin{tikzpicture}[
+  every node/.style={font=\small\sffamily},
+  state/.style={
+    draw=TFGBlue,
+    rounded corners=3pt,
+    fill=TFGLightBlue,
+    minimum width=2.55cm,
+    minimum height=1cm,
+    align=center
+  },
+  terminal/.style={state, fill=white},
+  failure/.style={state, draw=red!65!black, fill=red!5},
+  transition/.style={-{Latex[length=2.4mm]}, semithick, draw=TFGAccent},
+  transitionLabel/.style={font=\scriptsize\sffamily, fill=white, inner sep=2pt}
+]
+  \node[state] (pending) at (-4.2,0) {\textbf{PENDING}\\pendiente};
+  \node[state] (progress) at (0,0) {\textbf{IN\_PROGRESS}\\en ejecución};
+  \node[terminal] (completed) at (4.2,1.3) {\textbf{COMPLETED}\\completada};
+  \node[failure] (failed) at (4.2,-1.3) {\textbf{FAILED}\\con error};
+  \node[terminal] (skipped) at (-4.2,-2.35) {\textbf{SKIPPED}\\omitida};
+
+  \draw[transition] (pending) -- node[transitionLabel, above] {iniciar} (progress);
+  \draw[transition] (progress) -- node[transitionLabel, above, sloped] {resultado válido} (completed);
+  \draw[transition] (progress) -- node[transitionLabel, below, sloped] {error} (failed);
+  \draw[transition] (pending) -- node[transitionLabel, left] {omitir} (skipped);
+  \draw[transition] (pending) to[bend left=22]
+    node[transitionLabel, above, sloped] {completar manualmente} (completed);
+  \draw[transition] (failed) to[bend left=30]
+    node[transitionLabel, below] {reintentar} (pending);
+  \draw[transition] (failed) to[bend left=20]
+    node[transitionLabel, below, sloped] {omitir} (skipped);
+\end{tikzpicture}

@@ -6,8 +6,8 @@ import {
   DeleteObjectCommand,
   HeadBucketCommand,
   CreateBucketCommand,
+  DeleteBucketPolicyCommand,
   GetObjectCommand,
-  PutBucketPolicyCommand,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
@@ -16,11 +16,15 @@ export class StorageService implements OnModuleInit {
   private readonly s3: S3Client;
   private readonly bucket: string;
   private readonly endpoint: string;
+  private readonly presignedUrlExpiresInSeconds: number;
   private readonly logger = new Logger(StorageService.name);
 
   constructor(config: ConfigService) {
     this.endpoint = config.get<string>('S3_ENDPOINT', 'http://localhost:9000');
     this.bucket = config.get<string>('S3_BUCKET', 'tfg-files');
+    const configuredExpiry = Number(config.get<string | number>('S3_PRESIGNED_URL_EXPIRES_IN_SECONDS', 3600));
+    this.presignedUrlExpiresInSeconds =
+      Number.isInteger(configuredExpiry) && configuredExpiry > 0 ? configuredExpiry : 3600;
 
     this.s3 = new S3Client({
       endpoint: this.endpoint,
@@ -41,22 +45,12 @@ export class StorageService implements OnModuleInit {
       this.logger.log(`Bucket "${this.bucket}" created`);
     }
 
-    await this.s3.send(
-      new PutBucketPolicyCommand({
-        Bucket: this.bucket,
-        Policy: JSON.stringify({
-          Version: '2012-10-17',
-          Statement: [
-            {
-              Effect: 'Allow',
-              Principal: { AWS: ['*'] },
-              Action: ['s3:GetObject'],
-              Resource: [`arn:aws:s3:::${this.bucket}/*`],
-            },
-          ],
-        }),
-      }),
-    );
+    try {
+      await this.s3.send(new DeleteBucketPolicyCommand({ Bucket: this.bucket }));
+      this.logger.log(`Public bucket policy removed from "${this.bucket}"`);
+    } catch (error) {
+      if (!(error instanceof Error) || error.name !== 'NoSuchBucketPolicy') throw error;
+    }
   }
 
   async upload(params: { key: string; body: Buffer; contentType: string }): Promise<string> {
@@ -71,7 +65,7 @@ export class StorageService implements OnModuleInit {
     return `${this.endpoint}/${this.bucket}/${params.key}`;
   }
 
-  async getPresignedUrl(key: string, expiresInSeconds = 3600): Promise<string> {
+  async getPresignedUrl(key: string, expiresInSeconds = this.presignedUrlExpiresInSeconds): Promise<string> {
     return getSignedUrl(this.s3, new GetObjectCommand({ Bucket: this.bucket, Key: key }), {
       expiresIn: expiresInSeconds,
     });

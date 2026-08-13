@@ -68,8 +68,27 @@
   showstringspaces=false,
   breaklines=true,
   captionpos=b,
-  tabsize=2
+  tabsize=2,
+  literate=
+    {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+    {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+    {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {ü}{{\"u}}1 {Ü}{{\"U}}1
+    {¿}{{?`}}1 {¡}{{!`}}1
+}
+
+\lstdefinelanguage{TypeScript}{
+  morekeywords={abstract,async,await,break,case,catch,class,const,constructor,continue,default,delete,do,else,enum,export,extends,false,finally,for,from,function,get,if,implements,import,in,instanceof,interface,let,new,null,of,private,protected,public,readonly,return,set,static,super,switch,this,throw,true,try,type,typeof,undefined,unknown,var,void,while,yield},
+  sensitive=true,
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]",
+  morestring=[b]`
 }
 
 \renewcommand{\lstlistingname}{Fragmento de código}
 \renewcommand{\lstlistlistingname}{Índice de código}
+\crefname{listing}{fragmento de código}{fragmentos de código}
+\Crefname{listing}{Fragmento de código}{Fragmentos de código}
+\crefname{lstlisting}{fragmento de código}{fragmentos de código}
+\Crefname{lstlisting}{Fragmento de código}{Fragmentos de código}

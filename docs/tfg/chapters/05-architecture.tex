@@ -50,6 +50,21 @@ evolución de la API, el cliente y sus contratos. Turborepo define las tareas de
 compilación, comprobación de tipos, análisis estático y pruebas, y reutiliza el
 grafo de dependencias para ejecutarlas en el orden adecuado.
 
+La \Cref{fig:technology-stack} reúne las tecnologías que identifican las
+responsabilidades principales de la solución. Se muestran las piezas
+estructurales del monorepositorio, el cliente, la API y la persistencia; las
+integraciones sustituibles, como el proveedor de IA, se describen en sus
+apartados específicos.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \input{figure-sources/tikz/technology-stack}
+  }
+  \caption{Tecnologías principales y función que desempeñan en LIA.}
+  \label{fig:technology-stack}
+\end{figure}
+
 \begin{table}[htbp]
   \centering
   \caption{Responsabilidades de las unidades del monorepositorio.}
@@ -260,7 +275,12 @@ El dominio de adjuntos depende de un puerto con cuatro capacidades: cargar,
 descargar, generar una URL temporal y borrar. El adaptador actual utiliza el
 cliente S3 de AWS y se conecta a MinIO durante el desarrollo local. La clave
 interna del objeto permanece en la API; el navegador recibe los metadatos
-necesarios y solicita una URL prefirmada cuando quiere descargarlo.
+necesarios y solicita una URL prefirmada cuando quiere descargarlo. Durante el
+arranque, el adaptador elimina cualquier política pública previa del bucket. La
+descarga requiere una URL prefirmada emitida por la API y su caducidad es
+configurable; el valor local por defecto es de una hora. Las pruebas de
+navegador verifican el rechazo de la dirección directa sin firma, la aceptación
+de una firma vigente y el rechazo posterior a su caducidad.
 
 La creación de un adjunto coordina dos recursos: el objeto binario y su
 registro en PostgreSQL. La eliminación retira ambos. Al no existir una

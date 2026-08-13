@@ -13,15 +13,11 @@
   \draw[wf panel] (3.7,5.05) rectangle ++(3.55,1.75);
   \draw[wf panel] (7.65,5.05) rectangle ++(3.55,1.75);
   \draw[wf panel] (11.6,5.05) rectangle ++(3.55,1.75);
-  \node[wf text] at (5.475,6.25) {Estado 1};
-  \node[wf text] at (9.425,6.25) {Estado 2};
-  \node[wf text] at (13.375,6.25) {Estado 3};
-  \node[wf muted] at (5.475,5.68) {orden · color};
-  \node[wf muted] at (9.425,5.68) {orden · color};
-  \node[wf muted] at (13.375,5.68) {orden · color};
-  \node[wf secondary] at (5.475,5.3) {Editar};
-  \node[wf secondary] at (9.425,5.3) {Editar};
-  \node[wf secondary] at (13.375,5.3) {Editar};
+  \foreach \x/\n in {3.7/1,7.65/2,11.6/3} {
+    \node[wf text, anchor=west] at (\x+0.25,6.3) {Estado \n};
+    \node[wf muted, anchor=west] at (\x+0.25,5.85) {orden · color};
+    \node[wf secondary, anchor=west] at (\x+0.25,5.38) {Editar};
+  }
 
   \draw[wf window] (0,0) rectangle (16.2,4.0);
   \fill[TFGLightGray] (0,3.4) rectangle (16.2,4.0);
@@ -35,9 +31,9 @@
   \node[wf secondary, anchor=east] at (15.15,2.95) {Añadir paso};
   \foreach \x/\n in {3.7/1,7.55/2,11.4/3} {
     \draw[wf panel] (\x,0.65) rectangle ++(3.3,1.75);
-    \node[wf text, anchor=west] at (\x+0.25,2.05) {Paso \n};
-    \node[wf muted, anchor=west] at (\x+0.25,1.65) {tipo y condición};
-    \node[wf muted, anchor=west] at (\x+0.25,1.3) {acciones vinculadas};
-    \node[wf secondary, anchor=west] at (\x+0.25,0.9) {Editar};
+    \node[wf text, anchor=west] at (\x+0.25,2.08) {Paso \n};
+    \node[wf muted, anchor=west] at (\x+0.25,1.7) {tipo y condición};
+    \node[wf muted, anchor=west] at (\x+0.25,1.35) {acciones vinculadas};
+    \node[wf secondary, anchor=west] at (\x+0.25,1.0) {Editar};
   }
 \end{tikzpicture}

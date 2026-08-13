@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
   ConflictException,
   ForbiddenException,
   NotFoundException,
@@ -26,6 +27,7 @@ import { CurrentUser } from '../decorators/current-user.decorator';
 import { AccountMemberAlreadyExistsException } from '../../domain/exceptions/account-member-already-exists.exception';
 import { AccountMemberNotFoundException } from '../../domain/exceptions/account-member-not-found.exception';
 import type { JwtPayload } from '../passport/jwt.strategy';
+import { AccountAdminGuard } from '../guards/account-admin.guard';
 import type { AccountMemberDto, MyAccountDto } from '@tfg/types';
 
 @ApiTags('account')
@@ -56,6 +58,7 @@ export class AccountController {
 
   @Post('members/invite')
   @HttpCode(204)
+  @UseGuards(AccountAdminGuard)
   async inviteMember(@Body() dto: InviteMemberDto, @CurrentUser() payload: JwtPayload): Promise<void> {
     try {
       await this.commandBus.execute(
@@ -69,6 +72,7 @@ export class AccountController {
 
   @Delete('members/:userId')
   @HttpCode(204)
+  @UseGuards(AccountAdminGuard)
   async removeMember(@Param('userId') targetUserId: string, @CurrentUser() payload: JwtPayload): Promise<void> {
     try {
       await this.commandBus.execute(new RemoveMemberCommand(payload.accountId, targetUserId, payload.sub));
@@ -81,6 +85,7 @@ export class AccountController {
 
   @Patch('members/:userId/role')
   @HttpCode(204)
+  @UseGuards(AccountAdminGuard)
   async updateMemberRole(
     @Param('userId') targetUserId: string,
     @Body() dto: UpdateMemberRoleDto,

@@ -27,6 +27,7 @@ import { MikroOrmInvitationTokenRepository } from './infrastructure/persistence/
 // Strategies & Guards
 import { LocalStrategy } from './infrastructure/passport/local.strategy';
 import { JwtStrategy } from './infrastructure/passport/jwt.strategy';
+import { AccountAdminGuard } from './infrastructure/guards/account-admin.guard';
 
 // Token Services
 import { TokenService } from './infrastructure/token/token.service';
@@ -108,6 +109,7 @@ const queryHandlers = [GetMeHandler, FindMembersHandler, FindMyAccountsHandler];
     ...queryHandlers,
     LocalStrategy,
     JwtStrategy,
+    AccountAdminGuard,
     TokenService,
     AuthSessionService,
     IdService,
