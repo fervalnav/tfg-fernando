@@ -41,18 +41,18 @@ versión funcional que finalmente documente el manual.
   caché de Turborepo.
 - [x] El lint mantiene 13 avisos no bloqueantes en componentes reutilizables
   de la interfaz.
-- [ ] CI remota validada. La ejecución `31639676403` llega hasta los E2E de API,
-  pero falla porque el registro devuelve HTTP 500; las fases anteriores pasan.
+- [ ] CI remota validada. La ejecución `31686791310` llega hasta los E2E de API
+  y revela que faltaba `REFRESH_TOKEN_SECRET` en el entorno E2E aislado; las
+  fases anteriores pasan. La corrección está preparada, pendiente de publicar.
 
 ## Bloqueos antes de redactar resultados
 
 ### 1. Integración continua y entorno de base de datos
 
-- [ ] Confirmar el diagnóstico del HTTP 500 del registro en GitHub Actions. El
-  log original oculta la causa interna; se ha eliminado una carrera entre dos
-  repositorios que compartían `EntityManager` y se ha añadido la causa al error
-  registrado. La próxima ejecución confirmará la corrección o mostrará el error
-  subyacente.
+- [x] Confirmar el diagnóstico del HTTP 500 del registro en GitHub Actions. El
+  log de la ejecución `31686791310` identifica la ausencia de
+  `REFRESH_TOKEN_SECRET`; se ha añadido un valor exclusivo de prueba a
+  `test/setup-env.ts`, junto con el secreto de acceso ya existente.
 - [x] Alinear la versión de PostgreSQL: Docker local y la definición de CI usan
   `postgres:16-alpine`. Falta publicar y ejecutar la revisión para confirmar si
   esta diferencia explicaba el HTTP 500.

@@ -16,7 +16,9 @@ Este protocolo complementa los tests deterministas. Los tests automáticos valid
 4. Registrar cada caso en `evaluation-cases.json` y guardar sus PDF fuera del repositorio o como fixtures redistribuibles.
 5. Elaborar las respuestas esperadas y la rúbrica antes de ejecutar los modelos.
 
-En esta evaluación se usan los cinco PDF redistribuibles de `fixtures/`. Todos
+En esta evaluación se usan siete PDF redistribuibles de `fixtures/`, agrupados
+en cinco expedientes. Hay casos de uno y dos documentos, entre dos y cuatro
+páginas, contenido accesorio y un expediente redactado en inglés. Todos
 se declaran completamente ficticios tanto en el contenido como en
 `evaluation-cases.json`; sus hashes SHA-256 quedan congelados en ese fichero.
 
@@ -38,9 +40,18 @@ Para cada combinación de proveedor y modelo:
 5. Si una ejecución falla o no informa tokens, registrarlo explícitamente; no sustituir datos ausentes por cero.
 
 Parámetros comunes: nivel de razonamiento `low`, máximo de 2048 tokens de
-salida y dos reintentos. El ejecutor reanudable es `run-evaluation.ts`; conserva
+salida y dos reintentos. Para respetar el límite gratuito observado de cinco
+solicitudes por minuto, el ejecutor espera 13 segundos entre salidas; el valor
+puede ajustarse con `AI_EVALUATION_DELAY_MS`, dejando constancia del cambio. El
+ejecutor reanudable es `run-evaluation.ts`; conserva
 una línea JSON por salida en `results/raw-results.jsonl` y la proyección tabular
 en `results/results.csv`. Nunca almacena la clave de API.
+
+`generate-fixtures.py` emplea fuentes PDF estándar y modo invariante de
+ReportLab. Dos regeneraciones consecutivas deben producir exactamente los
+hashes registrados. Los ficheros `pilot-rate-limit-*` proceden de una ejecución
+interrumpida al detectar el límite de cinco solicitudes por minuto; se guardan
+como incidencia y no forman parte de la comparación final.
 
 El servicio `AiGenerationService` ya devuelve `provider`, `model`, `durationMs` y los tokens de entrada, salida y totales. El coste se calcula después con la tarifa oficial vigente en la fecha de la prueba:
 
