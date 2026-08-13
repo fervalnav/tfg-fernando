@@ -51,6 +51,7 @@ const MODELS = [
 const PRICE_SOURCE = 'https://ai.google.dev/gemini-api/docs/pricing';
 const PRICE_DATE = '2026-08-13';
 const REPETITIONS = 3;
+const DELAY_MS = Number(process.env['AI_EVALUATION_DELAY_MS'] ?? 13_000);
 const ROOT = resolve(__dirname);
 const RESULTS_DIR = resolve(ROOT, 'results');
 const RAW_PATH = resolve(RESULTS_DIR, 'raw-results.jsonl');
@@ -136,10 +137,15 @@ async function main(): Promise<void> {
           await appendFile(RAW_PATH, `${JSON.stringify(raw)}\n`);
           await appendFile(CSV_PATH, `${csvRow(raw)}\n`);
           process.stdout.write(`${raw.runId} ${raw.error ? 'ERROR' : 'OK'}\n`);
+          await delay(DELAY_MS);
         }
       }
     }
   }
+}
+
+async function delay(milliseconds: number): Promise<void> {
+  await new Promise((resolveDelay) => setTimeout(resolveDelay, milliseconds));
 }
 
 function operationNames(): OperationName[] {
@@ -289,7 +295,7 @@ function csvRow(raw: RawResult): string {
 
 function csv(value: string | number | boolean | null): string {
   if (value === null) return '';
-  const text = String(value);
+  const text = String(value).replaceAll(/\s*\n\s*/gu, ' ');
   return /[",\n]/u.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
 }
 

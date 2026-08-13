@@ -6,7 +6,7 @@
       "id": "fictitious-it-support-01",
       "title": "Soporte integral de puestos de trabajo",
       "documentPaths": ["fixtures/fictitious-it-support-01.pdf"],
-      "source": { "type": "fictitious", "url": null, "license": "CC0-1.0", "sha256": "20f29d632d6facffd7a4c54fa41bccca0d0e580c310c5e4d77fdd88f00845e6f" },
+      "source": { "type": "fictitious", "url": null, "license": "CC0-1.0", "sha256": { "fictitious-it-support-01.pdf": "1cffcb27c7ee63710c9af45b75aa0fcbc7663f44bffd19ccfebff86f08da1627" } },
       "opportunity": {
         "description": "Servicio ficticio de soporte informático municipal",
         "amount": 240000,
@@ -41,8 +41,8 @@
     {
       "id": "fictitious-school-meals-02",
       "title": "Comedor escolar sostenible",
-      "documentPaths": ["fixtures/fictitious-school-meals-02.pdf"],
-      "source": { "type": "fictitious", "url": null, "license": "CC0-1.0", "sha256": "22405f12ef8a1352cf13a8c82f3b4940d584eb56a490077bfd38160ad153bb4b" },
+      "documentPaths": ["fixtures/fictitious-school-meals-02-tender.pdf", "fixtures/fictitious-school-meals-02-candidate.pdf"],
+      "source": { "type": "fictitious", "url": null, "license": "CC0-1.0", "sha256": { "fictitious-school-meals-02-tender.pdf": "0a65b62fd6bfcc04f88961df5b7cee6aa1e261d472ef77677b9cc99dafbc022e", "fictitious-school-meals-02-candidate.pdf": "e138f3c02aae0f167d96d4836d04db86ae36893e866cdbe6030073f45d5f2994" } },
       "opportunity": {
         "description": "Servicio ficticio de comedor para tres centros educativos",
         "amount": 510000,
@@ -78,7 +78,7 @@
       "id": "fictitious-solar-maintenance-03",
       "title": "Mantenimiento de instalaciones fotovoltaicas",
       "documentPaths": ["fixtures/fictitious-solar-maintenance-03.pdf"],
-      "source": { "type": "fictitious", "url": null, "license": "CC0-1.0", "sha256": "95410dd32b4f231483849f635092a2e42db16dafbc355d79b1a57dd2866da268" },
+      "source": { "type": "fictitious", "url": null, "license": "CC0-1.0", "sha256": { "fictitious-solar-maintenance-03.pdf": "5b4faf463bf8c2488c9573fb9292c8bb6dce83f7f5675d8682347acac07b9877" } },
       "opportunity": {
         "description": "Mantenimiento ficticio de cubiertas solares provinciales",
         "amount": 175000,
@@ -100,7 +100,7 @@
           "classifiers": ["Lote Norte", "Lote Sur"],
           "canSelectMultiple": true
         },
-        "workflowDecision": { "condition": "No continuar si falta la garantía provisional obligatoria." }
+        "workflowDecision": { "condition": "Continuar solo si se aporta la garantía provisional obligatoria." }
       },
       "expected": {
         "summaryFacts": ["42 instalaciones", "dos lotes", "175000 EUR sin IVA", "garantía provisional del 2 %", "el candidato no aporta garantía", "resultado desfavorable"],
@@ -114,7 +114,7 @@
       "id": "fictitious-archive-digitization-04",
       "title": "Digitalización del archivo histórico",
       "documentPaths": ["fixtures/fictitious-archive-digitization-04.pdf"],
-      "source": { "type": "fictitious", "url": null, "license": "CC0-1.0", "sha256": "0b9bd510c065e3970dce0fe4d3b854baa451218837dd092d33217d65b4d21a98" },
+      "source": { "type": "fictitious", "url": null, "license": "CC0-1.0", "sha256": { "fictitious-archive-digitization-04.pdf": "09bd418633b1ee333bc427ec1fbfa6a4f695bb1c365a46c1ba707f7642cca96b" } },
       "opportunity": {
         "description": "Digitalización ficticia de fondos documentales",
         "amount": 98000,
@@ -140,17 +140,17 @@
       },
       "expected": {
         "summaryFacts": ["320000 páginas", "98000 EUR sin IVA", "10 meses", "ISO/IEC 27001 o equivalente", "certificación caducada", "resultado desfavorable"],
-        "summaryRequiredEvidence": ["PPT 2.2", "PCAP 1.3", "PCAP 5.5", "DOSSIER 5.1"],
-        "controlQuestion": { "answer": false, "passed": false, "requiredEvidence": ["PCAP 5.5", "DOSSIER 5.1"] },
-        "customField": { "value": 300, "requiredEvidence": ["PPT 3.4"] },
-        "workflowDecision": { "result": false, "requiredEvidence": ["PCAP 5.5", "DOSSIER 5.1"] }
+        "summaryRequiredEvidence": ["TS 2.2", "AC 1.3", "AC 5.5", "CANDIDATE 5.1"],
+        "controlQuestion": { "answer": false, "passed": false, "requiredEvidence": ["AC 5.5", "CANDIDATE 5.1"] },
+        "customField": { "value": 300, "requiredEvidence": ["TS 3.4"] },
+        "workflowDecision": { "result": false, "requiredEvidence": ["AC 5.5", "CANDIDATE 5.1"] }
       }
     },
     {
       "id": "fictitious-electric-buses-05",
       "title": "Suministro de minibuses eléctricos",
-      "documentPaths": ["fixtures/fictitious-electric-buses-05.pdf"],
-      "source": { "type": "fictitious", "url": null, "license": "CC0-1.0", "sha256": "2bcc065e65372479c9df2b91087000d368a12ac78753e62af09a86181ad7b620" },
+      "documentPaths": ["fixtures/fictitious-electric-buses-05-tender.pdf", "fixtures/fictitious-electric-buses-05-candidate.pdf"],
+      "source": { "type": "fictitious", "url": null, "license": "CC0-1.0", "sha256": { "fictitious-electric-buses-05-tender.pdf": "15142eafc754252332d3619be2565b902a4dc71f3772f03b0feaee3a6b95883e", "fictitious-electric-buses-05-candidate.pdf": "67e447cd709157a130bb0567bfbb53db6d59cdc2d47a276a9649e76fa446122a" } },
       "opportunity": {
         "description": "Suministro ficticio de vehículos eléctricos accesibles",
         "amount": 1320000,
