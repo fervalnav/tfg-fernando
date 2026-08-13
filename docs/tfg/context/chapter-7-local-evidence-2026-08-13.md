@@ -68,6 +68,11 @@ exclusivo de prueba, la ejecución
 finalizó correctamente sobre `edaf585`: instalación, tipos, lint, unitarias,
 cobertura, build y 12 pruebas API E2E superadas.
 
+La revisión posterior `78ab280`, que incorpora los resultados experimentales
+provisionales y ambas revisiones ciegas, también quedó validada íntegramente por
+la ejecución
+[31689863930](https://github.com/fervalnav/tfg-fernando/actions/runs/31689863930).
+
 ## Evaluación experimental de IA
 
 - Banco v2 aprobado por un segundo agente antes de revisar salidas: cinco casos,

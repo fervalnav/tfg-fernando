@@ -57,9 +57,10 @@ versión funcional que finalmente documente el manual.
   esta diferencia explicaba el HTTP 500.
 - [x] Obtener al menos una ejecución completa y satisfactoria del workflow de
   CI sobre la revisión `edaf585` que se citará en el capítulo 7.
-- [ ] Registrar la revisión definitiva de Git y el resultado remoto. La fecha,
-  los comandos y los resultados locales ya se conservan en
-  `chapter-7-local-evidence-2026-08-13.md` sobre la base `d8a12ee`.
+- [x] Registrar la revisión de Git y el resultado remoto: `78ab280` supera la
+  CI completa en la ejecución `31689863930`; fecha, comandos y resultados se
+  conservan en `chapter-7-local-evidence-2026-08-13.md`. La revisión final de
+  la campaña cambiará al incorporar las 50 salidas de Flash pendientes.
 
 ### 2. Autorización administrativa
 
@@ -135,16 +136,17 @@ versión funcional que finalmente documente el manual.
 - [ ] Congelar la revisión definitiva. Todas las suites locales ya se han
   regenerado sin caché y su resumen reproducible se conserva en
   `chapter-7-local-evidence-2026-08-13.md`, todavía sobre un árbol sin commit.
-- [ ] Seleccionar casos representativos por riesgo y vincularlos con RF, RN y
-  RNF; no convertir el capítulo en una enumeración de archivos de prueba.
-- [ ] Separar unitarias, componentes, integración, API E2E, navegador E2E y
-  evaluación experimental de IA.
-- [ ] Preparar tablas de casos y resultados, una figura de niveles de prueba y,
-  si aporta información, gráficos de cobertura y evaluación de modelos.
-- [ ] Explicar el 9,17 % de cobertura web junto con la cobertura E2E y los
-  riesgos cubiertos; no presentarlo aisladamente como indicador de calidad.
-- [ ] Documentar las incidencias reales del entorno de pruebas: `forceExit` de
-  Jest, diferencia local/CI y avisos no bloqueantes.
+- [x] Seleccionar casos representativos por riesgo y vincularlos con RF, RN y
+  RNF en `chapter-7-writing-brief.md`, sin enumerar archivos como estrategia.
+- [x] Separar unitarias, componentes, integración, API E2E, navegador E2E y
+  evaluación experimental de IA en el guion verificable del capítulo.
+- [x] Preparar tablas de casos y resultados y la figura
+  `figure-sources/tikz/testing-levels.tex`. Se descarta un gráfico de cobertura
+  por redundante y se aplaza el de modelos hasta completar Flash.
+- [x] Explicar el 9,17 % de cobertura web junto con los cuatro recorridos E2E,
+  los riesgos cubiertos y la limitación de regresión unitaria visual.
+- [x] Documentar las incidencias reales: `forceExit`, acceso local a Docker,
+  diferencia local/CI, secreto E2E ausente, cuotas Gemini y 13 avisos de lint.
 - [ ] Actualizar la matriz de trazabilidad del capítulo 3 con los resultados
   definitivos.
 
