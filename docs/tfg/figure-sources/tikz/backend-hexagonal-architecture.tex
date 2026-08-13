@@ -34,7 +34,9 @@
     IA, S3/MinIO y correo
   };
 
-  \draw[dependency] (input) -- node[above, font=\scriptsize\sffamily] {buses CQRS} (application);
+  \draw[dependency] (input) --
+    node[above, pos=0.28, font=\scriptsize\sffamily] {buses CQRS}
+    (application);
   \draw[dependency] (application) -- (domain);
   \draw[port] (persistence.west) -- (application.east);
   \draw[port] (services.west) -- (domain.east);

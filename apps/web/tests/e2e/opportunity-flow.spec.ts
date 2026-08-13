@@ -57,6 +57,20 @@ test('qualifies an opportunity with workflow, manual data, fake AI and a PDF', a
   await page.getByRole('button', { name: 'Adjuntar' }).click();
   await expect(page.getByText('anuncio-e2e.pdf')).toBeVisible();
 
+  const attachments = await json<Array<{ id: string }>>(
+    request.get(`${API_URL}/opportunities/${opportunityId}/attachments`),
+  );
+  const attachmentId = required(attachments[0]?.id, 'uploaded attachment');
+  const download = await json<{ url: string }>(
+    request.get(`${API_URL}/opportunities/${opportunityId}/attachments/${attachmentId}/download-url`),
+  );
+  const unsignedUrl = download.url.split('?')[0];
+  if (!unsignedUrl) throw new Error('Missing unsigned object URL');
+  expect((await request.get(unsignedUrl)).status()).toBe(403);
+  expect((await request.get(download.url)).status()).toBe(200);
+  await new Promise<void>((resolve) => setTimeout(resolve, 2_000));
+  expect((await request.get(download.url)).status()).toBe(403);
+
   await page.getByRole('button', { name: /Persona E2E/ }).click();
   await page.getByRole('menuitem', { name: 'Cerrar sesión' }).click();
   await expect(page).toHaveURL(/\/auth\/login$/u);

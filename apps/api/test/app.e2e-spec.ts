@@ -7,13 +7,16 @@ import type { App } from 'supertest/types';
 import { AiGenerationService } from '../src/ai/domain/ai-generation.service';
 import { AttachmentStorageService } from '../src/attachment/domain/attachment-storage.service';
 import { StorageService } from '../src/shared/infrastructure/storage/storage.service';
+import { EmailService } from '../src/shared/infrastructure/email/email.service';
+import { AccountMemberOrmEntity } from '../src/auth/infrastructure/persistence/account-member.orm-entity';
+import { AccountMember } from '../src/auth/domain/entities/account-member.entity';
 import { prepareE2eDatabase } from './support/e2e-database';
 import { FakeAiGenerationService } from './support/fake-ai-generation.service';
 import { InMemoryAttachmentStorageService } from './support/in-memory-attachment-storage.service';
 
 type AuthBody = {
   accountId: string;
-  user: { email: string };
+  user: { id: string; email: string };
 };
 
 type PaginatedBody<T> = {
@@ -41,6 +44,7 @@ const IDS = {
   summary: '0198f6b3-1fd7-7fba-8e79-53161b649909',
   controlQuestionTemplate: '0198f6b3-1fd7-7fba-8e79-53161b649910',
   controlQuestion: '0198f6b3-1fd7-7fba-8e79-53161b649911',
+  secondaryMembership: '0198f6b3-1fd7-7fba-8e79-53161b649912',
 } as const;
 
 describe('TFG API (e2e)', () => {
@@ -59,6 +63,8 @@ describe('TFG API (e2e)', () => {
       .useValue(storage)
       .overrideProvider(StorageService)
       .useValue({})
+      .overrideProvider(EmailService)
+      .useValue({ sendMail: jest.fn().mockResolvedValue(undefined) })
       .compile();
 
     app = moduleFixture.createNestApplication();
@@ -121,6 +127,44 @@ describe('TFG API (e2e)', () => {
 
   it('rejects protected routes without authentication', async () => {
     await request(app.getHttpServer()).get('/api/opportunities').expect(401);
+  });
+
+  it('allows ADMIN account management and rejects MEMBER operations and self-removal', async () => {
+    const admin = request.agent(app.getHttpServer());
+    const member = request.agent(app.getHttpServer());
+    const adminRegistration = await register(admin, 'admin-permissions@example.test', 'Cuenta Permisos');
+    const memberRegistration = await register(member, 'member-permissions@example.test', 'Cuenta Secundaria');
+
+    const membership = AccountMember.create({
+      id: IDS.secondaryMembership,
+      accountId: adminRegistration.accountId,
+      userId: memberRegistration.user.id,
+      role: 'MEMBER',
+      isDefault: false,
+    });
+    await orm.em.fork().persistAndFlush(new AccountMemberOrmEntity(membership.toPrimitives()));
+    await member.post('/api/auth/switch-account').send({ accountId: adminRegistration.accountId }).expect(204);
+
+    await member
+      .post('/api/auth/account/members/invite')
+      .send({ email: 'blocked-invitation@example.test', role: 'MEMBER' })
+      .expect(403);
+    await member
+      .patch(`/api/auth/account/members/${adminRegistration.user.id}/role`)
+      .send({ role: 'MEMBER' })
+      .expect(403);
+    await member.delete(`/api/auth/account/members/${adminRegistration.user.id}`).expect(403);
+
+    await admin
+      .post('/api/auth/account/members/invite')
+      .send({ email: 'allowed-invitation@example.test', role: 'MEMBER' })
+      .expect(204);
+    await admin
+      .patch(`/api/auth/account/members/${memberRegistration.user.id}/role`)
+      .send({ role: 'ADMIN' })
+      .expect(204);
+    await admin.delete(`/api/auth/account/members/${adminRegistration.user.id}`).expect(403);
+    await admin.delete(`/api/auth/account/members/${memberRegistration.user.id}`).expect(204);
   });
 
   it('validates malformed registration and opportunity payloads', async () => {

@@ -1,23 +1,185 @@
 {
-  "version": 1,
+  "version": 2,
+  "declaredFictitious": true,
   "cases": [
     {
-      "id": "public-or-fictitious-tender-01",
-      "title": "Caso base de licitación",
-      "documentPaths": [],
-      "source": {
-        "type": "fictitious",
-        "url": null,
-        "license": null
+      "id": "fictitious-it-support-01",
+      "title": "Soporte integral de puestos de trabajo",
+      "documentPaths": ["fixtures/fictitious-it-support-01.pdf"],
+      "source": { "type": "fictitious", "url": null, "license": "CC0-1.0", "sha256": "20f29d632d6facffd7a4c54fa41bccca0d0e580c310c5e4d77fdd88f00845e6f" },
+      "opportunity": {
+        "description": "Servicio ficticio de soporte informático municipal",
+        "amount": 240000,
+        "currency": "EUR",
+        "dueDate": "2026-10-15T12:00:00.000Z"
+      },
+      "operations": {
+        "summary": { "instruction": "Resume objeto, presupuesto, plazo, solvencia y conclusión del perfil candidato." },
+        "controlQuestion": {
+          "question": "¿Acredita el candidato la solvencia técnica mínima?",
+          "answerType": "BOOLEAN",
+          "passCondition": "Aprueba si acredita al menos dos contratos de soporte TI, cada uno por importe igual o superior a 80000 EUR."
+        },
+        "customField": {
+          "name": "Duración inicial en meses",
+          "description": "Número de meses del contrato antes de posibles prórrogas.",
+          "aiPrompt": "Devuelve únicamente la duración inicial como número.",
+          "type": "NUMBER",
+          "classifiers": [],
+          "canSelectMultiple": false
+        },
+        "workflowDecision": { "condition": "Continuar si se cumple la solvencia técnica y el presupuesto base es al menos 200000 EUR." }
       },
       "expected": {
-        "summaryFacts": [],
-        "controlQuestions": [],
-        "customFields": [],
-        "workflowDecision": {
-          "value": null,
-          "requiredEvidence": []
-        }
+        "summaryFacts": ["soporte de 850 puestos", "240000 EUR sin IVA", "24 meses", "dos contratos de al menos 80000 EUR", "el candidato acredita 95000 EUR y 87000 EUR", "resultado favorable"],
+        "summaryRequiredEvidence": ["PCAP 1.2", "PCAP 4.1", "PCAP 7.3", "DOSSIER 2.1"],
+        "controlQuestion": { "answer": true, "passed": true, "requiredEvidence": ["PCAP 7.3", "DOSSIER 2.1"] },
+        "customField": { "value": 24, "requiredEvidence": ["PCAP 4.1"] },
+        "workflowDecision": { "result": true, "requiredEvidence": ["PCAP 1.2", "PCAP 7.3", "DOSSIER 2.1"] }
+      }
+    },
+    {
+      "id": "fictitious-school-meals-02",
+      "title": "Comedor escolar sostenible",
+      "documentPaths": ["fixtures/fictitious-school-meals-02.pdf"],
+      "source": { "type": "fictitious", "url": null, "license": "CC0-1.0", "sha256": "22405f12ef8a1352cf13a8c82f3b4940d584eb56a490077bfd38160ad153bb4b" },
+      "opportunity": {
+        "description": "Servicio ficticio de comedor para tres centros educativos",
+        "amount": 510000,
+        "currency": "EUR",
+        "dueDate": "2026-11-02T13:00:00.000Z"
+      },
+      "operations": {
+        "summary": { "instruction": "Resume centros, presupuesto, duración, requisito sanitario y aptitud del candidato." },
+        "controlQuestion": {
+          "question": "¿Dispone el candidato del registro sanitario obligatorio vigente?",
+          "answerType": "BOOLEAN",
+          "passCondition": "Aprueba únicamente si el registro sanitario está vigente en la fecha de presentación."
+        },
+        "customField": {
+          "name": "Código CPV principal",
+          "description": "Código CPV principal indicado en el pliego.",
+          "aiPrompt": "Extrae el código CPV completo como texto.",
+          "type": "TEXT",
+          "classifiers": [],
+          "canSelectMultiple": false
+        },
+        "workflowDecision": { "condition": "Continuar solo si el registro sanitario obligatorio está vigente." }
+      },
+      "expected": {
+        "summaryFacts": ["tres centros", "510000 EUR sin IVA", "18 meses", "registro sanitario vigente", "resultado favorable"],
+        "summaryRequiredEvidence": ["PCAP 1.1", "PCAP 1.3", "PCAP 5.2", "DOSSIER 3.1"],
+        "controlQuestion": { "answer": true, "passed": true, "requiredEvidence": ["PCAP 5.2", "DOSSIER 3.1"] },
+        "customField": { "value": "55523100-3", "requiredEvidence": ["PCAP 1.4"] },
+        "workflowDecision": { "result": true, "requiredEvidence": ["PCAP 5.2", "DOSSIER 3.1"] }
+      }
+    },
+    {
+      "id": "fictitious-solar-maintenance-03",
+      "title": "Mantenimiento de instalaciones fotovoltaicas",
+      "documentPaths": ["fixtures/fictitious-solar-maintenance-03.pdf"],
+      "source": { "type": "fictitious", "url": null, "license": "CC0-1.0", "sha256": "95410dd32b4f231483849f635092a2e42db16dafbc355d79b1a57dd2866da268" },
+      "opportunity": {
+        "description": "Mantenimiento ficticio de cubiertas solares provinciales",
+        "amount": 175000,
+        "currency": "EUR",
+        "dueDate": "2026-09-28T10:00:00.000Z"
+      },
+      "operations": {
+        "summary": { "instruction": "Resume alcance, lotes, garantía exigida y motivo de exclusión del candidato." },
+        "controlQuestion": {
+          "question": "¿Aporta el candidato la garantía provisional exigida?",
+          "answerType": "BOOLEAN",
+          "passCondition": "Aprueba si aporta una garantía provisional por el 2 % del presupuesto base."
+        },
+        "customField": {
+          "name": "Lotes ofertables",
+          "description": "Nombres de todos los lotes definidos en la licitación.",
+          "aiPrompt": "Devuelve una lista con los nombres exactos de los lotes.",
+          "type": "CLASSIFIER",
+          "classifiers": ["Lote Norte", "Lote Sur"],
+          "canSelectMultiple": true
+        },
+        "workflowDecision": { "condition": "No continuar si falta la garantía provisional obligatoria." }
+      },
+      "expected": {
+        "summaryFacts": ["42 instalaciones", "dos lotes", "175000 EUR sin IVA", "garantía provisional del 2 %", "el candidato no aporta garantía", "resultado desfavorable"],
+        "summaryRequiredEvidence": ["PCAP 1.2", "PCAP 2.1", "PCAP 6.4", "DOSSIER 4.2"],
+        "controlQuestion": { "answer": false, "passed": false, "requiredEvidence": ["PCAP 6.4", "DOSSIER 4.2"] },
+        "customField": { "value": ["Lote Norte", "Lote Sur"], "requiredEvidence": ["PCAP 2.1"] },
+        "workflowDecision": { "result": false, "requiredEvidence": ["PCAP 6.4", "DOSSIER 4.2"] }
+      }
+    },
+    {
+      "id": "fictitious-archive-digitization-04",
+      "title": "Digitalización del archivo histórico",
+      "documentPaths": ["fixtures/fictitious-archive-digitization-04.pdf"],
+      "source": { "type": "fictitious", "url": null, "license": "CC0-1.0", "sha256": "0b9bd510c065e3970dce0fe4d3b854baa451218837dd092d33217d65b4d21a98" },
+      "opportunity": {
+        "description": "Digitalización ficticia de fondos documentales",
+        "amount": 98000,
+        "currency": "EUR",
+        "dueDate": "2026-12-01T09:00:00.000Z"
+      },
+      "operations": {
+        "summary": { "instruction": "Resume volumen, presupuesto, plazo, certificación exigida y situación del candidato." },
+        "controlQuestion": {
+          "question": "¿Cumple el candidato la certificación de seguridad de la información?",
+          "answerType": "BOOLEAN",
+          "passCondition": "Aprueba si presenta ISO/IEC 27001 vigente o certificación equivalente admitida por el pliego."
+        },
+        "customField": {
+          "name": "Resolución mínima de digitalización",
+          "description": "Resolución mínima requerida en puntos por pulgada.",
+          "aiPrompt": "Devuelve la resolución mínima como número.",
+          "type": "NUMBER",
+          "classifiers": [],
+          "canSelectMultiple": false
+        },
+        "workflowDecision": { "condition": "Continuar si existe una certificación ISO/IEC 27001 o equivalente vigente." }
+      },
+      "expected": {
+        "summaryFacts": ["320000 páginas", "98000 EUR sin IVA", "10 meses", "ISO/IEC 27001 o equivalente", "certificación caducada", "resultado desfavorable"],
+        "summaryRequiredEvidence": ["PPT 2.2", "PCAP 1.3", "PCAP 5.5", "DOSSIER 5.1"],
+        "controlQuestion": { "answer": false, "passed": false, "requiredEvidence": ["PCAP 5.5", "DOSSIER 5.1"] },
+        "customField": { "value": 300, "requiredEvidence": ["PPT 3.4"] },
+        "workflowDecision": { "result": false, "requiredEvidence": ["PCAP 5.5", "DOSSIER 5.1"] }
+      }
+    },
+    {
+      "id": "fictitious-electric-buses-05",
+      "title": "Suministro de minibuses eléctricos",
+      "documentPaths": ["fixtures/fictitious-electric-buses-05.pdf"],
+      "source": { "type": "fictitious", "url": null, "license": "CC0-1.0", "sha256": "2bcc065e65372479c9df2b91087000d368a12ac78753e62af09a86181ad7b620" },
+      "opportunity": {
+        "description": "Suministro ficticio de vehículos eléctricos accesibles",
+        "amount": 1320000,
+        "currency": "EUR",
+        "dueDate": "2027-01-20T11:00:00.000Z"
+      },
+      "operations": {
+        "summary": { "instruction": "Resume unidades, presupuesto, autonomía, plazo de entrega y capacidad del candidato." },
+        "controlQuestion": {
+          "question": "¿Puede el candidato cumplir el plazo máximo de entrega?",
+          "answerType": "BOOLEAN",
+          "passCondition": "Aprueba si el plazo comprometido es igual o inferior a 210 días naturales desde la formalización."
+        },
+        "customField": {
+          "name": "Autonomía mínima WLTP",
+          "description": "Autonomía mínima exigida por vehículo en kilómetros WLTP.",
+          "aiPrompt": "Devuelve la autonomía mínima como número.",
+          "type": "NUMBER",
+          "classifiers": [],
+          "canSelectMultiple": false
+        },
+        "workflowDecision": { "condition": "Continuar si el candidato cumple el plazo de entrega y la autonomía ofertada alcanza el mínimo exigido." }
+      },
+      "expected": {
+        "summaryFacts": ["seis minibuses", "1320000 EUR sin IVA", "autonomía mínima 280 km WLTP", "entrega máxima 210 días", "el candidato ofrece 295 km y 190 días", "resultado favorable"],
+        "summaryRequiredEvidence": ["PCAP 1.2", "PPT 4.1", "PCAP 4.3", "DOSSIER 6.2"],
+        "controlQuestion": { "answer": true, "passed": true, "requiredEvidence": ["PCAP 4.3", "DOSSIER 6.2"] },
+        "customField": { "value": 280, "requiredEvidence": ["PPT 4.1"] },
+        "workflowDecision": { "result": true, "requiredEvidence": ["PPT 4.1", "PCAP 4.3", "DOSSIER 6.2"] }
       }
     }
   ]

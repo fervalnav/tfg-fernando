@@ -49,11 +49,9 @@
   \draw[connection] (types.south west) -- (web.north east);
   \draw[connection] (types.south east) -- (api.north west);
 
-  \coordinate (infra-hub) at (3.8,-0.78);
-  \draw[semithick, draw=TFGAccent] (api.south) -- (infra-hub);
-  \draw[bidirectional] (infra-hub) -- (postgres.north east);
-  \draw[bidirectional] (infra-hub) -- (storage.north east);
-  \draw[bidirectional] (infra-hub) -- (ai.north);
+  \draw[bidirectional] (api.south west) -- (postgres.north east);
+  \draw[bidirectional] (api.south) -- (storage.north);
+  \draw[bidirectional] (api.south east) -- (ai.north west);
 
   \node[
     draw=TFGMuted,

@@ -35,6 +35,7 @@ export default defineConfig({
         FRONTEND_URL: WEB_URL,
         AI_PROVIDER: 'fake',
         S3_BUCKET: 'tfg-browser-e2e',
+        S3_PRESIGNED_URL_EXPIRES_IN_SECONDS: '1',
       },
     },
     {

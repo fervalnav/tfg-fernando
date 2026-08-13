@@ -66,7 +66,7 @@ export class AuthController {
       );
     } catch (error) {
       if (error instanceof UserAlreadyExistsException) throw new ConflictException(error.message);
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException('Internal server error', { cause: error });
     }
   }
 

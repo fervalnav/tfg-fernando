@@ -1,11 +1,330 @@
 \chapter{Implementación}
 \label{chap:implementation}
 
+Este capítulo describe los mecanismos que materializan los procesos definidos
+en los capítulos anteriores. La selección se centra en los puntos que
+concentran reglas de negocio o coordinación técnica: la sesión multiempresa,
+la cartera de oportunidades, la instanciación de workflows, la cualificación,
+el contexto documental y la generación estructurada mediante inteligencia
+artificial (IA). No se realiza un recorrido archivo por archivo, sino que se
+presentan fragmentos representativos y se explica su efecto observable.
+
+La implementación mantiene una misma pauta en ambos extremos. El frontend
+compone páginas a partir de módulos funcionales y concentra el acceso HTTP en
+composables. La API recibe cada intención mediante un controlador, ejecuta un
+comando o una consulta y delega las reglas en entidades y servicios de
+aplicación. Los tipos publicados por \texttt{@tfg/types} cierran el contrato
+entre ambos extremos sin exponer las entidades del dominio.
+
 \section{Entorno y herramientas de desarrollo}
-\section{Autenticación y gestión de cuentas}
+
+El proyecto se ejecuta con la versión de Node.js fijada en
+\texttt{.nvmrc}, actualmente 26.1.0, y utiliza \texttt{pnpm} como gestor de
+paquetes. Turborepo coordina las tareas de compilación, análisis estático,
+comprobación de tipos y pruebas del monorepositorio. La API se desarrolla con
+NestJS y la aplicación web con Nuxt y Vue; ambos proyectos activan TypeScript
+estricto.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Herramientas empleadas durante la implementación.}
+  \label{tab:implementation-tools}
+  \begin{tabular}{L{0.25\textwidth} L{0.25\textwidth} L{0.41\textwidth}}
+    \toprule
+    \textbf{Ámbito} & \textbf{Herramientas} & \textbf{Aplicación en el proyecto} \\
+    \midrule
+    Monorepositorio & pnpm y Turborepo & Dependencias compartidas y ejecución ordenada de tareas entre aplicaciones y paquetes. \\
+    Backend & NestJS, CQRS y MikroORM & API HTTP, casos de uso, eventos internos y persistencia en PostgreSQL. \\
+    Frontend & Nuxt, Vue, Pinia y TanStack Query & SPA, estado de sesión, consultas, mutaciones e invalidación de caché. \\
+    Formularios e interfaz & Zod, vee-validate y componentes reutilizables & Validación de entradas y composición coherente de formularios y estados visuales. \\
+    Infraestructura local & Docker Compose, PostgreSQL, MinIO y MailHog & Datos transaccionales, objetos S3 y captura local de invitaciones por correo. \\
+    IA & Vercel AI SDK, Google y API compatible con OpenAI & Generación estructurada y selección del proveedor mediante configuración. \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+La infraestructura local se inicia de forma independiente a las aplicaciones.
+PostgreSQL, MinIO y MailHog son dependencias operativas de los flujos
+desarrollados. Ollama se ofrece mediante un perfil opcional para la generación
+local. RabbitMQ está provisionado en Docker Compose, pero la coordinación
+actual utiliza el bus de eventos interno de NestJS y no consume todavía ese
+servicio.
+
+\section{Autenticación, cuentas y aislamiento multiempresa}
+
+La sesión combina una identidad de usuario con una cuenta activa. El token de
+acceso contiene el identificador del usuario, el \texttt{accountId}, el rol de
+la membresía y un identificador del propio token. La estrategia JWT admite la
+cookie HTTP o un encabezado \emph{Bearer}; tras validarla, los controladores
+obtienen la cuenta activa desde el contexto autenticado, no desde el cuerpo de
+la petición.
+
+El alta crea el usuario, la cuenta inicial y su membresía. El inicio de sesión
+selecciona la membresía predeterminada, mientras que el cambio de cuenta
+comprueba primero que el usuario pertenece a la cuenta destino. A continuación
+revoca la sesión anterior, actualiza la membresía predeterminada y emite un
+nuevo par de tokens. Los \emph{refresh tokens} se guardan mediante su huella,
+se rotan en cada renovación y, si se detecta la reutilización de un token ya
+consumido, se revocan las sesiones restantes del usuario.
+
+En el navegador, todas las llamadas funcionales pasan por un cliente común. El
+\Cref{lst:api-refresh} muestra cómo una respuesta 401 desencadena una única
+renovación compartida por las peticiones concurrentes. Una vez renovada la
+sesión se repite la operación original; si la renovación falla, se vuelve a la
+pantalla de acceso.
+
+\lstinputlisting[
+  language=TypeScript,
+  firstline=21,
+  lastline=40,
+  caption={Renovación coordinada de la sesión en el cliente HTTP.},
+  label={lst:api-refresh}
+]{../../apps/web/app/modules/shared/composables/useApi.ts}
+
+El aislamiento no termina en la autenticación. Los comandos reciben el
+\texttt{accountId} validado y los repositorios lo incluyen en sus consultas.
+En el \cref{lst:account-filter}, tanto la búsqueda individual como la cartera
+parten de la cuenta activa. Los filtros funcionales se añaden después, por lo
+que un identificador conocido de otra cuenta no permite recuperar su entidad.
+
+\lstinputlisting[
+  language=TypeScript,
+  firstline=48,
+  lastline=65,
+  caption={Aplicación del filtro de cuenta en el repositorio de oportunidades.},
+  label={lst:account-filter}
+]{../../apps/api/src/opportunity/infrastructure/persistence/mikro-orm-opportunity.repository.ts}
+
+Los roles \texttt{ADMIN} y \texttt{MEMBER} se asocian a la membresía y no al
+usuario global. De este modo, una misma identidad puede administrar una cuenta
+y participar con permisos ordinarios en otra. Un guard específico restringe a
+\texttt{ADMIN} las invitaciones, los cambios de rol y la eliminación de
+miembros, mientras que el caso de uso de borrado impide que el administrador se
+elimine a sí mismo. Las operaciones utilizan siempre la cuenta activa.
+
 \section{Pipelines y oportunidades}
-\section{Workflows}
-\section{Campos personalizados y preguntas de control}
-\section{Resúmenes e inteligencia artificial}
+
+Un pipeline define los estados ordenados de la cartera, su apariencia y qué
+columnas se muestran en la vista kanban. Al crear una oportunidad, el comando
+recibe el pipeline y el estado inicial seleccionados, calcula una posición
+posterior a las oportunidades existentes y registra el evento de creación. Si
+se ha indicado un workflow, un manejador posterior realiza su asignación; la
+creación de la oportunidad no incorpora directamente esa lógica.
+
+La cartera ofrece dos proyecciones sobre los mismos datos. La vista de lista
+utiliza paginación, mientras que el kanban recupera las oportunidades de los
+estados visibles. Ambas admiten búsqueda por título, selección de estados,
+responsable, rango de fechas y rango de importe. La consulta construye primero
+el filtro obligatorio de cuenta y pipeline y después añade los criterios
+opcionales.
+
+El orden de las tarjetas se conserva mediante \texttt{sortPoints}. Las
+posiciones iniciales dejan una separación de mil unidades. Durante una
+reordenación dentro de una columna, el frontend calcula el punto medio entre
+las tarjetas vecinas; al insertar al principio o al final, resta o suma mil.
+El backend persiste la nueva posición y, en movimientos entre columnas,
+actualiza también el estado. Esta estrategia evita renumerar toda la columna
+en cada operación de arrastre.
+
+Una transición puede marcar el resultado final como ganado, perdido o
+descartado. La entidad registra entonces la fecha de cierre; si la oportunidad
+vuelve a un estado no final, elimina tanto el resultado como esa fecha. Los
+totales por estado y los importes agregados se calculan para presentar contexto
+comercial sin duplicar oportunidades entre las vistas.
+
+\section{Definición y ejecución de workflows}
+
+La implementación separa la plantilla configurable de su ejecución sobre una
+oportunidad. Un workflow contiene pasos ordenados de tipo ordinario o decisión.
+Cada paso ordinario puede contener acciones de pregunta de control, campo
+personalizado, resumen, adjunto, tarea, notificación por correo o cambio de
+estado. Los pasos de decisión contienen una condición que se evalúa con los
+datos acumulados de la oportunidad.
+
+Al asignar un workflow, la API comprueba que pertenece a la misma cuenta, que
+contiene al menos un paso y que la oportunidad no tiene ya otra ejecución
+activa. Un cambio posterior se rechaza si existe una acción en progreso. Al
+aceptarlo, se retiran las acciones y decisiones anteriores, se sitúa la
+oportunidad en el primer paso y se crean las instancias de acción.
+
+El \cref{lst:workflow-instantiation} recoge la parte central de esta
+instanciación. Solo se recorren las acciones definidas por los pasos del
+workflow. Si una instancia de acción ya existe no se duplica; para preguntas,
+campos y resúmenes, otro servicio reutiliza la instancia de la oportunidad o
+la crea desde su plantilla antes de enlazarla.
+
+\lstinputlisting[
+  language=TypeScript,
+  firstline=108,
+  lastline=143,
+  caption={Creación idempotente de las acciones de ejecución de un workflow.},
+  label={lst:workflow-instantiation}
+]{../../apps/api/src/opportunity/application/services/opportunity-workflow.service.ts}
+
+Las acciones siguen la máquina de estados de la
+\Cref{fig:workflow-action-states}. Una acción puede completarse, omitirse o
+fallar, pero solo las fallidas admiten reintento. Los cambios publican eventos
+de dominio que permiten comprobar si el paso ya puede avanzar sin acoplar esa
+decisión a cada tipo de acción.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{0.9\textwidth}{!}{
+    \input{figure-sources/tikz/workflow-action-state-machine}
+  }
+  \caption{Estados de una acción durante la ejecución de un workflow.}
+  \label{fig:workflow-action-states}
+\end{figure}
+
+Cuando todas las acciones del paso están completadas u omitidas, el servicio
+avanza al siguiente paso. Una decisión solo permite el avance cuando su
+resultado es verdadero. Si no existe un paso posterior, el workflow queda
+completado. La ejecución automática de preguntas, campos, resúmenes y cambios
+de estado está conectada a este ciclo; una carga documental completa su acción
+al asociar el archivo. Las acciones de tarea y de notificación por correo
+forman parte de la definición y se muestran en la interfaz, pero su ejecutor
+específico permanece pendiente y no se considera una capacidad terminada.
+
+\section{Cualificación mediante plantillas e instancias}
+
+Las preguntas de control, los campos personalizados y las plantillas de
+resumen se configuran una vez por cuenta. Al incorporarlos a una oportunidad se
+crea una instancia que copia la definición necesaria y conserva después su
+propio valor y estado. Esto permite modificar el catálogo sin alterar el
+histórico de las oportunidades ya iniciadas.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Comportamiento implementado para los elementos de cualificación.}
+  \label{tab:qualification-implementation}
+  \begin{tabular}{L{0.22\textwidth} L{0.31\textwidth} L{0.38\textwidth}}
+    \toprule
+    \textbf{Elemento} & \textbf{Entrada y resultado} & \textbf{Comportamiento} \\
+    \midrule
+    Pregunta de control & Texto o booleano; respuesta y evidencia. & Admite respuesta manual o generación por IA y puede aportar una condición de cumplimiento. \\
+    Campo personalizado & Texto, número, fecha, booleano o clasificador. & Adapta el control al tipo; los campos automáticos incluyen una instrucción para IA. \\
+    Resumen & Instrucción textual; contenido extenso editable. & Genera un borrador estructurado que el usuario puede revisar y sobrescribir. \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Los servicios \texttt{createOrGet} consultan en paralelo la plantilla y una
+posible instancia de la misma oportunidad. Si la plantilla no pertenece a la
+cuenta, responden como si no existiera; si la instancia ya está disponible, la
+reutilizan. Esta idempotencia se aplica tanto durante la asignación del
+workflow como cuando el usuario añade manualmente otro elemento desde el
+catálogo.
+
+Una respuesta o edición manual registra un evento de cualificación actualizada.
+El módulo de oportunidades localiza las acciones del paso actual enlazadas a
+esa instancia, las completa y vuelve a evaluar el avance. En el frontend, una
+misma mutación invalida las consultas de cualificación y workflow, evitando
+que el valor guardado y el progreso visual queden desincronizados.
+
+\section{Generación estructurada mediante IA}
+
+La generación no devuelve texto libre directamente a la interfaz. Cada caso de
+uso declara un esquema Zod y un nombre de salida. El adaptador seleccionado
+envía al proveedor la instrucción del sistema, el prompt, los documentos y el
+esquema esperado. Vercel AI SDK valida la salida estructurada antes de devolver
+un valor al dominio.
+
+La selección del adaptador se realiza al iniciar la API. El valor
+\texttt{AI\_PROVIDER=google} activa Google Generative AI; cualquier proveedor
+compatible con la API de OpenAI utiliza el adaptador configurable por URL,
+modelo y credencial. Un proveedor determinista queda disponible para pruebas,
+pero el módulo impide utilizarlo cuando el entorno es de producción.
+
+El flujo de un resumen del \cref{lst:structured-generation} representa también
+el patrón usado por preguntas y campos. Primero marca la generación como
+iniciada y persiste ese estado. Después recupera en paralelo la oportunidad y
+sus PDFs, solicita una salida validada y guarda el resultado. Cualquier error
+se transforma en un estado fallido persistente y se publica para que la acción
+de workflow correspondiente deje de permanecer en progreso.
+
+\lstinputlisting[
+  language=TypeScript,
+  firstline=30,
+  lastline=57,
+  caption={Generación y persistencia de un resumen asistido por IA.},
+  label={lst:structured-generation}
+]{../../apps/api/src/summary/application/commands/generate-summary-with-ai/generate-summary-with-ai.handler.ts}
+
+Las decisiones de workflow amplían el contexto con las respuestas de control,
+los campos, los resúmenes y los documentos de la oportunidad. El esquema exige
+un booleano y una evidencia textual no vacía. El resultado se persiste como
+verdadero, falso o error; solo el primero permite avanzar automáticamente. La
+interfaz muestra la evidencia y permite solicitar una reevaluación del paso
+actual.
+
+Los adaptadores devuelven además proveedor, modelo, duración y uso de tokens.
+Estos datos forman la base de una comparación posterior, pero la versión
+actual no mantiene todavía un histórico agregado de coste y rendimiento. Por
+tanto, el capítulo no presenta métricas comparativas que aún no se han medido.
+
 \section{Adjuntos y contexto documental}
+
+La incorporación de documentos utiliza \texttt{multipart/form-data}. El
+controlador exige un archivo PDF y limita cada carga a 30 MiB. Los metadatos se
+persisten en PostgreSQL y el contenido se guarda en MinIO mediante el cliente
+S3. La clave incluye la cuenta, la oportunidad y el identificador del adjunto,
+lo que evita colisiones entre contextos.
+
+Si la carga corresponde a una acción documental del workflow, el comando
+comprueba que dicha acción pertenece a la misma cuenta, coincide con el paso
+actual, tiene el tipo correcto y todavía no está resuelta. Tras guardar el
+archivo y los metadatos, enlaza su identificador y completa la acción.
+
+PostgreSQL y el almacenamiento de objetos no comparten una transacción. El
+\Cref{lst:attachment-compensation} muestra la compensación implementada: si
+falla la persistencia o el enlace con el workflow después de cargar el binario,
+se eliminan tanto el objeto como un posible registro parcial antes de propagar
+el error.
+
+\lstinputlisting[
+  language=TypeScript,
+  firstline=38,
+  lastline=63,
+  caption={Carga de un adjunto y compensación ante un fallo posterior.},
+  label={lst:attachment-compensation}
+]{../../apps/api/src/attachment/application/commands/create-attachment/create-attachment.handler.ts}
+
+La descarga se inicia a través de la API, que comprueba el adjunto y devuelve
+una URL prefirmada con caducidad sin exponer las credenciales del
+almacenamiento. La configuración local actual aplica también una política de
+lectura pública sobre el bucket; por tanto, su retirada y la comprobación del
+acceso exclusivamente temporal quedan como medidas obligatorias antes de un
+despliegue. Para la IA se utiliza un recorrido distinto: un servicio lista
+únicamente los adjuntos de la cuenta y la oportunidad, descarga cada buffer y
+lo transforma en una parte de archivo con nombre y tipo MIME. El proveedor
+recibe así los PDFs originales sin una extracción textual intermedia.
+
 \section{Tratamiento de errores y reintentos}
+
+Los errores se gestionan en tres niveles. El dominio rechaza transiciones o
+combinaciones inválidas; los controladores traducen las excepciones conocidas
+a respuestas HTTP como 400, 404 o 409; y el frontend convierte el resultado en
+mensajes y acciones recuperables. Los errores no reconocidos se mantienen como
+respuestas 500 y conservan la causa en la API para facilitar el diagnóstico.
+
+Las consultas de la interfaz admiten un reintento automático limitado mediante
+TanStack Query. La renovación de sesión tiene su propio reintento coordinado,
+descrito en el \cref{lst:api-refresh}. En cambio, las operaciones con efecto de
+negocio no se repiten de forma silenciosa: una acción de workflow fallida pasa
+a \texttt{FAILED}, conserva el mensaje y muestra un botón de reintento. La
+operación devuelve la acción a \texttt{PENDING} y vuelve a solicitar su
+ejecución automática.
+
+El adaptador de IA configura reintentos técnicos limitados para una misma
+petición, mientras que el reintento funcional permanece bajo control del
+usuario. Esta separación evita que una indisponibilidad temporal bloquee el
+workflow indefinidamente y, a la vez, impide encadenar generaciones sin una
+señal visible. Los resultados generados siguen siendo editables: completar una
+acción significa que existe un valor revisable, no que la decisión haya dejado
+de corresponder al usuario.
+
+En conjunto, la implementación conecta la cartera comercial con un proceso de
+cualificación trazable. El siguiente capítulo evalúa estos mecanismos mediante
+pruebas unitarias, de integración y de extremo a extremo, y separa las
+verificaciones deterministas de la evaluación experimental de los proveedores
+de IA.

@@ -84,7 +84,7 @@ proyecto.
   \endlastfoot
   RF-001 & Identidad y sesión & El sistema debe permitir el registro, el inicio y cierre de sesión, la renovación segura de credenciales y la consulta o edición del perfil. & Completo \\
   RF-002 & Cuentas de trabajo & El usuario debe poder consultar las cuentas a las que pertenece y cambiar el contexto activo sin iniciar una nueva sesión. & Completo \\
-  RF-003 & Administración de miembros & El administrador debe poder invitar miembros, asignar los roles administrador o miembro, modificar dichos roles y eliminar miembros distintos de sí mismo. & Parcial \\
+  RF-003 & Administración de miembros & El administrador debe poder invitar miembros, asignar los roles administrador o miembro, modificar dichos roles y eliminar miembros distintos de sí mismo. & Completo \\
   RF-004 & Configuración de pipelines & El miembro debe poder crear, consultar, editar y eliminar pipelines, así como ordenar y configurar sus estados iniciales y terminales. & Completo \\
   RF-005 & Definición de workflows & El miembro debe poder crear, duplicar, modificar y eliminar workflows compuestos por pasos, decisiones y acciones tipadas. & Completo \\
   RF-006 & Catálogo de cualificación & El miembro debe poder gestionar plantillas de preguntas de control, campos personalizados y resúmenes reutilizables. & Completo \\
@@ -104,9 +104,9 @@ proyecto.
 
 \vspace{0.6\baselineskip}
 
-RF-003 es parcial porque los roles están representados y la gestión de miembros
-existe, pero falta aplicar la autorización de administrador en la API y cubrirla
-con pruebas de permisos. RF-012 dispone del mecanismo de preguntas, evidencia y
+RF-003 se verifica mediante una matriz E2E que permite las operaciones de
+administración a \texttt{ADMIN}, las rechaza para \texttt{MEMBER} y protege la
+autoeliminación. RF-012 dispone del mecanismo de preguntas, evidencia y
 contexto documental, pero necesita una evaluación con documentos y respuestas
 esperadas. RF-016 obtiene proveedor, modelo, duración y tokens, aunque aún debe
 persistir las métricas y ejecutar la comparación experimental.
@@ -165,7 +165,7 @@ independencia de la interfaz o de la tecnología utilizada.
   \endlastfoot
   RN-001 & Cuenta inicial & El registro de un usuario crea una cuenta y lo incorpora a ella con rol de administrador. & Completo \\
   RN-002 & Aislamiento por cuenta & Ningún usuario puede consultar ni modificar información perteneciente a una cuenta distinta de la activa. & Completo \\
-  RN-003 & Autoridad administrativa & Solo un administrador puede invitar, eliminar o cambiar el rol de otros miembros; ningún miembro puede eliminarse a sí mismo desde la gestión de cuenta. & Parcial \\
+  RN-003 & Autoridad administrativa & Solo un administrador puede invitar, eliminar o cambiar el rol de otros miembros; ningún miembro puede eliminarse a sí mismo desde la gestión de cuenta. & Completo \\
   RN-004 & Estado inicial & Cada pipeline debe disponer de un estado inicial válido para admitir nuevas oportunidades. & Completo \\
   RN-005 & Resultado terminal & Una oportunidad que alcanza un estado terminal debe registrar el resultado ganado, perdido o descartado y su fecha de cierre. & Completo \\
   RN-006 & Instanciación de plantillas & Al asignar un workflow solo se instancian las plantillas referenciadas por sus acciones; una instancia existente se reutiliza y no se duplica. & Completo \\
@@ -231,7 +231,7 @@ donde se verifica su comportamiento más representativo.
   \endlastfoot
   RF-001 & OG-001 & Autenticación & Pruebas unitarias de sesión y recorrido E2E de registro e inicio de sesión. & Completo \\
   RF-002 & OG-001 & Autenticación & Pruebas de consulta y cambio de cuenta activa. & Completo \\
-  RF-003 & OG-001 & Cuentas & Pruebas de miembros existentes; pendiente la matriz E2E de permisos por rol. & Parcial \\
+  RF-003 & OG-001 & Cuentas & Matriz E2E de invitación, cambio de rol y eliminación para administrador y miembro, incluida la autoeliminación. & Completo \\
   RF-004 & OG-001, OE-003 & Pipelines & Pruebas de dominio, handlers y operaciones HTTP de pipelines y estados. & Completo \\
   RF-005 & OG-001, OE-003 & Workflows & Pruebas de definición, duplicación, pasos, decisiones y acciones. & Completo \\
   RF-006 & OG-001, OE-001 & Cualificación & Pruebas de plantillas de preguntas, campos y resúmenes. & Completo \\
@@ -265,7 +265,7 @@ los huecos transversales sin repetir todas las relaciones de la tabla anterior.
     RI-001--RI-007 & OG-001, OE-001, OE-003 & Entidades persistidas, DTO compartidos y pruebas de repositorios y casos de uso. \\
     RI-008 & OE-002 & Resultado disponible en los adaptadores; faltan persistencia, coste y valoración de calidad. \\
     RN-001--RN-002, RN-004--RN-010 & OG-001, OE-001, OE-003 & Reglas de dominio y aplicación cubiertas por pruebas unitarias y E2E. \\
-    RN-003 & OG-001 & Falta autorización administrativa y pruebas de acceso por rol. \\
+    RN-003 & OG-001 & Matriz E2E de operaciones permitidas a \texttt{ADMIN}, rechazo a \texttt{MEMBER} y autoeliminación. \\
     RNF-001--RNF-007 & Todos & Guardas, validación, arquitectura modular, fake de IA y entorno local reproducible. \\
     RNF-008 & OE-002 & Faltan almacenamiento y explotación comparativa de las métricas de IA. \\
     \bottomrule

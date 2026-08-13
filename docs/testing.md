@@ -67,7 +67,10 @@ La suite incluye, entre otros:
 
 - Playwright cubre un recorrido crítico principal; no pretende duplicar todos los casos negativos ya cubiertos en API y componentes.
 - El E2E de navegador requiere MinIO local porque verifica la integración real de subida. El E2E de API usa almacenamiento en memoria y es el que se ejecuta en CI.
-- La suite contiene código de producción anterior basado en `Date`, aunque la política actual exige Temporal API. Esta contradicción se documenta y no se resuelve mediante una migración lateral dentro del trabajo de testing.
+- La política temporal es incremental: el código histórico puede conservar
+  `Date`, las fronteras de persistencia y DTO pueden utilizarlo y la lógica
+  temporal nueva debe preferir Temporal API. Las tareas de testing no provocan
+  migraciones laterales de módulos no relacionados.
 - Los servicios externos reales de IA no forman parte de ninguna suite automática; sus credenciales y disponibilidad quedan fuera del alcance de las pruebas reproducibles.
 
 ## Integración continua

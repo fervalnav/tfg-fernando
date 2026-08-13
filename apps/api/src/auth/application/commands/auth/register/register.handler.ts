@@ -41,7 +41,8 @@ export class RegisterHandler implements ICommandHandler<RegisterCommand, AuthRes
       firstName: command.firstName,
       lastName: command.lastName,
     });
-    await Promise.all([this.accountRepo.save(account), this.userRepo.save(user)]);
+    await this.accountRepo.save(account);
+    await this.userRepo.save(user);
 
     const member = AccountMember.create({
       id: this.idService.generate(),

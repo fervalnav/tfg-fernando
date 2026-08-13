@@ -91,11 +91,11 @@ Estado real de los sprints y decisiones de alcance cerradas en M0.
 
 ## Iteración M3 - Requisitos y trazabilidad
 
-**Estado:** completada el 12 de agosto de 2026. El catálogo de actores, requisitos funcionales, requisitos
-de información, reglas de negocio y requisitos no funcionales está redactado.
-La trazabilidad identifica tres huecos: autorización administrativa por rol,
-evaluación documental de solvencia y persistencia y comparación de métricas de
-IA.
+**Estado:** completada el 12 de agosto de 2026 y actualizada el 13 de agosto. El
+catálogo de actores, requisitos funcionales, requisitos de información, reglas
+de negocio y requisitos no funcionales está redactado. La autorización
+administrativa ya está implementada y probada. Permanecen parciales la
+evaluación documental de solvencia y la comparación de métricas de IA.
 
 ### Capítulos
 
@@ -112,12 +112,10 @@ IA.
 
 ### Backlog técnico detectado
 
-1. Restringir a `ADMIN` las invitaciones, cambios de rol y eliminaciones de
-   miembros, y añadir pruebas E2E para `ADMIN` y `MEMBER`.
-2. Ejecutar el banco de evaluación de solvencia con documentos y respuestas
+1. Ejecutar el banco de evaluación de solvencia con documentos y respuestas
    esperadas definidos previamente.
-3. Persistir proveedor, modelo, duración, tokens y coste de las generaciones, y
-   ejecutar la comparación de calidad, latencia y coste.
+2. Ejecutar la comparación de calidad, latencia y coste. La persistencia de
+   métricas queda como trabajo futuro y RF-016 permanece parcial.
 
 ### Salida
 
@@ -155,10 +153,12 @@ Conjunto pequeño de diagramas legibles y coherentes con el código.
 
 ## Iteración M5 - Arquitectura e implementación
 
-**Estado:** en curso. El capítulo 5 documenta la vista de componentes, el
+**Estado:** completada. El capítulo 5 documenta la vista de componentes, el
 monorepositorio, las arquitecturas del backend y el frontend, la persistencia,
-los adjuntos, la integración de IA y la topología local verificada. La
-iteración continuará con el capítulo 6 de implementación.
+los adjuntos, la integración de IA y la topología local verificada. El capítulo
+6 desarrolla la sesión multiempresa, la cartera, la ejecución de workflows, la
+cualificación, la generación estructurada, el contexto documental y los
+reintentos a partir del código implementado.
 
 ### Capítulos
 
@@ -180,6 +180,12 @@ decisiones, no en un inventario de archivos.
 
 ## Iteración M6 - Pruebas y validación
 
+**Estado:** siguiente iteración documental, bloqueada hasta completar la lista
+de cierre de `context/pre-chapter-7-checklist.md`. La infraestructura y los
+casos de prueba existen; antes de redactar resultados se resolverá la CI, se
+regenerarán las ejecuciones y la cobertura y se cerrará por separado la
+evaluación experimental de IA.
+
 ### Capítulos
 
 - Capítulo 7: pruebas.
@@ -198,7 +204,9 @@ Completado:
 
 - E2E de API con autenticación, workflows, adjuntos, cualificación y
   aislamiento multiempresa.
-- E2E de navegador para los flujos críticos mediante Playwright.
+- Cuatro escenarios E2E de navegador mediante Playwright: un recorrido
+  principal de cualificación con resumen generado por IA, autenticación,
+  validación de formularios y diferenciación entre error y estado vacío.
 - Pruebas de componentes, composables y casos de uso de frontend y backend.
 - Integración determinista con IA y almacenamiento mediante fakes, además de
   verificación local con PostgreSQL y MinIO.
@@ -256,22 +264,26 @@ Versión candidata a revisión de la tutora.
 
 ## Auditoría técnica previa a la redacción final
 
-Datos verificados el 6 de agosto de 2026 con Node 26.1.0:
+Datos verificados de nuevo el 12 de agosto de 2026 con Node 26.1.0:
 
-- `pnpm test:cov` finaliza correctamente y respeta los umbrales configurados.
-- Backend: 35 suites y 138 pruebas superadas; cobertura de líneas 62,95 %, de
-  sentencias 62,34 %, de funciones 40,14 % y de ramas 34,18 %.
+- `pnpm test:cov` finaliza correctamente sin caché de Turborepo y respeta los
+  umbrales configurados.
+- Backend: 37 suites y 142 pruebas superadas; cobertura de líneas 63,16 %, de
+  sentencias 62,53 %, de funciones 40,45 % y de ramas 34,59 %.
 - Frontend: 11 archivos y 35 pruebas superadas; cobertura de líneas 9,17 %, de
   sentencias 8,25 %, de funciones 4,86 % y de ramas 9,60 %.
-- E2E de API: 11 casos superados contra PostgreSQL, incluyendo aislamiento de
-  oportunidades, adjuntos, workflows e instancias de cualificación.
+- E2E de API: 12 casos superados contra PostgreSQL, incluyendo aislamiento de
+  oportunidades, adjuntos, workflows, cualificación y permisos administrativos.
 - E2E de navegador: 4 casos superados con Playwright, PostgreSQL, MinIO y un
   proveedor de IA determinista.
-- `pnpm check-types`, `pnpm lint`, `pnpm build` y `git diff --check` finalizan
-  correctamente. El lint mantiene 13 avisos no bloqueantes en componentes UI.
-- Existe un workflow de integración continua. Su última ejecución publicada fue
-  cancelada antes de ejecutar pasos porque GitHub no asignó un runner alojado;
-  debe repetirse tras publicar esta tanda.
+- `pnpm check-types`, `pnpm lint` y `pnpm build` finalizan correctamente sin
+  caché de Turborepo; `git diff --check` también pasa. El lint mantiene 13
+  avisos no bloqueantes en componentes UI.
+- Existe un workflow de integración continua. La ejecución `31639676403`
+  completa tipos, lint, pruebas, cobertura y build, pero falla en los E2E de API
+  porque el registro devuelve HTTP 500. Localmente los 12 casos pasan. La
+  ejecución fallida usó PostgreSQL 17; la definición de CI se ha alineado con
+  PostgreSQL 16 y queda pendiente publicar y ejecutar esa revisión.
 
 La cobertura no es un objetivo por sí sola. La estrategia prioriza los riesgos
 funcionales del proyecto y combina pruebas unitarias, de componentes, de API y
@@ -281,30 +293,30 @@ de navegador.
 
 ### Prioridad crítica para defender el núcleo
 
-1. **Completar la evaluación de IA.** Seleccionar documentos permitidos, fijar
+1. **Validar la CI alineada.** PostgreSQL local y CI utilizan ya la versión 16
+   y el registro ya no ejecuta en paralelo repositorios que comparten
+   `EntityManager`; falta publicar la revisión y obtener una ejecución remota
+   completa.
+2. **Completar la evaluación de IA.** Seleccionar documentos permitidos, fijar
    respuestas esperadas y ejecutar la rúbrica definida para medir calidad,
    repetibilidad, fallos, latencia y coste.
-2. **Confirmar la CI publicada.** Repetir el workflow hasta obtener una
-   ejecución completa; la cancelación por falta de runner no valida ni invalida
-   el código.
 
-### Prioridad alta antes de cerrar implementación
+### Cierre técnico completado el 13 de agosto de 2026
 
-1. **Alinear el Sprint 8 con el código.** La aplicación ya contiene generación,
-   estados y reintentos, pero el plan conserva muchas casillas sin actualizar.
-2. **Completar observabilidad y control de coste de IA.** El proveedor y el
-   modelo se devuelven en el resultado, pero debe confirmarse si se persisten
-   tokens, latencia, intentos y límites de uso. No afirmar que existen hasta
-   comprobarlo.
-3. **Corregir documentación técnica desactualizada.** El README enumera CRM,
-   tareas y comentarios como módulos actuales y cita OpenAI, mientras que esos
-   módulos son opcionales o futuros y la configuración actual incluye Google y
-   proveedores compatibles con OpenAI/Ollama.
-4. **Resolver la política temporal.** La regla actual exige Temporal API para
-   lógica de negocio, pero se ha detectado uso de `Date` en numerosos archivos
-   de dominio. Debe decidirse si se migra el dominio y se limita `Date` a la
-   persistencia, o si se corrige la decisión documentada.
-5. **Validar despliegue.** Confirmar entorno objetivo, variables, migraciones,
+1. La administración de miembros exige `ADMIN` y dispone de una matriz E2E de
+   permisos y autoeliminación.
+2. El Sprint 8 distingue la cobertura de aplicación del recorrido completo de
+   resumen en navegador.
+3. RF-016 permanece parcial: las métricas no se persistirán en este cierre y la
+   comparación se demostrará mediante el banco experimental.
+4. La política temporal es incremental y admite `Date` histórico y de frontera
+   sin exigir una migración lateral.
+5. MinIO elimina políticas públicas al arrancar y el E2E verifica URL firmada,
+   rechazo directo y caducidad.
+
+### Prioridad alta restante
+
+1. **Validar despliegue.** Confirmar entorno objetivo, variables, migraciones,
    almacenamiento y proveedor de IA antes de documentarlo como operativo.
 
 ### Pulido y coherencia final

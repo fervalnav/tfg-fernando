@@ -9,20 +9,20 @@
     text=black, align=center}
 ]
   \node[participant] (user) at (0,0) {Miembro};
-  \node[participant] (web) at (3.8,0) {Aplicación web};
-  \node[participant] (api) at (7.6,0) {Gestor documental};
-  \node[participant] (storage) at (11.4,0) {Almacenamiento};
-  \node[participant] (db) at (15.2,0) {Persistencia};
-  \foreach \x in {0,3.8,7.6,11.4,15.2} \draw[lifeline] (\x,-0.35) -- (\x,-7.05);
-  \draw[message] (0,-0.75) -- node[message label, above]{selecciona un PDF} (3.8,-0.75);
-  \draw[message] (3.8,-1.45) -- node[message label, above]{envía archivo y datos asociados} (7.6,-1.45);
-  \draw[message] (7.6,-2.15)
+  \node[participant] (web) at (3.4,0) {Aplicación web};
+  \node[participant] (api) at (6.8,0) {Gestor documental};
+  \node[participant] (storage) at (10.2,0) {Almacenamiento};
+  \node[participant] (db) at (13.6,0) {Persistencia};
+  \foreach \x in {0,3.4,6.8,10.2,13.6} \draw[lifeline] (\x,-0.35) -- (\x,-7.05);
+  \draw[message] (0,-0.75) -- node[message label, above]{selecciona un PDF} (3.4,-0.75);
+  \draw[message] (3.4,-1.45) -- node[message label, above]{envía archivo y datos asociados} (6.8,-1.45);
+  \draw[message] (6.8,-2.15)
     -- node[message label, above]{valida formato y tamaño} ++(0.75,0)
-    -- ++(0,-0.55) -- (7.6,-2.7);
-  \draw[message] (7.6,-3.35) -- node[message label, above]{almacena el contenido} (11.4,-3.35);
-  \draw[return] (11.4,-4.05) -- node[message label, above]{referencia del objeto} (7.6,-4.05);
-  \draw[message] (7.6,-4.75) -- node[message label, above]{registra los metadatos} (15.2,-4.75);
-  \draw[return] (15.2,-5.45) -- node[message label, above]{registro confirmado} (7.6,-5.45);
-  \draw[return] (7.6,-6.15) -- node[message label, above]{documento disponible} (3.8,-6.15);
-  \draw[return] (3.8,-6.75) -- node[message label, above]{confirma la incorporación} (0,-6.75);
+    -- ++(0,-0.55) -- (6.8,-2.7);
+  \draw[message] (6.8,-3.35) -- node[message label, above]{almacena el contenido} (10.2,-3.35);
+  \draw[return] (10.2,-4.05) -- node[message label, above]{referencia del objeto} (6.8,-4.05);
+  \draw[message] (6.8,-4.75) -- node[message label, above]{registra los metadatos} (13.6,-4.75);
+  \draw[return] (13.6,-5.45) -- node[message label, above]{registro confirmado} (6.8,-5.45);
+  \draw[return] (6.8,-6.15) -- node[message label, above]{documento disponible} (3.4,-6.15);
+  \draw[return] (3.4,-6.75) -- node[message label, above]{confirma la incorporación} (0,-6.75);
 \end{tikzpicture}

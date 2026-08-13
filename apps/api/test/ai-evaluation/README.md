@@ -1,5 +1,11 @@
 # Protocolo de evaluación de IA
 
+Protocolo congelado el 13 de agosto de 2026 antes de ejecutar los modelos. Se
+comparan `gemini-3-flash-preview` (Flash) y `gemini-3.1-flash-lite`
+(Flash-Lite), ambos mediante el adaptador Google de producción. Se realizan
+tres repeticiones de cuatro operaciones sobre cinco expedientes ficticios: 120
+salidas previstas.
+
 Este protocolo complementa los tests deterministas. Los tests automáticos validan integración, esquemas y errores; esta evaluación compara la calidad, latencia y coste de proveedores/modelos con documentos ficticios o públicos.
 
 ## Conjunto de evaluación
@@ -9,6 +15,10 @@ Este protocolo complementa los tests deterministas. Los tests automáticos valid
 3. No incorporar documentación privada ni datos personales.
 4. Registrar cada caso en `evaluation-cases.json` y guardar sus PDF fuera del repositorio o como fixtures redistribuibles.
 5. Elaborar las respuestas esperadas y la rúbrica antes de ejecutar los modelos.
+
+En esta evaluación se usan los cinco PDF redistribuibles de `fixtures/`. Todos
+se declaran completamente ficticios tanto en el contenido como en
+`evaluation-cases.json`; sus hashes SHA-256 quedan congelados en ese fichero.
 
 Cada caso debe cubrir, como mínimo:
 
@@ -27,11 +37,25 @@ Para cada combinación de proveedor y modelo:
 4. Conservar también los resultados estructurados para una revisión posterior.
 5. Si una ejecución falla o no informa tokens, registrarlo explícitamente; no sustituir datos ausentes por cero.
 
+Parámetros comunes: nivel de razonamiento `low`, máximo de 2048 tokens de
+salida y dos reintentos. El ejecutor reanudable es `run-evaluation.ts`; conserva
+una línea JSON por salida en `results/raw-results.jsonl` y la proyección tabular
+en `results/results.csv`. Nunca almacena la clave de API.
+
 El servicio `AiGenerationService` ya devuelve `provider`, `model`, `durationMs` y los tokens de entrada, salida y totales. El coste se calcula después con la tarifa oficial vigente en la fecha de la prueba:
 
 `coste = inputTokens * precioEntrada / 1_000_000 + outputTokens * precioSalida / 1_000_000`
 
 La fuente, moneda y fecha de cada tarifa deben constar en la memoria del TFG.
+Para la prueba del 13 de agosto de 2026 se congelan las tarifas estándar de la
+documentación oficial de Google, en USD por millón de tokens:
+
+| Modelo | Entrada | Salida, incluido razonamiento |
+|---|---:|---:|
+| `gemini-3-flash-preview` | 0,50 USD | 3,00 USD |
+| `gemini-3.1-flash-lite` | 0,25 USD | 1,50 USD |
+
+Fuente: <https://ai.google.dev/gemini-api/docs/pricing>.
 
 ## Evaluación de calidad
 
@@ -42,7 +66,30 @@ Dos revisiones independientes puntúan cada salida de 0 a 2 en cuatro dimensione
 - evidencia: justifica la respuesta con información localizable;
 - utilidad: ayuda a tomar la decisión esperada sin contenido superfluo.
 
-La puntuación máxima es 8. Los desacuerdos se resuelven mediante revisión conjunta. También se registran alucinaciones y errores de formato como conteos separados.
+La puntuación máxima es 8. Los dos revisores evalúan una copia ciega que oculta
+modelo, repetición, métricas y puntuación ajena. El revisor 1 es el agente
+principal de Codex y el revisor 2 es un agente Codex independiente. No se
+presentan como revisores humanos. Primero se congelan ambas revisiones; después
+se resuelven los desacuerdos conservando las puntuaciones originales y la
+acordada.
+
+Rúbrica por dimensión:
+
+| Puntos | Exactitud | Cobertura | Evidencia | Utilidad |
+|---:|---|---|---|---|
+| 2 | Todo respaldado y sin contradicciones | Incluye todos los hechos relevantes esperados | Justifica con datos y secciones localizables | Directa, accionable y sin ruido |
+| 1 | Imprecisión menor que no cambia la conclusión | Omite información secundaria | Evidencia correcta pero parcial o vaga | Usable con interpretación o limpieza menor |
+| 0 | Contradicción o error material | Omite un dato esencial o no responde | Ausente, no localizable o incompatible | No permite decidir o induce a error |
+
+`valid_schema` se registra aparte de la calidad semántica. Una alucinación es
+una afirmación verificable no sustentada por los documentos; es crítica si
+altera elegibilidad, plazo, importe, obligación o decisión Go/No-Go. No se
+cuentan como alucinaciones las paráfrasis legítimas, omisiones o errores de
+formato. Cada descuento debe llevar un comentario breve y evidencia documental.
+
+Para el resumen, cuyo esquema productivo solo contiene `result`, se exige que
+las referencias de sección aparezcan dentro del propio texto. Los otros tres
+esquemas conservan su campo `evidence`.
 
 ## Métricas y criterio de selección
 
