@@ -1,0 +1,38 @@
+\begin{tikzpicture}[
+  level/.style={
+    draw=TFGBlue,
+    rounded corners=3pt,
+    align=center,
+    minimum height=0.9cm,
+    font=\small
+  },
+  note/.style={font=\scriptsize, text=TFGMuted, align=left}
+]
+  \node[level, fill=TFGLightBlue, minimum width=12.2cm] (unit) at (0,0) {
+    Unitarias de dominio y aplicación · rápidas y aisladas
+  };
+  \node[level, fill=TFGLightBlue, minimum width=10.7cm] (component) at (0,1.25) {
+    Componentes web, composables y adaptadores
+  };
+  \node[level, fill=TFGLightBlue, minimum width=9.2cm] (integration) at (0,2.5) {
+    Integración con PostgreSQL, MinIO y esquemas
+  };
+  \node[level, fill=TFGLightBlue, minimum width=7.7cm] (api) at (0,3.75) {
+    API E2E · NestJS + PostgreSQL
+  };
+  \node[level, fill=TFGLightBlue, minimum width=5.6cm] (browser) at (0,5) {
+    Navegador E2E · recorrido crítico
+  };
+  \node[level, fill=TFGAccent!12, draw=TFGAccent, minimum width=4.8cm] (evaluation) at (5.5,5) {
+    Evaluación IA real\\calidad, coste y latencia
+  };
+
+  \draw[-{Stealth[length=2mm]}, TFGBlue] (unit.north) -- (component.south);
+  \draw[-{Stealth[length=2mm]}, TFGBlue] (component.north) -- (integration.south);
+  \draw[-{Stealth[length=2mm]}, TFGBlue] (integration.north) -- (api.south);
+  \draw[-{Stealth[length=2mm]}, TFGBlue] (api.north) -- (browser.south);
+  \draw[-{Stealth[length=2mm]}, TFGAccent] (browser.east) -- (evaluation.west);
+
+  \node[note, anchor=west] at (4.25,3.75) {Menos casos\\Mayor coste y realismo};
+  \node[note, anchor=west] at (4.25,0.1) {Más casos\\Menor coste y mayor aislamiento};
+\end{tikzpicture}
