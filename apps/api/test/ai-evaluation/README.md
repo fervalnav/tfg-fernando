@@ -47,6 +47,12 @@ ejecutor reanudable es `run-evaluation.ts`; conserva
 una línea JSON por salida en `results/raw-results.jsonl` y la proyección tabular
 en `results/results.csv`. Nunca almacena la clave de API.
 
+Puede limitarse una reanudación a modelos concretos mediante
+`AI_EVALUATION_MODELS`, separado por comas. Ante una cuota transitoria se espera
+el tiempo indicado por Google y se reintenta la misma salida; después de dos
+esperas se detiene sin registrar esa salida como fallo. El máximo se configura
+con `AI_EVALUATION_MAX_QUOTA_WAITS`.
+
 `generate-fixtures.py` emplea fuentes PDF estándar y modo invariante de
 ReportLab. Dos regeneraciones consecutivas deben producir exactamente los
 hashes registrados. Los ficheros `pilot-rate-limit-*` proceden de una ejecución
@@ -114,6 +120,17 @@ Por proveedor/modelo se presentan:
 - número de alucinaciones detectadas.
 
 Un modelo es aceptable si obtiene al menos 6/8 de calidad media, genera una respuesta estructuralmente válida en al menos el 95 % de ejecuciones y no presenta alucinaciones críticas. Entre los modelos aceptables se elige el de menor coste; la latencia actúa como desempate. Estos umbrales deben revisarse si el conjunto final demuestra que no son adecuados, dejando constancia del cambio.
+
+## Estado de ejecución del 13 de agosto de 2026
+
+- Flash-Lite: 60/60 salidas, 100 % válidas, calidad acordada 7,53/8. Presenta
+  dos alucinaciones críticas en resúmenes del caso de autobuses, por lo que no
+  supera el criterio de aceptación pese a su buena media.
+- Flash: 10/60 salidas, 100 % válidas y calidad provisional 7,80/8. Las 50
+  restantes quedan pendientes del reinicio de la cuota diaria gratuita; no se
+  extrae una conclusión comparativa de esta muestra incompleta.
+- La puntuación original de ambos revisores y la acordada se conservan en
+  `reviews/`; los agregados reproducibles están en `results/aggregate.json`.
 
 ## Reproducibilidad
 

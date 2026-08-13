@@ -1,0 +1,2662 @@
+[
+  {
+    "blindId": "blind-01188c434fa4",
+    "runId": "fictitious-electric-buses-05|workflow_decision|gemini-3.1-flash-lite|1",
+    "reviewer1": {
+      "blindId": "blind-01188c434fa4",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-01188c434fa4",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: verifica ambos umbrales con PCAP 4.3, PPT 4.1 y DOSSIER 6.2."
+    },
+    "agreed": {
+      "blindId": "blind-01188c434fa4",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: verifica ambos umbrales con PCAP 4.3, PPT 4.1 y DOSSIER 6.2."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-01d7b5b7ea4c",
+    "runId": "fictitious-electric-buses-05|control_question|gemini-3.1-flash-lite|3",
+    "reviewer1": {
+      "blindId": "blind-01d7b5b7ea4c",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-01d7b5b7ea4c",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: compara correctamente 190 días con el máximo de 210 usando PCAP 4.3 y DOSSIER 6.2."
+    },
+    "agreed": {
+      "blindId": "blind-01d7b5b7ea4c",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: compara correctamente 190 días con el máximo de 210 usando PCAP 4.3 y DOSSIER 6.2."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-036556aaaa7d",
+    "runId": "fictitious-it-support-01|summary|gemini-3.1-flash-lite|1",
+    "reviewer1": {
+      "blindId": "blind-036556aaaa7d",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-036556aaaa7d",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: cubre objeto, importe, plazo, solvencia y conclusión con todas las referencias requeridas."
+    },
+    "agreed": {
+      "blindId": "blind-036556aaaa7d",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: cubre objeto, importe, plazo, solvencia y conclusión con todas las referencias requeridas."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-073ae46d62e5",
+    "runId": "fictitious-solar-maintenance-03|custom_field|gemini-3.1-flash-lite|3",
+    "reviewer1": {
+      "blindId": "blind-073ae46d62e5",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-073ae46d62e5",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: ambos clasificadores y PCAP 2.1 coinciden exactamente."
+    },
+    "agreed": {
+      "blindId": "blind-073ae46d62e5",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: ambos clasificadores y PCAP 2.1 coinciden exactamente."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-0a564c964eb3",
+    "runId": "fictitious-solar-maintenance-03|summary|gemini-3.1-flash-lite|1",
+    "reviewer1": {
+      "blindId": "blind-0a564c964eb3",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Omite el presupuesto de 175.000 EUR (PCAP 1.2), aunque cubre alcance, lotes, garantía y exclusión."
+    },
+    "reviewer2": {
+      "blindId": "blind-0a564c964eb3",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Omite el presupuesto de 175000 EUR sin IVA incluido en expected; alcance, lotes, garantía y exclusión sí están completos."
+    },
+    "agreed": {
+      "blindId": "blind-0a564c964eb3",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Omite el presupuesto de 175000 EUR sin IVA incluido en expected; alcance, lotes, garantía y exclusión sí están completos."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-0cc57a01e537",
+    "runId": "fictitious-it-support-01|workflow_decision|gemini-3.1-flash-lite|2",
+    "reviewer1": {
+      "blindId": "blind-0cc57a01e537",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-0cc57a01e537",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: presupuesto y solvencia satisfacen conjuntamente la condición."
+    },
+    "agreed": {
+      "blindId": "blind-0cc57a01e537",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: presupuesto y solvencia satisfacen conjuntamente la condición."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-1b4387e99498",
+    "runId": "fictitious-it-support-01|custom_field|gemini-3.1-flash-lite|1",
+    "reviewer1": {
+      "blindId": "blind-1b4387e99498",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-1b4387e99498",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: 24 meses con referencia exacta PCAP 4.1."
+    },
+    "agreed": {
+      "blindId": "blind-1b4387e99498",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: 24 meses con referencia exacta PCAP 4.1."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-1e74bf642c67",
+    "runId": "fictitious-it-support-01|custom_field|gemini-3.1-flash-lite|3",
+    "reviewer1": {
+      "blindId": "blind-1e74bf642c67",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-1e74bf642c67",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: valor numérico y evidencia localizable correctos."
+    },
+    "agreed": {
+      "blindId": "blind-1e74bf642c67",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: valor numérico y evidencia localizable correctos."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-2139b82194fa",
+    "runId": "fictitious-school-meals-02|custom_field|gemini-3.1-flash-lite|1",
+    "reviewer1": {
+      "blindId": "blind-2139b82194fa",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-2139b82194fa",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: CPV exacto y evidencia PCAP 1.4 completa."
+    },
+    "agreed": {
+      "blindId": "blind-2139b82194fa",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: CPV exacto y evidencia PCAP 1.4 completa."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-21db6d8153c5",
+    "runId": "fictitious-school-meals-02|workflow_decision|gemini-3.1-flash-lite|1",
+    "reviewer1": {
+      "blindId": "blind-21db6d8153c5",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-21db6d8153c5",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: decisión favorable sustentada por requisito, vigencia y fecha límite."
+    },
+    "agreed": {
+      "blindId": "blind-21db6d8153c5",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: decisión favorable sustentada por requisito, vigencia y fecha límite."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-24b9b792c9d3",
+    "runId": "fictitious-it-support-01|custom_field|gemini-3-flash-preview|1",
+    "reviewer1": {
+      "blindId": "blind-24b9b792c9d3",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 1,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "El valor 24 es correcto, pero la evidencia no identifica la sección localizable PCAP 4.1."
+    },
+    "reviewer2": {
+      "blindId": "blind-24b9b792c9d3",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 1,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "El valor 24 es correcto, pero la evidencia omite la sección localizable PCAP 4.1 exigida por el caso."
+    },
+    "agreed": {
+      "blindId": "blind-24b9b792c9d3",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 1,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "El valor 24 es correcto, pero la evidencia omite la sección localizable PCAP 4.1 exigida por el caso."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-29d72b3f9c77",
+    "runId": "fictitious-it-support-01|control_question|gemini-3.1-flash-lite|2",
+    "reviewer1": {
+      "blindId": "blind-29d72b3f9c77",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-29d72b3f9c77",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: dos contratos superan 80000 EUR y constan como satisfactorios en PCAP 7.3 y DOSSIER 2.1."
+    },
+    "agreed": {
+      "blindId": "blind-29d72b3f9c77",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: dos contratos superan 80000 EUR y constan como satisfactorios en PCAP 7.3 y DOSSIER 2.1."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-2b6b426b253a",
+    "runId": "fictitious-solar-maintenance-03|summary|gemini-3.1-flash-lite|3",
+    "reviewer1": {
+      "blindId": "blind-2b6b426b253a",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Omite el presupuesto de 175.000 EUR (PCAP 1.2), aunque cubre alcance, lotes, garantía y exclusión."
+    },
+    "reviewer2": {
+      "blindId": "blind-2b6b426b253a",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Falta el importe de 175000 EUR sin IVA esperado en PCAP 1.2; responde correctamente a los demás elementos."
+    },
+    "agreed": {
+      "blindId": "blind-2b6b426b253a",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Falta el importe de 175000 EUR sin IVA esperado en PCAP 1.2; responde correctamente a los demás elementos."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-2c7712df26f8",
+    "runId": "fictitious-solar-maintenance-03|control_question|gemini-3.1-flash-lite|2",
+    "reviewer1": {
+      "blindId": "blind-2c7712df26f8",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-2c7712df26f8",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: ausencia de garantía y requisito del 2 por ciento constan en DOSSIER 4.2 y PCAP 6.4."
+    },
+    "agreed": {
+      "blindId": "blind-2c7712df26f8",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: ausencia de garantía y requisito del 2 por ciento constan en DOSSIER 4.2 y PCAP 6.4."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-2e864bf75f80",
+    "runId": "fictitious-archive-digitization-04|summary|gemini-3.1-flash-lite|3",
+    "reviewer1": {
+      "blindId": "blind-2e864bf75f80",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Expone la certificación caducada (CANDIDATE 5.1), pero no formula explícitamente el resultado desfavorable esperado."
+    },
+    "reviewer2": {
+      "blindId": "blind-2e864bf75f80",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 1,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Omite concluir explícitamente resultado desfavorable; AC 5.5 y CANDIDATE 5.1 permiten inferirlo, pero exige interpretación."
+    },
+    "agreed": {
+      "blindId": "blind-2e864bf75f80",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 1,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Omite concluir explícitamente resultado desfavorable; AC 5.5 y CANDIDATE 5.1 permiten inferirlo, pero exige interpretación."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-39983f47b05a",
+    "runId": "fictitious-electric-buses-05|summary|gemini-3.1-flash-lite|3",
+    "reviewer1": {
+      "blindId": "blind-39983f47b05a",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-39983f47b05a",
+      "accuracy": 0,
+      "coverage": 1,
+      "evidence": 0,
+      "utility": 0,
+      "hallucinationCount": 1,
+      "criticalHallucination": true,
+      "formatError": false,
+      "comment": "Afirma que el candidato acredita rampa y espacio reservado, pero DOSSIER 2.1 solo acredita rampa; es una alucinación crítica sobre cumplimiento y además falta conclusión global explícita."
+    },
+    "agreed": {
+      "blindId": "blind-39983f47b05a",
+      "accuracy": 0,
+      "coverage": 1,
+      "evidence": 0,
+      "utility": 0,
+      "hallucinationCount": 1,
+      "criticalHallucination": true,
+      "formatError": false,
+      "comment": "Afirma que el candidato acredita rampa y espacio reservado, pero DOSSIER 2.1 solo acredita rampa; es una alucinación crítica sobre cumplimiento y además falta conclusión global explícita."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-3db8fe66080d",
+    "runId": "fictitious-school-meals-02|summary|gemini-3.1-flash-lite|3",
+    "reviewer1": {
+      "blindId": "blind-3db8fe66080d",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-3db8fe66080d",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: tres centros, importe sin IVA, duración, requisito y aptitud están cubiertos."
+    },
+    "agreed": {
+      "blindId": "blind-3db8fe66080d",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: tres centros, importe sin IVA, duración, requisito y aptitud están cubiertos."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-40d61810148d",
+    "runId": "fictitious-it-support-01|control_question|gemini-3.1-flash-lite|3",
+    "reviewer1": {
+      "blindId": "blind-40d61810148d",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-40d61810148d",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: respuesta, aprobación e importes están plenamente sustentados."
+    },
+    "agreed": {
+      "blindId": "blind-40d61810148d",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: respuesta, aprobación e importes están plenamente sustentados."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-476361386c62",
+    "runId": "fictitious-it-support-01|workflow_decision|gemini-3.1-flash-lite|1",
+    "reviewer1": {
+      "blindId": "blind-476361386c62",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-476361386c62",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: decisión positiva respaldada por las tres secciones esperadas."
+    },
+    "agreed": {
+      "blindId": "blind-476361386c62",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: decisión positiva respaldada por las tres secciones esperadas."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-478eda2f66eb",
+    "runId": "fictitious-electric-buses-05|workflow_decision|gemini-3.1-flash-lite|2",
+    "reviewer1": {
+      "blindId": "blind-478eda2f66eb",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-478eda2f66eb",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: decisión favorable y comparación de plazo y autonomía completas."
+    },
+    "agreed": {
+      "blindId": "blind-478eda2f66eb",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: decisión favorable y comparación de plazo y autonomía completas."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-490587093249",
+    "runId": "fictitious-archive-digitization-04|summary|gemini-3.1-flash-lite|1",
+    "reviewer1": {
+      "blindId": "blind-490587093249",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Expone la certificación caducada (CANDIDATE 5.1), pero no formula explícitamente el resultado desfavorable esperado."
+    },
+    "reviewer2": {
+      "blindId": "blind-490587093249",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 1,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Falta la conclusión desfavorable esperada; expone correctamente certificado caducado en CANDIDATE 5.1."
+    },
+    "agreed": {
+      "blindId": "blind-490587093249",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 1,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Falta la conclusión desfavorable esperada; expone correctamente certificado caducado en CANDIDATE 5.1."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-4910830ae64f",
+    "runId": "fictitious-solar-maintenance-03|workflow_decision|gemini-3.1-flash-lite|3",
+    "reviewer1": {
+      "blindId": "blind-4910830ae64f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-4910830ae64f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: decisión false y motivo plenamente sustentados."
+    },
+    "agreed": {
+      "blindId": "blind-4910830ae64f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: decisión false y motivo plenamente sustentados."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-4b05b6750007",
+    "runId": "fictitious-solar-maintenance-03|control_question|gemini-3.1-flash-lite|1",
+    "reviewer1": {
+      "blindId": "blind-4b05b6750007",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-4b05b6750007",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: respuesta negativa, failed y evidencia son coherentes y completos."
+    },
+    "agreed": {
+      "blindId": "blind-4b05b6750007",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: respuesta negativa, failed y evidencia son coherentes y completos."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-506e15df406b",
+    "runId": "fictitious-archive-digitization-04|control_question|gemini-3.1-flash-lite|3",
+    "reviewer1": {
+      "blindId": "blind-506e15df406b",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-506e15df406b",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: AC 5.5 y CANDIDATE 5.1 sustentan respuesta y resultado negativos."
+    },
+    "agreed": {
+      "blindId": "blind-506e15df406b",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: AC 5.5 y CANDIDATE 5.1 sustentan respuesta y resultado negativos."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-5375943bff2f",
+    "runId": "fictitious-school-meals-02|custom_field|gemini-3.1-flash-lite|3",
+    "reviewer1": {
+      "blindId": "blind-5375943bff2f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-5375943bff2f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: valor textual exacto y sección localizable."
+    },
+    "agreed": {
+      "blindId": "blind-5375943bff2f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: valor textual exacto y sección localizable."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-5dedff717b66",
+    "runId": "fictitious-it-support-01|custom_field|gemini-3-flash-preview|3",
+    "reviewer1": {
+      "blindId": "blind-5dedff717b66",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-5dedff717b66",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: evidencia textual y sección PCAP 4.1 completas."
+    },
+    "agreed": {
+      "blindId": "blind-5dedff717b66",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: evidencia textual y sección PCAP 4.1 completas."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-5fa4c54c9329",
+    "runId": "fictitious-archive-digitization-04|custom_field|gemini-3.1-flash-lite|2",
+    "reviewer1": {
+      "blindId": "blind-5fa4c54c9329",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-5fa4c54c9329",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: 300 dpi y TS 3.4 coinciden exactamente con el expediente."
+    },
+    "agreed": {
+      "blindId": "blind-5fa4c54c9329",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: 300 dpi y TS 3.4 coinciden exactamente con el expediente."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-697a87e88df6",
+    "runId": "fictitious-it-support-01|summary|gemini-3.1-flash-lite|2",
+    "reviewer1": {
+      "blindId": "blind-697a87e88df6",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-697a87e88df6",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: resumen completo, exacto y accionable."
+    },
+    "agreed": {
+      "blindId": "blind-697a87e88df6",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: resumen completo, exacto y accionable."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-6cddbf8c65f1",
+    "runId": "fictitious-school-meals-02|control_question|gemini-3.1-flash-lite|2",
+    "reviewer1": {
+      "blindId": "blind-6cddbf8c65f1",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-6cddbf8c65f1",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 1,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta y vigencia correctas, pero solo localiza DOSSIER 3.1 y omite la sección normativa PCAP 5.2 requerida."
+    },
+    "agreed": {
+      "blindId": "blind-6cddbf8c65f1",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 1,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta y vigencia correctas, pero solo localiza DOSSIER 3.1 y omite la sección normativa PCAP 5.2 requerida."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-6d6c83e82a9a",
+    "runId": "fictitious-it-support-01|control_question|gemini-3-flash-preview|1",
+    "reviewer1": {
+      "blindId": "blind-6d6c83e82a9a",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-6d6c83e82a9a",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: cubre cantidad, umbral y ejecución satisfactoria con referencias correctas."
+    },
+    "agreed": {
+      "blindId": "blind-6d6c83e82a9a",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: cubre cantidad, umbral y ejecución satisfactoria con referencias correctas."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-77046da65ca7",
+    "runId": "fictitious-school-meals-02|control_question|gemini-3.1-flash-lite|3",
+    "reviewer1": {
+      "blindId": "blind-77046da65ca7",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-77046da65ca7",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 1,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": true,
+      "comment": "La conclusión y evidencia son correctas, pero answer es texto pese a solicitar BOOLEAN; requiere normalización aunque passed sí es true."
+    },
+    "agreed": {
+      "blindId": "blind-77046da65ca7",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 1,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": true,
+      "comment": "La conclusión y evidencia son correctas, pero answer es texto pese a solicitar BOOLEAN; requiere normalización aunque passed sí es true."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-7c012a24ca3e",
+    "runId": "fictitious-it-support-01|workflow_decision|gemini-3.1-flash-lite|3",
+    "reviewer1": {
+      "blindId": "blind-7c012a24ca3e",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-7c012a24ca3e",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: compara correctamente ambos contratos y el presupuesto con sus umbrales."
+    },
+    "agreed": {
+      "blindId": "blind-7c012a24ca3e",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: compara correctamente ambos contratos y el presupuesto con sus umbrales."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-7e0210377e5f",
+    "runId": "fictitious-solar-maintenance-03|custom_field|gemini-3.1-flash-lite|2",
+    "reviewer1": {
+      "blindId": "blind-7e0210377e5f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-7e0210377e5f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: lista completa y evidencia localizable."
+    },
+    "agreed": {
+      "blindId": "blind-7e0210377e5f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: lista completa y evidencia localizable."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-88ea1b91662b",
+    "runId": "fictitious-solar-maintenance-03|custom_field|gemini-3.1-flash-lite|1",
+    "reviewer1": {
+      "blindId": "blind-88ea1b91662b",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-88ea1b91662b",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: Lote Norte y Lote Sur extraídos sin ruido."
+    },
+    "agreed": {
+      "blindId": "blind-88ea1b91662b",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: Lote Norte y Lote Sur extraídos sin ruido."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-9172502a060f",
+    "runId": "fictitious-it-support-01|control_question|gemini-3-flash-preview|2",
+    "reviewer1": {
+      "blindId": "blind-9172502a060f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-9172502a060f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: el carácter erróneo en ejecuci3n es un typo legible y no afecta exactitud ni estructura."
+    },
+    "agreed": {
+      "blindId": "blind-9172502a060f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: el carácter erróneo en ejecuci3n es un typo legible y no afecta exactitud ni estructura."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-92a9e5bbf91d",
+    "runId": "fictitious-solar-maintenance-03|workflow_decision|gemini-3.1-flash-lite|2",
+    "reviewer1": {
+      "blindId": "blind-92a9e5bbf91d",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-92a9e5bbf91d",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: requisito obligatorio y ausencia no subsanable correctamente citados."
+    },
+    "agreed": {
+      "blindId": "blind-92a9e5bbf91d",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: requisito obligatorio y ausencia no subsanable correctamente citados."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-93d98e1e66a9",
+    "runId": "fictitious-it-support-01|summary|gemini-3-flash-preview|1",
+    "reviewer1": {
+      "blindId": "blind-93d98e1e66a9",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-93d98e1e66a9",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: todos los hechos y la conclusión favorable están sustentados por secciones explícitas."
+    },
+    "agreed": {
+      "blindId": "blind-93d98e1e66a9",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: todos los hechos y la conclusión favorable están sustentados por secciones explícitas."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-93e9bdc0f517",
+    "runId": "fictitious-school-meals-02|summary|gemini-3.1-flash-lite|1",
+    "reviewer1": {
+      "blindId": "blind-93e9bdc0f517",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-93e9bdc0f517",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Omite el matiz sin IVA del presupuesto esperado en PCAP 1.3; el resto del resumen y la aptitud son completos."
+    },
+    "agreed": {
+      "blindId": "blind-93e9bdc0f517",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Omite el matiz sin IVA del presupuesto esperado en PCAP 1.3; el resto del resumen y la aptitud son completos."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-9afda703369a",
+    "runId": "fictitious-electric-buses-05|custom_field|gemini-3.1-flash-lite|2",
+    "reviewer1": {
+      "blindId": "blind-9afda703369a",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-9afda703369a",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: autonomía mínima 280 y PPT 4.1 coinciden exactamente."
+    },
+    "agreed": {
+      "blindId": "blind-9afda703369a",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: autonomía mínima 280 y PPT 4.1 coinciden exactamente."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-9c3f651a7b0c",
+    "runId": "fictitious-archive-digitization-04|workflow_decision|gemini-3.1-flash-lite|3",
+    "reviewer1": {
+      "blindId": "blind-9c3f651a7b0c",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-9c3f651a7b0c",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: decisión negativa plenamente sustentada por AC 5.5 y CANDIDATE 5.1."
+    },
+    "agreed": {
+      "blindId": "blind-9c3f651a7b0c",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: decisión negativa plenamente sustentada por AC 5.5 y CANDIDATE 5.1."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-a2f2061652b1",
+    "runId": "fictitious-electric-buses-05|summary|gemini-3.1-flash-lite|2",
+    "reviewer1": {
+      "blindId": "blind-a2f2061652b1",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-a2f2061652b1",
+      "accuracy": 0,
+      "coverage": 1,
+      "evidence": 0,
+      "utility": 0,
+      "hallucinationCount": 1,
+      "criticalHallucination": true,
+      "formatError": false,
+      "comment": "Presenta como cumplidas rampa y espacio reservado apoyándose solo en la rampa de DOSSIER 2.1; evidencia incompatible y alucinación crítica de elegibilidad. Omite conclusión global explícita."
+    },
+    "agreed": {
+      "blindId": "blind-a2f2061652b1",
+      "accuracy": 0,
+      "coverage": 1,
+      "evidence": 0,
+      "utility": 0,
+      "hallucinationCount": 1,
+      "criticalHallucination": true,
+      "formatError": false,
+      "comment": "Presenta como cumplidas rampa y espacio reservado apoyándose solo en la rampa de DOSSIER 2.1; evidencia incompatible y alucinación crítica de elegibilidad. Omite conclusión global explícita."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-a952a3cae6a9",
+    "runId": "fictitious-solar-maintenance-03|control_question|gemini-3.1-flash-lite|3",
+    "reviewer1": {
+      "blindId": "blind-a952a3cae6a9",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-a952a3cae6a9",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: identifica exactamente el incumplimiento no subsanable."
+    },
+    "agreed": {
+      "blindId": "blind-a952a3cae6a9",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: identifica exactamente el incumplimiento no subsanable."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-a957ef997bce",
+    "runId": "fictitious-school-meals-02|workflow_decision|gemini-3.1-flash-lite|3",
+    "reviewer1": {
+      "blindId": "blind-a957ef997bce",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-a957ef997bce",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: evidencia completa en PCAP 5.2 y DOSSIER 3.1."
+    },
+    "agreed": {
+      "blindId": "blind-a957ef997bce",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: evidencia completa en PCAP 5.2 y DOSSIER 3.1."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-b4aead38456a",
+    "runId": "fictitious-it-support-01|control_question|gemini-3-flash-preview|3",
+    "reviewer1": {
+      "blindId": "blind-b4aead38456a",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-b4aead38456a",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: los dos contratos y la ejecución satisfactoria prueban el requisito."
+    },
+    "agreed": {
+      "blindId": "blind-b4aead38456a",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: los dos contratos y la ejecución satisfactoria prueban el requisito."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-ba7dca7a7758",
+    "runId": "fictitious-electric-buses-05|workflow_decision|gemini-3.1-flash-lite|3",
+    "reviewer1": {
+      "blindId": "blind-ba7dca7a7758",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-ba7dca7a7758",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: evidencia localizable y suficiente para los dos requisitos de continuidad."
+    },
+    "agreed": {
+      "blindId": "blind-ba7dca7a7758",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: evidencia localizable y suficiente para los dos requisitos de continuidad."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-baf60a3bada5",
+    "runId": "fictitious-school-meals-02|control_question|gemini-3.1-flash-lite|1",
+    "reviewer1": {
+      "blindId": "blind-baf60a3bada5",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-baf60a3bada5",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: vigencia comparada con fecha límite y ambas secciones requeridas."
+    },
+    "agreed": {
+      "blindId": "blind-baf60a3bada5",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: vigencia comparada con fecha límite y ambas secciones requeridas."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-bdbab81f5ba9",
+    "runId": "fictitious-it-support-01|summary|gemini-3.1-flash-lite|3",
+    "reviewer1": {
+      "blindId": "blind-bdbab81f5ba9",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-bdbab81f5ba9",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: incluye íntegramente los hechos esperados y evidencia localizable."
+    },
+    "agreed": {
+      "blindId": "blind-bdbab81f5ba9",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: incluye íntegramente los hechos esperados y evidencia localizable."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-c17e0fc66d84",
+    "runId": "fictitious-archive-digitization-04|workflow_decision|gemini-3.1-flash-lite|2",
+    "reviewer1": {
+      "blindId": "blind-c17e0fc66d84",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-c17e0fc66d84",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: el leve error tipográfico no impide localizar ni usar la evidencia correcta."
+    },
+    "agreed": {
+      "blindId": "blind-c17e0fc66d84",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: el leve error tipográfico no impide localizar ni usar la evidencia correcta."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-c20c20b52992",
+    "runId": "fictitious-it-support-01|summary|gemini-3-flash-preview|2",
+    "reviewer1": {
+      "blindId": "blind-c20c20b52992",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-c20c20b52992",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: conclusión apta correctamente derivada de los dos contratos acreditados."
+    },
+    "agreed": {
+      "blindId": "blind-c20c20b52992",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: conclusión apta correctamente derivada de los dos contratos acreditados."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-cc5f39462e6c",
+    "runId": "fictitious-archive-digitization-04|summary|gemini-3.1-flash-lite|2",
+    "reviewer1": {
+      "blindId": "blind-cc5f39462e6c",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Expone la certificación caducada (CANDIDATE 5.1), pero no formula explícitamente el resultado desfavorable esperado."
+    },
+    "reviewer2": {
+      "blindId": "blind-cc5f39462e6c",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 1,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "No declara el resultado desfavorable, aunque los hechos y referencias AC 5.5 y CANDIDATE 5.1 son correctos."
+    },
+    "agreed": {
+      "blindId": "blind-cc5f39462e6c",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 1,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "No declara el resultado desfavorable, aunque los hechos y referencias AC 5.5 y CANDIDATE 5.1 son correctos."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-d35f77b48891",
+    "runId": "fictitious-archive-digitization-04|control_question|gemini-3.1-flash-lite|2",
+    "reviewer1": {
+      "blindId": "blind-d35f77b48891",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-d35f77b48891",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: identifica el requisito vigente y la caducidad con ambas secciones requeridas."
+    },
+    "agreed": {
+      "blindId": "blind-d35f77b48891",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: identifica el requisito vigente y la caducidad con ambas secciones requeridas."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-d787bf6f066f",
+    "runId": "fictitious-archive-digitization-04|custom_field|gemini-3.1-flash-lite|3",
+    "reviewer1": {
+      "blindId": "blind-d787bf6f066f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-d787bf6f066f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: valor numérico correcto y evidencia localizable en TS 3.4."
+    },
+    "agreed": {
+      "blindId": "blind-d787bf6f066f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: valor numérico correcto y evidencia localizable en TS 3.4."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-d8697cb020f8",
+    "runId": "fictitious-school-meals-02|workflow_decision|gemini-3.1-flash-lite|2",
+    "reviewer1": {
+      "blindId": "blind-d8697cb020f8",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-d8697cb020f8",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: compara correctamente vigencia 2024-2028 con fecha límite de 2026."
+    },
+    "agreed": {
+      "blindId": "blind-d8697cb020f8",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: compara correctamente vigencia 2024-2028 con fecha límite de 2026."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-d9f7696981ad",
+    "runId": "fictitious-it-support-01|workflow_decision|gemini-3-flash-preview|1",
+    "reviewer1": {
+      "blindId": "blind-d9f7696981ad",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-d9f7696981ad",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: contenido completo; ausencia de tildes no afecta estructura ni utilidad."
+    },
+    "agreed": {
+      "blindId": "blind-d9f7696981ad",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: contenido completo; ausencia de tildes no afecta estructura ni utilidad."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-dc8575da3ac4",
+    "runId": "fictitious-electric-buses-05|custom_field|gemini-3.1-flash-lite|3",
+    "reviewer1": {
+      "blindId": "blind-dc8575da3ac4",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-dc8575da3ac4",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: valor y sección de evidencia correctos."
+    },
+    "agreed": {
+      "blindId": "blind-dc8575da3ac4",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: valor y sección de evidencia correctos."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-df58e70636e7",
+    "runId": "fictitious-it-support-01|custom_field|gemini-3.1-flash-lite|2",
+    "reviewer1": {
+      "blindId": "blind-df58e70636e7",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-df58e70636e7",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: duración inicial correcta con referencia exacta."
+    },
+    "agreed": {
+      "blindId": "blind-df58e70636e7",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: duración inicial correcta con referencia exacta."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-e1118aab2874",
+    "runId": "fictitious-it-support-01|custom_field|gemini-3-flash-preview|2",
+    "reviewer1": {
+      "blindId": "blind-e1118aab2874",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 1,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "El valor 24 es correcto, pero la evidencia no identifica la sección localizable PCAP 4.1."
+    },
+    "reviewer2": {
+      "blindId": "blind-e1118aab2874",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 1,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "La duración es exacta, pero falta identificar PCAP 4.1; evidencia correcta aunque no localizable por sección."
+    },
+    "agreed": {
+      "blindId": "blind-e1118aab2874",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 1,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "La duración es exacta, pero falta identificar PCAP 4.1; evidencia correcta aunque no localizable por sección."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-e18293a2019c",
+    "runId": "fictitious-solar-maintenance-03|summary|gemini-3.1-flash-lite|2",
+    "reviewer1": {
+      "blindId": "blind-e18293a2019c",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Omite el presupuesto de 175.000 EUR (PCAP 1.2), aunque cubre alcance, lotes, garantía y exclusión."
+    },
+    "reviewer2": {
+      "blindId": "blind-e18293a2019c",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "No recoge el presupuesto esperado de PCAP 1.2; el resto de hechos y la exclusión están sustentados."
+    },
+    "agreed": {
+      "blindId": "blind-e18293a2019c",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "No recoge el presupuesto esperado de PCAP 1.2; el resto de hechos y la exclusión están sustentados."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-e856c3275eb8",
+    "runId": "fictitious-it-support-01|summary|gemini-3-flash-preview|3",
+    "reviewer1": {
+      "blindId": "blind-e856c3275eb8",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-e856c3275eb8",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: resumen íntegro y conclusión explícita con referencias correctas."
+    },
+    "agreed": {
+      "blindId": "blind-e856c3275eb8",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: resumen íntegro y conclusión explícita con referencias correctas."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-ecb2cbb9c1d6",
+    "runId": "fictitious-school-meals-02|custom_field|gemini-3.1-flash-lite|2",
+    "reviewer1": {
+      "blindId": "blind-ecb2cbb9c1d6",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-ecb2cbb9c1d6",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: extracción y evidencia coinciden con PCAP 1.4."
+    },
+    "agreed": {
+      "blindId": "blind-ecb2cbb9c1d6",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: extracción y evidencia coinciden con PCAP 1.4."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-ecfb3d05773f",
+    "runId": "fictitious-electric-buses-05|custom_field|gemini-3.1-flash-lite|1",
+    "reviewer1": {
+      "blindId": "blind-ecfb3d05773f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-ecfb3d05773f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: extracción exacta de 280 km WLTP desde PPT 4.1."
+    },
+    "agreed": {
+      "blindId": "blind-ecfb3d05773f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: extracción exacta de 280 km WLTP desde PPT 4.1."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-ede41e29401c",
+    "runId": "fictitious-archive-digitization-04|custom_field|gemini-3.1-flash-lite|1",
+    "reviewer1": {
+      "blindId": "blind-ede41e29401c",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-ede41e29401c",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: extracción exacta de 300 dpi con referencia TS 3.4."
+    },
+    "agreed": {
+      "blindId": "blind-ede41e29401c",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: extracción exacta de 300 dpi con referencia TS 3.4."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-ef7aa8bd5442",
+    "runId": "fictitious-electric-buses-05|summary|gemini-3.1-flash-lite|1",
+    "reviewer1": {
+      "blindId": "blind-ef7aa8bd5442",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-ef7aa8bd5442",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 1,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Incluye todos los datos operativos, pero no formula explícitamente el resultado favorable esperado; requiere inferirlo de 190 días y 295 km."
+    },
+    "agreed": {
+      "blindId": "blind-ef7aa8bd5442",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 1,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Incluye todos los datos operativos, pero no formula explícitamente el resultado favorable esperado; requiere inferirlo de 190 días y 295 km."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-f3f57bf40e8e",
+    "runId": "fictitious-school-meals-02|summary|gemini-3.1-flash-lite|2",
+    "reviewer1": {
+      "blindId": "blind-f3f57bf40e8e",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-f3f57bf40e8e",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: todos los hechos esperados y la aptitud favorable están referenciados."
+    },
+    "agreed": {
+      "blindId": "blind-f3f57bf40e8e",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: todos los hechos esperados y la aptitud favorable están referenciados."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-f432de3a414e",
+    "runId": "fictitious-electric-buses-05|control_question|gemini-3.1-flash-lite|1",
+    "reviewer1": {
+      "blindId": "blind-f432de3a414e",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-f432de3a414e",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: respuesta booleana y aprobación coherentes con PCAP 4.3 y DOSSIER 6.2."
+    },
+    "agreed": {
+      "blindId": "blind-f432de3a414e",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: respuesta booleana y aprobación coherentes con PCAP 4.3 y DOSSIER 6.2."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-f68dd072542f",
+    "runId": "fictitious-it-support-01|control_question|gemini-3.1-flash-lite|1",
+    "reviewer1": {
+      "blindId": "blind-f68dd072542f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-f68dd072542f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: respuesta completa y referencias PCAP 7.3 y DOSSIER 2.1 correctas."
+    },
+    "agreed": {
+      "blindId": "blind-f68dd072542f",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: respuesta completa y referencias PCAP 7.3 y DOSSIER 2.1 correctas."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-f7d36c4da42e",
+    "runId": "fictitious-archive-digitization-04|control_question|gemini-3.1-flash-lite|1",
+    "reviewer1": {
+      "blindId": "blind-f7d36c4da42e",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-f7d36c4da42e",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: respuesta completa y evidencia localizable en AC 5.5 y CANDIDATE 5.1."
+    },
+    "agreed": {
+      "blindId": "blind-f7d36c4da42e",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: respuesta completa y evidencia localizable en AC 5.5 y CANDIDATE 5.1."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-fb7ad04d00f1",
+    "runId": "fictitious-electric-buses-05|control_question|gemini-3.1-flash-lite|2",
+    "reviewer1": {
+      "blindId": "blind-fb7ad04d00f1",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-fb7ad04d00f1",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: plazo comprometido inferior al máximo con evidencia completa y localizable."
+    },
+    "agreed": {
+      "blindId": "blind-fb7ad04d00f1",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: plazo comprometido inferior al máximo con evidencia completa y localizable."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-fc277a01ae68",
+    "runId": "fictitious-solar-maintenance-03|workflow_decision|gemini-3.1-flash-lite|1",
+    "reviewer1": {
+      "blindId": "blind-fc277a01ae68",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-fc277a01ae68",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: resultado y evidencia coinciden con PCAP 6.4 y DOSSIER 4.2."
+    },
+    "agreed": {
+      "blindId": "blind-fc277a01ae68",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: resultado y evidencia coinciden con PCAP 6.4 y DOSSIER 4.2."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  },
+  {
+    "blindId": "blind-fcde0805eb99",
+    "runId": "fictitious-archive-digitization-04|workflow_decision|gemini-3.1-flash-lite|1",
+    "reviewer1": {
+      "blindId": "blind-fcde0805eb99",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-fcde0805eb99",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: decisión, requisito y caducidad coinciden con AC 5.5 y CANDIDATE 5.1."
+    },
+    "agreed": {
+      "blindId": "blind-fcde0805eb99",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: decisión, requisito y caducidad coinciden con AC 5.5 y CANDIDATE 5.1."
+    },
+    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+  }
+]

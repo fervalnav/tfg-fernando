@@ -48,10 +48,17 @@ const MODELS = [
   { id: 'gemini-3-flash-preview', inputPerMillion: 0.5, outputPerMillion: 3 },
   { id: 'gemini-3.1-flash-lite', inputPerMillion: 0.25, outputPerMillion: 1.5 },
 ] as const;
+const MODEL_FILTER = new Set(
+  (process.env['AI_EVALUATION_MODELS'] ?? '')
+    .split(',')
+    .map((model) => model.trim())
+    .filter(Boolean),
+);
 const PRICE_SOURCE = 'https://ai.google.dev/gemini-api/docs/pricing';
 const PRICE_DATE = '2026-08-13';
 const REPETITIONS = 3;
 const DELAY_MS = Number(process.env['AI_EVALUATION_DELAY_MS'] ?? 13_000);
+const MAX_QUOTA_WAITS = Number(process.env['AI_EVALUATION_MAX_QUOTA_WAITS'] ?? 2);
 const ROOT = resolve(__dirname);
 const RESULTS_DIR = resolve(ROOT, 'results');
 const RAW_PATH = resolve(RESULTS_DIR, 'raw-results.jsonl');
@@ -79,6 +86,7 @@ async function main(): Promise<void> {
   await ensureCsvHeader();
 
   for (const model of MODELS) {
+    if (MODEL_FILTER.size > 0 && !MODEL_FILTER.has(model.id)) continue;
     const service = new GoogleVercelAiGenerationService(
       new ConfigService({
         GOOGLE_GENERATIVE_AI_API_KEY: process.env['GOOGLE_GENERATIVE_AI_API_KEY'],
@@ -98,7 +106,7 @@ async function main(): Promise<void> {
           let raw: RawResult;
           try {
             const request = requestFor(evaluationCase, operation, documents);
-            const generated = await service.generateStructured(request);
+            const generated = await generateWithQuotaWait(service, request, runId);
             const cost = calculateCost(generated.usage.inputTokens, generated.usage.outputTokens, model);
             raw = {
               runId,
@@ -117,6 +125,7 @@ async function main(): Promise<void> {
               error: null,
             };
           } catch (error) {
+            if (error instanceof QuotaDeferredError) throw error;
             raw = {
               runId,
               caseId: evaluationCase.id,
@@ -147,6 +156,32 @@ async function main(): Promise<void> {
 async function delay(milliseconds: number): Promise<void> {
   await new Promise((resolveDelay) => setTimeout(resolveDelay, milliseconds));
 }
+
+async function generateWithQuotaWait(
+  service: GoogleVercelAiGenerationService,
+  request: AiStructuredGenerationRequest<JsonValue>,
+  runId: string,
+) {
+  let quotaWaits = 0;
+  while (true) {
+    try {
+      return await service.generateStructured(request);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      if (!message.includes('exceeded your current quota')) throw error;
+      quotaWaits += 1;
+      if (quotaWaits > MAX_QUOTA_WAITS) {
+        throw new QuotaDeferredError(`${runId} deferred after ${MAX_QUOTA_WAITS} quota waits`);
+      }
+      const retrySeconds = Number(message.match(/Please retry in ([\d.]+)s/u)?.[1] ?? 60);
+      const waitMs = Math.ceil(retrySeconds * 1000) + 2_000;
+      process.stdout.write(`${runId} QUOTA_WAIT ${waitMs}ms\n`);
+      await delay(waitMs);
+    }
+  }
+}
+
+class QuotaDeferredError extends Error {}
 
 function operationNames(): OperationName[] {
   return ['summary', 'control_question', 'custom_field', 'workflow_decision'];
