@@ -88,7 +88,8 @@ modelo, repetición, métricas y puntuación ajena. El revisor 1 es el agente
 principal de Codex y el revisor 2 es un agente Codex independiente. No se
 presentan como revisores humanos. Primero se congelan ambas revisiones; después
 se resuelven los desacuerdos conservando las puntuaciones originales y la
-acordada.
+acordada. Por dimensión se adopta la valoración sustentada más estricta y se
+conserva cualquier alucinación o error detectado por uno de los revisores.
 
 Rúbrica por dimensión:
 
@@ -126,9 +127,10 @@ Un modelo es aceptable si obtiene al menos 6/8 de calidad media, genera una resp
 - Flash-Lite: 60/60 salidas, 100 % válidas, calidad acordada 7,53/8. Presenta
   dos alucinaciones críticas en resúmenes del caso de autobuses, por lo que no
   supera el criterio de aceptación pese a su buena media.
-- Flash: 10/60 salidas, 100 % válidas y calidad provisional 7,80/8. Las 50
-  restantes quedan pendientes del reinicio de la cuota diaria gratuita; no se
-  extrae una conclusión comparativa de esta muestra incompleta.
+- Flash: la ejecución se reanudó el 17 de agosto y alcanza 32/60 salidas, todas
+  estructuralmente válidas y revisadas, con calidad provisional 7,75/8 y sin
+  alucinaciones. Las 28 restantes quedan pendientes de otro reinicio de cuota.
+  No se extrae una conclusión comparativa hasta completar las 60.
 - La puntuación original de ambos revisores y la acordada se conservan en
   `reviews/`; los agregados reproducibles están en `results/aggregate.json`.
 

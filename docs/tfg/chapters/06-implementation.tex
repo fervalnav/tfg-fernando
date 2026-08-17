@@ -291,13 +291,14 @@ el error.
 
 La descarga se inicia a través de la API, que comprueba el adjunto y devuelve
 una URL prefirmada con caducidad sin exponer las credenciales del
-almacenamiento. La configuración local actual aplica también una política de
-lectura pública sobre el bucket; por tanto, su retirada y la comprobación del
-acceso exclusivamente temporal quedan como medidas obligatorias antes de un
-despliegue. Para la IA se utiliza un recorrido distinto: un servicio lista
-únicamente los adjuntos de la cuenta y la oportunidad, descarga cada buffer y
-lo transforma en una parte de archivo con nombre y tipo MIME. El proveedor
-recibe así los PDFs originales sin una extracción textual intermedia.
+almacenamiento. Durante el arranque, el servicio elimina cualquier política de
+lectura pública que pudiera existir sobre el bucket. El recorrido E2E comprueba
+el rechazo del acceso directo, la descarga con una firma vigente y el rechazo
+de esa misma dirección después de su caducidad. Para la IA se utiliza un
+recorrido distinto: un servicio lista únicamente los adjuntos de la cuenta y
+la oportunidad, descarga cada buffer y lo transforma en una parte de archivo
+con nombre y tipo MIME. El proveedor recibe así los PDF originales sin una
+extracción textual intermedia.
 
 \section{Tratamiento de errores y reintentos}
 

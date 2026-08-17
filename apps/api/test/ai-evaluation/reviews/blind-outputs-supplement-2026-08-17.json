@@ -1,0 +1,250 @@
+[
+  {
+    "blindId": "blind-002d3dbe46e2",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": true,
+      "evidence": "El registro sanitario RS-AN-2024-1187 tiene validez hasta el 10 de enero de 2028 (DOSSIER 3.1), cubriendo la fecha límite de presentación fijada para el 2 de noviembre de 2026, cumpliendo así con la obligatoriedad de vigencia establecida en el PCAP 5.2."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-2f5436acbcb2",
+    "caseId": "fictitious-solar-maintenance-03",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": false,
+      "evidence": "Según el apartado DOSSIER 4.2 del expediente, se especifica una 'Relación cerrada de documentos: oferta técnica, oferta económica y declaración responsable' y se indica explícitamente que 'No se aporta aval, seguro de caución ni otra garantía provisional'.",
+      "passed": false
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-3b06095e7b17",
+    "caseId": "fictitious-solar-maintenance-03",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El proyecto contempla el mantenimiento preventivo y correctivo de 42 instalaciones fotovoltaicas (PCAP 1.2), con la entrega obligatoria de informes trimestrales de producción y mantenimiento (PPT 8.1). El contrato se divide en dos lotes: el Lote Norte, con 22 instalaciones, y el Lote Sur, con 20 (PCAP 2.1). Se exige una garantía provisional del 2 % del presupuesto base, cuya ausencia se considera un defecto no subsanable (PCAP 6.4). El candidato incurre en motivo de exclusión al no haber aportado ningún aval, seguro de caución ni otra forma de garantía provisional en la documentación presentada (DOSSIER 4.2)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-3d43365fb72e",
+    "caseId": "fictitious-it-support-01",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": true,
+      "evidence": "El presupuesto base de licitación es de 240.000 EUR (PCAP 1.2), superando el umbral de 200.000 EUR. Se cumple la solvencia técnica (PCAP 7.3) mediante la presentación de dos contratos (Red Norte por 95.000 EUR y Consorcio Delta por 87.000 EUR) que superan el mínimo exigido de 80.000 EUR cada uno con ejecución satisfactoria (DOSSIER 2.1)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-3d8208ea51e4",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": true,
+      "evidence": "Según la sección DOSSIER 3.1 del documento del candidato, el registro sanitario RS-AN-2024-1187 es válido desde el 10 de enero de 2024 hasta el 10 de enero de 2028. Dado que la fecha límite de presentación es el 2 de noviembre de 2026, el registro se encuentra vigente conforme al requisito establecido en la sección PCAP 5.2.",
+      "passed": true
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-49075d93324b",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": "55523100-3",
+      "evidence": "PCAP 1.4 - Clasificaci3n\nC3digo CPV principal: 55523100-3, servicios de comidas para escuelas."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-55921bafb298",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": true,
+      "evidence": "Según el apartado DOSSIER 3.1 del documento del candidato, este cuenta con el registro sanitario RS-AN-2024-1187, el cual es válido desde el 10 de enero de 2024 hasta el 10 de enero de 2028. Dado que la fecha límite de presentación es el 2 de noviembre de 2026, el registro se encuentra vigente.",
+      "passed": true
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-64b0aeaf27dd",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El servicio de comedor se prestará en los centros Alameda, Horizonte y Marisma (PCAP 1.1). Cuenta con un presupuesto base de 510.000 EUR sin IVA y una duración inicial de 18 meses (PCAP 1.3). Como requisito sanitario, es obligatorio contar con un registro sanitario vigente (PCAP 5.2). Respecto a la aptitud, la entidad candidata Cocina Circular (DOSSIER 1.1) cumple con este requisito al disponer del registro sanitario RS-AN-2024-1187, válido hasta enero de 2028 (DOSSIER 3.1)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-7264c02c2a97",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El servicio de comedor escolar sostenible está destinado a tres centros: Alameda, Horizonte y Marisma (PCAP 1.1). El presupuesto base es de 510.000 EUR sin IVA, con una duración inicial del contrato de 18 meses (PCAP 1.3). Como requisito sanitario, es obligatorio contar con un registro sanitario vigente a la fecha límite de presentación (PCAP 5.2). Respecto a la aptitud del candidato, la entidad Cocina Circular ha presentado su documentación (DOSSIER 1.1) acreditando el registro sanitario RS-AN-2024-1187, el cual es válido desde el 10 de enero de 2024 hasta el 10 de enero de 2028 (DOSSIER 3.1)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-7c8e0d5b1185",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": true,
+      "evidence": "El candidato presenta el registro sanitario RS-AN-2024-1187, con validez desde el 10 de enero de 2024 hasta el 10 de enero de 2028 (DOSSIER 3.1). Dado que la fecha límite de presentación es el 2 de noviembre de 2026, el registro se encuentra vigente.",
+      "passed": true
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-82584a5762ca",
+    "caseId": "fictitious-solar-maintenance-03",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": [
+        "Lote Norte",
+        "Lote Sur"
+      ],
+      "evidence": "PCAP 2.1 - Divisi3n en lotes\nLote Norte: 22 instalaciones. Lote Sur: 20 instalaciones."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-838b19da4973",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": true,
+      "evidence": "Según el documento PCAP 5.2, es obligatorio presentar un registro sanitario vigente a la fecha límite de presentación (02 de noviembre de 2026). El candidato cumple esta condición según el DOSSIER 3.1, que presenta el registro sanitario RS-AN-2024-1187 con vigencia desde el 10 de enero de 2024 hasta el 10 de enero de 2028."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-83d97d5309bc",
+    "caseId": "fictitious-solar-maintenance-03",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": false,
+      "evidence": "En la sección DOSSIER 4.2 se indica explícitamente: \"No se aporta aval, seguro de caución ni otra garantía provisional\". Por su parte, el PCAP 6.4 exigía una garantía provisional equivalente al 2 % del presupuesto base.",
+      "passed": false
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-8db8cc82aecd",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": true,
+      "evidence": "Según el documento PCAP en su sección 5.2 (Habilitación sanitaria), es obligatorio presentar un registro sanitario vigente a la fecha límite de presentación (2026-11-02). El candidato Cocina Circular aporta en el DOSSIER 3.1 el registro sanitario RS-AN-2024-1187, cuya validez se extiende desde el 10 de enero de 2024 hasta el 10 de enero de 2028, cumpliendo así con el requisito de vigencia."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-9f4e597da0f2",
+    "caseId": "fictitious-solar-maintenance-03",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El alcance del proyecto comprende el mantenimiento preventivo y correctivo de 42 instalaciones fotovoltaicas (PCAP 1.2), con la entrega obligatoria de informes trimestrales de producción y mantenimiento (PPT 8.1). La licitación se divide en dos lotes: Lote Norte (22 instalaciones) y Lote Sur (20 instalaciones), permitiéndose ofertas para uno o ambos (PCAP 2.1). Se exige una garantía provisional del 2 % del presupuesto base, cuya falta no es subsanable (PCAP 6.4). El candidato incurre en motivo de exclusión al no haber aportado aval, seguro de caución ni ninguna otra forma de garantía provisional en su documentación (DOSSIER 4.2)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-c77de2537423",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El servicio de comedor escolar sostenible está destinado a los centros Alameda, Horizonte y Marisma (PCAP 1.1). Cuenta con un presupuesto base de 510.000 EUR sin IVA y una duración inicial de 18 meses (PCAP 1.3). Como requisito sanitario, es obligatorio contar con un registro vigente a la fecha límite de presentación (PCAP 5.2). El candidato, la entidad Cocina Circular (DOSSIER 1.1), cumple con la aptitud al presentar el registro sanitario RS-AN-2024-1187, con validez desde enero de 2024 hasta enero de 2028 (DOSSIER 3.1)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-c8e4fb32cada",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": "55523100-3",
+      "evidence": "PCAP 1.4 - Clasificaci3n\nC3digo CPV principal: 55523100-3, servicios de comidas para escuelas."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-cbda0de2e32d",
+    "caseId": "fictitious-it-support-01",
+    "operation": "workflow_decision",
+    "validSchema": true,
+    "output": {
+      "result": true,
+      "evidence": "Se cumple el presupuesto de 240.000 EUR, que es superior al mínimo de 200.000 EUR (PCAP 1.2). Asimismo, se cumple la solvencia técnica requerida de dos contratos de soporte TI superiores a 80.000 EUR cada uno (PCAP 7.3), habiendo acreditado el candidato dos contratos por 95.000 EUR y 87.000 EUR con ejecuciones satisfactorias (DOSSIER 2.1)."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-d04d675311a3",
+    "caseId": "fictitious-solar-maintenance-03",
+    "operation": "control_question",
+    "validSchema": true,
+    "output": {
+      "answer": false,
+      "evidence": "El PCAP 6.4 establece que la oferta debe incorporar una garantía provisional del 2 % del presupuesto base. Sin embargo, en la sección DOSSIER 4.2 se indica explícitamente: 'No se aporta aval, seguro de caución ni otra garantía provisional'.",
+      "passed": false
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-dc13248b6667",
+    "caseId": "fictitious-solar-maintenance-03",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": [
+        "Lote Norte",
+        "Lote Sur"
+      ],
+      "evidence": "PCAP 2.1 - Divisi3n en lotes\nLote Norte: 22 instalaciones. Lote Sur: 20 instalaciones."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-fbac32284c36",
+    "caseId": "fictitious-school-meals-02",
+    "operation": "custom_field",
+    "validSchema": true,
+    "output": {
+      "value": "55523100-3",
+      "evidence": "PCAP 1.4 - Clasificaci3n\nC3digo CPV principal: 55523100-3, servicios de comidas para escuelas."
+    },
+    "error": null
+  },
+  {
+    "blindId": "blind-ff82ebc2f5ac",
+    "caseId": "fictitious-solar-maintenance-03",
+    "operation": "summary",
+    "validSchema": true,
+    "output": {
+      "result": "El proyecto contempla el mantenimiento preventivo y correctivo de 42 instalaciones fotovoltaicas (PCAP 1.2), con la entrega de informes trimestrales de producción y mantenimiento (PPT 8.1). El contrato se divide en dos lotes: Lote Norte (22 instalaciones) y Lote Sur (20 instalaciones), permitiéndose licitar a uno o ambos (PCAP 2.1). Se exige una garantía provisional del 2 % del presupuesto base, cuya falta no es subsanable (PCAP 6.4). El candidato incurre en motivo de exclusión al no haber aportado aval, seguro de caución ni ninguna otra forma de garantía provisional en su documentación (DOSSIER 4.2)."
+    },
+    "error": null
+  }
+]

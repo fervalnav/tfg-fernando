@@ -1,5 +1,43 @@
 [
   {
+    "blindId": "blind-002d3dbe46e2",
+    "runId": "fictitious-school-meals-02|workflow_decision|gemini-3-flash-preview|2",
+    "reviewer1": {
+      "blindId": "blind-002d3dbe46e2",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-002d3dbe46e2",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: decisión favorable y vigencia respaldadas por PCAP 5.2 y DOSSIER 3.1."
+    },
+    "agreed": {
+      "blindId": "blind-002d3dbe46e2",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: decisión favorable y vigencia respaldadas por PCAP 5.2 y DOSSIER 3.1."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
     "blindId": "blind-01188c434fa4",
     "runId": "fictitious-electric-buses-05|workflow_decision|gemini-3.1-flash-lite|1",
     "reviewer1": {
@@ -33,9 +71,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: verifica ambos umbrales con PCAP 4.3, PPT 4.1 y DOSSIER 6.2."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: verifica ambos umbrales con PCAP 4.3, PPT 4.1 y DOSSIER 6.2."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-01d7b5b7ea4c",
@@ -71,9 +109,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: compara correctamente 190 días con el máximo de 210 usando PCAP 4.3 y DOSSIER 6.2."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: compara correctamente 190 días con el máximo de 210 usando PCAP 4.3 y DOSSIER 6.2."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-036556aaaa7d",
@@ -109,9 +147,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: cubre objeto, importe, plazo, solvencia y conclusión con todas las referencias requeridas."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: cubre objeto, importe, plazo, solvencia y conclusión con todas las referencias requeridas."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-073ae46d62e5",
@@ -147,9 +185,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: ambos clasificadores y PCAP 2.1 coinciden exactamente."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: ambos clasificadores y PCAP 2.1 coinciden exactamente."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-0a564c964eb3",
@@ -185,9 +223,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Omite el presupuesto de 175000 EUR sin IVA incluido en expected; alcance, lotes, garantía y exclusión sí están completos."
+      "comment": "Revisor 1: Omite el presupuesto de 175.000 EUR (PCAP 1.2), aunque cubre alcance, lotes, garantía y exclusión. Revisor 2: Omite el presupuesto de 175000 EUR sin IVA incluido en expected; alcance, lotes, garantía y exclusión sí están completos."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-0cc57a01e537",
@@ -223,9 +261,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: presupuesto y solvencia satisfacen conjuntamente la condición."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: presupuesto y solvencia satisfacen conjuntamente la condición."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-1b4387e99498",
@@ -261,9 +299,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: 24 meses con referencia exacta PCAP 4.1."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: 24 meses con referencia exacta PCAP 4.1."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-1e74bf642c67",
@@ -299,9 +337,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: valor numérico y evidencia localizable correctos."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: valor numérico y evidencia localizable correctos."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-2139b82194fa",
@@ -337,9 +375,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: CPV exacto y evidencia PCAP 1.4 completa."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: CPV exacto y evidencia PCAP 1.4 completa."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-21db6d8153c5",
@@ -375,9 +413,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: decisión favorable sustentada por requisito, vigencia y fecha límite."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: decisión favorable sustentada por requisito, vigencia y fecha límite."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-24b9b792c9d3",
@@ -413,9 +451,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "El valor 24 es correcto, pero la evidencia omite la sección localizable PCAP 4.1 exigida por el caso."
+      "comment": "Revisor 1: El valor 24 es correcto, pero la evidencia no identifica la sección localizable PCAP 4.1. Revisor 2: El valor 24 es correcto, pero la evidencia omite la sección localizable PCAP 4.1 exigida por el caso."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-29d72b3f9c77",
@@ -451,9 +489,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: dos contratos superan 80000 EUR y constan como satisfactorios en PCAP 7.3 y DOSSIER 2.1."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: dos contratos superan 80000 EUR y constan como satisfactorios en PCAP 7.3 y DOSSIER 2.1."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-2b6b426b253a",
@@ -489,9 +527,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Falta el importe de 175000 EUR sin IVA esperado en PCAP 1.2; responde correctamente a los demás elementos."
+      "comment": "Revisor 1: Omite el presupuesto de 175.000 EUR (PCAP 1.2), aunque cubre alcance, lotes, garantía y exclusión. Revisor 2: Falta el importe de 175000 EUR sin IVA esperado en PCAP 1.2; responde correctamente a los demás elementos."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-2c7712df26f8",
@@ -527,9 +565,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: ausencia de garantía y requisito del 2 por ciento constan en DOSSIER 4.2 y PCAP 6.4."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: ausencia de garantía y requisito del 2 por ciento constan en DOSSIER 4.2 y PCAP 6.4."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-2e864bf75f80",
@@ -565,9 +603,47 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Omite concluir explícitamente resultado desfavorable; AC 5.5 y CANDIDATE 5.1 permiten inferirlo, pero exige interpretación."
+      "comment": "Revisor 1: Expone la certificación caducada (CANDIDATE 5.1), pero no formula explícitamente el resultado desfavorable esperado. Revisor 2: Omite concluir explícitamente resultado desfavorable; AC 5.5 y CANDIDATE 5.1 permiten inferirlo, pero exige interpretación."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-2f5436acbcb2",
+    "runId": "fictitious-solar-maintenance-03|control_question|gemini-3-flash-preview|1",
+    "reviewer1": {
+      "blindId": "blind-2f5436acbcb2",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 1,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "La ausencia queda localizada en DOSSIER 4.2, pero falta vincularla con la exigencia de PCAP 6.4."
+    },
+    "reviewer2": {
+      "blindId": "blind-2f5436acbcb2",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: responde y aplica correctamente PCAP 6.4 frente a la ausencia declarada en DOSSIER 4.2."
+    },
+    "agreed": {
+      "blindId": "blind-2f5436acbcb2",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 1,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: La ausencia queda localizada en DOSSIER 4.2, pero falta vincularla con la exigencia de PCAP 6.4. Revisor 2: Sin descuentos: responde y aplica correctamente PCAP 6.4 frente a la ausencia declarada en DOSSIER 4.2."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-39983f47b05a",
@@ -603,9 +679,123 @@
       "hallucinationCount": 1,
       "criticalHallucination": true,
       "formatError": false,
-      "comment": "Afirma que el candidato acredita rampa y espacio reservado, pero DOSSIER 2.1 solo acredita rampa; es una alucinación crítica sobre cumplimiento y además falta conclusión global explícita."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Afirma que el candidato acredita rampa y espacio reservado, pero DOSSIER 2.1 solo acredita rampa; es una alucinación crítica sobre cumplimiento y además falta conclusión global explícita."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-3b06095e7b17",
+    "runId": "fictitious-solar-maintenance-03|summary|gemini-3-flash-preview|2",
+    "reviewer1": {
+      "blindId": "blind-3b06095e7b17",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Omite el presupuesto de 175.000 EUR (PCAP 1.2), aunque cubre alcance, lotes, garantía y exclusión."
+    },
+    "reviewer2": {
+      "blindId": "blind-3b06095e7b17",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Cobertura 1: omite el presupuesto de 175.000 EUR sin IVA exigido por el caso y localizable en PCAP 1.2."
+    },
+    "agreed": {
+      "blindId": "blind-3b06095e7b17",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: Omite el presupuesto de 175.000 EUR (PCAP 1.2), aunque cubre alcance, lotes, garantía y exclusión. Revisor 2: Cobertura 1: omite el presupuesto de 175.000 EUR sin IVA exigido por el caso y localizable en PCAP 1.2."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-3d43365fb72e",
+    "runId": "fictitious-it-support-01|workflow_decision|gemini-3-flash-preview|2",
+    "reviewer1": {
+      "blindId": "blind-3d43365fb72e",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-3d43365fb72e",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: presupuesto y dos contratos válidos se justifican con PCAP 1.2, PCAP 7.3 y DOSSIER 2.1."
+    },
+    "agreed": {
+      "blindId": "blind-3d43365fb72e",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: presupuesto y dos contratos válidos se justifican con PCAP 1.2, PCAP 7.3 y DOSSIER 2.1."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-3d8208ea51e4",
+    "runId": "fictitious-school-meals-02|control_question|gemini-3-flash-preview|3",
+    "reviewer1": {
+      "blindId": "blind-3d8208ea51e4",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-3d8208ea51e4",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: compara correctamente la vigencia de DOSSIER 3.1 con el requisito de PCAP 5.2."
+    },
+    "agreed": {
+      "blindId": "blind-3d8208ea51e4",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: compara correctamente la vigencia de DOSSIER 3.1 con el requisito de PCAP 5.2."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-3db8fe66080d",
@@ -641,9 +831,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: tres centros, importe sin IVA, duración, requisito y aptitud están cubiertos."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: tres centros, importe sin IVA, duración, requisito y aptitud están cubiertos."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-40d61810148d",
@@ -679,9 +869,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: respuesta, aprobación e importes están plenamente sustentados."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: respuesta, aprobación e importes están plenamente sustentados."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-476361386c62",
@@ -717,9 +907,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: decisión positiva respaldada por las tres secciones esperadas."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: decisión positiva respaldada por las tres secciones esperadas."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-478eda2f66eb",
@@ -755,9 +945,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: decisión favorable y comparación de plazo y autonomía completas."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: decisión favorable y comparación de plazo y autonomía completas."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-490587093249",
@@ -793,9 +983,47 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Falta la conclusión desfavorable esperada; expone correctamente certificado caducado en CANDIDATE 5.1."
+      "comment": "Revisor 1: Expone la certificación caducada (CANDIDATE 5.1), pero no formula explícitamente el resultado desfavorable esperado. Revisor 2: Falta la conclusión desfavorable esperada; expone correctamente certificado caducado en CANDIDATE 5.1."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-49075d93324b",
+    "runId": "fictitious-school-meals-02|custom_field|gemini-3-flash-preview|1",
+    "reviewer1": {
+      "blindId": "blind-49075d93324b",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-49075d93324b",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: devuelve el CPV exacto 55523100-3 y lo localiza en PCAP 1.4; la corrupción tipográfica no impide verificarlo."
+    },
+    "agreed": {
+      "blindId": "blind-49075d93324b",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: devuelve el CPV exacto 55523100-3 y lo localiza en PCAP 1.4; la corrupción tipográfica no impide verificarlo."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-4910830ae64f",
@@ -831,9 +1059,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: decisión false y motivo plenamente sustentados."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: decisión false y motivo plenamente sustentados."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-4b05b6750007",
@@ -869,9 +1097,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: respuesta negativa, failed y evidencia son coherentes y completos."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: respuesta negativa, failed y evidencia son coherentes y completos."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-506e15df406b",
@@ -907,9 +1135,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: AC 5.5 y CANDIDATE 5.1 sustentan respuesta y resultado negativos."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: AC 5.5 y CANDIDATE 5.1 sustentan respuesta y resultado negativos."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-5375943bff2f",
@@ -945,9 +1173,47 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: valor textual exacto y sección localizable."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: valor textual exacto y sección localizable."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-55921bafb298",
+    "runId": "fictitious-school-meals-02|control_question|gemini-3-flash-preview|2",
+    "reviewer1": {
+      "blindId": "blind-55921bafb298",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 1,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "La vigencia y DOSSIER 3.1 son correctos, pero la evidencia no identifica el requisito de PCAP 5.2."
+    },
+    "reviewer2": {
+      "blindId": "blind-55921bafb298",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: respuesta, fechas y registro coinciden con DOSSIER 3.1 y satisfacen PCAP 5.2."
+    },
+    "agreed": {
+      "blindId": "blind-55921bafb298",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 1,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: La vigencia y DOSSIER 3.1 son correctos, pero la evidencia no identifica el requisito de PCAP 5.2. Revisor 2: Sin descuentos: respuesta, fechas y registro coinciden con DOSSIER 3.1 y satisfacen PCAP 5.2."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-5dedff717b66",
@@ -983,9 +1249,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: evidencia textual y sección PCAP 4.1 completas."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: evidencia textual y sección PCAP 4.1 completas."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-5fa4c54c9329",
@@ -1021,9 +1287,47 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: 300 dpi y TS 3.4 coinciden exactamente con el expediente."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: 300 dpi y TS 3.4 coinciden exactamente con el expediente."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-64b0aeaf27dd",
+    "runId": "fictitious-school-meals-02|summary|gemini-3-flash-preview|2",
+    "reviewer1": {
+      "blindId": "blind-64b0aeaf27dd",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-64b0aeaf27dd",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: incluye centros, presupuesto, duración, requisito sanitario y conclusión favorable con todas las secciones requeridas."
+    },
+    "agreed": {
+      "blindId": "blind-64b0aeaf27dd",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: incluye centros, presupuesto, duración, requisito sanitario y conclusión favorable con todas las secciones requeridas."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-697a87e88df6",
@@ -1059,9 +1363,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: resumen completo, exacto y accionable."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: resumen completo, exacto y accionable."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-6cddbf8c65f1",
@@ -1097,9 +1401,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Respuesta y vigencia correctas, pero solo localiza DOSSIER 3.1 y omite la sección normativa PCAP 5.2 requerida."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Respuesta y vigencia correctas, pero solo localiza DOSSIER 3.1 y omite la sección normativa PCAP 5.2 requerida."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-6d6c83e82a9a",
@@ -1135,9 +1439,47 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: cubre cantidad, umbral y ejecución satisfactoria con referencias correctas."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: cubre cantidad, umbral y ejecución satisfactoria con referencias correctas."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-7264c02c2a97",
+    "runId": "fictitious-school-meals-02|summary|gemini-3-flash-preview|3",
+    "reviewer1": {
+      "blindId": "blind-7264c02c2a97",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-7264c02c2a97",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: síntesis completa y trazable mediante PCAP 1.1, PCAP 1.3, PCAP 5.2 y DOSSIER 3.1."
+    },
+    "agreed": {
+      "blindId": "blind-7264c02c2a97",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: síntesis completa y trazable mediante PCAP 1.1, PCAP 1.3, PCAP 5.2 y DOSSIER 3.1."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-77046da65ca7",
@@ -1173,9 +1515,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": true,
-      "comment": "La conclusión y evidencia son correctas, pero answer es texto pese a solicitar BOOLEAN; requiere normalización aunque passed sí es true."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: La conclusión y evidencia son correctas, pero answer es texto pese a solicitar BOOLEAN; requiere normalización aunque passed sí es true."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-7c012a24ca3e",
@@ -1211,9 +1553,47 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: compara correctamente ambos contratos y el presupuesto con sus umbrales."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: compara correctamente ambos contratos y el presupuesto con sus umbrales."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-7c8e0d5b1185",
+    "runId": "fictitious-school-meals-02|control_question|gemini-3-flash-preview|1",
+    "reviewer1": {
+      "blindId": "blind-7c8e0d5b1185",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 1,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "La vigencia y DOSSIER 3.1 son correctos, pero la evidencia no identifica el requisito de PCAP 5.2."
+    },
+    "reviewer2": {
+      "blindId": "blind-7c8e0d5b1185",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: la vigencia hasta 2028 se compara correctamente con la presentación de 2026 y queda localizada en DOSSIER 3.1."
+    },
+    "agreed": {
+      "blindId": "blind-7c8e0d5b1185",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 1,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: La vigencia y DOSSIER 3.1 son correctos, pero la evidencia no identifica el requisito de PCAP 5.2. Revisor 2: Sin descuentos: la vigencia hasta 2028 se compara correctamente con la presentación de 2026 y queda localizada en DOSSIER 3.1."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-7e0210377e5f",
@@ -1249,9 +1629,123 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: lista completa y evidencia localizable."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: lista completa y evidencia localizable."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-82584a5762ca",
+    "runId": "fictitious-solar-maintenance-03|custom_field|gemini-3-flash-preview|1",
+    "reviewer1": {
+      "blindId": "blind-82584a5762ca",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-82584a5762ca",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: extrae los dos nombres exactos y los respalda en PCAP 2.1; la corrupción tipográfica no afecta al dato."
+    },
+    "agreed": {
+      "blindId": "blind-82584a5762ca",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: extrae los dos nombres exactos y los respalda en PCAP 2.1; la corrupción tipográfica no afecta al dato."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-838b19da4973",
+    "runId": "fictitious-school-meals-02|workflow_decision|gemini-3-flash-preview|1",
+    "reviewer1": {
+      "blindId": "blind-838b19da4973",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-838b19da4973",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: decisión y evidencia aplican de forma completa PCAP 5.2 y DOSSIER 3.1."
+    },
+    "agreed": {
+      "blindId": "blind-838b19da4973",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: decisión y evidencia aplican de forma completa PCAP 5.2 y DOSSIER 3.1."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-83d97d5309bc",
+    "runId": "fictitious-solar-maintenance-03|control_question|gemini-3-flash-preview|3",
+    "reviewer1": {
+      "blindId": "blind-83d97d5309bc",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-83d97d5309bc",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: identifica correctamente la garantía ausente con referencias directas a PCAP 6.4 y DOSSIER 4.2."
+    },
+    "agreed": {
+      "blindId": "blind-83d97d5309bc",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: identifica correctamente la garantía ausente con referencias directas a PCAP 6.4 y DOSSIER 4.2."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-88ea1b91662b",
@@ -1287,9 +1781,47 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: Lote Norte y Lote Sur extraídos sin ruido."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: Lote Norte y Lote Sur extraídos sin ruido."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-8db8cc82aecd",
+    "runId": "fictitious-school-meals-02|workflow_decision|gemini-3-flash-preview|3",
+    "reviewer1": {
+      "blindId": "blind-8db8cc82aecd",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-8db8cc82aecd",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: concluye correctamente que el registro permanece vigente y cita PCAP 5.2 y DOSSIER 3.1."
+    },
+    "agreed": {
+      "blindId": "blind-8db8cc82aecd",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: concluye correctamente que el registro permanece vigente y cita PCAP 5.2 y DOSSIER 3.1."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-9172502a060f",
@@ -1325,9 +1857,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: el carácter erróneo en ejecuci3n es un typo legible y no afecta exactitud ni estructura."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: el carácter erróneo en ejecuci3n es un typo legible y no afecta exactitud ni estructura."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-92a9e5bbf91d",
@@ -1363,9 +1895,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: requisito obligatorio y ausencia no subsanable correctamente citados."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: requisito obligatorio y ausencia no subsanable correctamente citados."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-93d98e1e66a9",
@@ -1401,9 +1933,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: todos los hechos y la conclusión favorable están sustentados por secciones explícitas."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: todos los hechos y la conclusión favorable están sustentados por secciones explícitas."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-93e9bdc0f517",
@@ -1439,9 +1971,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Omite el matiz sin IVA del presupuesto esperado en PCAP 1.3; el resto del resumen y la aptitud son completos."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Omite el matiz sin IVA del presupuesto esperado en PCAP 1.3; el resto del resumen y la aptitud son completos."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-9afda703369a",
@@ -1477,9 +2009,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: autonomía mínima 280 y PPT 4.1 coinciden exactamente."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: autonomía mínima 280 y PPT 4.1 coinciden exactamente."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-9c3f651a7b0c",
@@ -1515,9 +2047,47 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: decisión negativa plenamente sustentada por AC 5.5 y CANDIDATE 5.1."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: decisión negativa plenamente sustentada por AC 5.5 y CANDIDATE 5.1."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-9f4e597da0f2",
+    "runId": "fictitious-solar-maintenance-03|summary|gemini-3-flash-preview|3",
+    "reviewer1": {
+      "blindId": "blind-9f4e597da0f2",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Omite el presupuesto de 175.000 EUR (PCAP 1.2), aunque cubre alcance, lotes, garantía y exclusión."
+    },
+    "reviewer2": {
+      "blindId": "blind-9f4e597da0f2",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Cobertura 1: omite el presupuesto de 175.000 EUR sin IVA exigido por el caso y localizable en PCAP 1.2."
+    },
+    "agreed": {
+      "blindId": "blind-9f4e597da0f2",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: Omite el presupuesto de 175.000 EUR (PCAP 1.2), aunque cubre alcance, lotes, garantía y exclusión. Revisor 2: Cobertura 1: omite el presupuesto de 175.000 EUR sin IVA exigido por el caso y localizable en PCAP 1.2."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-a2f2061652b1",
@@ -1553,9 +2123,9 @@
       "hallucinationCount": 1,
       "criticalHallucination": true,
       "formatError": false,
-      "comment": "Presenta como cumplidas rampa y espacio reservado apoyándose solo en la rampa de DOSSIER 2.1; evidencia incompatible y alucinación crítica de elegibilidad. Omite conclusión global explícita."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Presenta como cumplidas rampa y espacio reservado apoyándose solo en la rampa de DOSSIER 2.1; evidencia incompatible y alucinación crítica de elegibilidad. Omite conclusión global explícita."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-a952a3cae6a9",
@@ -1591,9 +2161,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: identifica exactamente el incumplimiento no subsanable."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: identifica exactamente el incumplimiento no subsanable."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-a957ef997bce",
@@ -1629,9 +2199,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: evidencia completa en PCAP 5.2 y DOSSIER 3.1."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: evidencia completa en PCAP 5.2 y DOSSIER 3.1."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-b4aead38456a",
@@ -1667,9 +2237,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: los dos contratos y la ejecución satisfactoria prueban el requisito."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: los dos contratos y la ejecución satisfactoria prueban el requisito."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-ba7dca7a7758",
@@ -1705,9 +2275,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: evidencia localizable y suficiente para los dos requisitos de continuidad."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: evidencia localizable y suficiente para los dos requisitos de continuidad."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-baf60a3bada5",
@@ -1743,9 +2313,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: vigencia comparada con fecha límite y ambas secciones requeridas."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: vigencia comparada con fecha límite y ambas secciones requeridas."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-bdbab81f5ba9",
@@ -1781,9 +2351,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: incluye íntegramente los hechos esperados y evidencia localizable."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: incluye íntegramente los hechos esperados y evidencia localizable."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-c17e0fc66d84",
@@ -1819,9 +2389,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: el leve error tipográfico no impide localizar ni usar la evidencia correcta."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: el leve error tipográfico no impide localizar ni usar la evidencia correcta."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-c20c20b52992",
@@ -1857,9 +2427,123 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: conclusión apta correctamente derivada de los dos contratos acreditados."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: conclusión apta correctamente derivada de los dos contratos acreditados."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-c77de2537423",
+    "runId": "fictitious-school-meals-02|summary|gemini-3-flash-preview|1",
+    "reviewer1": {
+      "blindId": "blind-c77de2537423",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-c77de2537423",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: cubre todos los hechos esperados y permite concluir la aptitud con referencias localizables."
+    },
+    "agreed": {
+      "blindId": "blind-c77de2537423",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: cubre todos los hechos esperados y permite concluir la aptitud con referencias localizables."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-c8e4fb32cada",
+    "runId": "fictitious-school-meals-02|custom_field|gemini-3-flash-preview|2",
+    "reviewer1": {
+      "blindId": "blind-c8e4fb32cada",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-c8e4fb32cada",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: el CPV coincide exactamente y PCAP 1.4 permite localizarlo pese a la corrupción tipográfica."
+    },
+    "agreed": {
+      "blindId": "blind-c8e4fb32cada",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: el CPV coincide exactamente y PCAP 1.4 permite localizarlo pese a la corrupción tipográfica."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-cbda0de2e32d",
+    "runId": "fictitious-it-support-01|workflow_decision|gemini-3-flash-preview|3",
+    "reviewer1": {
+      "blindId": "blind-cbda0de2e32d",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-cbda0de2e32d",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: la decisión está sustentada por el presupuesto de PCAP 1.2 y la solvencia de PCAP 7.3 y DOSSIER 2.1."
+    },
+    "agreed": {
+      "blindId": "blind-cbda0de2e32d",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: la decisión está sustentada por el presupuesto de PCAP 1.2 y la solvencia de PCAP 7.3 y DOSSIER 2.1."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-cc5f39462e6c",
@@ -1895,9 +2579,47 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "No declara el resultado desfavorable, aunque los hechos y referencias AC 5.5 y CANDIDATE 5.1 son correctos."
+      "comment": "Revisor 1: Expone la certificación caducada (CANDIDATE 5.1), pero no formula explícitamente el resultado desfavorable esperado. Revisor 2: No declara el resultado desfavorable, aunque los hechos y referencias AC 5.5 y CANDIDATE 5.1 son correctos."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-d04d675311a3",
+    "runId": "fictitious-solar-maintenance-03|control_question|gemini-3-flash-preview|2",
+    "reviewer1": {
+      "blindId": "blind-d04d675311a3",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-d04d675311a3",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: contrasta de forma completa la exigencia de PCAP 6.4 con la ausencia explícita en DOSSIER 4.2."
+    },
+    "agreed": {
+      "blindId": "blind-d04d675311a3",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: contrasta de forma completa la exigencia de PCAP 6.4 con la ausencia explícita en DOSSIER 4.2."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-d35f77b48891",
@@ -1933,9 +2655,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: identifica el requisito vigente y la caducidad con ambas secciones requeridas."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: identifica el requisito vigente y la caducidad con ambas secciones requeridas."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-d787bf6f066f",
@@ -1971,9 +2693,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: valor numérico correcto y evidencia localizable en TS 3.4."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: valor numérico correcto y evidencia localizable en TS 3.4."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-d8697cb020f8",
@@ -2009,9 +2731,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: compara correctamente vigencia 2024-2028 con fecha límite de 2026."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: compara correctamente vigencia 2024-2028 con fecha límite de 2026."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-d9f7696981ad",
@@ -2047,9 +2769,47 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: contenido completo; ausencia de tildes no afecta estructura ni utilidad."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: contenido completo; ausencia de tildes no afecta estructura ni utilidad."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-dc13248b6667",
+    "runId": "fictitious-solar-maintenance-03|custom_field|gemini-3-flash-preview|2",
+    "reviewer1": {
+      "blindId": "blind-dc13248b6667",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-dc13248b6667",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: devuelve Lote Norte y Lote Sur exactamente y los localiza en PCAP 2.1."
+    },
+    "agreed": {
+      "blindId": "blind-dc13248b6667",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: devuelve Lote Norte y Lote Sur exactamente y los localiza en PCAP 2.1."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-dc8575da3ac4",
@@ -2085,9 +2845,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: valor y sección de evidencia correctos."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: valor y sección de evidencia correctos."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-df58e70636e7",
@@ -2123,9 +2883,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: duración inicial correcta con referencia exacta."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: duración inicial correcta con referencia exacta."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-e1118aab2874",
@@ -2161,9 +2921,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "La duración es exacta, pero falta identificar PCAP 4.1; evidencia correcta aunque no localizable por sección."
+      "comment": "Revisor 1: El valor 24 es correcto, pero la evidencia no identifica la sección localizable PCAP 4.1. Revisor 2: La duración es exacta, pero falta identificar PCAP 4.1; evidencia correcta aunque no localizable por sección."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-e18293a2019c",
@@ -2199,9 +2959,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "No recoge el presupuesto esperado de PCAP 1.2; el resto de hechos y la exclusión están sustentados."
+      "comment": "Revisor 1: Omite el presupuesto de 175.000 EUR (PCAP 1.2), aunque cubre alcance, lotes, garantía y exclusión. Revisor 2: No recoge el presupuesto esperado de PCAP 1.2; el resto de hechos y la exclusión están sustentados."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-e856c3275eb8",
@@ -2237,9 +2997,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: resumen íntegro y conclusión explícita con referencias correctas."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: resumen íntegro y conclusión explícita con referencias correctas."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-ecb2cbb9c1d6",
@@ -2275,9 +3035,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: extracción y evidencia coinciden con PCAP 1.4."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: extracción y evidencia coinciden con PCAP 1.4."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-ecfb3d05773f",
@@ -2313,9 +3073,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: extracción exacta de 280 km WLTP desde PPT 4.1."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: extracción exacta de 280 km WLTP desde PPT 4.1."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-ede41e29401c",
@@ -2351,9 +3111,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: extracción exacta de 300 dpi con referencia TS 3.4."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: extracción exacta de 300 dpi con referencia TS 3.4."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-ef7aa8bd5442",
@@ -2389,9 +3149,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Incluye todos los datos operativos, pero no formula explícitamente el resultado favorable esperado; requiere inferirlo de 190 días y 295 km."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Incluye todos los datos operativos, pero no formula explícitamente el resultado favorable esperado; requiere inferirlo de 190 días y 295 km."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-f3f57bf40e8e",
@@ -2427,9 +3187,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: todos los hechos esperados y la aptitud favorable están referenciados."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: todos los hechos esperados y la aptitud favorable están referenciados."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-f432de3a414e",
@@ -2465,9 +3225,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: respuesta booleana y aprobación coherentes con PCAP 4.3 y DOSSIER 6.2."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: respuesta booleana y aprobación coherentes con PCAP 4.3 y DOSSIER 6.2."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-f68dd072542f",
@@ -2503,9 +3263,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: respuesta completa y referencias PCAP 7.3 y DOSSIER 2.1 correctas."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: respuesta completa y referencias PCAP 7.3 y DOSSIER 2.1 correctas."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-f7d36c4da42e",
@@ -2541,9 +3301,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: respuesta completa y evidencia localizable en AC 5.5 y CANDIDATE 5.1."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: respuesta completa y evidencia localizable en AC 5.5 y CANDIDATE 5.1."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-fb7ad04d00f1",
@@ -2579,9 +3339,47 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: plazo comprometido inferior al máximo con evidencia completa y localizable."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: plazo comprometido inferior al máximo con evidencia completa y localizable."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-fbac32284c36",
+    "runId": "fictitious-school-meals-02|custom_field|gemini-3-flash-preview|3",
+    "reviewer1": {
+      "blindId": "blind-fbac32284c36",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+    },
+    "reviewer2": {
+      "blindId": "blind-fbac32284c36",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Sin descuentos: valor CPV correcto y evidencia suficiente en PCAP 1.4; el defecto de codificación es solo tipográfico."
+    },
+    "agreed": {
+      "blindId": "blind-fbac32284c36",
+      "accuracy": 2,
+      "coverage": 2,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: valor CPV correcto y evidencia suficiente en PCAP 1.4; el defecto de codificación es solo tipográfico."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-fc277a01ae68",
@@ -2617,9 +3415,9 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: resultado y evidencia coinciden con PCAP 6.4 y DOSSIER 4.2."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: resultado y evidencia coinciden con PCAP 6.4 y DOSSIER 4.2."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   },
   {
     "blindId": "blind-fcde0805eb99",
@@ -2655,8 +3453,46 @@
       "hallucinationCount": 0,
       "criticalHallucination": false,
       "formatError": false,
-      "comment": "Sin descuentos: decisión, requisito y caducidad coinciden con AC 5.5 y CANDIDATE 5.1."
+      "comment": "Revisor 1: Respuesta exacta, completa, localizable y útil respecto al caso congelado. Revisor 2: Sin descuentos: decisión, requisito y caducidad coinciden con AC 5.5 y CANDIDATE 5.1."
     },
-    "resolution": "Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas."
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
+  },
+  {
+    "blindId": "blind-ff82ebc2f5ac",
+    "runId": "fictitious-solar-maintenance-03|summary|gemini-3-flash-preview|1",
+    "reviewer1": {
+      "blindId": "blind-ff82ebc2f5ac",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Omite el presupuesto de 175.000 EUR (PCAP 1.2), aunque cubre alcance, lotes, garantía y exclusión."
+    },
+    "reviewer2": {
+      "blindId": "blind-ff82ebc2f5ac",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Cobertura 1: omite el presupuesto de 175.000 EUR sin IVA exigido por el caso y localizable en PCAP 1.2."
+    },
+    "agreed": {
+      "blindId": "blind-ff82ebc2f5ac",
+      "accuracy": 2,
+      "coverage": 1,
+      "evidence": 2,
+      "utility": 2,
+      "hallucinationCount": 0,
+      "criticalHallucination": false,
+      "formatError": false,
+      "comment": "Revisor 1: Omite el presupuesto de 175.000 EUR (PCAP 1.2), aunque cubre alcance, lotes, garantía y exclusión. Revisor 2: Cobertura 1: omite el presupuesto de 175.000 EUR sin IVA exigido por el caso y localizable en PCAP 1.2."
+    },
+    "resolution": "Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección."
   }
 ]

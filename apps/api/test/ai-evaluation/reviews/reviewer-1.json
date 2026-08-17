@@ -1,5 +1,16 @@
 [
   {
+    "blindId": "blind-002d3dbe46e2",
+    "accuracy": 2,
+    "coverage": 2,
+    "evidence": 2,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+  },
+  {
     "blindId": "blind-01188c434fa4",
     "accuracy": 2,
     "coverage": 2,
@@ -165,7 +176,51 @@
     "comment": "Expone la certificación caducada (CANDIDATE 5.1), pero no formula explícitamente el resultado desfavorable esperado."
   },
   {
+    "blindId": "blind-2f5436acbcb2",
+    "accuracy": 2,
+    "coverage": 2,
+    "evidence": 1,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "La ausencia queda localizada en DOSSIER 4.2, pero falta vincularla con la exigencia de PCAP 6.4."
+  },
+  {
     "blindId": "blind-39983f47b05a",
+    "accuracy": 2,
+    "coverage": 2,
+    "evidence": 2,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+  },
+  {
+    "blindId": "blind-3b06095e7b17",
+    "accuracy": 2,
+    "coverage": 1,
+    "evidence": 2,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "Omite el presupuesto de 175.000 EUR (PCAP 1.2), aunque cubre alcance, lotes, garantía y exclusión."
+  },
+  {
+    "blindId": "blind-3d43365fb72e",
+    "accuracy": 2,
+    "coverage": 2,
+    "evidence": 2,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+  },
+  {
+    "blindId": "blind-3d8208ea51e4",
     "accuracy": 2,
     "coverage": 2,
     "evidence": 2,
@@ -231,6 +286,17 @@
     "comment": "Expone la certificación caducada (CANDIDATE 5.1), pero no formula explícitamente el resultado desfavorable esperado."
   },
   {
+    "blindId": "blind-49075d93324b",
+    "accuracy": 2,
+    "coverage": 2,
+    "evidence": 2,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+  },
+  {
     "blindId": "blind-4910830ae64f",
     "accuracy": 2,
     "coverage": 2,
@@ -275,6 +341,17 @@
     "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
   },
   {
+    "blindId": "blind-55921bafb298",
+    "accuracy": 2,
+    "coverage": 2,
+    "evidence": 1,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "La vigencia y DOSSIER 3.1 son correctos, pero la evidencia no identifica el requisito de PCAP 5.2."
+  },
+  {
     "blindId": "blind-5dedff717b66",
     "accuracy": 2,
     "coverage": 2,
@@ -287,6 +364,17 @@
   },
   {
     "blindId": "blind-5fa4c54c9329",
+    "accuracy": 2,
+    "coverage": 2,
+    "evidence": 2,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+  },
+  {
+    "blindId": "blind-64b0aeaf27dd",
     "accuracy": 2,
     "coverage": 2,
     "evidence": 2,
@@ -330,6 +418,17 @@
     "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
   },
   {
+    "blindId": "blind-7264c02c2a97",
+    "accuracy": 2,
+    "coverage": 2,
+    "evidence": 2,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+  },
+  {
     "blindId": "blind-77046da65ca7",
     "accuracy": 2,
     "coverage": 2,
@@ -352,6 +451,17 @@
     "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
   },
   {
+    "blindId": "blind-7c8e0d5b1185",
+    "accuracy": 2,
+    "coverage": 2,
+    "evidence": 1,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "La vigencia y DOSSIER 3.1 son correctos, pero la evidencia no identifica el requisito de PCAP 5.2."
+  },
+  {
     "blindId": "blind-7e0210377e5f",
     "accuracy": 2,
     "coverage": 2,
@@ -363,7 +473,51 @@
     "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
   },
   {
+    "blindId": "blind-82584a5762ca",
+    "accuracy": 2,
+    "coverage": 2,
+    "evidence": 2,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+  },
+  {
+    "blindId": "blind-838b19da4973",
+    "accuracy": 2,
+    "coverage": 2,
+    "evidence": 2,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+  },
+  {
+    "blindId": "blind-83d97d5309bc",
+    "accuracy": 2,
+    "coverage": 2,
+    "evidence": 2,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+  },
+  {
     "blindId": "blind-88ea1b91662b",
+    "accuracy": 2,
+    "coverage": 2,
+    "evidence": 2,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+  },
+  {
+    "blindId": "blind-8db8cc82aecd",
     "accuracy": 2,
     "coverage": 2,
     "evidence": 2,
@@ -438,6 +592,17 @@
     "criticalHallucination": false,
     "formatError": false,
     "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+  },
+  {
+    "blindId": "blind-9f4e597da0f2",
+    "accuracy": 2,
+    "coverage": 1,
+    "evidence": 2,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "Omite el presupuesto de 175.000 EUR (PCAP 1.2), aunque cubre alcance, lotes, garantía y exclusión."
   },
   {
     "blindId": "blind-a2f2061652b1",
@@ -539,6 +704,39 @@
     "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
   },
   {
+    "blindId": "blind-c77de2537423",
+    "accuracy": 2,
+    "coverage": 2,
+    "evidence": 2,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+  },
+  {
+    "blindId": "blind-c8e4fb32cada",
+    "accuracy": 2,
+    "coverage": 2,
+    "evidence": 2,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+  },
+  {
+    "blindId": "blind-cbda0de2e32d",
+    "accuracy": 2,
+    "coverage": 2,
+    "evidence": 2,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+  },
+  {
     "blindId": "blind-cc5f39462e6c",
     "accuracy": 2,
     "coverage": 1,
@@ -548,6 +746,17 @@
     "criticalHallucination": false,
     "formatError": false,
     "comment": "Expone la certificación caducada (CANDIDATE 5.1), pero no formula explícitamente el resultado desfavorable esperado."
+  },
+  {
+    "blindId": "blind-d04d675311a3",
+    "accuracy": 2,
+    "coverage": 2,
+    "evidence": 2,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
   },
   {
     "blindId": "blind-d35f77b48891",
@@ -584,6 +793,17 @@
   },
   {
     "blindId": "blind-d9f7696981ad",
+    "accuracy": 2,
+    "coverage": 2,
+    "evidence": 2,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+  },
+  {
+    "blindId": "blind-dc13248b6667",
     "accuracy": 2,
     "coverage": 2,
     "evidence": 2,
@@ -748,6 +968,17 @@
     "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
   },
   {
+    "blindId": "blind-fbac32284c36",
+    "accuracy": 2,
+    "coverage": 2,
+    "evidence": 2,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+  },
+  {
     "blindId": "blind-fc277a01ae68",
     "accuracy": 2,
     "coverage": 2,
@@ -768,5 +999,16 @@
     "criticalHallucination": false,
     "formatError": false,
     "comment": "Respuesta exacta, completa, localizable y útil respecto al caso congelado."
+  },
+  {
+    "blindId": "blind-ff82ebc2f5ac",
+    "accuracy": 2,
+    "coverage": 1,
+    "evidence": 2,
+    "utility": 2,
+    "hallucinationCount": 0,
+    "criticalHallucination": false,
+    "formatError": false,
+    "comment": "Omite el presupuesto de 175.000 EUR (PCAP 1.2), aunque cubre alcance, lotes, garantía y exclusión."
   }
 ]
