@@ -4,6 +4,7 @@ import { toTypedSchema } from '@vee-validate/zod';
 import { z } from 'zod';
 import { toast } from 'vue-sonner';
 import { useAcceptInvitationMutation, useJoinViaInvitationMutation } from '~/modules/auth';
+import { LiaWordmark } from '~/modules/shared';
 import { isFetchError } from '~/modules/shared/composables/useApi';
 import { useAuthStore } from '~/modules/shared/stores/auth.store';
 import { requiredString } from '~/modules/shared/lib/formValidation';
@@ -86,8 +87,8 @@ const onSubmit = form.handleSubmit((values) => {
 <template>
   <div>
     <div class="mb-8 text-center">
-      <img src="/images/logos/logoA_tendios_darkblue.svg" alt="Logo" class="h-10 mx-auto mb-6" >
-      <h1 class="text-2xl font-bold text-foreground">Aceptar invitacion</h1>
+      <LiaWordmark class="mb-6 justify-center" />
+      <h1 class="text-2xl font-bold text-foreground">Aceptar invitación</h1>
       <p class="text-muted-foreground mt-2">
         {{
           authStore.isAuthenticated
@@ -155,7 +156,7 @@ const onSubmit = form.handleSubmit((values) => {
           :to="{ path: '/auth/login', query: { redirect: `/auth/accept-invitation?token=${token}` } }"
           class="text-primary hover:underline"
         >
-          Inicia sesion
+          Inicia sesión
         </NuxtLink>
       </p>
     </div>

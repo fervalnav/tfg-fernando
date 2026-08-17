@@ -73,7 +73,9 @@ function deleteFile(attachmentId: string): void {
 }
 
 function formatSize(size: number): string {
-  return new Intl.NumberFormat('es-ES', { maximumFractionDigits: 1 }).format(size / 1024 / 1024) + ' MB';
+  const sizeInMegabytes = size / 1024 / 1024;
+  if (sizeInMegabytes < 0.1) return '< 0,1 MB';
+  return new Intl.NumberFormat('es-ES', { maximumFractionDigits: 1 }).format(sizeInMegabytes) + ' MB';
 }
 </script>
 
@@ -92,14 +94,26 @@ function formatSize(size: number): string {
       <div class="rounded-lg border border-dashed p-4">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-end">
           <div class="flex-1 space-y-2">
-            <Label for="opportunity-attachment">Selecciona un PDF (máximo 30 MB)</Label>
+            <p class="text-sm font-medium">Selecciona un PDF (máximo 30 MB)</p>
             <Input
               id="opportunity-attachment"
               :key="fileInputKey"
               type="file"
               accept="application/pdf,.pdf"
+              class="sr-only"
               @change="selectFile"
             />
+            <div class="flex min-h-9 items-center gap-3 rounded-md border bg-background px-3 py-2">
+              <Label
+                for="opportunity-attachment"
+                class="shrink-0 cursor-pointer rounded-md border bg-background px-3 py-1.5 text-sm font-medium shadow-xs hover:bg-accent"
+              >
+                Seleccionar PDF
+              </Label>
+              <span class="min-w-0 truncate text-sm text-muted-foreground">
+                {{ selectedFile?.name ?? 'Ningún archivo seleccionado' }}
+              </span>
+            </div>
           </div>
           <Button :disabled="!selectedFile || isUploading" @click="uploadFile">
             <UploadIcon class="mr-2 size-4" />

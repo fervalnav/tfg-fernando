@@ -4,6 +4,7 @@ import { toTypedSchema } from '@vee-validate/zod';
 import { z } from 'zod';
 import { toast } from 'vue-sonner';
 import { useLoginMutation } from '~/modules/auth';
+import { LiaWordmark } from '~/modules/shared';
 import { isFetchError } from '~/modules/shared/composables/useApi';
 import { requiredEmail, requiredString } from '~/modules/shared/lib/formValidation';
 
@@ -39,8 +40,8 @@ const onSubmit = form.handleSubmit((values) => {
 <template>
   <div>
     <div class="mb-8 text-center">
-      <img src="/images/logos/logoA_tendios_darkblue.svg" alt="Logo" class="h-10 mx-auto mb-6" >
-      <h1 class="text-2xl font-bold text-foreground">Iniciar sesion</h1>
+      <LiaWordmark class="mb-6 justify-center" />
+      <h1 class="text-2xl font-bold text-foreground">Iniciar sesión</h1>
       <p class="text-muted-foreground mt-2">Accede a tu cuenta</p>
     </div>
 
@@ -67,7 +68,7 @@ const onSubmit = form.handleSubmit((values) => {
         </FormField>
 
         <Button type="submit" class="w-full" :disabled="isPending">
-          {{ isPending ? 'Iniciando sesion...' : 'Iniciar sesion' }}
+          {{ isPending ? 'Iniciando sesión...' : 'Iniciar sesión' }}
         </Button>
       </form>
     </div>
@@ -78,7 +79,7 @@ const onSubmit = form.handleSubmit((values) => {
         :to="{ path: '/auth/register', query: redirectTo ? { redirect: redirectTo } : {} }"
         class="text-primary hover:underline"
       >
-        Registrate
+        Regístrate
       </NuxtLink>
     </p>
   </div>

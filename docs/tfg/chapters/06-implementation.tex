@@ -43,7 +43,10 @@ estricto.
   \end{tabular}
 \end{table}
 
-La infraestructura local se inicia de forma independiente a las aplicaciones.
+La \Cref{tab:implementation-tools} relaciona cada herramienta con una
+responsabilidad concreta; su inclusión no implica que todos los servicios
+provisionados intervengan en los flujos del núcleo. La infraestructura local se
+inicia de forma independiente a las aplicaciones.
 PostgreSQL, MinIO y MailHog son dependencias operativas de los flujos
 desarrollados. Ollama se ofrece mediante un perfil opcional para la generación
 local. RabbitMQ está provisionado en Docker Compose, pero la coordinación
@@ -208,7 +211,9 @@ histórico de las oportunidades ya iniciadas.
   \end{tabular}
 \end{table}
 
-Los servicios \texttt{createOrGet} consultan en paralelo la plantilla y una
+La \Cref{tab:qualification-implementation} permite comparar la entrada, la
+salida y el comportamiento de los tres tipos de cualificación. Los servicios
+\texttt{createOrGet} consultan en paralelo la plantilla y una
 posible instancia de la misma oportunidad. Si la plantilla no pertenece a la
 cuenta, responden como si no existiera; si la instancia ya está disponible, la
 reutilizan. Esta idempotencia se aplica tanto durante la asignación del
@@ -244,7 +249,7 @@ de workflow correspondiente deje de permanecer en progreso.
 
 \lstinputlisting[
   language=TypeScript,
-  firstline=30,
+  firstline=22,
   lastline=57,
   caption={Generación y persistencia de un resumen asistido por IA.},
   label={lst:structured-generation}

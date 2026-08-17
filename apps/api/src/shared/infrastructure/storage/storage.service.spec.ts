@@ -1,4 +1,4 @@
-import { DeleteBucketPolicyCommand, HeadBucketCommand } from '@aws-sdk/client-s3';
+import { DeleteBucketPolicyCommand, HeadBucketCommand, S3Client } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import type { ConfigService } from '@nestjs/config';
 import { StorageService } from './storage.service';
@@ -20,6 +20,7 @@ jest.mock('@aws-sdk/s3-request-presigner', () => ({
 describe('StorageService', () => {
   beforeEach(() => {
     mockSend.mockReset();
+    jest.mocked(S3Client).mockClear();
   });
 
   it('removes a pre-existing public policy when the bucket already exists', async () => {
@@ -44,6 +45,31 @@ describe('StorageService', () => {
     await expect(service.onModuleInit()).resolves.toBeUndefined();
     await expect(service.getPresignedUrl('account/document.pdf')).resolves.toBe('https://storage.invalid/signed');
     expect(jest.mocked(getSignedUrl)).toHaveBeenCalledWith(expect.anything(), expect.anything(), { expiresIn: 42 });
+  });
+
+  it('signs browser downloads with the public endpoint instead of the container endpoint', async () => {
+    const service = new StorageService(
+      config({
+        S3_ENDPOINT: 'http://minio:9000',
+        S3_PUBLIC_ENDPOINT: 'https://files.lia.example.com',
+      }),
+    );
+
+    await service.getPresignedUrl('account/document.pdf');
+
+    expect(jest.mocked(S3Client)).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({ endpoint: 'http://minio:9000' }),
+    );
+    expect(jest.mocked(S3Client)).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({ endpoint: 'https://files.lia.example.com' }),
+    );
+    expect(jest.mocked(getSignedUrl)).toHaveBeenCalledWith(
+      expect.objectContaining({ send: mockSend }),
+      expect.anything(),
+      { expiresIn: 3600 },
+    );
   });
 });
 

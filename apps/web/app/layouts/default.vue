@@ -12,6 +12,7 @@ import {
   KanbanSquareIcon,
 } from 'lucide-vue-next';
 import { useTheme } from '~/modules/shared/composables/useTheme';
+import { LiaWordmark } from '~/modules/shared';
 import {
   Sidebar,
   SidebarContent,
@@ -62,16 +63,7 @@ const userInitials = computed(() => {
       <SidebarHeader class="px-2 py-3 space-y-2">
         <div class="flex items-center justify-center h-8">
           <NuxtLink to="/" class="flex items-center">
-            <img
-              src="/images/logos/logoA_tendios_white.svg"
-              alt="Tendios"
-              class="h-7 group-data-[collapsible=icon]:hidden"
-            >
-            <img
-              src="/images/logos/tendios-icono-dark.svg"
-              alt="Tendios"
-              class="h-7 hidden group-data-[collapsible=icon]:block"
-            >
+            <LiaWordmark inverted />
           </NuxtLink>
         </div>
 

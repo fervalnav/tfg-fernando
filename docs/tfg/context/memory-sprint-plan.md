@@ -230,6 +230,11 @@ Capítulo basado en ejecuciones verificables, no en expectativas.
 
 ## Iteración M7 - Manuales y capturas
 
+**Estado:** completada el 17 de agosto de 2026. El capítulo documenta la
+puesta en marcha local y los recorridos funcionales mediante datos y archivos
+ficticios. El despliegue público permanece aplazado hasta disponer de un
+entorno verificable.
+
 ### Capítulos
 
 - Capítulo 8: manuales.
@@ -269,6 +274,23 @@ Manual reproducible con capturas actuales y sin datos sensibles.
 
 Versión candidata a revisión de la tutora.
 
+## Revisión transversal de los capítulos 1--8
+
+**Estado:** completada el 17 de agosto de 2026.
+
+La revisión contrastó estructura, profundidad, trazabilidad y maquetación con
+las guías internas y las memorias modelo. Se corrigieron la explicación de los
+roles en la adaptación individual de Scrum, el carácter provisional del
+presupuesto, una relación errónea entre pruebas y reglas de negocio, las
+referencias textuales de figuras y tablas, la configuración reproducible del
+proveedor de IA local y la diferenciación visual entre la vista general de
+preguntas y el detalle de un resultado generado.
+
+Permanecen deliberadamente abiertos los datos enumerados en
+`context/final-todo.md`: coste y fecha del equipo, criterios económicos
+definitivos, consumos de pago, fecha académica, despliegue y cierre de la
+campaña experimental.
+
 ## Auditoría técnica previa a la redacción final
 
 Datos verificados de nuevo el 12 de agosto de 2026 con Node 26.1.0:
@@ -286,11 +308,10 @@ Datos verificados de nuevo el 12 de agosto de 2026 con Node 26.1.0:
 - `pnpm check-types`, `pnpm lint` y `pnpm build` finalizan correctamente sin
   caché de Turborepo; `git diff --check` también pasa. El lint mantiene 13
   avisos no bloqueantes en componentes UI.
-- Existe un workflow de integración continua. La ejecución `31639676403`
-  completa tipos, lint, pruebas, cobertura y build, pero falla en los E2E de API
-  porque el registro devuelve HTTP 500. Localmente los 12 casos pasan. La
-  ejecución fallida usó PostgreSQL 17; la definición de CI se ha alineado con
-  PostgreSQL 16 y queda pendiente publicar y ejecutar esa revisión.
+- El workflow de integración continua ejecuta tipos, lint, pruebas, cobertura,
+  build y E2E de API con PostgreSQL 16. Las ejecuciones `31687608812` y
+  `31689863930` finalizaron correctamente después de incorporar el secreto E2E
+  ausente y alinear el entorno remoto con el local.
 
 La cobertura no es un objetivo por sí sola. La estrategia prioriza los riesgos
 funcionales del proyecto y combina pruebas unitarias, de componentes, de API y
@@ -300,13 +321,9 @@ de navegador.
 
 ### Prioridad crítica para defender el núcleo
 
-1. **Validar la CI alineada.** PostgreSQL local y CI utilizan ya la versión 16
-   y el registro ya no ejecuta en paralelo repositorios que comparten
-   `EntityManager`; falta publicar la revisión y obtener una ejecución remota
-   completa.
-2. **Completar la evaluación de IA.** Seleccionar documentos permitidos, fijar
-   respuestas esperadas y ejecutar la rúbrica definida para medir calidad,
-   repetibilidad, fallos, latencia y coste.
+1. **Completar la evaluación de IA.** El banco, las respuestas esperadas y la
+   rúbrica están congelados; quedan 28 salidas de Flash y su revisión cuando se
+   reponga la cuota disponible.
 
 ### Cierre técnico completado el 13 de agosto de 2026
 
@@ -337,9 +354,12 @@ de navegador.
 
 ## Orden recomendado inmediato
 
-1. Confirmar una ejecución completa de CI cuando GitHub asigne un runner.
-2. Ejecutar M1 y redactar el contexto, la motivación y los objetivos con fuentes
-   verificadas.
-3. Crear el catálogo de requisitos de M3 en paralelo con M2.
-4. Redactar M4-M5 con la evidencia ya estable.
-5. Ejecutar la evaluación experimental de IA y cerrar M6-M8.
+1. Completar las 28 salidas de Flash y reconciliar sus revisiones sin modificar
+   el banco congelado.
+2. Confirmar los datos económicos pendientes del presupuesto y la fecha
+   académica definitiva.
+3. Decidir si se validará un despliegue o se mantendrá expresamente como trabajo
+   futuro.
+4. Redactar los capítulos 9 y 10 y cerrar el resumen y el abstract con los
+   resultados disponibles.
+5. Ejecutar la revisión final de referencias, índices, maquetación y anexos.

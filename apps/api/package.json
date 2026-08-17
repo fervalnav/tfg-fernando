@@ -12,6 +12,7 @@
     "start": "nest start",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node -r tsconfig-paths/register dist/main",
+    "migration:up:prod": "node dist/migrate",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "check-types": "tsc --noEmit --incremental false",
     "test": "jest --runInBand",

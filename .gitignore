@@ -51,5 +51,13 @@ yarn-error.log*
 *.pem
 .vscode/
 
+# Infrastructure as code and production deployment secrets
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+deploy/.env
+
 # Local reference material used while drafting the TFG
 /docs/refs/

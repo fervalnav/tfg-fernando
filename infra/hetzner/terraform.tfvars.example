@@ -1,0 +1,12 @@
+server_name = "lia-production"
+server_type = "cx23"
+location    = "nbg1"
+
+# Generate with: ssh-keygen -t ed25519 -a 100 -f ~/.ssh/lia_hetzner
+ssh_public_key = "ssh-ed25519 AAAA_REPLACE_ME lia-hetzner"
+
+# Discover your current public address and express it as a single-host CIDR.
+# Update the firewall through OpenTofu whenever that address changes.
+admin_cidrs = ["203.0.113.10/32"]
+
+enable_backups = true

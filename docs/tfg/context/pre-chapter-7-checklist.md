@@ -172,13 +172,13 @@ Estos elementos no bloquean el capítulo 7 y deben cerrarse en su iteración:
 
 ## Preparación antes del capítulo 8
 
-- [ ] Decidir la identidad final de LIA y retirar la marca provisional Tendios
-  de las pantallas y capturas si no formará parte de la entrega.
-- [ ] Crear un conjunto coherente de usuarios, cuenta, licitaciones, pipelines,
+- [x] Adoptar una identidad textual sencilla de LIA y retirar la marca
+  provisional Tendios de las pantallas que aparecerán en el manual.
+- [x] Crear un conjunto coherente de usuarios, cuenta, licitaciones, pipelines,
   workflows, preguntas, campos, resúmenes y PDFs completamente ficticios.
 - [ ] Revisar estados de carga, error, vacío y comportamiento responsive de los
   recorridos que aparecerán en el manual.
-- [ ] Capturar todos los flujos estables con la misma resolución, recorte y
-  estilo visual; las dos capturas de autenticación actuales son provisionales.
-- [ ] Documentar únicamente la puesta en marcha local mientras no exista un
+- [x] Capturar todos los flujos estables con la misma resolución, recorte y
+  estilo visual, incluida la autenticación con la identidad de LIA.
+- [x] Documentar únicamente la puesta en marcha local mientras no exista un
   despliegue real verificado.

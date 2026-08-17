@@ -139,7 +139,7 @@ function generate(id: string): void {
       <Card v-for="question in questions" :key="question.id">
         <CardHeader class="pb-3">
           <div class="flex items-start justify-between gap-4">
-            <div>
+            <div class="min-w-0 flex-1">
               <CardTitle class="text-base">{{ question.question }}</CardTitle>
               <CardDescription v-if="question.passConditionPrompt" class="mt-1">
                 {{ question.passConditionPrompt }}
@@ -148,16 +148,16 @@ function generate(id: string): void {
             <Badge
               v-if="question.aiStatus === 'PENDING' || question.aiStatus === 'PROCESSING'"
               variant="secondary"
-              class="gap-1 text-blue-700"
+              class="shrink-0 gap-1 text-blue-700"
             >
               <LoaderCircleIcon class="size-3.5 animate-spin" />
               Generando
             </Badge>
-            <Badge v-else-if="question.aiStatus === 'FAILED'" variant="destructive" class="gap-1">
+            <Badge v-else-if="question.aiStatus === 'FAILED'" variant="destructive" class="shrink-0 gap-1">
               <XCircleIcon class="size-3.5" />
               Error
             </Badge>
-            <Badge v-else-if="question.answer !== null" variant="secondary" class="gap-1 text-emerald-700">
+            <Badge v-else-if="question.answer !== null" variant="secondary" class="shrink-0 gap-1 text-emerald-700">
               <CheckCircle2Icon class="size-3.5" />
               Respondida
             </Badge>
@@ -172,7 +172,7 @@ function generate(id: string): void {
             </p>
           </div>
           <p v-if="question.aiError" class="text-sm text-destructive">{{ question.aiError }}</p>
-          <div class="flex flex-col gap-3 sm:flex-row">
+          <div class="space-y-3">
             <Input
               v-if="question.answerType === 'TEXT'"
               :model-value="textAnswer(question.id)"
@@ -187,27 +187,29 @@ function generate(id: string): void {
               "
               @update:model-value="draftAnswers[question.id] = $event === 'true'"
             >
-              <SelectTrigger class="sm:max-w-xs"><SelectValue placeholder="Selecciona una respuesta" /></SelectTrigger>
+              <SelectTrigger class="w-full"><SelectValue placeholder="Selecciona una respuesta" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="true">Sí</SelectItem>
                 <SelectItem value="false">No</SelectItem>
               </SelectContent>
             </Select>
-            <Button
-              variant="outline"
-              class="shrink-0"
-              :disabled="
-                isRequestingGeneration || question.aiStatus === 'PENDING' || question.aiStatus === 'PROCESSING'
-              "
-              @click="generate(question.id)"
-            >
-              <SparklesIcon class="mr-2 size-4" />
-              {{ question.aiStatus === 'COMPLETED' ? 'Regenerar' : 'Responder con IA' }}
-            </Button>
-            <Button :disabled="isPending" class="shrink-0" @click="save(question.id)">
-              <SaveIcon class="mr-2 size-4" />
-              Guardar
-            </Button>
+            <div class="flex flex-wrap justify-end gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                :disabled="
+                  isRequestingGeneration || question.aiStatus === 'PENDING' || question.aiStatus === 'PROCESSING'
+                "
+                @click="generate(question.id)"
+              >
+                <SparklesIcon class="mr-2 size-4" />
+                {{ question.aiStatus === 'COMPLETED' ? 'Regenerar' : 'Responder con IA' }}
+              </Button>
+              <Button size="sm" :disabled="isPending" @click="save(question.id)">
+                <SaveIcon class="mr-2 size-4" />
+                Guardar
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
