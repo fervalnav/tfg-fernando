@@ -23,6 +23,22 @@ construcción incremental: primero la plataforma y la identidad; después la
 configuración del dominio; y, finalmente, la gestión de oportunidades, la
 cualificación y la integración de inteligencia artificial.
 
+\subsection{Roles y responsabilidades}
+
+La adaptación individual concentra en el autor las responsabilidades que en un
+equipo Scrum se distribuyen entre varios perfiles. Como responsable del
+producto, ordena el \emph{product backlog} y delimita el objetivo de cada
+sprint; como facilitador del proceso, comprueba el estado de las tareas y
+resuelve los bloqueos técnicos; y como equipo de desarrollo, realiza el
+análisis, el diseño, la implementación y las pruebas. La tutora desempeña la
+dirección académica del TFG y queda fuera de la ejecución técnica del
+incremento.
+
+Esta concentración de responsabilidades exige criterios de cierre explícitos.
+Un sprint no se considera terminado únicamente porque exista código: el
+incremento debe compilar, superar las comprobaciones aplicables y dejar
+delimitado el trabajo pendiente antes de comenzar la siguiente iteración.
+
 La memoria se desarrolla mediante iteraciones específicas, identificadas como
 M0, M1 y sucesivas. De este modo, cada bloque documental se redacta y revisa
 cuando las funcionalidades que describe han alcanzado un estado estable.
@@ -74,8 +90,11 @@ un registro diario de actividad.
 
 \section{Planificación del esfuerzo}
 
-La dedicación total del proyecto se establece en 320 horas e incluye análisis,
-diseño, desarrollo, pruebas y elaboración de la memoria. La
+La dedicación total se reconstruye como una estimación de 320 horas e incluye
+análisis, diseño, desarrollo, pruebas y elaboración de la memoria. No se trata
+de un registro horario diario: las partidas se han redondeado por bloques de
+trabajo para expresar la distribución del esfuerzo sin introducir una precisión
+que no puede justificarse. La
 \Cref{tab:effort-breakdown} distribuye el esfuerzo por bloques de trabajo. Las
 pruebas realizadas dentro de cada sprint se incluyen en el bloque funcional
 correspondiente; la partida específica de calidad agrupa la infraestructura
@@ -148,10 +167,13 @@ el desarrollo.
 
 \subsection{Coste de personal}
 
-Para valorar el trabajo se adopta un coste medio de 25,67 euros por hora para el
-perfil de desarrollador de software y una cuota empresarial del 29,9\,\%. La
-tarifa se basa en el informe sobre perfiles profesionales informáticos de la
-Junta de Andalucía \cite{juntaPerfilesInformaticos2018}.
+Para valorar el trabajo se adopta provisionalmente una tarifa de referencia de
+25,67 euros por hora para el perfil de desarrollador de software. Esta cifra
+procede del informe sobre perfiles profesionales informáticos de la Junta de
+Andalucía \cite{juntaPerfilesInformaticos2018}; no se presenta como una tabla
+salarial vigente de 2026. También se emplea, como hipótesis provisional de
+cálculo, una cuota empresarial del 29,9\,\%. Ambos criterios deberán confirmarse
+antes de cerrar el presupuesto definitivo.
 
 El coste bruto asociado a las 320 horas es:
 
@@ -165,13 +187,13 @@ La cuota empresarial asciende a:
   C_{\text{social}} = 8\,214{,}40 \times 0{,}299 = 2\,456{,}11~\text{euros}.
 \end{equation}
 
-Por tanto, el coste total de personal es de 10\,670,51 euros, como se resume en
-la \Cref{tab:personnel-cost}.
+Con estas hipótesis, el coste provisional de personal es de 10\,670,51 euros,
+como se resume en la \Cref{tab:personnel-cost}.
 
 \begin{table}[H]
   \centering
   \small
-  \caption{Coste de personal del proyecto.}
+  \caption{Estimación provisional del coste de personal del proyecto.}
   \label{tab:personnel-cost}
   \begin{tabular}{@{}lr@{}}
     \toprule
@@ -201,6 +223,10 @@ al presupuesto final. Del mismo modo, los servicios de IA y las licencias de
 pago se contabilizarán por su consumo efectivo, sin asignar un coste ficticio a
 planes gratuitos.
 
+La \Cref{tab:hardware-services-cost} diferencia los conceptos confirmados de
+aquellos para los que todavía falta el dato de adquisición o consumo. Esta
+separación evita que una partida pendiente se confunda con un coste nulo.
+
 \begin{table}[H]
   \centering
   \small
@@ -218,6 +244,7 @@ planes gratuitos.
   \end{tabular}
 \end{table}
 
-Con los datos disponibles, el coste cuantificado asciende a 10\,670,51 euros
-correspondientes al personal. El total definitivo se cerrará al incorporar la
-amortización del equipo y, cuando proceda, los consumos y servicios confirmados.
+Con los criterios provisionales disponibles, el coste cuantificado asciende a
+10\,670,51 euros correspondientes al personal. No constituye todavía el total
+definitivo: deberá recalcularse tras confirmar la tarifa, la cuota empresarial,
+la amortización del equipo y, cuando proceda, los consumos y servicios reales.

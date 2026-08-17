@@ -82,7 +82,9 @@ apartados específicos.
   \end{tabular}
 \end{table}
 
-El paquete \texttt{@tfg/types} contiene TypeScript sin dependencias de NestJS,
+La \Cref{tab:monorepo-units} delimita qué responsabilidades pertenecen a cada
+unidad y evita confundir contratos compartidos con entidades de negocio. El
+paquete \texttt{@tfg/types} contiene TypeScript sin dependencias de NestJS,
 Nuxt ni MikroORM. Los DTO de respuesta de la API implementan sus tipos y los
 composables del frontend los consumen directamente. Esta frontera evita
 duplicar contratos, pero no comparte entidades de dominio: una oportunidad de
@@ -102,6 +104,8 @@ estático, no solo en una convención documental.
 \subsection{Módulos funcionales}
 
 La API se divide por capacidades de negocio y no por tipos técnicos globales.
+La \Cref{tab:backend-modules} resume las fronteras principales y sus
+colaboraciones.
 Los módulos de autenticación, pipelines, workflows, oportunidades, preguntas
 de control, campos personalizados, resúmenes y adjuntos mantienen sus propias
 capas. El módulo de oportunidades coordina el recorrido de cualificación y se
@@ -223,7 +227,8 @@ datos; el frontend conserva estado de interfaz, sesión y caché de consultas.
   \label{fig:frontend-architecture}
 \end{figure}
 
-Las páginas generadas por el sistema de rutas son deliberadamente finas:
+Como muestra la \Cref{fig:frontend-architecture}, las páginas generadas por el
+sistema de rutas son deliberadamente finas:
 seleccionan el layout y componen componentes de los módulos. La lógica
 específica se agrupa por dominio en autenticación, pipelines, workflows,
 oportunidades, preguntas, campos y resúmenes. Los componentes compartidos, el
@@ -315,8 +320,9 @@ servicio externo proporciona esas métricas.
   \label{fig:ai-ports-adapters}
 \end{figure}
 
-La factoría del módulo selecciona el adaptador a partir de variables de
-entorno. El adaptador de Google utiliza su proveedor específico y admite el
+La \Cref{fig:ai-ports-adapters} separa los casos de uso de los adaptadores
+concretos. La factoría del módulo selecciona el adaptador a partir de variables
+de entorno. El adaptador de Google utiliza su proveedor específico y admite el
 envío directo de documentos. El adaptador compatible con OpenAI permite
 conectar Ollama en local u otro servicio que implemente esa API. Un tercer
 adaptador determinista se limita a pruebas y está bloqueado en producción. Los

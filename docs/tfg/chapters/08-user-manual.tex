@@ -1,57 +1,380 @@
 \chapter{Manual de usuario}
 \label{chap:user-manual}
 
+Este capítulo describe la puesta en marcha local y el uso de LIA desde el
+punto de vista de una persona usuaria. Las capturas se han obtenido sobre una
+instalación local con una cuenta y expedientes ficticios. Por tanto, no
+contienen documentación de licitaciones reales ni secretos de configuración.
+El manual de despliegue en un entorno público queda fuera de este capítulo,
+puesto que en el momento de redactarlo no existe un despliegue verificado.
+
 \section{Requisitos previos}
+
+Para ejecutar el sistema se necesita un equipo con los siguientes componentes:
+
+\begin{itemize}
+  \item Node.js 26.1.0, versión fijada en el archivo \texttt{.nvmrc};
+  \item pnpm 11.1.2, gestor de paquetes declarado por el monorepositorio;
+  \item Docker y Docker Compose para PostgreSQL, RabbitMQ, MinIO y MailHog;
+  \item un navegador web actualizado;
+  \item de forma opcional, las credenciales de un proveedor externo de IA.
+\end{itemize}
+
+La configuración de ejemplo selecciona Ollama y requiere iniciar su perfil
+local mediante \texttt{make ai-up}. Como alternativa, para recorrer la
+aplicación sin descargar un modelo, enviar documentación a un servicio externo
+ni consumir cuota, se puede establecer \texttt{AI\_PROVIDER=fake} en
+\texttt{apps/api/.env}. Este proveedor genera respuestas deterministas y se
+reserva para desarrollo y pruebas. Para evaluar resultados reales es necesario
+configurar expresamente un proveedor externo admitido y sus credenciales.
+
+\clearpage
 \section{Instalación y puesta en marcha}
+\label{sec:user-manual-startup}
+
+Una vez disponible una copia del repositorio, la primera instalación se realiza
+desde su directorio raíz. El Fragmento~\ref{lst:user-manual-startup} muestra la
+secuencia completa. El comando \texttt{nvm use} debe ejecutarse antes de
+cualquier comando de Node.js o pnpm.
+
+\begin{lstlisting}[language=bash,caption={Puesta en marcha del entorno local.},label={lst:user-manual-startup}]
+nvm use
+make setup
+pnpm install
+make migration-up
+pnpm dev
+\end{lstlisting}
+
+\texttt{make setup} crea los archivos de entorno a partir de los ejemplos y
+levanta la infraestructura. Antes de continuar se deben revisar
+\texttt{apps/api/.env} y \texttt{apps/web/.env}; en particular, no se deben
+mantener secretos de ejemplo en un entorno compartido. La base de datos puede
+cargarse con información ficticia mediante \texttt{make seed}, aunque este
+paso es opcional. Si se conserva la configuración predeterminada de Ollama,
+también debe ejecutarse \texttt{make ai-up}; si se selecciona el proveedor
+\texttt{fake}, ese servicio adicional no es necesario.
+
+Tras iniciar el desarrollo, la interfaz web queda disponible en
+\url{http://localhost:3001} y la API en \url{http://localhost:3000/api}. El
+estado del backend se comprueba mediante el Fragmento~\ref{lst:user-manual-health}.
+
+\begin{lstlisting}[language=bash,caption={Comprobación del estado de la API.},label={lst:user-manual-health}]
+curl http://localhost:3000/api/health
+\end{lstlisting}
+
+La infraestructura se detiene con \texttt{make down}. Si se modifica el
+esquema de persistencia, las migraciones pendientes se aplican de nuevo con
+\texttt{make migration-up}.
 
 \section{Acceso a la aplicación}
 \label{sec:user-manual-access}
 
-La aplicación dispone de un sistema de autenticación mediante correo
-electrónico y contraseña. Desde la pantalla de acceso, el usuario puede iniciar
-sesión con una cuenta existente o acceder al formulario de registro mediante el
-enlace \emph{Regístrate}.
+La aplicación dispone de autenticación mediante correo electrónico y
+contraseña. Desde la pantalla de acceso se puede iniciar sesión con una cuenta
+existente o abrir el formulario de registro mediante el enlace
+\emph{Regístrate}.
 
 \subsection{Creación de una cuenta}
 
-Para crear una cuenta nueva, el usuario debe completar los campos de nombre,
-apellido, correo electrónico, contraseña y nombre de la empresa, tal y como se
-muestra en la Figura~\ref{fig:user-manual-register}. Todos los campos son
-obligatorios, el correo debe tener un formato válido y la contraseña debe
-contener al menos ocho caracteres. Una vez cumplimentado el formulario, se debe
-pulsar el botón \emph{Crear cuenta}.
+Para crear una cuenta, se completan los campos de nombre, apellidos, correo,
+contraseña y empresa de la Figura~\ref{fig:user-manual-register}. Todos son
+obligatorios, el correo debe ser válido y la contraseña debe contener al menos
+ocho caracteres. Al pulsar \emph{Crear cuenta}, LIA crea el usuario y su
+cuenta de trabajo.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.72\textwidth,trim=250bp 45bp 250bp 0,clip]{screenshots/auth-register.png}
-  \caption{Formulario de creación de una cuenta en el prototipo actual.}
+  \caption{Formulario de creación de una cuenta en LIA.}
   \label{fig:user-manual-register}
 \end{figure}
 
-Si ya se dispone de una cuenta, el enlace \emph{Inicia sesión}, situado bajo el
-formulario, permite regresar a la pantalla de acceso.
+Si ya se dispone de una cuenta, el enlace \emph{Inicia sesión} permite
+regresar a la pantalla de acceso.
 
-\subsection{Inicio de sesión}
+\subsection{Inicio y cierre de sesión}
 
-En la pantalla mostrada en la Figura~\ref{fig:user-manual-login}, el usuario
-debe introducir su correo electrónico y su contraseña y pulsar
-\emph{Iniciar sesión}. El sistema comprueba que el correo tenga un formato
-válido y que la contraseña no esté vacía antes de enviar la solicitud.
+En la pantalla de la Figura~\ref{fig:user-manual-login} se introducen el correo
+y la contraseña y se pulsa \emph{Iniciar sesión}. Si las credenciales no son
+correctas, la aplicación muestra un mensaje de error. Cuando la autenticación
+finaliza correctamente, se abre la página solicitada o la pantalla principal.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.72\textwidth,trim=250bp 45bp 250bp 0,clip]{screenshots/auth-login.png}
-  \caption{Pantalla de inicio de sesión del prototipo actual.}
+  \caption{Pantalla de inicio de sesión de LIA.}
   \label{fig:user-manual-login}
 \end{figure}
 
-Si las credenciales no son correctas, la aplicación informa al usuario mediante
-un mensaje de error. Cuando la autenticación se completa correctamente, el
-usuario es redirigido a la página solicitada inicialmente o, si no existe una
-redirección pendiente, a la pantalla principal.
+El menú de usuario de la barra lateral permite acceder al perfil, a la
+configuración o cerrar la sesión. El cierre elimina la sesión activa del
+navegador y devuelve al formulario de acceso.
 
+\section{Organización de la interfaz y gestión de la cuenta}
+
+La barra lateral principal da acceso a \emph{Inicio} y \emph{Oportunidades}.
+Puede contraerse para ampliar el área de trabajo. Dentro del detalle de una
+oportunidad aparece una segunda navegación contextual, que agrupa sus datos,
+documentos, elementos de cualificación y workflow.
+
+Los administradores disponen además de la sección \emph{Cuenta y miembros}.
+Desde ella pueden invitar a una persona por correo, asignarle el rol de miembro
+o administrador y eliminarla de la cuenta. La Figura~\ref{fig:user-manual-members}
+muestra esta pantalla. Un miembro sin permisos administrativos puede consultar
+y trabajar con las oportunidades, pero no administrar la composición de la
+cuenta.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth,trim=0 40bp 0 0,clip]{screenshots/settings-account.png}
+  \caption{Gestión de miembros y roles de una cuenta.}
+  \label{fig:user-manual-members}
+\end{figure}
+
+\section{Configuración de los procesos}
+\label{sec:user-manual-configuration}
+
+Antes de registrar oportunidades conviene configurar los procesos que
+utilizará el equipo. LIA separa esta configuración en pipelines, workflows y
+catálogos de cualificación.
+
+\subsection{Pipelines}
+
+Un pipeline define los estados comerciales por los que pasa una oportunidad.
+En \emph{Configuración > Pipelines} se puede crear un pipeline, editar su
+nombre y ordenar, añadir, modificar o eliminar estados. Cada estado dispone de
+un color para distinguirlo en la cartera. En la Figura~\ref{fig:user-manual-pipelines}
+se observa un pipeline configurado para el ciclo de una licitación pública.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.88\textwidth,trim=0 40bp 0 0,clip]{screenshots/settings-pipelines.png}
+  \caption{Configuración de un pipeline y sus estados.}
+  \label{fig:user-manual-pipelines}
+\end{figure}
+
+No debe eliminarse un estado sin comprobar previamente las oportunidades que
+lo utilizan. Durante la gestión diaria, el estado se cambia desde la cabecera
+del detalle o mediante el movimiento correspondiente en la cartera.
+
+\subsection{Workflows}
+
+Los workflows describen el trabajo operativo que debe completarse. Desde
+\emph{Configuración > Workflows} se crea o abre un proceso y se organizan sus
+pasos y acciones. Una acción puede solicitar una intervención manual, un
+documento, un elemento de cualificación, un cambio de estado o una operación de
+IA. La lista de la Figura~\ref{fig:user-manual-workflows} permite seleccionar
+el workflow adecuado para el tipo de análisis previsto.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth,trim=0 40bp 0 0,clip]{screenshots/settings-workflows.png}
+  \caption{Catálogo de workflows disponibles en la cuenta.}
+  \label{fig:user-manual-workflows}
+\end{figure}
+
+\subsection{Catálogos de cualificación}
+
+Las secciones \emph{Preguntas de control}, \emph{Campos personalizados} y
+\emph{Plantillas de resumen} mantienen elementos reutilizables:
+
+\begin{itemize}
+  \item las preguntas registran decisiones verificables, con respuestas de
+        tipo sí/no o texto y, cuando procede, una condición de éxito;
+  \item los campos almacenan información estructurada del expediente;
+  \item las plantillas de resumen definen la instrucción y el formato de una
+        síntesis reutilizable.
+\end{itemize}
+
+Cada catálogo permite crear, editar y eliminar sus plantillas. La
+Figura~\ref{fig:user-manual-question-catalog} muestra el catálogo de preguntas.
+Las plantillas referenciadas por el workflow se incorporan a la oportunidad al
+asignar dicho proceso; también pueden añadirse manualmente desde el detalle.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\textwidth,trim=0 40bp 0 0,clip]{screenshots/settings-control-questions.png}
+  \caption{Catálogo reutilizable de preguntas de control.}
+  \label{fig:user-manual-question-catalog}
+\end{figure}
+
+\clearpage
 \section{Gestión de oportunidades}
-\section{Configuración de pipelines y workflows}
-\section{Cualificación de una licitación}
+\label{sec:user-manual-opportunities}
+
+La sección \emph{Oportunidades} presenta la cartera en formato de lista o
+kanban. La vista de lista de la Figura~\ref{fig:user-manual-opportunity-list}
+permite buscar por texto y filtrar por estado, responsable, rango de importe y
+fecha límite. Estos filtros facilitan la revisión de los expedientes que
+requieren atención inmediata.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth,trim=0 40bp 0 0,clip]{screenshots/opportunities-list.png}
+  \caption{Cartera de oportunidades ficticias en vista de lista.}
+  \label{fig:user-manual-opportunity-list}
+\end{figure}
+
+\subsection{Alta y edición}
+
+El botón \emph{Nueva oportunidad} abre el formulario de alta. Como mínimo se
+indican el título, el pipeline y su estado inicial. También se pueden registrar
+la descripción, el importe y la fecha límite. Tras guardar, la oportunidad
+aparece en la cartera y se puede abrir su detalle.
+
+La cabecera del detalle permite cambiar el estado, asignar responsables y
+acceder a las acciones generales. En \emph{Detalles} se consultan y editan los
+datos comerciales, como ilustra la Figura~\ref{fig:user-manual-opportunity-detail}.
+La eliminación debe reservarse para registros creados por error, ya que
+retira la oportunidad y sus datos asociados.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth,trim=0 40bp 0 0,clip]{screenshots/opportunity-details.png}
+  \caption{Detalle general de una oportunidad ficticia.}
+  \label{fig:user-manual-opportunity-detail}
+\end{figure}
+
+\subsection{Asignación y seguimiento del workflow}
+
+En la opción contextual \emph{Workflow} se selecciona uno de los procesos
+activos y se pulsa \emph{Asignar}. LIA crea las acciones y elementos de
+cualificación vinculados a sus pasos. La Figura~\ref{fig:user-manual-opportunity-workflow}
+muestra el seguimiento por fases, junto con el progreso total y el de cada
+paso.
+
+Al abrir una acción manual se registra su resultado desde el panel de trabajo.
+Las acciones automáticas se ejecutan mediante el control de IA asociado. Una
+acción no debe marcarse como completada hasta revisar su salida y la evidencia
+disponible.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth,trim=0 40bp 0 0,clip]{screenshots/opportunity-workflow.png}
+  \caption{Seguimiento del workflow asignado a una oportunidad.}
+  \label{fig:user-manual-opportunity-workflow}
+\end{figure}
+
 \section{Gestión de documentos}
-\section{Generación de resultados con inteligencia artificial}
+\label{sec:user-manual-documents}
+
+La sección \emph{Documentación} almacena los PDF que sirven de base para el
+análisis. Para adjuntar un documento se selecciona un archivo de hasta 30 MB y
+se pulsa \emph{Adjuntar}. Una vez cargado, aparece en la lista de la
+Figura~\ref{fig:user-manual-documents}, desde la que puede descargarse o
+eliminarse.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth,trim=0 40bp 0 0,clip]{screenshots/opportunity-documents.png}
+  \caption{Documento PDF ficticio asociado a una oportunidad.}
+  \label{fig:user-manual-documents}
+\end{figure}
+
+Antes de solicitar una generación se debe comprobar que se han incorporado
+los pliegos y anexos relevantes. La ausencia de documentación reduce la
+evidencia disponible y puede hacer que el sistema indique que un requisito no
+se puede acreditar. Los documentos se conservan en el almacenamiento de
+objetos configurado para la instalación.
+
+\clearpage
+\section{Cualificación de una licitación}
+\label{sec:user-manual-qualification}
+
+La cualificación se organiza en tres grupos complementarios. En todos ellos el
+resultado generado es una propuesta revisable: el usuario conserva la decisión
+de guardarlo, corregirlo o volver a generarlo.
+
+\subsection{Preguntas de control}
+
+Las preguntas permiten verificar solvencia, documentación, capacidad y otros
+criterios de decisión. Se responde manualmente mediante el control asociado o
+se pulsa \emph{Responder con IA}. También se pueden incorporar plantillas
+adicionales con \emph{Añadir}. La Figura~\ref{fig:user-manual-questions}
+muestra las preguntas instanciadas para el expediente.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth,trim=0 40bp 0 0,clip]{screenshots/qualification-questions.png}
+  \caption{Revisión de preguntas de control de una oportunidad.}
+  \label{fig:user-manual-questions}
+\end{figure}
+
+\clearpage
+\subsection{Campos personalizados}
+
+Los campos personalizados recogen valores estructurados, por ejemplo el número
+de expediente o el presupuesto sin IVA. El usuario puede introducir el valor
+y guardarlo o usar \emph{Generar con IA}. La etiqueta \emph{IA} identifica
+los campos habilitados para esta segunda opción. La
+Figura~\ref{fig:user-manual-fields} muestra ambos controles.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth,trim=0 40bp 0 0,clip]{screenshots/qualification-fields.png}
+  \caption{Campos personalizados editables y asistidos por IA.}
+  \label{fig:user-manual-fields}
+\end{figure}
+
+\clearpage
+\subsection{Resúmenes}
+
+Las plantillas de resumen producen una síntesis orientada a un propósito
+concreto. Después de pulsar \emph{Generar con IA}, el contenido permanece
+editable. \emph{Guardar revisión} conserva la versión validada por el equipo.
+La plantilla y el área de revisión se observan en la
+Figura~\ref{fig:user-manual-summaries}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth,trim=0 40bp 0 0,clip]{screenshots/qualification-summaries.png}
+  \caption{Plantillas de resumen y área de revisión humana.}
+  \label{fig:user-manual-summaries}
+\end{figure}
+
+\clearpage
+\section{Generación y revisión de resultados con IA}
+\label{sec:user-manual-ai}
+
+Las generaciones se ejecutan de forma asíncrona. Al iniciarlas, la interfaz
+muestra el estado de procesamiento y bloquea temporalmente una nueva solicitud
+sobre el mismo elemento. Cuando termina una pregunta de control, LIA presenta
+la respuesta propuesta, la evidencia textual y el criterio aplicado, como en
+la Figura~\ref{fig:user-manual-ai-result}. El botón \emph{Regenerar} repite el
+análisis y \emph{Guardar} confirma la revisión del usuario.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth,trim=350bp 70bp 20bp 270bp,clip]{screenshots/ai-question-result.png}
+  \caption{Resultado de IA revisable obtenido en el entorno local de validación.}
+  \label{fig:user-manual-ai-result}
+\end{figure}
+
+Una salida de IA no sustituye la comprobación de los pliegos. Si la evidencia
+es insuficiente, contradictoria o no identifica el documento que respalda la
+conclusión, el usuario debe corregir el valor o incorporar la documentación
+necesaria antes de regenerar. Los errores temporales permiten repetir la
+operación; si persisten, se debe comprobar la configuración del proveedor y el
+estado de la API.
+
+\clearpage
+\section{Secuencia de trabajo recomendada}
+
+El recorrido habitual de una licitación queda resumido en los siguientes
+pasos:
+
+\begin{enumerate}
+  \item configurar o revisar el pipeline, el workflow y los catálogos;
+  \item crear la oportunidad y completar sus datos generales;
+  \item asignar responsables y el workflow apropiado;
+  \item adjuntar los pliegos y anexos en formato PDF;
+  \item revisar las preguntas, campos y resúmenes creados para el expediente;
+  \item ejecutar las generaciones necesarias y contrastar su evidencia;
+  \item guardar las respuestas revisadas y completar las acciones del workflow;
+  \item actualizar el estado comercial de la oportunidad conforme avance el
+        proceso de preparación y presentación.
+\end{enumerate}
+
+Esta secuencia mantiene separados el dato de origen, la propuesta automática y
+la validación humana. De este modo, el equipo puede utilizar la automatización
+sin perder la trazabilidad de las decisiones de cualificación.

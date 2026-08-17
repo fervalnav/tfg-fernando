@@ -91,8 +91,8 @@ export class TokenService {
     const isProd = this.config.get<string>('NODE_ENV') === 'production';
 
     res.cookie(ACCESS_COOKIE, accessToken, {
-      httpOnly: false,
-      sameSite: isProd ? 'none' : 'lax',
+      httpOnly: true,
+      sameSite: 'lax',
       secure: isProd,
       path: '/',
       maxAge: 60 * 60 * 1000, // 1h
@@ -100,7 +100,7 @@ export class TokenService {
 
     res.cookie(REFRESH_COOKIE, refreshToken, {
       httpOnly: true,
-      sameSite: isProd ? 'none' : 'lax',
+      sameSite: 'lax',
       secure: isProd,
       path: '/',
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30d
@@ -108,8 +108,10 @@ export class TokenService {
   }
 
   clearTokenCookies(res: Response): void {
-    res.clearCookie(ACCESS_COOKIE);
-    res.clearCookie(REFRESH_COOKIE);
+    const isProd = this.config.get<string>('NODE_ENV') === 'production';
+    const cookieOptions = { sameSite: 'lax' as const, secure: isProd, path: '/' };
+    res.clearCookie(ACCESS_COOKIE, { ...cookieOptions, httpOnly: true });
+    res.clearCookie(REFRESH_COOKIE, { ...cookieOptions, httpOnly: true });
   }
 
   getRefreshTokenFromCookie(cookies: Record<string, string> | undefined): string | null {

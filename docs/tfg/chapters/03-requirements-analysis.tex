@@ -146,7 +146,9 @@ relacionar para ejecutar sus procesos. Se describen en la
 \subsection{Reglas de negocio}
 
 Las reglas de negocio recogen restricciones que deben mantenerse con
-independencia de la interfaz o de la tecnología utilizada.
+independencia de la interfaz o de la tecnología utilizada. La
+\Cref{tab:business-rules} reúne las invariantes aplicadas por el dominio y los
+casos de uso.
 
 {\footnotesize
 \begin{longtable}{@{}L{1.7cm}L{3cm}L{7.3cm}L{1.7cm}@{}}
@@ -179,7 +181,8 @@ independencia de la interfaz o de la tecnología utilizada.
 \subsection{Requisitos no funcionales}
 
 Los requisitos no funcionales definen las propiedades de calidad necesarias
-para que el núcleo sea seguro, mantenible y evaluable.
+para que el núcleo sea seguro, mantenible y evaluable. Se presentan en la
+\Cref{tab:non-functional-requirements}.
 
 {\small
 \begin{longtable}{@{}L{1.7cm}L{3cm}L{7.3cm}L{1.7cm}@{}}
@@ -209,10 +212,10 @@ para que el núcleo sea seguro, mantenible y evaluable.
 
 \section{Matriz de trazabilidad}
 
-La trazabilidad relaciona los requisitos funcionales con los objetivos, el
-módulo responsable y la comprobación principal. La columna de pruebas no
-implica que un único caso cubra todo el requisito, sino que identifica la capa
-donde se verifica su comportamiento más representativo.
+La \Cref{tab:functional-traceability} relaciona los requisitos funcionales con
+los objetivos, el módulo responsable y la comprobación principal. La columna
+de pruebas no implica que un único caso cubra todo el requisito, sino que
+identifica la capa donde se verifica su comportamiento más representativo.
 
 {\small
 \begin{longtable}{@{}L{1.5cm}L{2cm}L{2.8cm}L{4.5cm}L{1.7cm}@{}}
@@ -267,7 +270,7 @@ los huecos transversales sin repetir todas las relaciones de la tabla anterior.
     RN-001--RN-002, RN-004--RN-010 & OG-001, OE-001, OE-003 & Reglas de dominio y aplicación cubiertas por pruebas unitarias y E2E. \\
     RN-003 & OG-001 & Matriz E2E de operaciones permitidas a \texttt{ADMIN}, rechazo a \texttt{MEMBER} y autoeliminación. \\
     RNF-001--RNF-007 & Todos & Guardas, validación, arquitectura modular, fake de IA y entorno local reproducible. \\
-    RNF-008 & OE-002 & Existen métricas experimentales parciales; faltan completar la campaña y almacenarlas y explotarlas dentro de LIA. \\
+    RNF-008 & OE-002 & Existen métricas experimentales parciales; falta completar la campaña y almacenar y explotar las métricas dentro de LIA. \\
     \bottomrule
   \end{tabular}
 \end{table}

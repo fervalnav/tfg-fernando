@@ -91,7 +91,9 @@ empresarial.
   \end{tabular}
 \end{table}
 
-La integración continua reproduce la instalación bloqueada de dependencias y
+La \Cref{tab:testing-environment} distingue la infraestructura real de los
+dobles controlados en cada nivel. La integración continua reproduce la
+instalación bloqueada de dependencias y
 ejecuta comprobación de tipos, lint, pruebas unitarias, cobertura, construcción
 y E2E de API. El E2E de navegador se mantiene como validación local porque
 requiere el servicio MinIO y un navegador. Esta diferencia se registra de
@@ -445,7 +447,7 @@ cubierto por más de una suite.
   Salida de IA con forma incorrecta & RF-011; RF-015; RN-008; RNF-005; RNF-007 & Esquemas, fake determinista y adaptador de Google. & Completo \\
   Documento no válido o inseguro & RF-013--014; RN-002; RN-009; RNF-001 & Handlers, API E2E y navegador E2E con acceso directo, firmado y caducado. & Completo \\
   Solvencia no sustentada & RF-012; RF-016; RNF-008 & Banco ficticio, repeticiones y revisiones ciegas. & Parcial \\
-  Error y recuperación de IA & RF-017; RN-010 & Persistencia de estado fallido y reintento de la acción. & Completo \\
+  Error y recuperación de IA & RF-017; RN-007; RNF-003 & Persistencia de estado fallido, presentación del error y reintento de la acción. & Completo \\
 \end{longtable}
 
 Los resultados mantienen RF-012 y RF-016 como parciales. El sistema puede

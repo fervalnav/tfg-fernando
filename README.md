@@ -6,14 +6,14 @@ Monorepo Turborepo con NestJS (backend) + Nuxt 4 SPA (frontend). Arquitectura He
 
 ## Stack
 
-| Capa | Tecnología |
-|------|-----------|
-| Backend | NestJS 11, MikroORM 6, PostgreSQL |
-| Frontend | Nuxt 4 SPA, Vue 3, Pinia, TanStack Query |
-| Coordinación asíncrona | Eventos internos de NestJS CQRS |
-| Almacenamiento | AWS S3 (MinIO en local) |
-| IA | Vercel AI SDK, Google Generative AI y proveedores compatibles con OpenAI/Ollama |
-| Monorepo | Turborepo, pnpm workspaces |
+| Capa                   | Tecnología                                                                      |
+| ---------------------- | ------------------------------------------------------------------------------- |
+| Backend                | NestJS 11, MikroORM 6, PostgreSQL                                               |
+| Frontend               | Nuxt 4 SPA, Vue 3, Pinia, TanStack Query                                        |
+| Coordinación asíncrona | Eventos internos de NestJS CQRS                                                 |
+| Almacenamiento         | AWS S3 (MinIO en local)                                                         |
+| IA                     | Vercel AI SDK, Google Generative AI y proveedores compatibles con OpenAI/Ollama |
+| Monorepo               | Turborepo, pnpm workspaces                                                      |
 
 ## Estructura
 
@@ -77,6 +77,19 @@ make db-refresh         # Drop + re-run todas
 # Health check
 curl http://localhost:3000/api/health
 ```
+
+## Despliegue
+
+La preparación del entorno económico de producción se divide en dos partes:
+
+- [`infra/hetzner`](infra/hetzner/README.md) crea el servidor, el firewall y el
+  usuario de despliegue mediante OpenTofu o Terraform;
+- [`deploy`](deploy/README.md) define los contenedores, HTTPS, copias y el
+  despliegue manual desde GitHub Actions.
+
+La configuración no crea recursos por sí sola. El alta del servidor requiere
+un `terraform apply` explícito y el despliegue necesita un dominio y los
+secretos del entorno `production`.
 
 ## Módulos
 

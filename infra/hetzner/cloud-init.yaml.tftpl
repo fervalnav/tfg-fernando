@@ -1,0 +1,97 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+
+packages:
+  - docker.io
+  - docker-compose-v2
+  - fail2ban
+  - unattended-upgrades
+
+users:
+  - default
+  - name: deploy
+    gecos: LIA deployment user
+    groups:
+      - docker
+      - sudo
+    shell: /bin/bash
+    sudo:
+      - ALL=(ALL) NOPASSWD:ALL
+    lock_passwd: true
+    ssh_authorized_keys:
+      - ${ssh_public_key}
+
+ssh_pwauth: false
+disable_root: true
+
+swap:
+  filename: /swapfile
+  size: 2G
+  maxsize: 2G
+
+write_files:
+  - path: /etc/docker/daemon.json
+    owner: root:root
+    permissions: "0644"
+    content: |
+      {
+        "log-driver": "json-file",
+        "log-opts": {
+          "max-size": "10m",
+          "max-file": "3"
+        }
+      }
+
+  - path: /etc/ssh/sshd_config.d/99-lia-hardening.conf
+    owner: root:root
+    permissions: "0644"
+    content: |
+      PasswordAuthentication no
+      PermitRootLogin no
+      PubkeyAuthentication yes
+      X11Forwarding no
+      AllowUsers deploy
+
+  - path: /etc/systemd/system/lia-backup.service
+    owner: root:root
+    permissions: "0644"
+    content: |
+      [Unit]
+      Description=Create a logical PostgreSQL backup for LIA
+      Requires=docker.service
+      After=docker.service
+
+      [Service]
+      Type=oneshot
+      User=deploy
+      Group=deploy
+      ExecStart=/opt/lia/scripts/backup-postgres.sh
+
+  - path: /etc/systemd/system/lia-backup.timer
+    owner: root:root
+    permissions: "0644"
+    content: |
+      [Unit]
+      Description=Run the LIA PostgreSQL backup every day
+
+      [Timer]
+      OnCalendar=*-*-* 02:30:00 UTC
+      Persistent=true
+      RandomizedDelaySec=900
+
+      [Install]
+      WantedBy=timers.target
+
+runcmd:
+  - install -d -o deploy -g deploy -m 0750 /opt/lia
+  - install -d -o deploy -g deploy -m 0750 /opt/lia/backups/postgres
+  - systemctl enable --now docker
+  - systemctl restart docker
+  - systemctl restart ssh
+  - systemctl enable --now fail2ban
+  - systemctl enable --now unattended-upgrades
+  - systemctl daemon-reload
+  - systemctl enable lia-backup.timer
+
+final_message: "LIA host provisioning completed after $UPTIME seconds"

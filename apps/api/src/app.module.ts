@@ -15,10 +15,11 @@ import { OpportunityModule } from '@/opportunity';
 import { AttachmentModule } from '@/attachment';
 import { JwtAuthGuard } from './auth/infrastructure/guards/jwt-auth.guard';
 import { HttpErrorLoggingInterceptor } from './shared/infrastructure/interceptors/http-error-logging.interceptor';
+import { validateEnvironment } from './shared/infrastructure/config/validate-environment';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true, validate: validateEnvironment }),
     MikroOrmModule.forRoot(mikroOrmConfig),
     CqrsModule.forRoot(),
     AuthModule,

@@ -1,0 +1,17 @@
+.git
+.github
+.codex
+.claude
+.turbo
+.pnpm-store
+.DS_Store
+node_modules
+**/node_modules
+**/.nuxt
+**/.output
+**/coverage
+**/dist
+docs
+deploy/.env
+infra/**/.terraform
+infra/**/*.tfstate*

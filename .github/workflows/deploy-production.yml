@@ -1,0 +1,103 @@
+name: Deploy production
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    name: Build ${{ matrix.application }} image
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - application: api
+            dockerfile: apps/api/Dockerfile
+            image: ghcr.io/fervalnav/tfg-fernando-api
+          - application: web
+            dockerfile: apps/web/Dockerfile
+            image: ghcr.io/fervalnav/tfg-fernando-web
+          - application: minio
+            dockerfile: deploy/minio/Dockerfile
+            image: ghcr.io/fervalnav/tfg-fernando-minio
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          push: true
+          tags: |
+            ${{ matrix.image }}:${{ github.sha }}
+            ${{ matrix.image }}:latest
+          cache-from: type=gha,scope=${{ matrix.application }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.application }}
+
+  deploy:
+    name: Deploy to Hetzner
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+      packages: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure trusted SSH connection
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.HETZNER_SSH_PRIVATE_KEY }}
+          SSH_HOST_KEY: ${{ secrets.HETZNER_SSH_HOST_KEY }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/lia_hetzner
+          chmod 600 ~/.ssh/lia_hetzner
+          printf '%s\n' "$SSH_HOST_KEY" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Upload public deployment configuration
+        env:
+          HETZNER_HOST: ${{ secrets.HETZNER_HOST }}
+        run: |
+          ssh -i ~/.ssh/lia_hetzner "deploy@$HETZNER_HOST" 'mkdir -p /opt/lia/scripts'
+          scp -i ~/.ssh/lia_hetzner deploy/compose.yaml deploy/Caddyfile "deploy@$HETZNER_HOST:/opt/lia/"
+          scp -i ~/.ssh/lia_hetzner deploy/scripts/*.sh "deploy@$HETZNER_HOST:/opt/lia/scripts/"
+          ssh -i ~/.ssh/lia_hetzner "deploy@$HETZNER_HOST" 'chmod 750 /opt/lia/scripts/*.sh'
+
+      - name: Pull and start the selected revision
+        env:
+          HETZNER_HOST: ${{ secrets.HETZNER_HOST }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_USERNAME: ${{ github.actor }}
+        run: |
+          ssh -i ~/.ssh/lia_hetzner "deploy@$HETZNER_HOST" \
+            '/opt/lia/scripts/validate-env.sh /opt/lia/.env'
+          printf '%s' "$GHCR_TOKEN" | ssh -i ~/.ssh/lia_hetzner "deploy@$HETZNER_HOST" \
+            "docker login ghcr.io --username '$GHCR_USERNAME' --password-stdin"
+          ssh -i ~/.ssh/lia_hetzner "deploy@$HETZNER_HOST" \
+            'cd /opt/lia && test -s .env && IMAGE_TAG=${{ github.sha }} docker compose --env-file .env -f compose.yaml config --quiet'
+          ssh -i ~/.ssh/lia_hetzner "deploy@$HETZNER_HOST" \
+            'cd /opt/lia && IMAGE_TAG=${{ github.sha }} docker compose --env-file .env -f compose.yaml pull'
+          ssh -i ~/.ssh/lia_hetzner "deploy@$HETZNER_HOST" \
+            'cd /opt/lia && IMAGE_TAG=${{ github.sha }} docker compose --env-file .env -f compose.yaml up -d --wait --wait-timeout 180'
+          ssh -i ~/.ssh/lia_hetzner "deploy@$HETZNER_HOST" \
+            'docker logout ghcr.io && sudo systemctl enable --now lia-backup.timer && docker image prune -f'

@@ -1,0 +1,35 @@
+{
+	email {$ACME_EMAIL}
+	admin off
+}
+
+{$APP_DOMAIN} {
+	encode zstd gzip
+
+	header {
+		-Server
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+	}
+
+	@api path /api/*
+	reverse_proxy @api api:3000
+	reverse_proxy web:3001
+}
+
+{$FILES_DOMAIN} {
+	@unsupported not method GET HEAD
+	respond @unsupported 405
+
+	header {
+		-Server
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Content-Security-Policy "default-src 'none'; sandbox"
+	}
+
+	reverse_proxy minio:9000
+}
