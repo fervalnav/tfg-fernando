@@ -78,8 +78,13 @@ la ejecución
 - Banco v2 aprobado por un segundo agente antes de revisar salidas: cinco casos,
   siete PDF, 16 páginas y hashes SHA-256 congelados.
 - `gemini-3.1-flash-lite`: 60 de 60 salidas ejecutadas, todas con esquema válido.
-- `gemini-3-flash-preview`: 10 de 60 salidas ejecutadas, todas con esquema válido;
-  quedan 50 pendientes porque la clave gratuita alcanzó el límite diario de 20
-  solicitudes contando el piloto de calibración.
+- `gemini-3-flash-preview`: 32 de 60 salidas ejecutadas, todas con esquema
+  válido; quedan 28 pendientes tras alcanzar de nuevo la cuota diaria.
 - El piloto de cuota se conserva separado y no se agrega a la comparación final.
-- Las 70 salidas disponibles se han aleatorizado para dos revisiones ciegas.
+- Las 92 salidas disponibles se han aleatorizado para dos revisiones ciegas.
+
+Continuación del 17 de agosto de 2026: la cuota de Flash se restableció y
+permitió ejecutar otras 22 salidas antes de agotarse de nuevo. Flash queda en
+32/60, sin errores. Las 22 nuevas obtuvieron dos revisiones ciegas y se
+reconciliaron con las 70 anteriores: la calidad provisional de Flash es 7,75/8,
+con 100 % de validez y sin alucinaciones detectadas.

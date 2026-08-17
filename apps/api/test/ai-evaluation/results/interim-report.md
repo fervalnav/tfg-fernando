@@ -8,7 +8,7 @@ puntuaciones originales.
 
 | Modelo | Completadas | Calidad | Válidas | Mediana | P95 | Coste medio | Alucinaciones críticas |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| Gemini 3 Flash Preview | 10/60 | 7,80/8 | 100 % | 1.726 ms | 4.352 ms | 0,000941 USD | 0 |
+| Gemini 3 Flash Preview | 32/60 | 7,75/8 | 100 % | 2.152 ms | 8.716 ms | 0,001169 USD | 0 |
 | Gemini 3.1 Flash-Lite | 60/60 | 7,53/8 | 100 % | 2.663 ms | 5.687 ms | 0,000800 USD | 2 |
 
 Flash-Lite no es aceptable según el criterio congelado porque dos resúmenes del
@@ -16,7 +16,8 @@ caso de autobuses afirman que el candidato acredita rampa y espacio reservado,
 cuando `DOSSIER 2.1` solo acredita la rampa. Esta atribución transforma un dato
 ausente en cumplimiento de un requisito y se clasifica como alucinación crítica.
 
-Flash no puede compararse todavía de forma concluyente: la clave gratuita agotó
-su cuota diaria tras diez salidas finales y un piloto previo. Las 50 salidas
-restantes se reanudarán sin repetir las ya válidas. Por tanto, la tabla conserva
-las métricas observadas, pero no permite seleccionar un modelo definitivo.
+Flash no puede compararse todavía de forma concluyente: el 17 de agosto la
+cuota permitió ampliar la muestra de 10 a 32 salidas antes de agotarse de nuevo.
+Las 28 restantes se reanudarán sin repetir las ya válidas. Por tanto, la tabla
+conserva las métricas observadas, pero no permite seleccionar un modelo
+definitivo.

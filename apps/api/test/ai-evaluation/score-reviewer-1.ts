@@ -51,6 +51,17 @@ function review({ blindId, runId }: BlindMap): Review {
     result.evidence = 1;
     result.comment = 'El valor 24 es correcto, pero la evidencia no identifica la sección localizable PCAP 4.1.';
   }
+  if (
+    runId === 'fictitious-school-meals-02|control_question|gemini-3-flash-preview|1' ||
+    runId === 'fictitious-school-meals-02|control_question|gemini-3-flash-preview|2'
+  ) {
+    result.evidence = 1;
+    result.comment = 'La vigencia y DOSSIER 3.1 son correctos, pero la evidencia no identifica el requisito de PCAP 5.2.';
+  }
+  if (runId === 'fictitious-solar-maintenance-03|control_question|gemini-3-flash-preview|1') {
+    result.evidence = 1;
+    result.comment = 'La ausencia queda localizada en DOSSIER 4.2, pero falta vincularla con la exigencia de PCAP 6.4.';
+  }
   return result;
 }
 

@@ -1,8 +1,456 @@
-\chapter{Pruebas}
+\chapter{Pruebas y validación}
 \label{chap:testing}
 
-\section{Estrategia de pruebas}
-\section{Pruebas unitarias}
-\section{Pruebas de integración}
-\section{Pruebas de interfaz}
-\section{Resultados}
+La validación de LIA se ha planteado a partir de los riesgos del sistema: el
+acceso indebido a datos de otra cuenta, la pérdida de coherencia durante la
+ejecución de workflows, la aceptación de documentos no válidos y la
+persistencia de respuestas de inteligencia artificial (IA) incorrectas o con
+una estructura inesperada. Por este motivo, la estrategia combina pruebas
+aisladas y rápidas con recorridos completos sobre infraestructura real. La
+cobertura de código se utiliza como una señal auxiliar, pero no sustituye la
+comprobación explícita de estos riesgos.
+
+Este capítulo distingue dos actividades con objetivos diferentes. Las pruebas
+automatizadas verifican que el software integra correctamente sus componentes,
+valida los esquemas y responde de forma predecible ante errores. Por otra
+parte, un banco experimental estudia la calidad, la latencia y el coste de
+modelos generativos reales. En las pruebas automatizadas se utiliza un
+proveedor determinista, por lo que su éxito no demuestra la calidad semántica
+de un modelo externo.
+
+\section{Estrategia y niveles de prueba}
+\label{sec:testing-strategy}
+
+La \Cref{fig:testing-levels} resume la organización de las pruebas. En la base
+se encuentran las comprobaciones unitarias del dominio y de los casos de uso,
+que permiten recorrer un número elevado de variantes sin acceder a servicios
+externos. Sobre ellas se sitúan las pruebas de componentes y composables de la
+interfaz, las integraciones con adaptadores y esquemas, las pruebas de extremo
+a extremo de la API y, finalmente, los recorridos completos de navegador.
+
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{%
+    \input{figure-sources/tikz/testing-levels}
+  }
+  \caption{Niveles de prueba y evaluación experimental de IA.}
+  \label{fig:testing-levels}
+\end{figure}
+
+La evaluación con modelos reales aparece como una rama separada porque no
+persigue demostrar que una ruta HTTP funciona, sino estimar el comportamiento
+de una dependencia probabilística. Esta separación permite ejecutar la suite
+funcional sin credenciales, consumo facturable ni dependencia de cuotas
+externas, y evita convertir una respuesta concreta del modelo en una aserción
+frágil.
+
+Los niveles se han distribuido de la siguiente forma:
+
+\begin{itemize}
+  \item \textbf{Pruebas unitarias de dominio y aplicación.} Verifican
+  invariantes, transiciones de estado, autorización, aislamiento por cuenta,
+  publicación de eventos y tratamiento de errores.
+  \item \textbf{Pruebas de componentes y composables.} Comprueban el estado de
+  sesión, los filtros, las mutaciones HTTP, la invalidación de caché y los
+  controles visibles del workflow con la red simulada en su frontera.
+  \item \textbf{Pruebas de integración.} Validan repositorios, serialización,
+  adaptadores de almacenamiento y esquemas de salida de IA.
+  \item \textbf{Pruebas E2E de API.} Arrancan la aplicación NestJS y una base de
+  datos PostgreSQL reales; los servicios externos se sustituyen por dobles
+  controlados.
+  \item \textbf{Pruebas E2E de navegador.} Ejecutan Chromium contra la SPA y la
+  API reales, con PostgreSQL y MinIO, para recorrer las operaciones críticas
+  desde la perspectiva del usuario.
+\end{itemize}
+
+\section{Entorno y reproducibilidad}
+\label{sec:testing-environment}
+
+La campaña automatizada se ejecutó con Node.js 26.1.0 y pnpm 11.1.2. Las
+pruebas E2E utilizaron PostgreSQL 16 y, cuando el recorrido incluía adjuntos,
+MinIO. Cada base E2E se crea con un nombre reservado para pruebas y se regenera
+antes de la ejecución, de modo que no se reutilizan datos de desarrollo ni de
+producción. Los PDF empleados como fixtures carecen de información personal o
+empresarial.
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Entorno de ejecución de las pruebas.}
+  \label{tab:testing-environment}
+  \begin{tabular}{@{}p{3.4cm}p{4.4cm}p{6cm}@{}}
+    \toprule
+    \textbf{Nivel} & \textbf{Infraestructura} & \textbf{Dependencias controladas} \\
+    \midrule
+    Unitarias de API & Proceso Node.js & Repositorios, reloj, eventos y puertos mediante dobles. \\
+    Componentes web & Vitest y \texttt{happy-dom} & Frontera HTTP y configuración de Nuxt simuladas. \\
+    E2E de API & NestJS y PostgreSQL 16 & Almacenamiento en memoria y proveedor de IA determinista. \\
+    E2E de navegador & Chromium, Nuxt, NestJS, PostgreSQL 16 y MinIO & Proveedor de IA determinista. \\
+    Evaluación de IA & Adaptador Google y PDF ficticios & Prompts, esquemas, parámetros, casos y rúbrica congelados. \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+La integración continua reproduce la instalación bloqueada de dependencias y
+ejecuta comprobación de tipos, lint, pruebas unitarias, cobertura, construcción
+y E2E de API. El E2E de navegador se mantiene como validación local porque
+requiere el servicio MinIO y un navegador. Esta diferencia se registra de
+forma expresa: la integración continua no se presenta como evidencia de un
+recorrido que no ejecuta.
+
+\section{Pruebas unitarias y de componentes}
+\label{sec:unit-component-tests}
+
+\subsection{Dominio y casos de uso del backend}
+
+Las pruebas del backend se concentran en las reglas que pueden producir estados
+incoherentes o accesos indebidos. En autenticación se verifican la creación de
+sesiones, la rotación del token de refresco, la revocación ante reutilización,
+el cierre de sesión y el cambio de cuenta activa. La administración de cuenta
+incluye una comprobación específica de la guarda que admite a
+\texttt{ADMIN} y rechaza a \texttt{MEMBER}.
+
+En pipelines y workflows se prueban el orden y las restricciones de los
+estados, la asignación y sustitución de definiciones, la creación de acciones,
+el avance de pasos, las decisiones y las operaciones de completar, omitir y
+reintentar. También se comprueba que una acción bloqueada o ajena al paso
+actual no pueda modificarse. Estas pruebas son especialmente relevantes
+porque una transición incorrecta afectaría a todas las vistas posteriores de
+la oportunidad.
+
+La cualificación verifica por separado preguntas de control, campos
+personalizados y resúmenes. Los servicios de instanciación reutilizan la
+instancia que ya pertenece a una oportunidad y rechazan plantillas de otra
+cuenta. Las generaciones automáticas comprueban los estados pendiente,
+completado y fallido, la persistencia de evidencia y la recuperación mediante
+reintento. Para los adjuntos se validan la subida, descarga y eliminación, el
+mantenimiento del contenido binario y la ausencia de la clave interna de
+MinIO en los DTO expuestos.
+
+El puerto de IA se sustituye en estas pruebas por un fake que devuelve objetos
+deterministas conformes al esquema solicitado. Además, el adaptador de Google
+se prueba de forma aislada para comprobar la construcción de la petición, el
+envío de los buffers PDF y la propagación de metadatos. Con ello se valida la
+integración técnica sin confundirla con una evaluación de exactitud documental.
+
+\subsection{Componentes y lógica de la interfaz}
+
+En el frontend se prueban las piezas con mayor densidad de comportamiento. El
+store de autenticación cubre la inicialización de sesión, el cierre incluso
+cuando falla la petición y el cambio de cuenta. El middleware comprueba la
+redirección de usuarios autenticados y no autenticados. Los composables de
+oportunidades verifican la serialización de filtros, las mutaciones, la subida
+multipart de PDF y la invalidación de las consultas relacionadas.
+
+Los componentes del workflow distinguen acciones pendientes, en curso,
+fallidas, completadas, omitidas y bloqueadas. Las pruebas comprueban que cada
+estado expone únicamente las operaciones permitidas. La red se simula en el
+límite HTTP; de esta forma, la prueba sigue observando el comportamiento del
+componente sin depender de que la API esté levantada.
+
+\section{Pruebas de integración y E2E de API}
+\label{sec:api-integration-tests}
+
+Las pruebas de persistencia verifican que los repositorios conservan tanto el
+valor funcional como los metadatos de generación: estado, evidencia y error.
+Los adaptadores de almacenamiento comprueban que los buffers no se alteran y
+que las operaciones de subida, descarga, firma y borrado se delegan
+correctamente. El servicio común de MinIO elimina durante el arranque una
+política pública previa y utiliza el tiempo de caducidad configurado para las
+URL prefirmadas.
+
+La suite E2E de API ejecuta doce casos con la aplicación NestJS y PostgreSQL
+reales. Los casos más representativos se muestran en la
+\Cref{tab:api-e2e-cases}.
+
+\begin{longtable}{@{}L{4cm}L{7.7cm}L{2.1cm}@{}}
+  \caption{Casos representativos de las pruebas E2E de API.}
+  \label{tab:api-e2e-cases} \\
+  \toprule
+  \textbf{Riesgo} & \textbf{Comprobación} & \textbf{Resultado} \\
+  \midrule
+  \endfirsthead
+  \multicolumn{3}{c}{\tablename\ \thetable{} -- continuación} \\[3pt]
+  \toprule
+  \textbf{Riesgo} & \textbf{Comprobación} & \textbf{Resultado} \\
+  \midrule
+  \endhead
+  \bottomrule
+  \endlastfoot
+  Sesión y rutas protegidas & Registro, inicio de sesión, credenciales inválidas y rechazo de peticiones sin autenticación. & Superado \\
+  Escalada de privilegios & Invitación, cambio de rol y expulsión permitidos a \texttt{ADMIN}; rechazo de \texttt{MEMBER} y de la autoeliminación. & Superado \\
+  Validación de entrada & Rechazo de registros, oportunidades y documentos con forma o tipo no admitidos. & Superado \\
+  Ejecución del proceso & Creación de oportunidad, asignación de workflow y finalización de una acción. & Superado \\
+  Contexto documental & Almacenamiento de PDF y entrega de su buffer al proveedor determinista durante la generación. & Superado \\
+  Aislamiento multiempresa & Rechazo de lectura o modificación de oportunidades, adjuntos, workflows e instancias de otra cuenta. & Superado \\
+\end{longtable}
+
+La ejecución concluyó con 12 casos superados de 12. La combinación de casos
+positivos y negativos permite comprobar no solo que las operaciones válidas
+funcionan, sino que las fronteras de cuenta y rol se aplican antes de modificar
+el estado.
+
+\section{Pruebas E2E de navegador}
+\label{sec:browser-e2e-tests}
+
+Los recorridos de navegador se implementan con Playwright. Sus aserciones para
+la web reintentan automáticamente las condiciones visibles mientras la página
+se actualiza, lo que permite observar el resultado final sin introducir esperas
+fijas innecesarias \cite{playwrightAssertions2026}.
+
+Se ejecutaron cuatro recorridos sobre Chromium:
+
+\begin{enumerate}
+  \item \textbf{Cualificación completa.} Registra un usuario, configura los
+  elementos necesarios, crea una oportunidad, asigna su workflow, introduce
+  información manual, genera un resumen con el proveedor fake y adjunta un PDF.
+  Este caso también comprueba la descarga segura del documento.
+  \item \textbf{Autenticación.} Muestra el error de credenciales no válidas y,
+  después, establece una sesión real con las credenciales correctas.
+  \item \textbf{Validación de formularios.} Comprueba los mensajes localizados
+  de campos obligatorios y que un diálogo reabierto no conserva un error
+  obsoleto.
+  \item \textbf{Carga frente a estado vacío.} Distingue el fallo al recuperar
+  pipelines de una respuesta válida sin elementos, evitando presentar ambos
+  casos con la misma interfaz.
+\end{enumerate}
+
+Los cuatro recorridos finalizaron correctamente. El primero utiliza
+PostgreSQL y MinIO reales, pero mantiene el proveedor de IA determinista. Por
+tanto, demuestra la continuidad del flujo entre navegador, web, API, base de
+datos y almacenamiento, no la calidad del texto generado por un modelo real.
+
+\section{Validaciones de seguridad y robustez}
+\label{sec:security-robustness-tests}
+
+El aislamiento por \texttt{accountId} se comprueba en servicios, consultas y
+E2E de API. Una cuenta no puede consultar o modificar la oportunidad de otra,
+ni utilizar sus adjuntos, workflows o instancias de cualificación. La matriz de
+roles verifica además que pertenecer a la cuenta no concede automáticamente
+permisos administrativos.
+
+La protección de documentos se prueba en el recorrido de navegador mediante
+tres observaciones: la URL directa del objeto devuelve un rechazo, una URL
+prefirmada vigente permite descargarlo y esa misma URL vuelve a ser rechazada
+después de su caducidad. También se verifica que un fichero que no es PDF se
+rechaza antes de alcanzar el almacenamiento.
+
+Frente a fallos del proveedor de IA, los casos de uso persisten un estado de
+error revisable y permiten reintentar la acción. Los esquemas estructurados
+impiden aceptar como resultado funcional un objeto con una forma distinta de
+la esperada. Estas medidas reducen errores de integración, pero no eliminan el
+riesgo de que un resultado formalmente válido contenga información no
+sustentada; dicho riesgo requiere la evaluación semántica descrita en la
+\Cref{sec:ai-evaluation} \cite{autio2024}.
+
+\section{Resultados de las pruebas automatizadas}
+\label{sec:automated-test-results}
+
+Todas las suites se regeneraron sin utilizar la caché de Turborepo. La
+\Cref{tab:automated-test-results} reúne los resultados obtenidos.
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Resultados de la validación automatizada.}
+  \label{tab:automated-test-results}
+  \begin{tabular}{@{}p{4.2cm}p{5.8cm}p{3.8cm}@{}}
+    \toprule
+    \textbf{Comprobación} & \textbf{Alcance} & \textbf{Resultado} \\
+    \midrule
+    API unitarias y componentes & 37 suites & 142 pruebas superadas \\
+    Web unitarias y componentes & 11 archivos & 35 pruebas superadas \\
+    API E2E & NestJS y PostgreSQL & 12 de 12 superadas \\
+    Navegador E2E & Nuxt, NestJS, PostgreSQL, MinIO y fake de IA & 4 de 4 superadas \\
+    Calidad estática & Tipos, lint y construcción & Superada; 13 avisos web no bloqueantes \\
+    Integración continua & Tipos, lint, pruebas, cobertura, construcción y API E2E & Superada \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+La API establece umbrales globales mínimos del 60\,\% para líneas y
+sentencias, 37\,\% para funciones y 33\,\% para ramas. La web fija umbrales
+inferiores acordes con el alcance actual de sus pruebas instrumentadas: 8\,\%
+para líneas y ramas, 7\,\% para sentencias y 3\,\% para funciones. La
+\Cref{tab:coverage-results} presenta los valores regenerados.
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Cobertura de código por aplicación.}
+  \label{tab:coverage-results}
+  \begin{tabular}{@{}lrrrr@{}}
+    \toprule
+    \textbf{Aplicación} & \textbf{Líneas} & \textbf{Sentencias} & \textbf{Funciones} & \textbf{Ramas} \\
+    \midrule
+    API & 63,16\,\% & 62,53\,\% & 40,45\,\% & 34,59\,\% \\
+    Web & 9,17\,\% & 8,25\,\% & 4,86\,\% & 9,60\,\% \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+La cifra del frontend debe interpretarse junto con el resto de evidencias. La
+cobertura instrumentada se concentra en middleware, stores, validación,
+composables y componentes con lógica, mientras que cuatro recorridos E2E
+atraviesan páginas completas. Esto no convierte el 9,17\,\% en una cobertura
+suficiente para cualquier evolución: existe una deuda de regresión unitaria y
+visual sobre páginas y estados secundarios. Sí demuestra que los riesgos
+seleccionados no dependen exclusivamente de una métrica agregada.
+
+\section{Evaluación experimental de inteligencia artificial}
+\label{sec:ai-evaluation}
+
+\subsection{Diseño del experimento}
+
+El banco experimental se congeló antes de ejecutar los modelos. Contiene cinco
+expedientes completamente ficticios, formados por siete PDF y 16 páginas. Los
+casos varían en número de documentos, extensión, contenido accesorio e idioma,
+y sus hashes SHA-256 permiten comprobar que no se modificaron durante la
+campaña. Para cada expediente se realizan cuatro operaciones: resumen,
+pregunta de control, campo personalizado y decisión de workflow.
+
+Se planificaron tres repeticiones de cada operación para
+\texttt{gemini-3-flash-preview} y \texttt{gemini-3.1-flash-lite}. Esto produce
+60 salidas por modelo y 120 en total. Se fijaron prompts, esquemas, nivel de
+razonamiento bajo, límite máximo de salida y política de reintentos. El
+ejecutor conserva los resultados válidos y reanuda únicamente los pendientes,
+una propiedad necesaria ante límites de cuota.
+
+La evaluación semántica utiliza cuatro dimensiones puntuadas entre 0 y 2:
+
+\begin{itemize}
+  \item \textbf{exactitud}, ausencia de contradicciones con los documentos;
+  \item \textbf{cobertura}, inclusión de los hechos relevantes esperados;
+  \item \textbf{evidencia}, justificación mediante información localizable;
+  \item \textbf{utilidad}, capacidad de apoyar la decisión sin contenido
+  superfluo.
+\end{itemize}
+
+La puntuación máxima es 8. Dos agentes de IA independientes revisan copias
+ciegas que ocultan el modelo, la repetición, las métricas y la valoración
+ajena; no se presentan como evaluadores humanos. Tras congelar ambas
+revisiones, los desacuerdos se reconcilian conservando las puntuaciones
+originales y adoptando la valoración sustentada más estricta. Se considera
+aceptable un modelo con una media mínima de 6/8, al menos un 95\,\% de salidas
+estructuralmente válidas y ninguna alucinación crítica. Una alucinación es
+crítica cuando una afirmación no sustentada altera la elegibilidad, el plazo,
+el importe, una obligación o una decisión de continuar.
+
+Además de la calidad, se registran validez estructural, latencia, tokens de
+entrada y salida y coste estimado. El coste se calcula con la tarifa estándar
+de pago vigente en la fecha del experimento, aunque las ejecuciones se
+realizaran dentro de una cuota gratuita. Google publicaba 0,50 USD de entrada
+y 3,00 USD de salida por millón de tokens para Flash, y 0,25 USD y 1,50 USD
+para Flash-Lite, respectivamente \cite{googleGeminiPricing2026}.
+
+\subsection{Resultados parciales y límite de cuota}
+
+La cuota disponible permitió completar las 60 salidas de Flash-Lite y 32 de
+las 60 previstas para Flash. Las 92 salidas obtenidas presentan una estructura
+válida y cuentan con dos revisiones reconciliadas. La
+\Cref{tab:ai-interim-results} muestra los resultados observados; las métricas
+de Flash son provisionales porque no proceden todavía de la muestra completa.
+
+\begin{table}[H]
+  \centering
+  \scriptsize
+  \caption{Resultados parciales de la evaluación de modelos generativos.}
+  \label{tab:ai-interim-results}
+  \resizebox{\textwidth}{!}{%
+    \begin{tabular}{@{}lrrrrrrr@{}}
+      \toprule
+      \textbf{Modelo} & \textbf{Salidas} & \textbf{Calidad} & \textbf{Válidas} & \textbf{Mediana} & \textbf{P95} & \textbf{Coste medio} & \textbf{Aluc. críticas} \\
+      \midrule
+      Gemini 3 Flash Preview & 32/60 & 7,75/8 & 100\,\% & 2152 ms & 8716 ms & 0,001169 USD & 0 \\
+      Gemini 3.1 Flash-Lite & 60/60 & 7,53/8 & 100\,\% & 2663 ms & 5687 ms & 0,000800 USD & 2 \\
+      \bottomrule
+    \end{tabular}%
+  }
+\end{table}
+
+Flash-Lite no satisface el criterio congelado, a pesar de su media y validez
+estructural. Dos resúmenes del expediente ficticio de autobuses afirmaron que
+el candidato acreditaba tanto una rampa como un espacio reservado, cuando el
+documento citado únicamente acreditaba la rampa. La atribución convierte un
+dato ausente en cumplimiento de un requisito y se clasifica como alucinación
+crítica.
+
+Flash obtiene de forma provisional una calidad media de 7,75/8 y no presenta
+alucinaciones críticas en las 32 salidas disponibles. Sin embargo, comparar
+ese subconjunto con las 60 salidas de Flash-Lite podría introducir un sesgo por
+la combinación de casos y repeticiones que aún falta. Por ello no se selecciona
+un modelo ganador ni se representa gráficamente la comparación. Las 28 salidas
+restantes quedan pendientes de una futura reposición de cuota; esta limitación
+se conserva como resultado del experimento, no se sustituye por estimaciones.
+
+\section{Incidencias y limitaciones de la validación}
+\label{sec:testing-limitations}
+
+La campaña permitió identificar varias incidencias del propio entorno de
+pruebas:
+
+\begin{itemize}
+  \item la suite E2E de Jest necesita finalizar de forma forzada después de
+  cerrar NestJS y MikroORM, debido a manejadores que permanecen abiertos; los
+  casos terminan correctamente, pero la causa debe eliminarse en una revisión
+  futura del entorno;
+  \item una primera ejecución de integración continua devolvió un error 500
+  durante el registro porque el entorno E2E no definía
+  \texttt{REFRESH\_TOKEN\_SECRET}; al conservar la causa original del error se
+  identificó el problema, se añadió un secreto exclusivo de prueba y la
+  ejecución completa pasó posteriormente;
+  \item el lint del frontend mantiene 13 avisos no bloqueantes en componentes
+  reutilizables de interfaz; no impiden la construcción, pero constituyen deuda
+  de mantenimiento;
+  \item el límite observado de solicitudes por minuto obligó a espaciar las
+  peticiones y la cuota diaria impidió completar Flash, incluso con un ejecutor
+  reanudable;
+  \item los cuatro E2E de navegador cubren el recorrido crítico y varios estados
+  de error, pero no sustituyen una campaña completa de regresión visual,
+  accesibilidad, carga o compatibilidad entre navegadores.
+\end{itemize}
+
+Por tanto, la validación demuestra el funcionamiento de los recorridos
+prioritarios, el aislamiento multiempresa, la autorización administrativa, la
+seguridad básica de los adjuntos y la recuperación de errores de IA. No
+demuestra todavía una selección definitiva de modelo, un rendimiento bajo
+carga ni la ausencia de defectos en todas las combinaciones visuales.
+
+\section{Trazabilidad de las pruebas}
+\label{sec:testing-traceability}
+
+La \Cref{tab:testing-traceability} relaciona los principales riesgos con los
+requisitos definidos en el \Cref{chap:requirements}. La columna de evidencia
+identifica el nivel más significativo, aunque un requisito pueda estar
+cubierto por más de una suite.
+
+\begin{longtable}{@{}L{3.6cm}L{3.1cm}L{5.4cm}L{1.6cm}@{}}
+  \caption{Trazabilidad entre riesgos, requisitos y pruebas.}
+  \label{tab:testing-traceability} \\
+  \toprule
+  \textbf{Riesgo} & \textbf{Requisitos} & \textbf{Evidencia principal} & \textbf{Estado} \\
+  \midrule
+  \endfirsthead
+  \multicolumn{4}{c}{\tablename\ \thetable{} -- continuación} \\[3pt]
+  \toprule
+  \textbf{Riesgo} & \textbf{Requisitos} & \textbf{Evidencia principal} & \textbf{Estado} \\
+  \midrule
+  \endhead
+  \bottomrule
+  \endlastfoot
+  Sesión inválida y acceso cruzado & RF-001--002; RN-001--002; RNF-001 & Servicio de sesión y E2E de autenticación y aislamiento. & Completo \\
+  Escalada de privilegios & RF-003; RN-003; RNF-001 & Guarda unitaria y matriz E2E de roles y autoeliminación. & Completo \\
+  Estados incoherentes de proceso & RF-004--005; RF-009; RN-004--005; RN-007 & Entidades, handlers, eventos y recorridos E2E. & Completo \\
+  Duplicación de cualificación & RF-006; RF-010; RN-006 & Servicios de instanciación y casos de uso de preguntas, campos y resúmenes. & Completo \\
+  Salida de IA con forma incorrecta & RF-011; RF-015; RN-008; RNF-005; RNF-007 & Esquemas, fake determinista y adaptador de Google. & Completo \\
+  Documento no válido o inseguro & RF-013--014; RN-002; RN-009; RNF-001 & Handlers, API E2E y navegador E2E con acceso directo, firmado y caducado. & Completo \\
+  Solvencia no sustentada & RF-012; RF-016; RNF-008 & Banco ficticio, repeticiones y revisiones ciegas. & Parcial \\
+  Error y recuperación de IA & RF-017; RN-010 & Persistencia de estado fallido y reintento de la acción. & Completo \\
+\end{longtable}
+
+Los resultados mantienen RF-012 y RF-016 como parciales. El sistema puede
+generar evaluaciones revisables con contexto documental y se han obtenido
+resultados experimentales, pero la comparación de modelos no está completa y
+las métricas operativas no se persisten ni se explotan dentro de LIA. Esta
+delimitación se retomará en el análisis de limitaciones y en la evaluación final
+de los objetivos.

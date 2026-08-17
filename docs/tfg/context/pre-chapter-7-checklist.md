@@ -60,7 +60,7 @@ versión funcional que finalmente documente el manual.
 - [x] Registrar la revisión de Git y el resultado remoto: `78ab280` supera la
   CI completa en la ejecución `31689863930`; fecha, comandos y resultados se
   conservan en `chapter-7-local-evidence-2026-08-13.md`. La revisión final de
-  la campaña cambiará al incorporar las 50 salidas de Flash pendientes.
+  la campaña cambiará al incorporar las 28 salidas de Flash pendientes.
 
 ### 2. Autorización administrativa
 
@@ -81,15 +81,16 @@ versión funcional que finalmente documente el manual.
 - [x] Asignar la segunda revisión ciega a un agente Codex independiente y
   documentar expresamente que no se trata de una revisión humana.
 - [ ] Ejecutar tres repeticiones por caso y operación. Flash-Lite ha completado
-  60/60 y Flash 10/60; las 50 salidas de Flash restantes están pendientes del
-  reinicio de su cuota diaria gratuita. Resultados, latencia, tokens y piloto de
-  cuota se conservan por separado.
+  60/60 y Flash 32/60; las 28 salidas de Flash restantes están pendientes de
+  otro reinicio de su cuota diaria gratuita. Resultados, latencia, tokens y
+  piloto de cuota se conservan por separado.
 - [x] Obtener y congelar las tarifas oficiales de Google vigentes el 13 de
   agosto de 2026, con fuente, USD y modelo exacto.
-- [ ] Calcular la comparación final cuando termine Flash. Los 70 resultados
-  disponibles ya tienen dos revisiones independientes reconciliadas: Flash-Lite
-  obtiene 7,53/8, 100 % de validez y dos alucinaciones críticas; Flash obtiene
-  provisionalmente 7,80/8 y 100 % de validez en 10 salidas.
+- [ ] Calcular la comparación final cuando termine Flash. Las 92 salidas
+  disponibles tienen dos revisiones reconciliadas: Flash alcanza
+  provisionalmente 7,75/8, 100 % de validez y ninguna alucinación en 32
+  salidas; Flash-Lite mantiene 7,53/8, 100 % de validez y dos alucinaciones
+  críticas en 60.
 
 ### 4. Métricas operativas de IA
 
@@ -147,8 +148,9 @@ versión funcional que finalmente documente el manual.
   los riesgos cubiertos y la limitación de regresión unitaria visual.
 - [x] Documentar las incidencias reales: `forceExit`, acceso local a Docker,
   diferencia local/CI, secreto E2E ausente, cuotas Gemini y 13 avisos de lint.
-- [ ] Actualizar la matriz de trazabilidad del capítulo 3 con los resultados
-  definitivos.
+- [x] Actualizar la matriz de trazabilidad del capítulo 3 con los resultados
+  automatizados y experimentales disponibles. RF-012, RF-016, RI-008 y RNF-008
+  permanecen parciales y deberán revisarse al completar Flash.
 
 ## Trabajo que puede esperar
 

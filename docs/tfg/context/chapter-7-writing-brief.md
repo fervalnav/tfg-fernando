@@ -63,9 +63,9 @@ de toda prueba.
 
 La tabla provisional está en
 `apps/api/test/ai-evaluation/results/interim-report.md`. La versión publicable se
-regenerará desde `aggregate.json` al completar las 50 salidas pendientes de
+regenerará desde `aggregate.json` al completar las 28 salidas pendientes de
 Flash. Hasta entonces no se seleccionará un modelo ganador ni se generalizarán
-las métricas de las diez salidas disponibles de Flash.
+las métricas de las 32 salidas disponibles de Flash.
 
 ## Incidencias que deben explicarse
 
@@ -94,7 +94,7 @@ modelos podrá representarse con calidad, coste y latencia cuando ambos tengan
 
 ## Pendiente antes de redactar el capítulo como definitivo
 
-- completar las 50 salidas de Flash;
+- completar las 28 salidas de Flash;
 - revisarlas dos veces de forma ciega y reconciliar desacuerdos;
 - regenerar los agregados y la tabla definitiva;
 - actualizar RF-012, RF-016, RI-008 y RNF-008 en la matriz de trazabilidad sin

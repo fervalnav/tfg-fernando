@@ -33,15 +33,32 @@ async function main(): Promise<void> {
       runId,
       reviewer1,
       reviewer2,
-      agreed: reviewer2,
+      agreed: agree(reviewer1, reviewer2),
       resolution:
         JSON.stringify(reviewer1) === JSON.stringify(reviewer2)
           ? 'Sin desacuerdo material.'
-          : 'Se adopta la valoración del revisor 2 tras contrastarla con el documento; conserva evidencia más estricta y detecta omisiones o atribuciones no sustentadas.',
+          : 'Tras contrastar el caso y su requiredEvidence se conserva, por dimensión, la valoración sustentada más estricta; alucinaciones y errores se combinan sin ocultar ninguna detección.',
     };
   });
   await writeFile(resolve(REVIEW_DIR, 'reconciled.json'), `${JSON.stringify(agreed, null, 2)}\n`);
   process.stdout.write(`Reconciled ${agreed.length} outputs\n`);
+}
+
+function agree(first: Review, second: Review): Review {
+  return {
+    blindId: first.blindId,
+    accuracy: Math.min(first.accuracy, second.accuracy),
+    coverage: Math.min(first.coverage, second.coverage),
+    evidence: Math.min(first.evidence, second.evidence),
+    utility: Math.min(first.utility, second.utility),
+    hallucinationCount: Math.max(first.hallucinationCount, second.hallucinationCount),
+    criticalHallucination: first.criticalHallucination || second.criticalHallucination,
+    formatError: first.formatError || second.formatError,
+    comment:
+      first.comment === second.comment
+        ? first.comment
+        : `Revisor 1: ${first.comment} Revisor 2: ${second.comment}`,
+  };
 }
 
 async function load<T>(filename: string): Promise<T> {

@@ -180,11 +180,11 @@ decisiones, no en un inventario de archivos.
 
 ## Iteración M6 - Pruebas y validación
 
-**Estado:** siguiente iteración documental, bloqueada hasta completar la lista
-de cierre de `context/pre-chapter-7-checklist.md`. La infraestructura y los
-casos de prueba existen; antes de redactar resultados se resolverá la CI, se
-regenerarán las ejecuciones y la cobertura y se cerrará por separado la
-evaluación experimental de IA.
+**Estado:** redactada de forma verificable el 17 de agosto de 2026. Las pruebas
+automatizadas, la cobertura y la integración continua están cerradas. La
+evaluación experimental se presenta como resultado parcial porque la cuota de
+Google dejó 28 de las 60 salidas de Flash pendientes; no se selecciona un
+modelo ganador.
 
 ### Capítulos
 
@@ -212,10 +212,17 @@ Completado:
   verificación local con PostgreSQL y MinIO.
 - Umbrales mínimos de cobertura para impedir regresiones silenciosas.
 
-Pendiente como trabajo experimental de la memoria:
+Completado como trabajo experimental de la memoria:
 
-- Completar el banco de evaluación con documentos públicos o ficticios.
-- Medir calidad, latencia, tokens y coste por proveedor/modelo.
+- Banco congelado con cinco expedientes ficticios y cuatro operaciones por
+  expediente.
+- Métricas de calidad, validez, latencia, tokens y coste para las salidas
+  disponibles, con dos revisiones ciegas independientes y reconciliación.
+
+Pendiente:
+
+- Ejecutar y revisar las 28 salidas restantes de Flash cuando exista cuota.
+- Regenerar la comparación final sin alterar los resultados parciales.
 
 ### Salida
 
