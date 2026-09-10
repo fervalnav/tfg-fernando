@@ -27,8 +27,9 @@ servicio S3 mantenido o justificar y probar otra alternativa.
 | PostgreSQL 16 | solo red Docker                         | volumen `postgres_data`              |
 | MinIO         | solo a través del dominio de documentos | volumen `minio_data`                 |
 
-RabbitMQ, MailHog y Ollama no forman parte de producción. La aplicación usa
-eventos internos, un servidor SMTP externo y Google como proveedor de IA.
+MailHog y Ollama no forman parte de producción. La aplicación coordina sus
+casos de uso mediante el EventBus interno de NestJS, utiliza un servidor SMTP
+externo y Google como proveedor de IA.
 
 ## Datos que faltan hasta disponer del dominio
 

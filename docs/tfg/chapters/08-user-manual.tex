@@ -1,12 +1,12 @@
 \chapter{Manual de usuario}
 \label{chap:user-manual}
 
-Este capítulo describe la puesta en marcha local y el uso de LIA desde el
+Este capítulo describe la instalación, el despliegue y el uso de LIA desde el
 punto de vista de una persona usuaria. Las capturas se han obtenido sobre una
 instalación local con una cuenta y expedientes ficticios. Por tanto, no
 contienen documentación de licitaciones reales ni secretos de configuración.
-El manual de despliegue en un entorno público queda fuera de este capítulo,
-puesto que en el momento de redactarlo no existe un despliegue verificado.
+La configuración de producción se documenta como procedimiento reproducible,
+aunque en el momento de redactarlo no existe un despliegue final verificado.
 
 \section{Requisitos previos}
 
@@ -15,7 +15,7 @@ Para ejecutar el sistema se necesita un equipo con los siguientes componentes:
 \begin{itemize}
   \item Node.js 26.1.0, versión fijada en el archivo \texttt{.nvmrc};
   \item pnpm 11.1.2, gestor de paquetes declarado por el monorepositorio;
-  \item Docker y Docker Compose para PostgreSQL, RabbitMQ, MinIO y MailHog;
+  \item Docker y Docker Compose para PostgreSQL, MinIO y MailHog;
   \item un navegador web actualizado;
   \item de forma opcional, las credenciales de un proveedor externo de IA.
 \end{itemize}
@@ -29,8 +29,10 @@ reserva para desarrollo y pruebas. Para evaluar resultados reales es necesario
 configurar expresamente un proveedor externo admitido y sus credenciales.
 
 \clearpage
-\section{Instalación y puesta en marcha}
+\section{Instalación y despliegue}
 \label{sec:user-manual-startup}
+
+\subsection{Entorno local}
 
 Una vez disponible una copia del repositorio, la primera instalación se realiza
 desde su directorio raíz. El Fragmento~\ref{lst:user-manual-startup} muestra la
@@ -65,6 +67,28 @@ curl http://localhost:3000/api/health
 La infraestructura se detiene con \texttt{make down}. Si se modifica el
 esquema de persistencia, las migraciones pendientes se aplican de nuevo con
 \texttt{make migration-up}.
+
+\subsection{Producción}
+
+La configuración de producción adopta una única máquina en Hetzner con Caddy
+como punto de entrada HTTPS. La web, la API, PostgreSQL y MinIO se ejecutan en
+redes privadas de Docker; la API coordina sus eventos mediante el
+\emph{EventBus} interno de NestJS. La infraestructura como código de
+\texttt{infra/hetzner} prepara el servidor y el firewall, mientras que
+\texttt{deploy} contiene Compose, la configuración del proxy, la validación de
+variables y los procedimientos de copia y restauración.
+
+El procedimiento requiere aplicar explícitamente la infraestructura, completar
+los dominios y secretos del entorno \texttt{production}, comprobar la huella
+SSH y ejecutar manualmente el workflow \emph{Deploy production}. La API aplica
+las migraciones antes de aceptar tráfico y los \emph{healthchecks} condicionan
+el resultado del despliegue. Los pasos operativos, comandos y medidas de
+recuperación se mantienen en \texttt{infra/hetzner/README.md} y
+\texttt{deploy/README.md} para evitar duplicarlos en este manual.
+
+Esta topología está implementada en el repositorio, pero todavía no existe
+evidencia de una ejecución final con dominio, certificados y copias verificadas;
+por ello su estado se considera preparado y no desplegado.
 
 \section{Acceso a la aplicación}
 \label{sec:user-manual-access}

@@ -212,74 +212,127 @@ para que el núcleo sea seguro, mantenible y evaluable. Se presentan en la
 
 \section{Matriz de trazabilidad}
 
-La \Cref{tab:functional-traceability} relaciona los requisitos funcionales con
-los objetivos, el módulo responsable y la comprobación principal. La columna
-de pruebas no implica que un único caso cubra todo el requisito, sino que
-identifica la capa donde se verifica su comportamiento más representativo.
-
-{\small
-\begin{longtable}{@{}L{1.5cm}L{2cm}L{2.8cm}L{4.5cm}L{1.7cm}@{}}
-  \caption{Trazabilidad de requisitos funcionales.}
-  \label{tab:functional-traceability} \\
-  \toprule
-  \textbf{Req.} & \textbf{Objetivos} & \textbf{Módulo} & \textbf{Comprobación principal} & \textbf{Estado} \\
-  \midrule
-  \endfirsthead
-  \multicolumn{5}{c}{\tablename\ \thetable{} -- continuación} \\[3pt]
-  \toprule
-  \textbf{Req.} & \textbf{Objetivos} & \textbf{Módulo} & \textbf{Comprobación principal} & \textbf{Estado} \\
-  \midrule
-  \endhead
-  \bottomrule
-  \endlastfoot
-  RF-001 & OG-001 & Autenticación & Pruebas unitarias de sesión y recorrido E2E de registro e inicio de sesión. & Completo \\
-  RF-002 & OG-001 & Autenticación & Pruebas de consulta y cambio de cuenta activa. & Completo \\
-  RF-003 & OG-001 & Cuentas & Matriz E2E de invitación, cambio de rol y eliminación para administrador y miembro, incluida la autoeliminación. & Completo \\
-  RF-004 & OG-001, OE-003 & Pipelines & Pruebas de dominio, handlers y operaciones HTTP de pipelines y estados. & Completo \\
-  RF-005 & OG-001, OE-003 & Workflows & Pruebas de definición, duplicación, pasos, decisiones y acciones. & Completo \\
-  RF-006 & OG-001, OE-001 & Cualificación & Pruebas de plantillas de preguntas, campos y resúmenes. & Completo \\
-  RF-007 & OG-001 & Oportunidades & Pruebas unitarias y E2E de alta, consulta, edición y aislamiento. & Completo \\
-  RF-008 & OG-001 & Oportunidades & Pruebas de filtros y transición; recorrido E2E de listado y kanban. & Completo \\
-  RF-009 & OG-001, OE-003 & Ejecución & Pruebas del servicio de workflow y de las acciones por oportunidad. & Completo \\
-  RF-010 & OG-001, OE-001 & Cualificación & Pruebas de instanciación y edición manual por oportunidad. & Completo \\
-  RF-011 & OG-001, OE-001 & IA y cualificación & Pruebas de handlers con proveedor determinista y validación de esquemas. & Completo \\
-  RF-012 & OE-001 & Preguntas de control & Banco documental ficticio con respuestas esperadas, rúbrica y revisión ciega; la campaña comparativa permanece incompleta. & Parcial \\
-  RF-013 & OG-001 & Adjuntos & Pruebas de handlers y E2E de subida, listado, descarga y borrado. & Completo \\
-  RF-014 & OG-001, OE-001 & Adjuntos e IA & Pruebas del servicio de documentos y generaciones con contexto. & Completo \\
-  RF-015 & OG-001, OE-003 & Decisiones de workflow & Pruebas de evaluación, evidencia, error y reintento. & Completo \\
-  RF-016 & OE-002 & IA & Adaptadores probados y métricas experimentales parciales; pendiente completar la comparación y persistir métricas operativas. & Parcial \\
-  RF-017 & OG-001, OE-001 & Cualificación & Pruebas de transición de estados, persistencia de errores y reintento. & Completo \\
-\end{longtable}
-}
-
-La \Cref{tab:cross-cutting-traceability} completa la matriz con los grupos de
-información, reglas y atributos de calidad. Esta segunda vista permite localizar
-los huecos transversales sin repetir todas las relaciones de la tabla anterior.
+Las siguientes matrices muestran la correspondencia directa entre los
+requisitos del sistema y los objetivos definidos al inicio del capítulo. En el
+caso de los requisitos funcionales se incorpora además su relación con las
+historias de usuario recogidas en el capítulo siguiente. Cada marca indica que el
+requisito contribuye al objetivo o materializa el comportamiento descrito por
+la historia de usuario correspondiente.
 
 \begin{table}[H]
   \centering
-  \small
-  \caption{Trazabilidad de requisitos transversales.}
-  \label{tab:cross-cutting-traceability}
-  \begin{tabular}{@{}p{3.4cm}p{3.2cm}p{5.8cm}@{}}
-    \toprule
-    \textbf{Grupo} & \textbf{Objetivos} & \textbf{Evidencia y huecos} \\
-    \midrule
-    RI-001--RI-007 & OG-001, OE-001, OE-003 & Entidades persistidas, DTO compartidos y pruebas de repositorios y casos de uso. \\
-    RI-008 & OE-002 & Resultado disponible en los adaptadores y en el banco experimental; falta su persistencia y explotación dentro de LIA. \\
-    RN-001--RN-002, RN-004--RN-010 & OG-001, OE-001, OE-003 & Reglas de dominio y aplicación cubiertas por pruebas unitarias y E2E. \\
-    RN-003 & OG-001 & Matriz E2E de operaciones permitidas a \texttt{ADMIN}, rechazo a \texttt{MEMBER} y autoeliminación. \\
-    RNF-001--RNF-007 & Todos & Guardas, validación, arquitectura modular, fake de IA y entorno local reproducible. \\
-    RNF-008 & OE-002 & Existen métricas experimentales parciales; falta completar la campaña y almacenar y explotar las métricas dentro de LIA. \\
-    \bottomrule
+  \caption{Matriz de trazabilidad de requisitos funcionales y objetivos.}
+  \label{tab:rf-objectives-traceability}
+  \begin{tabular}{|c||c|c|c|c|}
+    \hline
+    \multicolumn{5}{|c|}{\textbf{Requisitos funcionales -- objetivos}} \\ \hline
+    \textbf{RF/Obj.} & \textbf{OG-001} & \textbf{OE-001} & \textbf{OE-002} & \textbf{OE-003} \\ \hline\hline
+    RF-001 & \checkmark & & & \\ \hline
+    RF-002 & \checkmark & & & \\ \hline
+    RF-003 & \checkmark & & & \\ \hline
+    RF-004 & \checkmark & & & \checkmark \\ \hline
+    RF-005 & \checkmark & & & \checkmark \\ \hline
+    RF-006 & \checkmark & \checkmark & & \\ \hline
+    RF-007 & \checkmark & & & \\ \hline
+    RF-008 & \checkmark & & & \\ \hline
+    RF-009 & \checkmark & & & \checkmark \\ \hline
+    RF-010 & \checkmark & \checkmark & & \\ \hline
+    RF-011 & \checkmark & \checkmark & & \\ \hline
+    RF-012 & & \checkmark & & \\ \hline
+    RF-013 & \checkmark & & & \\ \hline
+    RF-014 & \checkmark & \checkmark & & \\ \hline
+    RF-015 & \checkmark & & & \checkmark \\ \hline
+    RF-016 & & & \checkmark & \\ \hline
+    RF-017 & \checkmark & \checkmark & & \\ \hline
   \end{tabular}
 \end{table}
 
-\medskip
+\clearpage
+\begin{table}[H]
+  \centering
+  \caption{Matriz de trazabilidad de requisitos funcionales e historias de usuario.}
+  \label{tab:rf-user-stories-traceability}
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{|c||*{14}{c|}}
+    \hline
+    \multicolumn{15}{|c|}{\textbf{Requisitos funcionales -- historias de usuario}} \\ \hline
+    \textbf{RF/HU} & \textbf{001} & \textbf{002} & \textbf{003} & \textbf{004} & \textbf{005} & \textbf{006} & \textbf{007} & \textbf{008} & \textbf{009} & \textbf{010} & \textbf{011} & \textbf{012} & \textbf{013} & \textbf{014} \\ \hline\hline
+    RF-001 & \checkmark & \checkmark & & & & & & & & & & & & \\ \hline
+    RF-002 & \checkmark & & & & & & & & & & & & & \\ \hline
+    RF-003 & \checkmark & & \checkmark & & & & & & & & & & & \\ \hline
+    RF-004 & & & & \checkmark & & & & & & & & & & \\ \hline
+    RF-005 & & & & & \checkmark & & & & & & & & & \\ \hline
+    RF-006 & & & & & & \checkmark & & & & & & & & \\ \hline
+    RF-007 & & & & & & & \checkmark & \checkmark & & & & & & \\ \hline
+    RF-008 & & & & & & & \checkmark & & & & & & & \\ \hline
+    RF-009 & & & & & & & & & & & & & \checkmark & \\ \hline
+    RF-010 & & & & & & & & & & \checkmark & \checkmark & \checkmark & & \\ \hline
+    RF-011 & & & & & & & & & & & \checkmark & \checkmark & & \\ \hline
+    RF-012 & & & & & & & & & & \checkmark & & & & \\ \hline
+    RF-013 & & & & & & & & & \checkmark & & & & & \\ \hline
+    RF-014 & & & & & & & & & \checkmark & & & & & \\ \hline
+    RF-015 & & & & & & & & & & & & & \checkmark & \\ \hline
+    RF-016 & & & & & & & & & & & & & & \checkmark \\ \hline
+    RF-017 & & & & & & & & & & \checkmark & \checkmark & \checkmark & & \\ \hline
+  \end{tabular}}
+\end{table}
 
-El análisis mantiene dos trabajos parciales que condicionan el cierre de los
-objetivos: completar la validación documental de la solvencia y terminar la
-medición comparativa de los modelos de IA. Los permisos de administrador ya se
-aplican y se han validado mediante una matriz E2E de roles. Los elementos
-pendientes se delimitan expresamente en el \Cref{chap:testing} y deberán
-considerarse de nuevo al redactar las conclusiones.
+\clearpage
+\begin{table}[H]
+  \centering
+  \caption{Matriz de trazabilidad de requisitos de información y objetivos.}
+  \label{tab:ri-objectives-traceability}
+  \begin{tabular}{|c||c|c|c|c|}
+    \hline
+    \multicolumn{5}{|c|}{\textbf{Requisitos de información -- objetivos}} \\ \hline
+    \textbf{RI/Obj.} & \textbf{OG-001} & \textbf{OE-001} & \textbf{OE-002} & \textbf{OE-003} \\ \hline\hline
+    RI-001 & \checkmark & & & \\ \hline
+    RI-002 & \checkmark & & & \checkmark \\ \hline
+    RI-003 & \checkmark & & & \checkmark \\ \hline
+    RI-004 & \checkmark & & & \\ \hline
+    RI-005 & \checkmark & \checkmark & & \\ \hline
+    RI-006 & \checkmark & \checkmark & & \\ \hline
+    RI-007 & \checkmark & & & \\ \hline
+    RI-008 & & & \checkmark & \\ \hline
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \caption{Matriz de trazabilidad de reglas de negocio y objetivos.}
+  \label{tab:rn-objectives-traceability}
+  \begin{tabular}{|c||c|c|c|c|}
+    \hline
+    \multicolumn{5}{|c|}{\textbf{Reglas de negocio -- objetivos}} \\ \hline
+    \textbf{RN/Obj.} & \textbf{OG-001} & \textbf{OE-001} & \textbf{OE-002} & \textbf{OE-003} \\ \hline\hline
+    RN-001 & \checkmark & & & \\ \hline
+    RN-002 & \checkmark & & & \\ \hline
+    RN-003 & \checkmark & & & \\ \hline
+    RN-004 & \checkmark & & & \checkmark \\ \hline
+    RN-005 & \checkmark & & & \\ \hline
+    RN-006 & \checkmark & & & \checkmark \\ \hline
+    RN-007 & \checkmark & & & \checkmark \\ \hline
+    RN-008 & & \checkmark & & \\ \hline
+    RN-009 & \checkmark & \checkmark & & \\ \hline
+    RN-010 & \checkmark & & & \\ \hline
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \caption{Matriz de trazabilidad de requisitos no funcionales y objetivos.}
+  \label{tab:rnf-objectives-traceability}
+  \begin{tabular}{|c||c|c|c|c|}
+    \hline
+    \multicolumn{5}{|c|}{\textbf{Requisitos no funcionales -- objetivos}} \\ \hline
+    \textbf{RNF/Obj.} & \textbf{OG-001} & \textbf{OE-001} & \textbf{OE-002} & \textbf{OE-003} \\ \hline\hline
+    RNF-001 & \checkmark & & & \\ \hline
+    RNF-002 & \checkmark & & & \\ \hline
+    RNF-003 & \checkmark & & & \\ \hline
+    RNF-004 & \checkmark & \checkmark & \checkmark & \checkmark \\ \hline
+    RNF-005 & \checkmark & \checkmark & \checkmark & \checkmark \\ \hline
+    RNF-006 & \checkmark & & & \\ \hline
+    RNF-007 & & & \checkmark & \\ \hline
+    RNF-008 & & & \checkmark & \\ \hline
+  \end{tabular}
+\end{table}

@@ -17,19 +17,19 @@
     \textbf{Dominio}\\
     agregados, entidades, reglas, eventos y puertos
   };
-  \node[application] (application) at (0,2.05) {
+  \node[application] (application) at (0,2.65) {
     \textbf{Aplicación}\\
     comandos, consultas, manejadores y servicios
   };
-  \node[adapter] (input) at (-5.05,2.05) {
+  \node[adapter] (input) at (-5.65,2.65) {
     \textbf{Adaptadores de entrada}\\
     controladores REST, validación y guardas
   };
-  \node[adapter] (persistence) at (5.05,2.95) {
+  \node[adapter] (persistence) at (5.65,3.75) {
     \textbf{Persistencia}\\
     repositorios MikroORM
   };
-  \node[adapter] (services) at (5.05,1.15) {
+  \node[adapter] (services) at (5.65,0.85) {
     \textbf{Servicios externos}\\
     IA, S3/MinIO y correo
   };
@@ -46,7 +46,7 @@
     dashed,
     rounded corners=3pt,
     fit=(application)(domain),
-    inner sep=10pt,
+    inner sep=13pt,
     label={[font=\scriptsize\sffamily\color{TFGMuted}]below:Independiente de HTTP, ORM y proveedor de IA}
   ] {};
 \end{tikzpicture}

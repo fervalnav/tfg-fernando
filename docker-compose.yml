@@ -15,20 +15,6 @@ services:
       timeout: 5s
       retries: 5
 
-  rabbitmq:
-    image: rabbitmq:4-management-alpine
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      RABBITMQ_DEFAULT_USER: tfg_user
-      RABBITMQ_DEFAULT_PASS: tfg_password
-    healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   minio:
     image: minio/minio:latest
     command: server /data --console-address ":9001"

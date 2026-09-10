@@ -39,7 +39,7 @@ packages/
 
 ```bash
 nvm use           # Siempre antes de ejecutar comandos Node/pnpm; lee .nvmrc
-make setup        # Copia .env.example → .env y levanta Docker (PostgreSQL + RabbitMQ + MinIO)
+make setup        # Copia .env.example → .env y levanta Docker (PostgreSQL + MinIO + MailHog)
 pnpm install
 make migration-up # Aplica migraciones
 pnpm dev          # Levanta api + web
@@ -65,7 +65,7 @@ pnpm build        # Build completo
 pnpm lint         # ESLint en todos los paquetes
 
 # Infraestructura (Docker)
-make up           # Inicia PostgreSQL + RabbitMQ + MinIO
+make up           # Inicia PostgreSQL + MinIO + MailHog
 make down         # Para los contenedores
 
 # Migraciones

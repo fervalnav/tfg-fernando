@@ -16,29 +16,26 @@ reescribir los casos de uso.
 
 \section{Visión general}
 
-La \Cref{fig:system-architecture} presenta la vista de componentes de mayor
-nivel. El navegador ejecuta una aplicación web desarrollada con Nuxt 4 y
-Vue 3. Esta aplicación consume mediante HTTP una API NestJS, responsable de la
-autenticación, la lógica de negocio y la coordinación de los módulos. Ambos
-proyectos comparten las definiciones de sus mensajes mediante un paquete
-TypeScript del mismo monorepositorio.
+La \Cref{fig:system-architecture} integra la vista de componentes, sus
+relaciones y las tecnologías principales. El navegador ejecuta una aplicación
+web desarrollada con Nuxt 4 y Vue 3. Esta aplicación consume mediante HTTP una
+API NestJS, responsable de la autenticación, la lógica de negocio y la
+coordinación de los módulos. Ambos proyectos comparten contratos TypeScript y
+se construyen en el mismo monorepositorio Turborepo.
 
 \begin{figure}[htbp]
   \centering
   \resizebox{\textwidth}{!}{
     \input{figure-sources/tikz/system-architecture}
   }
-  \caption{Vista general de los componentes técnicos de LIA.}
+  \caption{Arquitectura, tecnologías y relaciones principales de LIA.}
   \label{fig:system-architecture}
 \end{figure}
 
 La API persiste los datos transaccionales en PostgreSQL, almacena los archivos
 en un servicio compatible con S3 y delega la generación estructurada en el
 proveedor configurado. La coordinación entre casos de uso se realiza mediante
-el \emph{EventBus} interno de NestJS CQRS. RabbitMQ forma parte del entorno
-local preparado, pero no actúa como transporte en la versión desarrollada; se
-muestra discontinuo para distinguir una posible evolución de una dependencia
-operativa.
+el \emph{EventBus} interno de NestJS CQRS, dentro del proceso de la API.
 
 \section{Organización del monorepositorio}
 \label{sec:monorepo-architecture}
@@ -50,20 +47,9 @@ evolución de la API, el cliente y sus contratos. Turborepo define las tareas de
 compilación, comprobación de tipos, análisis estático y pruebas, y reutiliza el
 grafo de dependencias para ejecutarlas en el orden adecuado.
 
-La \Cref{fig:technology-stack} reúne las tecnologías que identifican las
-responsabilidades principales de la solución. Se muestran las piezas
-estructurales del monorepositorio, el cliente, la API y la persistencia; las
-integraciones sustituibles, como el proveedor de IA, se describen en sus
-apartados específicos.
-
-\begin{figure}[htbp]
-  \centering
-  \resizebox{\textwidth}{!}{
-    \input{figure-sources/tikz/technology-stack}
-  }
-  \caption{Tecnologías principales y función que desempeñan en LIA.}
-  \label{fig:technology-stack}
-\end{figure}
+La misma figura sitúa las piezas estructurales del cliente, la API y la
+persistencia. Las integraciones sustituibles, como el proveedor de IA, se
+describen en sus apartados específicos.
 
 \begin{table}[htbp]
   \centering
@@ -347,9 +333,9 @@ pendientes.
 
 La configuración reproducible verificada es local. La aplicación web escucha
 por defecto en el puerto 3001 y la API en el 3000. Docker Compose levanta
-PostgreSQL, MinIO y MailHog; también define RabbitMQ y un perfil opcional para
-Ollama. Las variables de entorno separan credenciales, URLs, proveedor, modelo
-y límites del código fuente.
+PostgreSQL, MinIO y MailHog, además de un perfil opcional para Ollama. Las
+variables de entorno separan credenciales, URLs, proveedor, modelo y límites
+del código fuente.
 
 \begin{figure}[htbp]
   \centering
@@ -391,7 +377,7 @@ elección explícita o una evolución prevista.
     Monorepositorio con contratos compartidos & Evolución coordinada de cliente, API y tipos. & Aumenta el alcance de las comprobaciones y exige respetar límites entre paquetes. \\
     Backend hexagonal y modular & Mantener las reglas independientes del ORM y de servicios externos. & Introduce más puertos, adaptadores y conversiones que una estructura CRUD directa. \\
     CQRS lógico sobre una base común & Casos de uso explícitos y separación entre lectura y escritura. & No ofrece por sí solo escalado independiente ni proyecciones especializadas. \\
-    Eventos internos de NestJS & Desacoplar consecuencias dentro de una única API sin infraestructura adicional. & No son una cola durable; RabbitMQ queda como evolución si se necesita distribución o recuperación. \\
+    Eventos internos de NestJS & Desacoplar consecuencias dentro de una única API sin infraestructura adicional. & Se ejecutan en el proceso y no ofrecen cola durable ni recuperación independiente. \\
     SPA sin renderizado de servidor & Simplificar una interfaz privada y altamente interactiva. & La primera carga depende del JavaScript y no se optimiza para indexación pública. \\
     PostgreSQL y S3 separados & Adecuar datos transaccionales y binarios a almacenamientos distintos. & No existe una transacción atómica entre ambos servicios. \\
     IA mediante un puerto propio & Cambiar proveedor y probar sin llamadas reales. & Las diferencias de capacidad entre modelos, especialmente con PDF, siguen requiriendo validación. \\
@@ -403,6 +389,6 @@ elección explícita o una evolución prevista.
 La arquitectura resultante prioriza la trazabilidad y la capacidad de
 sustitución frente a una infraestructura distribuida prematura. El núcleo se
 ejecuta como una API modular y conserva puntos de extensión concretos para
-mensajería durable, almacenamiento S3 gestionado y nuevos proveedores de IA.
+almacenamiento S3 gestionado y nuevos proveedores de IA.
 El capítulo siguiente describe cómo estas fronteras se materializan en los
 flujos de implementación más relevantes.

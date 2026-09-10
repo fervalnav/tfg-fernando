@@ -9,17 +9,17 @@
     text=black, align=center}
 ]
   \node[participant] (user) at (0,0) {Miembro};
-  \node[participant] (web) at (3.4,0) {Aplicación web};
-  \node[participant] (api) at (6.8,0) {Gestor de\\oportunidades};
-  \node[participant] (workflow) at (10.2,0) {Gestor de\\workflows};
-  \node[participant] (db) at (13.6,0) {Persistencia};
-  \foreach \x in {0,3.4,6.8,10.2,13.6} \draw[lifeline] (\x,-0.35) -- (\x,-6.15);
-  \draw[message] (0,-0.75) -- node[message label, above]{selecciona workflow} (3.4,-0.75);
-  \draw[message] (3.4,-1.45) -- node[message label, above]{solicita la asignación} (6.8,-1.45);
-  \draw[message] (6.8,-2.15) -- node[message label, above]{consulta la definición activa} (10.2,-2.15);
-  \draw[return] (10.2,-2.85) -- node[message label, above]{definición, pasos y acciones} (6.8,-2.85);
-  \draw[message] (6.8,-3.55) -- node[message label, above]{crea ejecución e instancias} (13.6,-3.55);
-  \draw[return] (13.6,-4.25) -- node[message label, above]{ejecución inicial registrada} (6.8,-4.25);
-  \draw[return] (6.8,-4.95) -- node[message label, above]{asignación confirmada} (3.4,-4.95);
-  \draw[return] (3.4,-5.65) -- node[message label, above]{muestra el workflow asignado} (0,-5.65);
+  \node[participant] (web) at (4,0) {Aplicación web};
+  \node[participant] (api) at (8,0) {Gestor de\\oportunidades};
+  \node[participant] (workflow) at (12,0) {Gestor de\\workflows};
+  \node[participant] (db) at (16,0) {Persistencia};
+  \foreach \x in {0,4,8,12,16} \draw[lifeline] (\x,-0.35) -- (\x,-7.15);
+  \draw[message] (0,-0.8) -- node[message label, above]{selecciona workflow} (4,-0.8);
+  \draw[message] (4,-1.6) -- node[message label, above]{solicita la asignación} (8,-1.6);
+  \draw[message] (8,-2.4) -- node[message label, above]{consulta la definición activa} (12,-2.4);
+  \draw[return] (12,-3.2) -- node[message label, above]{definición, pasos y acciones} (8,-3.2);
+  \draw[message] (8,-4) -- node[message label, above]{crea ejecución e instancias} (16,-4);
+  \draw[return] (16,-4.8) -- node[message label, above]{ejecución inicial registrada} (8,-4.8);
+  \draw[return] (8,-5.6) -- node[message label, above]{asignación confirmada} (4,-5.6);
+  \draw[return] (4,-6.4) -- node[message label, above]{muestra el workflow asignado} (0,-6.4);
 \end{tikzpicture}

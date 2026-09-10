@@ -4,47 +4,49 @@
     draw=TFGBlue,
     rounded corners=2pt,
     fill=TFGLightBlue,
-    minimum height=1.05cm,
+    minimum height=1.75cm,
     text width=3.25cm,
     align=center,
     inner sep=6pt
   },
   shared/.style={component, fill=TFGLightGray},
   infrastructure/.style={component, fill=white},
-  inactive/.style={infrastructure, draw=TFGMuted, dashed, text=TFGMuted},
   connection/.style={-{Latex[length=2.5mm]}, semithick, draw=TFGAccent},
   bidirectional/.style={{Latex[length=2.5mm]}-{Latex[length=2.5mm]}, semithick, draw=TFGAccent}
 ]
-  \node[component] (web) at (-3.8,0.4) {
-    \textbf{Aplicación web}\\
-    Nuxt 4 y Vue 3
+  \node[component] (web) at (-4.15,0.2) {
+    \includegraphics[height=0.42cm]{nuxt-logo.png}\\[2pt]
+    \textbf{Aplicación web}\\[-1pt]
+    Nuxt 4, Vue 3\\[-1pt]
+    {\scriptsize Pinia y TanStack Query}
   };
-  \node[component] (api) at (3.8,0.4) {
-    \textbf{API}\\
-    NestJS y CQRS
+  \node[component] (api) at (4.15,0.2) {
+    \includegraphics[height=0.46cm]{nestjs-logo.png}\\[2pt]
+    \textbf{API}\\[-1pt]
+    NestJS, CQRS y EventBus\\[-1pt]
+    {\scriptsize Arquitectura hexagonal}
   };
-  \node[shared] (types) at (0,2.15) {
-    \textbf{Contratos compartidos}\\
-    Paquete TypeScript
+  \node[shared] (types) at (0,3.15) {
+    \includegraphics[height=0.42cm]{ts-logo.png}\\[2pt]
+    \textbf{Contratos compartidos}\\[-1pt]
+    TypeScript -- \texttt{@tfg/types}
   };
 
-  \node[infrastructure] (postgres) at (-3.8,-2.05) {
-    \textbf{Datos transaccionales}\\
+  \node[infrastructure] (postgres) at (-4.15,-3.35) {
+    \includegraphics[height=0.46cm]{postgres-logo.png}\\[2pt]
+    \textbf{Datos transaccionales}\\[-1pt]
     PostgreSQL y MikroORM
   };
-  \node[infrastructure] (storage) at (0,-2.05) {
+  \node[infrastructure] (storage) at (0,-3.35) {
+    {\Large\textbf{S3}}\\[2pt]
     \textbf{Adjuntos}\\
-    S3 / MinIO
+    {\scriptsize MinIO en local}
   };
-  \node[infrastructure] (ai) at (3.8,-2.05) {
-    \textbf{Generación estructurada}\\
+  \node[infrastructure] (ai) at (4.15,-3.35) {
+    \includegraphics[width=1.35cm,trim=500 330 430 330,clip]{gemini-logo.png}\\[2pt]
+    \textbf{Generación estructurada}\\[-1pt]
     Google u OpenAI compatible
   };
-  \node[inactive, text width=3.05cm] (rabbitmq) at (3.8,-4.05) {
-    \textbf{RabbitMQ}\\
-    Disponible, no conectado
-  };
-
   \draw[bidirectional] (web) -- node[above, font=\scriptsize\sffamily] {HTTP/JSON y cookies} (api);
   \draw[connection] (types.south west) -- (web.north east);
   \draw[connection] (types.south east) -- (api.north west);
@@ -59,7 +61,7 @@
     rounded corners=3pt,
     fit=(web)(types)(api),
     inner sep=10pt,
-    label={[font=\scriptsize\sffamily\color{TFGMuted}]above:Monorepositorio Turborepo}
+    label={[font=\scriptsize\sffamily\color{TFGMuted}]above:{\includegraphics[height=0.26cm]{turborepo-logo.png}\enspace Monorepositorio pnpm y Turborepo}}
   ] {};
 
 \end{tikzpicture}
