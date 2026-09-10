@@ -1,61 +1,99 @@
 \begin{tikzpicture}[
   every node/.style={font=\scriptsize\sffamily},
-  page/.style={draw=TFGBlue, rounded corners=2pt, fill=white,
-    minimum height=0.68cm, text width=2.55cm, align=center, inner sep=3pt},
-  group/.style={page, fill=TFGLightBlue, font=\scriptsize\bfseries\sffamily},
-  root/.style={page, fill=TFGBlue, text=white,
-    font=\scriptsize\bfseries\sffamily, text width=3.2cm},
+  screen/.style={draw=TFGBlue, rounded corners=2pt, fill=white,
+    minimum height=0.82cm, text width=3.25cm, align=center, inner sep=4pt},
+  compact/.style={screen, text width=2.42cm, minimum height=0.74cm,
+    font=\tiny\sffamily},
+  area/.style={screen, fill=TFGLightBlue, font=\scriptsize\bfseries\sffamily},
+  root/.style={screen, fill=TFGBlue, text=white,
+    font=\scriptsize\bfseries\sffamily, text width=3.7cm},
+  admin/.style={screen, draw=TFGAccent, dashed, fill=TFGAccent!8},
   flow/.style={-{Latex[length=1.8mm]}, semithick, draw=TFGAccent},
-  branch/.style={semithick, draw=TFGAccent}
+  branch/.style={semithick, draw=TFGAccent},
+  context/.style={draw=TFGMuted, rounded corners=2pt, dashed,
+    inner sep=5pt},
+  note/.style={font=\tiny\sffamily, text=TFGMuted, align=left}
 ]
-  \node[root] (root) at (6.6,1.65) {Navegación principal};
-  \node[group] (auth) at (0,0) {Acceso};
-  \node[group] (portfolio) at (4.4,0) {Oportunidades};
-  \node[group] (detail) at (8.8,0) {Detalle};
-  \node[group] (settings) at (13.2,0) {Configuración};
+  % Acceso público y entrada en el área autenticada.
+  \node[root] (entry) at (7.5,0) {Entrada en LIA};
+  \node[screen] (register) at (2.1,-1.45)
+    {Registro\\\textcolor{TFGMuted}{Crear usuario y cuenta}};
+  \node[screen] (login) at (7.5,-1.45)
+    {Inicio de sesión\\\textcolor{TFGMuted}{Acceder a una cuenta}};
+  \node[screen] (invitation) at (12.9,-1.45)
+    {Aceptar invitación\\\textcolor{TFGMuted}{Usuario nuevo o autenticado}};
+  \node[root] (session) at (7.5,-2.95) {Área autenticada de la cuenta activa};
 
-  \node[page] (login) at (0,-1.25) {Inicio de sesión};
-  \node[page] (register) at (0,-2.35) {Registro};
-  \node[page] (invitation) at (0,-3.45) {Invitación};
-
-  \node[page] (kanban) at (4.4,-1.25) {Tablero kanban};
-  \node[page] (list) at (4.4,-2.35) {Vista de lista};
-  \node[page] (create) at (4.4,-3.45) {Alta de oportunidad};
-
-  \node[page] (details) at (8.8,-1.25) {Datos generales};
-  \node[page] (documents) at (8.8,-2.35) {Documentación};
-  \node[page] (questions) at (8.8,-3.45) {Preguntas de control};
-  \node[page] (fields) at (8.8,-4.55) {Campos personalizados};
-  \node[page] (summaries) at (8.8,-5.65) {Resúmenes};
-  \node[page] (workflow) at (8.8,-6.75) {Workflow};
-
-  \node[page] (profile) at (13.2,-1.25) {Perfil y miembros};
-  \node[page] (pipelines) at (13.2,-2.35) {Pipelines y estados};
-  \node[page] (workflows) at (13.2,-3.45) {Workflows y acciones};
-  \node[page] (catalogs) at (13.2,-4.55) {Catálogos de cualificación};
-  \node[page] (ai) at (13.2,-5.65) {Proveedores de IA};
-
-  \draw[branch] (root.south) -- (6.6,0.82);
-  \draw[branch] (0,0.82) -- (13.2,0.82);
-  \coordinate (nav-branch) at (0,0.82);
-  \foreach \target in {auth,portfolio,detail,settings} {
-    \draw[flow] (\target |- nav-branch) -- (\target.north);
+  \draw[branch] (entry.south) -- (7.5,-0.72);
+  \draw[branch] (2.1,-0.72) -- (12.9,-0.72);
+  \foreach \target in {register,login,invitation} {
+    \draw[flow] (\target |- 0,-0.72) -- (\target.north);
   }
-  \draw[flow] (auth) -- (login);
-  \draw[flow] (login) -- (register);
-  \draw[flow] (register) -- (invitation);
-  \draw[flow] (portfolio) -- (kanban);
-  \draw[flow] (kanban) -- (list);
-  \draw[flow] (list) -- (create);
-  \draw[flow] (detail) -- (details);
-  \draw[flow] (details) -- (documents);
-  \draw[flow] (documents) -- (questions);
-  \draw[flow] (questions) -- (fields);
-  \draw[flow] (fields) -- (summaries);
-  \draw[flow] (summaries) -- (workflow);
-  \draw[flow] (settings) -- (profile);
-  \draw[flow] (profile) -- (pipelines);
-  \draw[flow] (pipelines) -- (workflows);
-  \draw[flow] (workflows) -- (catalogs);
-  \draw[flow] (catalogs) -- (ai);
+  \draw[branch] (register.south) |- (7.5,-2.35);
+  \draw[branch] (login.south) -- (7.5,-2.35);
+  \draw[branch] (invitation.south) |- (7.5,-2.35);
+  \draw[flow] (7.5,-2.35) -- (session.north);
+
+  % Primer nivel del producto tras autenticarse.
+  \node[area] (home) at (1.55,-4.45) {Inicio y sesión};
+  \node[area] (portfolio) at (7.5,-4.45) {Cartera de oportunidades};
+  \node[area] (settings) at (13.45,-4.45) {Configuración};
+
+  \draw[branch] (session.south) -- (7.5,-3.68);
+  \draw[branch] (1.55,-3.68) -- (13.45,-3.68);
+  \foreach \target in {home,portfolio,settings} {
+    \draw[flow] (\target |- 0,-3.68) -- (\target.north);
+  }
+
+  % Acciones transversales.
+  \node[screen] (session-actions) at (1.55,-5.9)
+    {Panel de inicio\\Cambiar cuenta activa\\Perfil y tema\\Cerrar sesión};
+  \draw[flow] (home) -- (session-actions);
+
+  % Recorrido de la cartera.
+  \node[compact] (kanban) at (6.05,-5.9)
+    {Vista kanban\\\textcolor{TFGMuted}{Filtrar, crear, mover y abrir}};
+  \node[compact] (list) at (8.95,-5.9)
+    {Vista de lista\\\textcolor{TFGMuted}{Filtrar, paginar y abrir}};
+  \draw[flow] (portfolio.south) -- (7.5,-5.12);
+  \draw[branch] (6.05,-5.12) -- (8.95,-5.12);
+  \draw[flow] (6.05,-5.12) -- (kanban.north);
+  \draw[flow] (8.95,-5.12) -- (list.north);
+  \node[screen] (detail) at (7.5,-7.15)
+    {Detalle de oportunidad\\\textcolor{TFGMuted}{Editar datos y estado; gestionar responsables\\y asignar o sustituir el workflow}};
+  \draw[branch] (kanban.south) -- (6.05,-6.55) -- (8.95,-6.55) -- (list.south);
+  \draw[flow] (7.5,-6.55) -- (detail.north);
+
+  % Configuración reutilizada por la cartera y las oportunidades.
+  \node[admin] (account) at (13.4,-5.7)
+    {Cuenta y miembros*\\\textcolor{TFGMuted}{Consultar equipo y administrar accesos}};
+  \node[screen] (process) at (13.4,-6.95)
+    {Pipelines y workflows\\\textcolor{TFGMuted}{Estados, pasos y acciones}};
+  \node[screen] (catalogs) at (13.4,-8.2)
+    {Catálogos de cualificación\\\textcolor{TFGMuted}{Preguntas, campos\\y resúmenes}};
+  \draw[branch] (settings.south) -- (13.4,-5.02);
+  \draw[branch] (13.4,-5.02) -- (15.25,-5.02) -- (15.25,-8.2);
+  \foreach \target in {account,process,catalogs} {
+    \draw[flow] (15.25,0 |- \target.east) -- (\target.east);
+  }
+
+  % Navegación contextual dentro de una oportunidad.
+  \node[compact] (details) at (4.25,-8.95) {Detalles\\generales};
+  \node[compact] (documents) at (7.5,-8.95)
+    {Documentación\\\textcolor{TFGMuted}{Subir, descargar\\o retirar PDF}};
+  \node[compact] (questions) at (10.75,-8.95)
+    {Preguntas de control\\\textcolor{TFGMuted}{Responder o\\generar con IA}};
+  \node[compact] (fields) at (4.25,-10.25)
+    {Campos personalizados\\\textcolor{TFGMuted}{Completar o\\generar con IA}};
+  \node[compact] (summaries) at (7.5,-10.25)
+    {Resúmenes\\\textcolor{TFGMuted}{Redactar o\\generar con IA}};
+  \node[compact] (workflow) at (10.75,-10.25)
+    {Workflow\\\textcolor{TFGMuted}{Ejecutar acciones; revisar decisiones}};
+  \node[context, fit=(details)(documents)(questions)(fields)(summaries)(workflow)] (sections) {};
+  \node[note, fill=white, text=TFGBlue, font=\tiny\bfseries\sffamily]
+    at (sections.north) {Navegación contextual de la oportunidad};
+  \draw[flow] (detail.south) -- (sections.north);
+
+  \node[note, text width=2.55cm, anchor=north west] at (0,-7.55)
+    {* Invitación, cambio de rol y baja de miembros: solo administrador.};
 \end{tikzpicture}

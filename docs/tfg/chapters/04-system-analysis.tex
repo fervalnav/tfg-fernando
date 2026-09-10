@@ -17,8 +17,10 @@ se documenta el resultado final.
 \section{Modelo conceptual del dominio}
 
 El núcleo del sistema está formado por la cuenta, las oportunidades y los
-procesos configurables con los que se analizan. Una cuenta agrupa usuarios,
-pipelines, workflows y catálogos reutilizables. Cada oportunidad se sitúa en un
+procesos configurables con los que se analizan. Una cuenta agrupa membresías,
+pipelines, workflows y catálogos reutilizables. Cada membresía vincula un único
+usuario con una única cuenta e incorpora su rol, por lo que la relación entre
+usuarios y cuentas es de muchos a muchos. Cada oportunidad se sitúa en un
 estado de un pipeline, puede tener responsables y reúne tanto la documentación
 de la licitación como los elementos que permiten cualificarla.
 
@@ -36,6 +38,14 @@ aplicación a una oportunidad concreta. El pipeline determina el estado
 comercial, mientras que el workflow establece la secuencia de análisis. Esta
 separación permite que dos oportunidades recorran el mismo proceso sin
 compartir respuestas, resultados ni documentos.
+
+Las multiplicidades se indican junto a cada extremo de las asociaciones. Los
+estados y pasos pertenecen a una única definición, mientras que un pipeline o
+un workflow puede contener varios de ellos. Toda oportunidad ocupa exactamente
+un estado y cada uno de sus documentos y elementos de cualificación pertenece
+a una sola oportunidad. El paso actual es opcional porque la oportunidad puede
+no tener un workflow asignado; un mismo paso puede ser, a su vez, el paso actual
+de varias oportunidades.
 
 La cualificación requiere además diferenciar los catálogos configurables de
 las instancias vinculadas a una licitación. Las plantillas expresan qué se desea
@@ -57,6 +67,14 @@ o un documento. La acción representa el trabajo pendiente dentro del paso; el
 elemento instanciado conserva el contenido que el usuario revisa. Esta
 distinción evita que la modificación de una plantilla altere retroactivamente
 el análisis ya realizado sobre otras oportunidades.
+
+Todos los conceptos representados tienen correspondencia con los requisitos de
+información del \Cref{tab:information-requirements}: identidad, cuentas y
+membresías se recogen en RI-001; pipelines y estados en RI-002; definiciones,
+pasos, acciones y su ejecución por oportunidad en RI-003; oportunidades en
+RI-004; plantillas e instancias de cualificación en RI-005 y RI-006; y
+documentos adjuntos en RI-007. En particular, RI-003 explicita los cuatro tipos
+de destino que puede utilizar una acción.
 
 \section{Historias de usuario}
 
@@ -118,7 +136,39 @@ La tabla no introduce funcionalidades distintas de los requisitos. Su función
 es mostrar la relación entre el valor esperado por cada actor y los grupos de
 comportamiento definidos anteriormente.
 
+\section{Vocabulario del dominio}
+
+Para evitar ambigüedades, la \Cref{tab:domain-vocabulary} fija el significado
+de los términos que se utilizan en los procesos y wireframes del capítulo.
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Vocabulario principal del dominio de LIA.}
+  \label{tab:domain-vocabulary}
+  \begin{tabular}{@{}p{3.4cm}p{10cm}@{}}
+    \toprule
+    \textbf{Término} & \textbf{Significado en LIA} \\
+    \midrule
+    Cuenta & Espacio de trabajo que aísla usuarios, configuración y oportunidades de una organización. \\
+    Cartera & Conjunto de oportunidades de una cuenta, consultado mediante vistas de lista o kanban. \\
+    Oportunidad & Licitación que el equipo decide registrar, seguir y cualificar. \\
+    Pipeline y estado & Proceso comercial configurable y posición concreta que ocupa una oportunidad dentro de él. \\
+    Workflow, paso y acción & Secuencia de análisis, etapa actual y unidad de trabajo que debe resolverse para avanzar. \\
+    Catálogo o plantilla & Definición reutilizable de una pregunta, un campo o un resumen dentro de una cuenta. \\
+    Instancia de cualificación & Copia vinculada a una oportunidad que conserva su propio valor, estado y evidencia. \\
+    Evidencia & Fragmento o referencia documental que permite revisar el fundamento de un resultado generado. \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
 \section{Procesos de negocio}
+
+Los procesos siguientes describen cómo colaboran el usuario y LIA desde el
+registro de una licitación hasta su cualificación. Se separa la gestión de la
+cartera, que organiza y prioriza oportunidades, del análisis documental guiado
+por un workflow. Esta distinción permite identificar qué actividades inicia el
+usuario y cuáles ejecuta automáticamente el sistema.
 
 \subsection{Gestión de la cartera}
 
@@ -140,16 +190,18 @@ de texto ni a una sola pantalla.
   \resizebox{\textwidth}{!}{
     \input{figure-sources/tikz/qualification-process}
   }
-  \caption{Proceso funcional de cualificación de una licitación.}
+  \caption{Proceso de cualificación con tareas manuales y automáticas.}
   \label{fig:qualification-process}
 \end{figure}
 
-En la \Cref{fig:qualification-process}, los documentos constituyen el contexto
-de las acciones posteriores. El workflow instancia únicamente los elementos
-necesarios para sus pasos. El usuario puede aportar valores manuales o solicitar
-asistencia de IA, pero debe conservar la capacidad de revisar y corregir el
-resultado. Cuando un paso contiene una condición, el sistema evalúa la
-información disponible y permite revisar la evidencia antes de continuar.
+En la \Cref{fig:qualification-process}, el fondo blanco identifica las tareas
+manuales y el fondo azul las operaciones automáticas de LIA. Los documentos
+constituyen el contexto de las acciones posteriores y el workflow instancia
+únicamente los elementos referenciados por sus pasos. El usuario puede aportar
+valores manuales o solicitar asistencia de IA, pero en ambos casos revisa el
+resultado y su evidencia. Cuando un paso contiene una condición, el sistema
+evalúa la información disponible y permite corregir o reintentar antes de
+continuar.
 
 \section{Diagramas de secuencia}
 
@@ -225,26 +277,56 @@ el usuario puede repetir la operación o completarla manualmente.
 
 \section{Diseño de navegación}
 
-La navegación parte de la cartera de oportunidades y mantiene un acceso
-separado a la configuración. Dentro de una oportunidad se utiliza una
-navegación contextual estable para evitar que la cualificación se fragmente en
-recorridos inconexos.
+El recorrido comienza en el área pública, desde la que un visitante puede
+iniciar sesión, registrar una nueva cuenta o aceptar una invitación. Este último
+caso contempla tanto al usuario que todavía debe crear sus credenciales como al
+que ya dispone de una sesión y únicamente se incorpora a la cuenta invitante.
+Tras autenticarse, el usuario trabaja siempre en el contexto de una cuenta
+activa y puede cambiar a otra de las cuentas a las que pertenezca.
 
 \begin{figure}[H]
   \centering
   \resizebox{\textwidth}{!}{
     \input{figure-sources/tikz/navigation-map}
   }
-  \caption{Mapa de navegación propuesto.}
+  \caption{Diagrama de navegabilidad propuesto para LIA.}
   \label{fig:navigation-map}
 \end{figure}
 
-La \Cref{fig:navigation-map} incluye todas las áreas funcionales principales.
-Las preguntas, campos y resúmenes se configuran primero como catálogos y se
-consultan después como instancias dentro de una oportunidad. Esta relación se
-mantiene visible en los wireframes siguientes.
+La \Cref{fig:navigation-map} representa las áreas alcanzables y las acciones
+principales, no una secuencia obligatoria de uso. Desde el área autenticada se
+accede al inicio, a la cartera de oportunidades y a la configuración. La
+cartera ofrece vistas kanban y de lista sobre un pipeline seleccionado; ambas
+permiten filtrar y abrir oportunidades, mientras que el tablero incorpora el
+alta y el cambio de estado mediante movimiento entre columnas.
+
+Al abrir una oportunidad se mantiene una navegación contextual única. El
+usuario puede modificar sus datos, estado, responsables o workflow y recorrer
+seis secciones: detalles, documentación, preguntas de control, campos
+personalizados, resúmenes y ejecución del workflow. De esta forma, la carga de
+pliegos, la cualificación asistida y el seguimiento del proceso permanecen
+vinculados a la misma licitación. La sustitución del workflow es una operación
+explícita: se rechaza si existen acciones en progreso y, cuando se permite,
+retira la ejecución anterior antes de iniciar la nueva, evitando que ambos
+flujos se solapen.
+
+La configuración se divide en cuenta, proceso comercial y catálogos de
+cualificación. Los pipelines, estados y workflows determinan cómo se organiza
+la cartera y cómo avanza cada oportunidad. Las preguntas, campos y resúmenes se
+definen como plantillas reutilizables y se consultan después como instancias
+independientes dentro de una oportunidad. Todos los miembros pueden consultar
+el equipo; las operaciones de invitación, cambio de rol y retirada de miembros
+quedan reservadas al administrador, distinción indicada expresamente en el
+diagrama. Esta relación entre configuración e instancias se mantiene visible en
+los wireframes siguientes.
 
 \section{Wireframes de la interfaz}
+
+Los wireframes se organizan en cuatro grupos: acceso y pertenencia a una cuenta;
+cartera y datos generales de la oportunidad; secciones de cualificación
+---documentación, preguntas, campos, resúmenes y workflow---; y configuración
+de la cuenta, los procesos y los proveedores de IA. Cada subsección presenta el
+objetivo de la vista y la relación con el recorrido definido anteriormente.
 
 \subsection{Acceso y pertenencia a una cuenta}
 

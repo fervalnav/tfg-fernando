@@ -3,7 +3,9 @@
   entity/.style={draw=TFGBlue, rounded corners=2pt, fill=TFGLightBlue,
     minimum height=0.76cm, text width=2.28cm, align=center, inner sep=4pt},
   core/.style={entity, fill=TFGBlue, text=white},
-  relation/.style={-{Latex[length=2mm]}, semithick, draw=TFGAccent}
+  relation/.style={semithick, draw=TFGAccent},
+  cardinality/.style={font=\tiny\sffamily\bfseries, text=TFGBlue,
+    fill=white, inner sep=1.2pt}
 ]
   \node[entity] (user) at (-4.8,0) {Usuario};
   \node[entity] (member) at (-4.8,-1.45) {Membresía y rol};
@@ -12,24 +14,52 @@
   \node[entity] (workflow) at (1.8,-1.45) {Workflow};
   \node[entity] (catalogs) at (4.8,0) {Catálogos de cualificación};
   \node[entity] (status) at (-1.8,-2.9) {Estado};
-  \node[entity] (step) at (1.8,-2.9) {Pasos y acciones};
+  \node[entity] (step) at (1.8,-2.9) {Paso del workflow};
   \node[core] (opportunity) at (0,-4.35) {Oportunidad};
   \node[entity] (attachment) at (-4.8,-5.85) {Documento PDF};
   \node[entity] (question) at (-1.6,-5.85) {Pregunta de control};
   \node[entity] (field) at (1.6,-5.85) {Campo personalizado};
   \node[entity] (summary) at (4.8,-5.85) {Resumen};
 
-  \draw[relation] (user) -- (member);
-  \draw[relation] (account) -- (member);
-  \draw[relation] (account) -- (pipeline);
-  \draw[relation] (account) -- (workflow);
-  \draw[relation] (account) -- (catalogs);
-  \draw[relation] (pipeline) -- (status);
-  \draw[relation] (workflow) -- (step);
-  \draw[relation] (status) -- (opportunity);
-  \draw[relation] (step) -- (opportunity);
-  \draw[relation] (opportunity) -- (attachment);
-  \draw[relation] (opportunity) -- (question);
-  \draw[relation] (opportunity) -- (field);
-  \draw[relation] (opportunity) -- (summary);
+  \draw[relation] (user) --
+    node[cardinality, pos=0.13, left] {1}
+    node[cardinality, pos=0.87, left] {0..*} (member);
+  \draw[relation] (account) --
+    node[cardinality, pos=0.13, below] {1}
+    node[cardinality, pos=0.87, above] {0..*} (member);
+  \draw[relation] (account) --
+    node[cardinality, pos=0.14, left] {1}
+    node[cardinality, pos=0.86, right] {0..*} (pipeline);
+  \draw[relation] (account) --
+    node[cardinality, pos=0.14, right] {1}
+    node[cardinality, pos=0.86, left] {0..*} (workflow);
+  \draw[relation] (account) --
+    node[cardinality, pos=0.13, above] {1}
+    node[cardinality, pos=0.87, above] {0..*} (catalogs);
+  \draw[relation] (pipeline) --
+    node[cardinality, pos=0.13, left] {1}
+    node[cardinality, pos=0.78, left] {0..*}
+    node[cardinality, pos=0.94, right] {\{ordered\}} (status);
+  \draw[relation] (workflow) --
+    node[cardinality, pos=0.13, right] {1}
+    node[cardinality, pos=0.78, right] {0..*}
+    node[cardinality, pos=0.94, left] {\{ordered\}} (step);
+  \draw[relation] (status) --
+    node[cardinality, pos=0.13, below] {1}
+    node[cardinality, pos=0.87, left] {0..*} (opportunity);
+  \draw[relation] (step) --
+    node[cardinality, pos=0.13, below] {0..1}
+    node[cardinality, pos=0.87, right] {0..*} (opportunity);
+  \draw[relation] (opportunity) --
+    node[cardinality, pos=0.13, left] {1}
+    node[cardinality, pos=0.87, above] {0..*} (attachment);
+  \draw[relation] (opportunity) --
+    node[cardinality, pos=0.13, left] {1}
+    node[cardinality, pos=0.87, right] {0..*} (question);
+  \draw[relation] (opportunity) --
+    node[cardinality, pos=0.13, right] {1}
+    node[cardinality, pos=0.87, left] {0..*} (field);
+  \draw[relation] (opportunity) --
+    node[cardinality, pos=0.13, right] {1}
+    node[cardinality, pos=0.87, above] {0..*} (summary);
 \end{tikzpicture}

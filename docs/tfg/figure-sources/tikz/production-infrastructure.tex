@@ -1,0 +1,45 @@
+\begin{tikzpicture}[
+  every node/.style={font=\small\sffamily},
+  service/.style={
+    draw=TFGBlue,
+    rounded corners=2pt,
+    fill=TFGLightBlue,
+    text width=2.45cm,
+    minimum height=0.9cm,
+    align=center,
+    inner sep=5pt
+  },
+  internal/.style={service, fill=white},
+  external/.style={service, draw=TFGMuted, dashed, fill=white},
+  connection/.style={-{Latex[length=2.2mm]}, semithick, draw=TFGAccent},
+  bidirectional/.style={{Latex[length=2.2mm]}-{Latex[length=2.2mm]}, semithick, draw=TFGAccent},
+  backup/.style={-{Latex[length=2mm]}, dashed, draw=TFGMuted}
+]
+  \node[external] (browser) at (-5.65,2.55) {\textbf{Navegador}\\HTTPS};
+
+  \node[service] (caddy) at (-2.55,2.55) {\textbf{Caddy}\\entrada 80/443};
+  \node[internal] (web) at (0.55,3.55) {\textbf{Web}\\Nuxt 4};
+  \node[internal] (api) at (0.55,1.55) {\textbf{API}\\NestJS};
+  \node[internal] (postgres) at (3.65,2.75) {\textbf{PostgreSQL}\\datos transaccionales};
+  \node[internal] (minio) at (3.65,0.75) {\textbf{MinIO}\\documentos PDF};
+
+  \node[external] (google) at (-0.55,-1.25) {\textbf{Google IA}\\generación estructurada};
+  \node[external] (smtp) at (2.45,-1.25) {\textbf{Servidor SMTP}\\invitaciones};
+  \node[external] (backups) at (5.45,-1.25) {\textbf{Copias}\\Hetzner + pg\_dump};
+
+  \draw[bidirectional] (browser) -- (caddy);
+  \draw[connection] (caddy) -- (web);
+  \draw[connection] (caddy) -- (api);
+  \draw[bidirectional] (api) -- (postgres);
+  \draw[bidirectional] (api) -- (minio);
+  \draw[bidirectional] (api) -- (google);
+  \draw[connection] (api) -- (smtp);
+  \node[
+    draw=TFGMuted,
+    rounded corners=3pt,
+    fit=(caddy)(web)(api)(postgres)(minio),
+    inner sep=9pt,
+    label={[font=\scriptsize\sffamily\color{TFGMuted}]above:Servidor Hetzner · Docker Compose · red interna}
+  ] (server) {};
+  \draw[backup] (server.south east) -- (backups.north);
+\end{tikzpicture}

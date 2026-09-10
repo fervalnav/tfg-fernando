@@ -328,36 +328,48 @@ la arquitectura soporta la futura comparación de proveedores, aunque el
 control de cuotas y la evaluación acumulada de coste y rendimiento permanecen
 pendientes.
 
-\section{Ejecución e infraestructura local}
-\label{sec:local-infrastructure}
+\section{Ejecución e infraestructura de producción}
+\label{sec:production-infrastructure}
 
-La configuración reproducible verificada es local. La aplicación web escucha
-por defecto en el puerto 3001 y la API en el 3000. Docker Compose levanta
-PostgreSQL, MinIO y MailHog, además de un perfil opcional para Ollama. Las
-variables de entorno separan credenciales, URLs, proveedor, modelo y límites
-del código fuente.
+LIA se despliega sobre una máquina virtual de Hetzner Cloud provisionada
+mediante infraestructura como código. La definición crea el servidor, limita
+el acceso mediante un cortafuegos y prepara un usuario específico de
+despliegue. Sobre esta máquina, Docker Compose ejecuta de forma aislada la
+aplicación web, la API, PostgreSQL, MinIO y Caddy. Las credenciales, dominios,
+proveedor de IA y límites operativos se inyectan mediante variables de entorno
+y no forman parte de las imágenes.
 
 \begin{figure}[htbp]
   \centering
   \resizebox{0.96\textwidth}{!}{
-    \input{figure-sources/tikz/local-infrastructure}
+    \input{figure-sources/tikz/production-infrastructure}
   }
-  \caption{Topología del entorno local de desarrollo.}
-  \label{fig:local-infrastructure}
+  \caption{Topología de despliegue de LIA en Hetzner Cloud.}
+  \label{fig:production-infrastructure}
 \end{figure}
 
-MailHog captura en desarrollo los mensajes de invitación sin enviarlos a
-destinatarios reales. MinIO proporciona una API compatible con S3 y crea el
-contenedor de objetos utilizado por la aplicación. Ollama puede iniciarse con
-un perfil separado porque la inferencia consume recursos diferentes a los de
-la API. Si se elige Google, la llamada sale del entorno local hacia el servicio
-externo configurado.
+Como muestra la \Cref{fig:production-infrastructure}, Caddy constituye el único
+punto de entrada público. Publica la SPA y enruta las peticiones bajo
+\texttt{/api} hacia NestJS; un segundo nombre DNS permite entregar los objetos
+de MinIO exclusivamente mediante URL prefirmadas. La API, PostgreSQL y MinIO
+permanecen en una red interna de Docker y no exponen directamente sus puertos
+al exterior. Las llamadas a Google para la generación y al servidor SMTP para
+las invitaciones constituyen las únicas integraciones salientes del núcleo.
 
-No se ha validado un despliegue de producción. En consecuencia, la
-\Cref{fig:local-infrastructure} no presupone un proveedor de alojamiento, un
-proxy inverso, certificados, copias de seguridad ni escalado horizontal. Esos
-elementos deberán documentarse únicamente si se implementa y verifica un
-entorno final.
+El flujo de publicación construye imágenes independientes para la web, la API
+y MinIO, las identifica mediante el SHA del commit y las almacena en GitHub
+Container Registry. Antes de actualizar los contenedores, el servidor comprueba
+que no queden secretos ni dominios de ejemplo. La API aplica las migraciones de
+MikroORM antes de aceptar tráfico, mientras que los \emph{health checks} de
+Compose impiden considerar correcto un arranque incompleto.
+
+La persistencia se concentra en volúmenes separados para PostgreSQL y MinIO.
+Además de las copias rotatorias del servidor, un temporizador genera diariamente
+un volcado lógico de PostgreSQL y conserva siete días. Esta solución es adecuada
+para el alcance y el presupuesto del TFG, aunque mantiene todos los servicios en
+un único nodo. La distribución entre servicios gestionados o distintos
+proveedores se plantea como evolución futura en el
+\Cref{chap:future-work}.
 
 \section{Decisiones y compromisos arquitectónicos}
 \label{sec:architecture-decisions}

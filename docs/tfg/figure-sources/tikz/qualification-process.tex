@@ -1,30 +1,53 @@
 \begin{tikzpicture}[
-  node distance=0.72cm,
+  node distance=0.55cm and 0.75cm,
   every node/.style={font=\scriptsize\sffamily},
-  activity/.style={draw=TFGBlue, rounded corners=2pt, fill=TFGLightBlue,
-    minimum height=0.78cm, text width=3.15cm, align=center, inner sep=4pt},
+  activity/.style={draw=TFGBlue, rounded corners=2pt,
+    minimum height=0.78cm, text width=2.85cm, align=center, inner sep=4pt},
+  manual/.style={activity, fill=white},
+  automatic/.style={activity, fill=TFGLightBlue},
   decision/.style={draw=TFGAccent, diamond, aspect=2.1, fill=white,
     text width=2.1cm, align=center, inner sep=1pt},
-  flow/.style={-{Latex[length=2mm]}, semithick, draw=TFGAccent}
+  flow/.style={-{Latex[length=2mm]}, semithick, draw=TFGAccent},
+  legend/.style={font=\tiny\sffamily, anchor=west}
 ]
-  \node[activity] (create) {Registrar la oportunidad};
-  \node[activity, right=of create] (documents) {Incorporar pliegos y documentos PDF};
-  \node[activity, right=of documents] (assign) {Asignar pipeline, estado y workflow};
-  \node[activity, below=1.15cm of assign] (instantiate) {Instanciar preguntas, campos y resúmenes del workflow};
-  \node[activity, left=of instantiate] (execute) {Completar acciones manualmente o solicitar IA};
-  \node[decision, left=1.05cm of execute] (decision) {¿Condición satisfecha?};
-  \node[activity, below=1.15cm of decision] (next) {Avanzar al siguiente paso};
-  \node[activity, right=of next] (review) {Revisar resultados y evidencias};
-  \node[activity, right=of review] (close) {Finalizar cualificación y apoyar la decisión};
+  \node[manual] (create) at (-4.8,0) {Registrar la oportunidad};
+  \node[manual] (documents) at (-1.6,0) {Incorporar pliegos y documentos PDF};
+  \node[manual] (assign) at (1.6,0) {Asignar pipeline, estado y workflow};
+  \node[automatic] (instantiate) at (4.8,0)
+    {Instanciar los elementos referenciados por el workflow};
+  \node[manual] (choose) at (4.8,-1.55)
+    {Elegir resolución manual o asistida};
+  \node[manual] (manual-action) at (1.6,-3.1)
+    {Completar la acción manualmente};
+  \node[manual] (request-ai) at (4.8,-3.1)
+    {Solicitar una generación mediante IA};
+  \node[automatic] (generate) at (8,-3.1)
+    {Generar y validar el resultado estructurado};
+  \node[manual] (review) at (4.8,-4.75)
+    {Revisar el resultado y su evidencia};
+  \node[decision] (decision) at (1.6,-4.75) {¿Condición satisfecha?};
+  \node[automatic] (next) at (1.6,-6.35) {Avanzar al siguiente paso};
+  \node[manual] (close) at (4.8,-6.35) {Finalizar la cualificación y apoyar la decisión};
 
   \draw[flow] (create) -- (documents);
   \draw[flow] (documents) -- (assign);
   \draw[flow] (assign) -- (instantiate);
-  \draw[flow] (instantiate) -- (execute);
-  \draw[flow] (execute) -- (decision);
+  \draw[flow] (instantiate) -- (choose);
+  \draw[flow] (choose.west) -| (manual-action.north);
+  \draw[flow] (choose) -- (request-ai);
+  \draw[flow] (request-ai) -- (generate);
+  \draw[flow] (generate.south) |- (review.east);
+  \draw[flow] (manual-action.east) -- ++(0.35cm,0) |- (review.north);
+  \draw[flow] (review) -- (decision);
   \draw[flow] (decision) -- node[left]{sí} (next);
-  \draw[flow] (next) -- (review);
-  \draw[flow] (review) -- (close);
-  \draw[flow] (decision.north) -- ++(0,0.48cm)
-    -| node[pos=0.3, above]{no: revisar} (execute.north);
+  \draw[flow] (next) -- (close);
+  \draw[flow] (decision.west) -- ++(-0.75cm,0)
+    |- node[pos=0.25, left, align=right]{no: corregir\\o reintentar} (manual-action.west);
+
+  \node[manual, minimum height=0.42cm, text width=1.35cm, anchor=west]
+    at (-4.7,-7.65) {};
+  \node[legend] at (-3.2,-7.65) {Tarea manual};
+  \node[automatic, minimum height=0.42cm, text width=1.35cm, anchor=west]
+    at (0.2,-7.65) {};
+  \node[legend] at (1.7,-7.65) {Tarea automática de LIA};
 \end{tikzpicture}

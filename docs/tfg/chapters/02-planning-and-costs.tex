@@ -88,38 +88,55 @@ un registro diario de actividad.
   \label{fig:core-sprint-plan}
 \end{figure}
 
-\section{Planificación del esfuerzo}
+\section{Planificación y ejecución del esfuerzo}
 
-La dedicación total se reconstruye como una estimación de 320 horas e incluye
-análisis, diseño, desarrollo, pruebas y elaboración de la memoria. No se trata
-de un registro horario diario: las partidas se han redondeado por bloques de
-trabajo para expresar la distribución del esfuerzo sin introducir una precisión
-que no puede justificarse. La
-\Cref{tab:effort-breakdown} distribuye el esfuerzo por bloques de trabajo. Las
-pruebas realizadas dentro de cada sprint se incluyen en el bloque funcional
-correspondiente; la partida específica de calidad agrupa la infraestructura
-transversal de pruebas, los casos de extremo a extremo y las campañas finales
-de validación.
+La estimación inicial acordada para el proyecto fue de 320 horas. Al finalizar
+el núcleo se reconstruyó la dedicación ejecutada a partir de los bloques de
+trabajo, también con un total de 320 horas. Esta reconstrucción incluye
+análisis, diseño, desarrollo, pruebas y elaboración de la memoria, pero no
+procede de un registro horario diario. Por ello permite comparar la magnitud
+global y la distribución del esfuerzo, aunque no calcular una desviación
+horaria fiable para cada sprint.
+
+La \Cref{fig:effort-plan-vs-reconstructed} muestra la comparación agregada. La
+coincidencia entre ambos totales no significa que cada iteración consumiera
+exactamente lo previsto: durante la ejecución se redistribuyó la dedicación
+entre bloques para absorber las incidencias descritas en la sección siguiente.
+
+\begin{figure}[H]
+  \centering
+  \input{figure-sources/tikz/effort-plan-vs-reconstructed}
+  \caption{Comparación entre el esfuerzo total estimado y la dedicación
+    ejecutada reconstruida.}
+  \label{fig:effort-plan-vs-reconstructed}
+\end{figure}
+
+La \Cref{tab:effort-breakdown} relaciona cada bloque de trabajo con los sprints
+en los que se concentró. Las pruebas realizadas dentro de cada sprint se
+incluyen en el bloque funcional correspondiente; la partida específica de
+calidad agrupa la infraestructura transversal de pruebas, los casos de extremo
+a extremo y las campañas finales de validación. Las partidas se han redondeado
+para no introducir una precisión que no puede justificarse.
 
 \begin{table}[H]
   \centering
   \small
-  \caption{Distribución de las 320 horas del proyecto.}
+  \caption{Distribución reconstruida de las 320 horas ejecutadas.}
   \label{tab:effort-breakdown}
-  \begin{tabular}{@{}p{9.2cm}r@{}}
+  \begin{tabular}{@{}p{7.35cm}p{3.2cm}r@{}}
     \toprule
-    \textbf{Bloque de trabajo} & \textbf{Horas} \\
+    \textbf{Bloque de trabajo} & \textbf{Sprints relacionados} & \textbf{Horas} \\
     \midrule
-    Análisis del problema, alcance, planificación y diseño & 28 \\
-    Plataforma, monorepositorio e infraestructura local & 18 \\
-    Autenticación, cuentas y aislamiento multiempresa & 28 \\
-    Pipelines, catálogo y definición de workflows & 55 \\
-    Oportunidades, ejecución de workflows y cualificación & 58 \\
-    Integración de IA generativa, adjuntos y almacenamiento & 48 \\
-    Pruebas, refactorizaciones y validación de calidad & 47 \\
-    Documentación técnica, diagramas y memoria académica & 38 \\
+    Análisis del problema, alcance, planificación y diseño & Transversal & 28 \\
+    Plataforma, monorepositorio e infraestructura local & Sprint 0 & 18 \\
+    Autenticación, cuentas y aislamiento multiempresa & Sprint 1 & 28 \\
+    Pipelines, catálogo y definición de workflows & Sprints 2--4 & 55 \\
+    Oportunidades, ejecución de workflows y cualificación & Sprints 5--7 & 58 \\
+    Integración de IA generativa, adjuntos y almacenamiento & Sprints 8--9 & 48 \\
+    Pruebas, refactorizaciones y validación de calidad & Transversal & 47 \\
+    Documentación técnica, diagramas y memoria académica & Transversal & 38 \\
     \midrule
-    \textbf{Total} & \textbf{320} \\
+    \multicolumn{2}{l}{\textbf{Total}} & \textbf{320} \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -154,10 +171,13 @@ fueron los siguientes:
         la memoria.
 \end{itemize}
 
-Estos ajustes se absorbieron dentro de las 320 horas mediante la revisión del
-backlog y la priorización de la ruta crítica. Las funcionalidades opcionales se
-conservan como posibles ampliaciones y no condicionan la finalización del
-núcleo funcional.
+Estos ajustes explican la redistribución cualitativa respecto del plan inicial:
+se dedicó más atención a la estabilización del entorno, a la infraestructura de
+pruebas y al contexto documental de la IA, y se redujo el trabajo reservado a
+módulos opcionales. Se absorbieron dentro del total reconstruido de 320 horas
+mediante la revisión del backlog y la priorización de la ruta crítica. Las
+funcionalidades opcionales se conservan como posibles ampliaciones y no
+condicionan la finalización del núcleo funcional.
 
 \section{Presupuesto}
 
@@ -178,16 +198,16 @@ antes de cerrar el presupuesto definitivo.
 El coste bruto asociado a las 320 horas es:
 
 \begin{equation}
-  C_{\text{bruto}} = 320 \times 25{,}67 = 8\,214{,}40~\text{euros}.
+  C_{\text{bruto}} = 320 \times 25{,}67 = 8{.}214{,}40~\text{euros}.
 \end{equation}
 
 La cuota empresarial asciende a:
 
 \begin{equation}
-  C_{\text{social}} = 8\,214{,}40 \times 0{,}299 = 2\,456{,}11~\text{euros}.
+  C_{\text{social}} = 8{.}214{,}40 \times 0{,}299 = 2{.}456{,}11~\text{euros}.
 \end{equation}
 
-Con estas hipótesis, el coste provisional de personal es de 10\,670,51 euros,
+Con estas hipótesis, el coste provisional de personal es de 10.670,51 euros,
 como se resume en la \Cref{tab:personnel-cost}.
 
 \begin{table}[H]
@@ -199,10 +219,10 @@ como se resume en la \Cref{tab:personnel-cost}.
     \toprule
     \textbf{Concepto} & \textbf{Coste} \\
     \midrule
-    Remuneración bruta & 8\,214,40 euros \\
-    Cuota empresarial (29,9\,\%) & 2\,456,11 euros \\
+    Remuneración bruta & 8.214,40 euros \\
+    Cuota empresarial (29,9\,\%) & 2.456,11 euros \\
     \midrule
-    \textbf{Total de personal} & \textbf{10\,670,51 euros} \\
+    \textbf{Total de personal} & \textbf{10.670,51 euros} \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -216,12 +236,11 @@ de amortización simplificada de la Agencia Tributaria establece para los
 equipos de tratamiento de la información un coeficiente lineal máximo del
 26\,\% y un periodo máximo de diez años \cite{aeatAmortizacion}.
 
-La aplicación se ejecutó en un entorno local durante el periodo descrito, por lo
-que no se imputa actualmente ningún coste de alojamiento. Si se realiza un
-despliegue antes de la entrega, su proveedor, periodo y coste real se añadirán
-al presupuesto final. Del mismo modo, los servicios de IA y las licencias de
-pago se contabilizarán por su consumo efectivo, sin asignar un coste ficticio a
-planes gratuitos.
+El entorno de producción utiliza un servidor CX23 de Hetzner con copias
+rotatorias habilitadas. Su coste se incorporará al presupuesto cuando se
+confirmen la fecha de alta, el periodo facturado y el importe real. Del mismo
+modo, los servicios de IA y las licencias de pago se contabilizarán por su
+consumo efectivo, sin asignar un coste ficticio a planes gratuitos.
 
 La \Cref{tab:hardware-services-cost} diferencia los conceptos confirmados de
 aquellos para los que todavía falta el dato de adquisición o consumo. Esta
@@ -238,13 +257,13 @@ separación evita que una partida pendiente se confunda con un coste nulo.
     \midrule
     MacBook Pro M4 Pro & Amortización según precio, fecha de adquisición y periodo de uso. & Por completar \\
     IA generativa & Consumo real por proveedor y modelo durante desarrollo y evaluación. & Por completar \\
-    Alojamiento & Sin despliegue durante el periodo descrito. & No imputado \\
+    Hetzner CX23 y copias & Importe y periodo según la facturación real del entorno. & Por completar \\
     Licencias & Herramientas de pago utilizadas específicamente para el proyecto. & Por completar \\
     \bottomrule
   \end{tabular}
 \end{table}
 
 Con los criterios provisionales disponibles, el coste cuantificado asciende a
-10\,670,51 euros correspondientes al personal. No constituye todavía el total
+10.670,51 euros correspondientes al personal. No constituye todavía el total
 definitivo: deberá recalcularse tras confirmar la tarifa, la cuota empresarial,
 la amortización del equipo y, cuando proceda, los consumos y servicios reales.

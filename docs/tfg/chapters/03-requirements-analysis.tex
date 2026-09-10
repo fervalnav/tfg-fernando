@@ -7,10 +7,10 @@ información, reglas de negocio y requisitos no funcionales. Cada elemento
 dispone de un identificador estable para facilitar su relación con los objetivos
 del proyecto, la implementación y las pruebas.
 
-Los estados empleados en el catálogo son \emph{completo}, cuando el requisito
-está implementado y dispone de comprobaciones; \emph{parcial}, cuando existe una
-base funcional pero queda trabajo necesario para satisfacerlo por completo; y
-\emph{pendiente}, cuando todavía no existe una implementación verificable.
+El catálogo formula las necesidades del sistema sin mezclar su definición con
+el estado temporal de implementación. La evidencia disponible y los trabajos
+que todavía condicionan su validación se recogen después en la matriz de
+trazabilidad y en el \Cref{chap:testing}.
 
 \section{Objetivos generales del sistema}
 
@@ -65,40 +65,41 @@ sistema. La \Cref{tab:functional-requirements} recoge el catálogo del núcleo d
 proyecto.
 
 {\small
-\begin{longtable}{@{}L{1.7cm}L{3cm}L{7.3cm}L{1.7cm}@{}}
+\begin{longtable}{@{}L{1.7cm}L{3cm}L{9cm}@{}}
   \caption{Requisitos funcionales de LIA.}
   \label{tab:functional-requirements} \\
   \toprule
-  \textbf{Id.} & \textbf{Nombre} & \textbf{Descripción} & \textbf{Estado} \\
+  \textbf{Id.} & \textbf{Nombre} & \textbf{Descripción} \\
   \midrule
   \endfirsthead
-  \multicolumn{4}{c}{\tablename\ \thetable{} -- continuación} \\[3pt]
+  \multicolumn{3}{c}{\tablename\ \thetable{} -- continuación} \\[3pt]
   \toprule
-  \textbf{Id.} & \textbf{Nombre} & \textbf{Descripción} & \textbf{Estado} \\
+  \textbf{Id.} & \textbf{Nombre} & \textbf{Descripción} \\
   \midrule
   \endhead
   \midrule
-  \multicolumn{4}{r}{Continúa en la página siguiente} \\
+  \multicolumn{3}{r}{Continúa en la página siguiente} \\
   \endfoot
   \bottomrule
   \endlastfoot
-  RF-001 & Identidad y sesión & El sistema debe permitir el registro, el inicio y cierre de sesión, la renovación segura de credenciales y la consulta o edición del perfil. & Completo \\
-  RF-002 & Cuentas de trabajo & El usuario debe poder consultar las cuentas a las que pertenece y cambiar el contexto activo sin iniciar una nueva sesión. & Completo \\
-  RF-003 & Administración de miembros & El administrador debe poder invitar miembros, asignar los roles administrador o miembro, modificar dichos roles y eliminar miembros distintos de sí mismo. & Completo \\
-  RF-004 & Configuración de pipelines & El miembro debe poder crear, consultar, editar y eliminar pipelines, así como ordenar y configurar sus estados iniciales y terminales. & Completo \\
-  RF-005 & Definición de workflows & El miembro debe poder crear, duplicar, modificar y eliminar workflows compuestos por pasos, decisiones y acciones tipadas. & Completo \\
-  RF-006 & Catálogo de cualificación & El miembro debe poder gestionar plantillas de preguntas de control, campos personalizados y resúmenes reutilizables. & Completo \\
-  RF-007 & Gestión de oportunidades & El miembro debe poder crear, consultar, editar y eliminar oportunidades con sus datos económicos, responsables, fechas, pipeline y workflow. & Completo \\
-  RF-008 & Cartera y kanban & El sistema debe mostrar las oportunidades en listado y kanban, permitir su búsqueda y filtrado y gestionar las transiciones y la ordenación entre estados. & Completo \\
-  RF-009 & Ejecución de workflows & El miembro debe poder asignar un workflow a una oportunidad, consultar su progreso, completar u omitir acciones y avanzar o reintentar su ejecución. & Completo \\
-  RF-010 & Cualificación manual & El miembro debe poder añadir las plantillas disponibles a una oportunidad y responder preguntas, editar campos y redactar resúmenes manualmente. & Completo \\
-  RF-011 & Generación estructurada con IA & El sistema debe generar respuestas, campos y resúmenes mediante IA, validarlos contra un esquema y conservar su estado y evidencia. & Completo \\
-  RF-012 & Evaluación preliminar de solvencia & El sistema debe utilizar preguntas de control y documentación de la licitación para producir una evaluación preliminar de solvencia acompañada de evidencia revisable. & Parcial \\
-  RF-013 & Gestión documental & El miembro debe poder adjuntar, listar, descargar y eliminar documentos PDF asociados a una oportunidad. & Completo \\
-  RF-014 & Contexto documental & El sistema debe recuperar los documentos de la oportunidad y entregarlos como contexto binario al proveedor de IA durante las generaciones. & Completo \\
-  RF-015 & Decisiones asistidas por IA & El sistema debe evaluar pasos de decisión mediante IA, registrar el resultado, conservar su evidencia y permitir una nueva evaluación tras un fallo. & Completo \\
-  RF-016 & Selección y medición de proveedores & El sistema debe permitir seleccionar proveedor y modelo, registrar duración y consumo de cada generación y comparar calidad, latencia y coste. & Parcial \\
-  RF-017 & Recuperación de generaciones & El miembro debe poder reconocer los estados pendiente, en proceso, completado y fallido, consultar el error y reintentar una generación fallida. & Completo \\
+  RF-001 & Identidad y sesión & El sistema debe permitir el registro, el inicio y cierre de sesión, la renovación segura de credenciales y la consulta o edición del perfil. \\
+  RF-002 & Cuentas de trabajo & El usuario debe poder consultar las cuentas a las que pertenece y cambiar el contexto activo sin iniciar una nueva sesión. \\
+  RF-003 & Administración de miembros & El administrador debe poder invitar miembros, asignar los roles administrador o miembro, modificar dichos roles y eliminar miembros distintos de sí mismo. \\
+  RF-004 & Configuración de pipelines & El miembro debe poder crear, consultar, editar y eliminar pipelines, así como ordenar y configurar sus estados iniciales y terminales. \\
+  RF-005 & Definición de workflows & El miembro debe poder crear, duplicar, modificar y eliminar workflows compuestos por pasos, decisiones y acciones tipadas. \\
+  RF-006 & Catálogo de cualificación & El miembro debe poder gestionar plantillas de preguntas de control, campos personalizados y resúmenes reutilizables. \\
+  RF-007 & Gestión de oportunidades & El miembro debe poder crear, consultar, editar y eliminar oportunidades con sus datos económicos, responsables, fechas, pipeline y workflow. \\
+  RF-008 & Cartera y kanban & El sistema debe mostrar las oportunidades en listado y kanban, permitir su búsqueda y filtrado y gestionar las transiciones y la ordenación entre estados. \\
+  RF-009 & Ejecución de workflows & El miembro debe poder asignar un workflow a una oportunidad, consultar su progreso, completar u omitir acciones y avanzar o reintentar su ejecución. \\
+  RF-010 & Cualificación manual & El miembro debe poder añadir las plantillas disponibles a una oportunidad y responder preguntas, editar campos y redactar resúmenes manualmente. \\
+  RF-011 & Generación estructurada con IA & El sistema debe generar respuestas, campos y resúmenes mediante IA, validarlos contra un esquema y conservar su estado y evidencia. \\
+  RF-012 & Evaluación preliminar de solvencia & El sistema debe utilizar preguntas de control y documentación de la licitación para producir una evaluación preliminar de solvencia acompañada de evidencia revisable. \\
+  RF-013 & Gestión documental & El miembro debe poder adjuntar, listar, descargar y eliminar documentos PDF asociados a una oportunidad. \\
+  RF-014 & Contexto documental & El sistema debe recuperar los documentos de la oportunidad y entregarlos como contexto binario al proveedor de IA durante las generaciones. \\
+  RF-015 & Decisiones asistidas por IA & El sistema debe evaluar pasos de decisión mediante IA, registrar el resultado, conservar su evidencia y permitir una nueva evaluación tras un fallo. \\
+  RF-016 & Selección y medición de proveedores & El sistema debe permitir seleccionar proveedor y modelo, registrar duración y consumo de cada generación y comparar calidad, latencia y coste. \\
+  RF-017 & Recuperación de generaciones & El miembro debe poder reconocer los estados pendiente, en proceso, completado y fallido, consultar el error y reintentar una generación fallida. \\
+  RF-018 & Retroalimentación de la interfaz & La interfaz debe informar al usuario de la carga, el éxito, el error y el progreso de las operaciones relevantes. \\
 \end{longtable}
 }
 
@@ -118,28 +119,28 @@ relacionar para ejecutar sus procesos. Se describen en la
 \Cref{tab:information-requirements}.
 
 {\small
-\begin{longtable}{@{}L{1.7cm}L{3cm}L{7.3cm}L{1.7cm}@{}}
+\begin{longtable}{@{}L{1.7cm}L{3cm}L{9cm}@{}}
   \caption{Requisitos de información de LIA.}
   \label{tab:information-requirements} \\
   \toprule
-  \textbf{Id.} & \textbf{Información} & \textbf{Contenido principal} & \textbf{Estado} \\
+  \textbf{Id.} & \textbf{Información} & \textbf{Contenido principal} \\
   \midrule
   \endfirsthead
-  \multicolumn{4}{c}{\tablename\ \thetable{} -- continuación} \\[3pt]
+  \multicolumn{3}{c}{\tablename\ \thetable{} -- continuación} \\[3pt]
   \toprule
-  \textbf{Id.} & \textbf{Información} & \textbf{Contenido principal} & \textbf{Estado} \\
+  \textbf{Id.} & \textbf{Información} & \textbf{Contenido principal} \\
   \midrule
   \endhead
   \bottomrule
   \endlastfoot
-  RI-001 & Identidad y pertenencia & Usuarios, cuentas, miembros, roles, invitaciones y sesiones asociados entre sí. & Completo \\
-  RI-002 & Pipelines & Pipelines y estados ordenados, con estado inicial, visibilidad, carácter terminal y resultado de cierre. & Completo \\
-  RI-003 & Workflows & Definiciones, pasos ordenados, decisiones, acciones y referencias a plantillas del catálogo. & Completo \\
-  RI-004 & Oportunidades & Identificación, descripción, importe, moneda, fechas, responsables, pipeline, estado, workflow, paso actual y resultado final. & Completo \\
-  RI-005 & Plantillas de cualificación & Preguntas de control, campos personalizados y resúmenes configurables dentro de cada cuenta. & Completo \\
-  RI-006 & Resultados de cualificación & Instancias por oportunidad, valores o respuestas, fuente humana o IA, estado, evidencia, error y fecha de generación. & Completo \\
-  RI-007 & Adjuntos & Metadatos del documento, oportunidad y cuenta propietarias, ubicación de almacenamiento, tamaño, tipo y posible acción vinculada. & Completo \\
-  RI-008 & Métricas de IA & Proveedor, modelo, duración, tokens, coste estimado, validez estructural y valoración de calidad de cada ejecución evaluada. & Parcial \\
+  RI-001 & Identidad y pertenencia & Usuarios, cuentas, miembros, roles, invitaciones y sesiones asociados entre sí. \\
+  RI-002 & Pipelines & Pipelines y estados ordenados, con estado inicial, visibilidad, carácter terminal y resultado de cierre. \\
+  RI-003 & Workflows & Definiciones, pasos ordenados, decisiones y acciones tipadas que pueden referenciar plantillas de preguntas, campos o resúmenes, o requerir un documento; incluye el estado de las acciones instanciadas para cada oportunidad. \\
+  RI-004 & Oportunidades & Identificación, descripción, importe, moneda, fechas, responsables, pipeline, estado, workflow, paso actual y resultado final. \\
+  RI-005 & Plantillas de cualificación & Preguntas de control, campos personalizados y resúmenes configurables dentro de cada cuenta. \\
+  RI-006 & Resultados de cualificación & Instancias por oportunidad, valores o respuestas, fuente humana o IA, estado, evidencia, error y fecha de generación. \\
+  RI-007 & Adjuntos & Metadatos del documento, oportunidad y cuenta propietarias, ubicación de almacenamiento, tamaño, tipo y posible acción vinculada. \\
+  RI-008 & Métricas de IA & Proveedor, modelo, duración, tokens, coste estimado, validez estructural y valoración de calidad de cada ejecución evaluada. \\
 \end{longtable}
 }
 
@@ -151,62 +152,62 @@ independencia de la interfaz o de la tecnología utilizada. La
 casos de uso.
 
 {\footnotesize
-\begin{longtable}{@{}L{1.7cm}L{3cm}L{7.3cm}L{1.7cm}@{}}
+\begin{longtable}{@{}L{1.7cm}L{3cm}L{9cm}@{}}
   \caption{Reglas de negocio de LIA.}
   \label{tab:business-rules} \\
   \toprule
-  \textbf{Id.} & \textbf{Nombre} & \textbf{Regla} & \textbf{Estado} \\
+  \textbf{Id.} & \textbf{Nombre} & \textbf{Regla} \\
   \midrule
   \endfirsthead
-  \multicolumn{4}{c}{\tablename\ \thetable{} -- continuación} \\[3pt]
+  \multicolumn{3}{c}{\tablename\ \thetable{} -- continuación} \\[3pt]
   \toprule
-  \textbf{Id.} & \textbf{Nombre} & \textbf{Regla} & \textbf{Estado} \\
+  \textbf{Id.} & \textbf{Nombre} & \textbf{Regla} \\
   \midrule
   \endhead
   \bottomrule
   \endlastfoot
-  RN-001 & Cuenta inicial & El registro de un usuario crea una cuenta y lo incorpora a ella con rol de administrador. & Completo \\
-  RN-002 & Aislamiento por cuenta & Ningún usuario puede consultar ni modificar información perteneciente a una cuenta distinta de la activa. & Completo \\
-  RN-003 & Autoridad administrativa & Solo un administrador puede invitar, eliminar o cambiar el rol de otros miembros; ningún miembro puede eliminarse a sí mismo desde la gestión de cuenta. & Completo \\
-  RN-004 & Estado inicial & Cada pipeline debe disponer de un estado inicial válido para admitir nuevas oportunidades. & Completo \\
-  RN-005 & Resultado terminal & Una oportunidad que alcanza un estado terminal debe registrar el resultado ganado, perdido o descartado y su fecha de cierre. & Completo \\
-  RN-006 & Instanciación de plantillas & Al asignar un workflow solo se instancian las plantillas referenciadas por sus acciones; una instancia existente se reutiliza y no se duplica. & Completo \\
-  RN-007 & Progreso del workflow & Las acciones y decisiones del paso actual determinan si el workflow puede avanzar; los fallos deben conservarse y permitir reintento. & Completo \\
-  RN-008 & Resultado estructurado & Toda respuesta de IA utilizada por el dominio debe cumplir el esquema definido para su operación antes de persistirse. & Completo \\
-  RN-009 & Documentos admitidos & Los adjuntos deben ser PDF y no superar 30 MB; un documento vinculado a una acción activa no puede eliminarse. & Completo \\
-  RN-010 & Borrado físico & La eliminación confirmada de las entidades del núcleo se realiza físicamente, sin mantener un estado de borrado lógico. & Completo \\
+  RN-001 & Cuenta inicial & El registro de un usuario crea una cuenta y lo incorpora a ella con rol de administrador. \\
+  RN-002 & Aislamiento por cuenta & Ningún usuario puede consultar ni modificar información perteneciente a una cuenta distinta de la activa. \\
+  RN-003 & Autoridad administrativa & Solo un administrador puede invitar, eliminar o cambiar el rol de otros miembros; ningún miembro puede eliminarse a sí mismo desde la gestión de cuenta. \\
+  RN-004 & Estado inicial & Cada pipeline debe disponer de un estado inicial válido para admitir nuevas oportunidades. \\
+  RN-005 & Resultado terminal & Una oportunidad que alcanza un estado terminal debe registrar el resultado ganado, perdido o descartado y su fecha de cierre. \\
+  RN-006 & Instanciación de plantillas & Al asignar un workflow solo se instancian las plantillas referenciadas por sus acciones; una instancia existente se reutiliza y no se duplica. \\
+  RN-007 & Progreso y sustitución del workflow & Las acciones y decisiones del paso actual determinan si el workflow puede avanzar. Un workflow no puede sustituirse mientras haya acciones en progreso; al sustituirlo se retira la ejecución anterior antes de iniciar la nueva. Los fallos deben conservarse y permitir reintento. \\
+  RN-008 & Resultado estructurado & Toda respuesta de IA utilizada por el dominio debe cumplir el esquema definido para su operación antes de persistirse. \\
+  RN-009 & Documentos admitidos & Los adjuntos deben ser PDF y no superar 30 MB; un documento vinculado a una acción activa no puede eliminarse. \\
+  RN-010 & Borrado físico & La eliminación confirmada de las entidades del núcleo se realiza físicamente, sin mantener un estado de borrado lógico. \\
+  RN-011 & Acceso autenticado & Las operaciones protegidas requieren una sesión válida y deben rechazar accesos a una cuenta distinta de la activa. \\
+  RN-012 & Validez de las modificaciones & Antes de modificar el dominio deben validarse los identificadores, tipos, estados y relaciones afectados; una entrada inválida no puede producir cambios. \\
 \end{longtable}
 }
 
 \subsection{Requisitos no funcionales}
 
-Los requisitos no funcionales definen las propiedades de calidad necesarias
-para que el núcleo sea seguro, mantenible y evaluable. Se presentan en la
-\Cref{tab:non-functional-requirements}.
+Los requisitos no funcionales se reservan para propiedades de calidad del
+sistema. Los comportamientos observables de seguridad, validación y
+retroalimentación de la interfaz se han formulado como reglas de negocio o
+requisitos funcionales, en lugar de mezclarlos en esta categoría. Se presentan
+en la \Cref{tab:non-functional-requirements}.
 
 {\small
-\begin{longtable}{@{}L{1.7cm}L{3cm}L{7.3cm}L{1.7cm}@{}}
+\begin{longtable}{@{}L{1.7cm}L{3cm}L{9cm}@{}}
   \caption{Requisitos no funcionales de LIA.}
   \label{tab:non-functional-requirements} \\
   \toprule
-  \textbf{Id.} & \textbf{Atributo} & \textbf{Requisito} & \textbf{Estado} \\
+  \textbf{Id.} & \textbf{Atributo} & \textbf{Requisito} \\
   \midrule
   \endfirsthead
-  \multicolumn{4}{c}{\tablename\ \thetable{} -- continuación} \\[3pt]
+  \multicolumn{3}{c}{\tablename\ \thetable{} -- continuación} \\[3pt]
   \toprule
-  \textbf{Id.} & \textbf{Atributo} & \textbf{Requisito} & \textbf{Estado} \\
+  \textbf{Id.} & \textbf{Atributo} & \textbf{Requisito} \\
   \midrule
   \endhead
   \bottomrule
   \endlastfoot
-  RNF-001 & Seguridad & Las rutas protegidas deben exigir una sesión válida, renovar credenciales de forma controlada y rechazar accesos entre cuentas. & Completo \\
-  RNF-002 & Integridad & La API debe validar identificadores, tipos, estados y relaciones antes de modificar el dominio y devolver errores diferenciados para entradas inválidas. & Completo \\
-  RNF-003 & Usabilidad & La interfaz debe mostrar carga, éxito, error y progreso en las operaciones relevantes, y ofrecer vistas de listado y kanban para la cartera. & Completo \\
-  RNF-004 & Mantenibilidad & El sistema debe conservar separación modular, TypeScript estricto, contratos compartidos y dependencias orientadas hacia el dominio. & Completo \\
-  RNF-005 & Testabilidad & Los casos de negocio deben poder probarse de forma aislada y la IA debe disponer de un proveedor determinista que no realice consumo facturable. & Completo \\
-  RNF-006 & Portabilidad local & El entorno debe poder reproducirse con configuración documentada para PostgreSQL y almacenamiento compatible con S3, sin depender de servicios de producción. & Completo \\
-  RNF-007 & Interoperabilidad de IA & La integración debe permitir sustituir el proveedor de IA mediante una interfaz común sin modificar los casos de uso del dominio. & Completo \\
-  RNF-008 & Observabilidad de IA & Cada generación evaluada debe poder relacionarse con proveedor, modelo, duración, tokens, resultado estructural y coste. & Parcial \\
+  RNF-001 & Mantenibilidad & El sistema debe conservar separación modular, TypeScript estricto, contratos compartidos y dependencias orientadas hacia el dominio. \\
+  RNF-002 & Testabilidad & Los casos de negocio deben poder probarse de forma aislada y la IA debe disponer de un proveedor determinista que no realice consumo facturable. \\
+  RNF-003 & Portabilidad local & El entorno debe poder reproducirse con configuración documentada para PostgreSQL y almacenamiento compatible con S3, sin depender de servicios de producción. \\
+  RNF-004 & Interoperabilidad de IA & La integración debe permitir sustituir el proveedor de IA mediante una interfaz común sin modificar los casos de uso del dominio. \\
 \end{longtable}
 }
 
@@ -244,6 +245,7 @@ la historia de usuario correspondiente.
     RF-015 & \checkmark & & & \checkmark \\ \hline
     RF-016 & & & \checkmark & \\ \hline
     RF-017 & \checkmark & \checkmark & & \\ \hline
+    RF-018 & \checkmark & & & \\ \hline
   \end{tabular}
 \end{table}
 
