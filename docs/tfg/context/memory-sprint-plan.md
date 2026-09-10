@@ -153,9 +153,10 @@ Conjunto pequeño de diagramas legibles y coherentes con el código.
 
 ## Iteración M5 - Arquitectura e implementación
 
-**Estado:** completada. El capítulo 5 documenta la vista de componentes, el
+**Estado:** completada y revisada tras la tutoría. El capítulo 5 documenta la vista de componentes, el
 monorepositorio, las arquitecturas del backend y el frontend, la persistencia,
-los adjuntos, la integración de IA y la topología local verificada. El capítulo
+los adjuntos, la integración de IA y la topología de producción preparada para
+Hetzner. El capítulo
 6 desarrolla la sesión multiempresa, la cartera, la ejecución de workflows, la
 cualificación, la generación estructurada, el contexto documental y los
 reintentos a partir del código implementado.
@@ -230,10 +231,9 @@ Capítulo basado en ejecuciones verificables, no en expectativas.
 
 ## Iteración M7 - Manuales y capturas
 
-**Estado:** completada el 17 de agosto de 2026. El capítulo documenta la
-puesta en marcha local y los recorridos funcionales mediante datos y archivos
-ficticios. El despliegue público permanece aplazado hasta disponer de un
-entorno verificable.
+**Estado:** completada el 17 de agosto de 2026 y ampliada tras la tutoría. El
+capítulo documenta la puesta en marcha local, el procedimiento de despliegue en
+Hetzner y los recorridos funcionales mediante datos y archivos ficticios.
 
 ### Capítulos
 
@@ -243,7 +243,8 @@ entorno verificable.
 
 - Estabilizar identidad visual y sustituir la marca provisional si procede.
 - Documentar puesta en marcha local.
-- Validar un despliegue antes de escribir un manual de despliegue.
+- Documentar el despliegue reproducible en Hetzner y conservar como pendiente
+  su evidencia externa y sus métricas operativas.
 - Capturar autenticación, configuración, oportunidades, workflows,
   cualificación, adjuntos y generación por IA.
 - Utilizar datos ficticios consistentes en todas las capturas.
@@ -259,7 +260,8 @@ Manual reproducible con capturas actuales y sin datos sensibles.
 - Capítulo 9: dificultades, limitaciones y trabajo futuro.
 - Capítulo 10: conclusiones.
 - Resumen y abstract definitivos.
-- Bibliografía y anexos.
+- Bibliografía y anexos, incluida la declaración del uso de IA como apoyo al
+  desarrollo.
 
 ### Trabajo
 
@@ -267,6 +269,8 @@ Manual reproducible con capturas actuales y sin datos sensibles.
 - Separar limitaciones actuales de mejoras opcionales.
 - Revisar coherencia terminológica y temporal.
 - Cerrar índices, referencias, pies y anexos.
+- Diferenciar en el anexo la IA empleada durante el desarrollo de la IA
+  generativa integrada en el producto.
 - Compilar y revisar visualmente la memoria completa.
 - Preparar material de defensa a partir de la memoria cerrada.
 
@@ -340,8 +344,9 @@ de navegador.
 
 ### Prioridad alta restante
 
-1. **Validar despliegue.** Confirmar entorno objetivo, variables, migraciones,
-   almacenamiento y proveedor de IA antes de documentarlo como operativo.
+1. **Validar despliegue externo.** La IaC, las variables, las migraciones, el
+   almacenamiento y el proveedor de IA ya están documentados; falta ejecutar
+   el servidor final y conservar sus comprobaciones externas.
 
 ### Pulido y coherencia final
 
@@ -358,8 +363,8 @@ de navegador.
    el banco congelado.
 2. Confirmar los datos económicos pendientes del presupuesto y la fecha
    académica definitiva.
-3. Decidir si se validará un despliegue o se mantendrá expresamente como trabajo
-   futuro.
+3. Ejecutar en el servidor final la topología de Hetzner ya documentada y
+   conservar sus comprobaciones externas.
 4. Redactar los capítulos 9 y 10 y cerrar el resumen y el abstract con los
    resultados disponibles.
 5. Ejecutar la revisión final de referencias, índices, maquetación y anexos.

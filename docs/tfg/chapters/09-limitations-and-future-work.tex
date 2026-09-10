@@ -4,3 +4,20 @@
 \section{Dificultades encontradas}
 \section{Limitaciones actuales}
 \section{Líneas de trabajo futuro}
+
+\subsection{Portabilidad y evolución del despliegue}
+
+La topología actual concentra la web, la API, PostgreSQL y MinIO en una única
+máquina de Hetzner. Una evolución posible consiste en mantener las imágenes y
+los contratos de configuración, pero distribuir las responsabilidades entre
+servicios independientes: base de datos PostgreSQL gestionada, almacenamiento
+compatible con S3 mantenido por un proveedor, plataforma de ejecución de
+contenedores y servicio específico para copias externas. Esta separación
+reduciría el impacto del fallo de un único nodo y permitiría escalar cada
+componente según su carga, a cambio de un mayor coste y complejidad operativa.
+
+También se puede incorporar una capa de abstracción sobre la infraestructura
+para desplegar la misma aplicación en distintos proveedores. Antes de adoptar
+esta opción sería necesario comparar coste, localización de los datos,
+portabilidad, copias, observabilidad y recuperación, en lugar de asumir que la
+distribución aporta por sí sola una mejora al alcance actual.

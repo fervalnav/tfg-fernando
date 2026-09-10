@@ -146,7 +146,8 @@ manual de usuario.
 - Persistencia PostgreSQL/MikroORM.
 - Almacenamiento de adjuntos en MinIO/S3.
 - Integración de IA y selección configurable de proveedor.
-- Despliegue e infraestructura realmente verificados.
+- Despliegue e infraestructura elegidos, distinguiendo su definición
+  reproducible de las comprobaciones externas realizadas.
 - Decisiones arquitectónicas, alternativas y compromisos.
 
 ### 6. Implementación
@@ -187,9 +188,10 @@ la que se cierre el capítulo.
 - Capturas de los flujos estables con datos ficticios y sin información
   sensible.
 
-Si se valida un despliegue real, se documentará como manual de despliegue. Si no
-se valida, solo se describirá el entorno local y el despliegue quedará como
-limitación o trabajo futuro.
+El manual debe describir la topología de producción elegida y su procedimiento
+reproducible. Las métricas operativas, la disponibilidad y el resultado de las
+comprobaciones externas solo se incorporarán cuando exista evidencia del
+servidor ejecutado.
 
 ### 9. Dificultades, limitaciones y trabajo futuro
 
@@ -214,6 +216,15 @@ métricas ni argumentos que no hayan aparecido previamente.
 Reservar los anexos para diagramas completos, configuración reproducible,
 catálogos extensos, resultados detallados y declaración del uso de herramientas
 de IA cuando lo requiera la normativa. Evitar anexar copias masivas del código.
+
+Cuando se documente el uso de IA durante el desarrollo, distinguir siempre
+entre el asistente empleado para apoyar el trabajo de ingeniería y la IA
+generativa integrada como funcionalidad de LIA. La declaración debe ser breve
+y dejar explícito que todas las decisiones corresponden al autor. La IA solo
+se utilizó para estructurar planes totalmente dirigidos por este, ejecutar
+tareas concretas y bien delimitadas y ofrecer autocompletado. No atribuirle
+autonomía, decisiones de alcance o diseño, porcentajes de código ni ahorros de
+tiempo que no estén medidos.
 
 ## Fuentes y orden de autoridad
 

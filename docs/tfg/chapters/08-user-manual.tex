@@ -1,12 +1,11 @@
 \chapter{Manual de usuario}
 \label{chap:user-manual}
 
-Este capítulo describe la instalación, el despliegue y el uso de LIA desde el
-punto de vista de una persona usuaria. Las capturas se han obtenido sobre una
-instalación local con una cuenta y expedientes ficticios. Por tanto, no
-contienen documentación de licitaciones reales ni secretos de configuración.
-La configuración de producción se documenta como procedimiento reproducible,
-aunque en el momento de redactarlo no existe un despliegue final verificado.
+Este capítulo describe la puesta en marcha del entorno de desarrollo, el
+procedimiento de despliegue en Hetzner y el uso de LIA desde el punto de vista
+de una persona usuaria. Las capturas emplean una cuenta y expedientes
+ficticios; por tanto, no contienen documentación de licitaciones reales ni
+secretos de configuración.
 
 \section{Requisitos previos}
 
@@ -68,27 +67,35 @@ La infraestructura se detiene con \texttt{make down}. Si se modifica el
 esquema de persistencia, las migraciones pendientes se aplican de nuevo con
 \texttt{make migration-up}.
 
-\subsection{Producción}
+\section{Despliegue en Hetzner}
+\label{sec:user-manual-deployment}
 
-La configuración de producción adopta una única máquina en Hetzner con Caddy
-como punto de entrada HTTPS. La web, la API, PostgreSQL y MinIO se ejecutan en
-redes privadas de Docker; la API coordina sus eventos mediante el
-\emph{EventBus} interno de NestJS. La infraestructura como código de
-\texttt{infra/hetzner} prepara el servidor y el firewall, mientras que
-\texttt{deploy} contiene Compose, la configuración del proxy, la validación de
-variables y los procedimientos de copia y restauración.
+El entorno de producción se reproduce a partir de dos definiciones versionadas.
+El directorio \texttt{infra/hetzner} contiene la infraestructura como código
+que crea el servidor y su cortafuegos; \texttt{deploy} contiene las imágenes,
+la configuración de Caddy, Docker Compose y los procedimientos de copia y
+restauración. Antes del primer despliegue se configuran dos nombres DNS, uno
+para la aplicación y otro para los documentos, ambos dirigidos a la dirección
+del servidor.
 
-El procedimiento requiere aplicar explícitamente la infraestructura, completar
-los dominios y secretos del entorno \texttt{production}, comprobar la huella
-SSH y ejecutar manualmente el workflow \emph{Deploy production}. La API aplica
-las migraciones antes de aceptar tráfico y los \emph{healthchecks} condicionan
-el resultado del despliegue. Los pasos operativos, comandos y medidas de
-recuperación se mantienen en \texttt{infra/hetzner/README.md} y
-\texttt{deploy/README.md} para evitar duplicarlos en este manual.
+La configuración privada parte de \texttt{deploy/.env.example}. Se sustituyen
+todos los valores de ejemplo por secretos independientes, credenciales SMTP y
+del proveedor de IA y los dominios definitivos. Este archivo permanece fuera
+del repositorio. El script de validación rechaza una configuración incompleta
+antes de que el flujo modifique los contenedores en ejecución.
 
-Esta topología está implementada en el repositorio, pero todavía no existe
-evidencia de una ejecución final con dominio, certificados y copias verificadas;
-por ello su estado se considera preparado y no desplegado.
+La publicación se inicia manualmente mediante el workflow \emph{Deploy
+production}. Este construye las imágenes de la web, la API y MinIO, las publica
+con el identificador exacto de la revisión y conecta por SSH con el usuario de
+despliegue. En el servidor, Compose descarga esa revisión, ejecuta las
+migraciones y espera a que los servicios comuniquen un estado saludable. La
+comprobación final consulta \texttt{/api/health}, revisa el temporizador de
+copias y recorre el registro, la carga de un PDF y una generación con IA.
+
+Los puertos de PostgreSQL, MinIO, la web y la API permanecen en la red privada
+de Docker. Solo Caddy publica HTTP y HTTPS, obtiene los certificados y enruta
+las peticiones. Los documentos se entregan mediante direcciones prefirmadas de
+corta duración; la dirección directa de un objeto sin firma se rechaza.
 
 \section{Acceso a la aplicación}
 \label{sec:user-manual-access}

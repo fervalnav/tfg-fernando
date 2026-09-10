@@ -6,6 +6,10 @@ confirmadas.
 
 ## Planificación y costes
 
+- Confirmar, si se desea representar una desviación por sprint, el desglose de
+  horas estimadas inicialmente y horas ejecutadas de cada iteración. La memoria
+  solo dispone ahora del total acordado y de una reconstrucción por bloques; no
+  debe inventarse una comparación más granular.
 - Confirmar las fechas naturales de inicio y fin del desarrollo si se decide
   mostrarlas junto al cronograma relativo de sprints.
 - Confirmar el precio y la fecha de adquisición del MacBook Pro M4 Pro para
@@ -18,11 +22,14 @@ confirmadas.
 - Recalcular o justificar el porcentaje empresarial: el 29,9 % actual debe
   contrastarse con todos los conceptos de cotización aplicables en 2026 y con
   el tipo de relación laboral supuesto para el presupuesto.
-- Si la aplicación se despliega antes de la entrega, añadir proveedor de
-  alojamiento, plan contratado, periodo, coste y evidencia del despliegue.
+- Añadir el plan de Hetzner contratado, periodo, coste y evidencia externa del
+  despliegue cuando se cree el servidor ya definido mediante IaC.
 
 ## Despliegue y seguridad
 
+- La topología de producción se documenta en presente como diseño operativo
+  elegido. Antes de la entrega deben conservarse las comprobaciones del
+  servidor real; no atribuir disponibilidad, rendimiento ni fechas sin ellas.
 - La política pública `s3:GetObject` ya se retira durante el arranque y las
   pruebas verifican acceso mediante URL prefirmada, rechazo directo y
   caducidad. Antes de un despliegue real, confirmar la caducidad elegida y la

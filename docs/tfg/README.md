@@ -50,7 +50,7 @@ Los datos académicos y la fecha de la portada se editan únicamente en
 - `context/reference-m2-analysis.md` recoge criterios internos para la
   planificación, la distribución de horas y la valoración económica.
 - `context/final-todo.md` reúne los datos que deben confirmarse antes de la
-  entrega, incluido un posible despliegue posterior.
+  entrega, incluidos el coste y la evidencia externa del despliegue.
 - `context/memory-sprint-plan.md` organiza la memoria en iteraciones y mantiene
   el backlog técnico que debe completarse antes de documentar resultados.
 

@@ -22,7 +22,7 @@
   }
 ]
   \node[flowbox] (documents) {
-    \textbf{Documentación}\\[2pt]
+    \textbf{Carga de documentación}\\[2pt]
     Pliegos, anuncios y memorias
   };
   \node[flowbox, right=of documents] (extraction) {
@@ -39,8 +39,8 @@
   };
   \node[result, right=of criteria] (decision) {
     \textbf{Resultado}\\[2pt]
-    Documento revisado\\[-1pt]
-    para apoyar la decisión
+    Documento de apoyo\\[-1pt]
+    para su revisión
   };
 
   \draw[flow] (documents) -- (extraction);

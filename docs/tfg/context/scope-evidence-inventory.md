@@ -46,7 +46,7 @@ repositorio y las mejoras futuras. La auditoría se realizó el 6 de agosto de
 | Integración continua | Implementada, pendiente de ejecución remota completa | Workflow con instalación bloqueada, tipos, lint, tests, cobertura, build y E2E de API | `.github/workflows/ci.yml` |
 | Optimización de coste y rendimiento de IA | Parcial | El adaptador obtiene proveedor, modelo, duración y tokens, y limita la salida; esas métricas aún no se persisten ni se han comparado experimentalmente | `AiGenerationService` y protocolo `apps/api/test/ai-evaluation` |
 | Detección de solvencia económica | Parcial | Las preguntas configurables pueden solicitar una evaluación y evidencia a la IA, pero falta validar esta capacidad con casos documentales y una rúbrica definida | Preguntas de control y protocolo de evaluación de IA |
-| Despliegue de producción | No verificado | Existe configuración local reproducible, pero no hay evidencia de un despliegue final validado | `docker-compose.yml`, archivos `.env.example` |
+| Despliegue de producción | Preparado, pendiente de validación externa | IaC para Hetzner, imágenes, Caddy, Compose, migraciones, comprobaciones de salud y copias; falta ejecutar y verificar el servidor final | `infra/hetzner`, `deploy`, `.github/workflows/deploy-production.yml` |
 
 ## Exclusiones confirmadas
 
@@ -73,8 +73,8 @@ operativo de la generación de IA.
 3. Medir calidad, validez estructural, latencia, tokens y coste con el protocolo
    ya preparado.
 4. Obtener una ejecución completa del workflow de GitHub Actions.
-5. Confirmar si se validará un despliegue real; mientras no exista evidencia,
-   la memoria documentará únicamente la puesta en marcha local.
+5. Ejecutar el despliegue preparado en Hetzner y conservar evidencia de sus
+   comprobaciones externas antes de atribuir métricas de operación.
 6. Preparar capturas de los flujos estables con un conjunto coherente de datos
    ficticios.
 

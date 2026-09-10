@@ -24,13 +24,13 @@ prueba funcional ordinaria.
 
 | Riesgo | Requisitos relacionados | Evidencia principal | Resultado estable |
 |---|---|---|---|
-| Sesión inválida, reutilización de refresh token y acceso cruzado | RF-001, RF-002, RN-001, RN-002, RNF-001 | Unitarias de `AuthSessionService` y API E2E de registro, sesión y aislamiento | Superado |
-| Escalada de privilegios en administración de cuenta | RF-003, RN-003, RNF-001 | Guard unitario y matriz API E2E ADMIN/MEMBER/autoeliminación | Superado |
+| Sesión inválida, reutilización de refresh token y acceso cruzado | RF-001, RF-002, RN-001, RN-002, RN-011 | Unitarias de `AuthSessionService` y API E2E de registro, sesión y aislamiento | Superado |
+| Escalada de privilegios en administración de cuenta | RF-003, RN-003 | Guard unitario y matriz API E2E ADMIN/MEMBER/autoeliminación | Superado |
 | Estados o transiciones incoherentes de pipeline y workflow | RF-004, RF-005, RF-009, RN-004, RN-005, RN-007 | Entidades, handlers, eventos, API E2E y navegador E2E | Superado |
 | Duplicación o cruce de instancias de cualificación | RF-006, RF-010, RN-006 | Servicios de instanciación y handlers de preguntas, campos y resúmenes | Superado |
-| Persistencia de una salida de IA con forma incorrecta | RF-011, RF-015, RN-008, RNF-005, RNF-007 | Esquemas Zod, fake determinista y pruebas del adaptador Google | Superado en integración |
-| Documento inseguro, no admitido o perteneciente a otra cuenta | RF-013, RF-014, RN-002, RN-009, RNF-001 | Handlers, almacenamiento, API E2E y navegador E2E de URL firmada/directa/caducada | Superado |
-| Evaluación de solvencia incorrecta o no sustentada | RF-012, RF-016, RNF-008 | Banco ficticio, tres repeticiones, dos revisiones ciegas | Parcial: Flash pendiente; Flash-Lite presenta dos alucinaciones críticas |
+| Persistencia de una salida de IA con forma incorrecta | RF-011, RF-015, RN-008, RNF-002, RNF-004 | Esquemas Zod, fake determinista y pruebas del adaptador Google | Superado en integración |
+| Documento inseguro, no admitido o perteneciente a otra cuenta | RF-013, RF-014, RN-002, RN-009, RN-011, RN-012 | Handlers, almacenamiento, API E2E y navegador E2E de URL firmada/directa/caducada | Superado |
+| Evaluación de solvencia incorrecta o no sustentada | RF-012, RF-016, RI-008 | Banco ficticio, tres repeticiones, dos revisiones ciegas | Parcial: Flash pendiente; Flash-Lite presenta dos alucinaciones críticas |
 
 ## Resultados automatizados que deben convertirse en tablas
 
@@ -97,5 +97,5 @@ modelos podrá representarse con calidad, coste y latencia cuando ambos tengan
 - completar las 28 salidas de Flash;
 - revisarlas dos veces de forma ciega y reconciliar desacuerdos;
 - regenerar los agregados y la tabla definitiva;
-- actualizar RF-012, RF-016, RI-008 y RNF-008 en la matriz de trazabilidad sin
+- actualizar RF-012, RF-016 y RI-008 en la matriz de trazabilidad sin
   convertir una evaluación externa en persistencia interna inexistente.

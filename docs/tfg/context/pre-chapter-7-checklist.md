@@ -149,7 +149,7 @@ versión funcional que finalmente documente el manual.
 - [x] Documentar las incidencias reales: `forceExit`, acceso local a Docker,
   diferencia local/CI, secreto E2E ausente, cuotas Gemini y 13 avisos de lint.
 - [x] Actualizar la matriz de trazabilidad del capítulo 3 con los resultados
-  automatizados y experimentales disponibles. RF-012, RF-016, RI-008 y RNF-008
+  automatizados y experimentales disponibles. RF-012, RF-016 y RI-008
   permanecen parciales y deberán revisarse al completar Flash.
 
 ## Trabajo que puede esperar
