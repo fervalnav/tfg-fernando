@@ -14,25 +14,25 @@
   flow/.style={-{Latex[length=2.5mm]}, semithick, draw=TFGAccent},
   optional/.style={-{Latex[length=2.2mm]}, dashed, draw=TFGMuted}
 ]
-  \node[box] (case) at (-5.2,1.3) {
+  \node[box] (case) at (-6,1.8) {
     \textbf{Caso de uso}\\
     pregunta, campo, resumen o decisión
   };
-  \node[external] (documents) at (-5.2,-1.3) {
+  \node[external] (documents) at (-6,-1.8) {
     \textbf{Contexto}\\
     oportunidad y buffers PDF
   };
-  \node[port] (port) at (-0.9,0) {
+  \node[port] (port) at (-1.1,0) {
     \textbf{Puerto de generación}\\
     esquema, instrucciones\\y documentos
   };
-  \node[box] (selection) at (3.25,0) {
+  \node[box] (selection) at (3.65,0) {
     \textbf{Selección por entorno}\\
     proveedor, modelo, límites y reintentos
   };
-  \node[external] (google) at (7.25,1.65) {Google Generative AI};
-  \node[external] (compatible) at (7.25,0) {API compatible con OpenAI / Ollama};
-  \node[external, draw=TFGMuted, dashed, text=TFGMuted] (fake) at (7.25,-1.65) {Proveedor determinista de pruebas};
+  \node[external] (google) at (8.3,2.05) {Google Generative AI};
+  \node[external] (compatible) at (8.3,0) {API compatible con OpenAI / Ollama};
+  \node[external, draw=TFGMuted, dashed, text=TFGMuted] (fake) at (8.3,-2.05) {Proveedor determinista de pruebas};
 
   \draw[flow] (case) -- (port);
   \draw[flow] (documents) -- (port);
@@ -46,7 +46,7 @@
     dashed,
     rounded corners=3pt,
     fit=(port)(selection),
-    inner sep=9pt,
+    inner sep=13pt,
     label={[font=\scriptsize\sffamily\color{TFGMuted}]below:Salida estructurada validada y métricas devueltas al caso de uso}
   ] {};
 \end{tikzpicture}

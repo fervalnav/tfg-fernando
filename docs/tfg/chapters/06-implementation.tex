@@ -49,9 +49,8 @@ provisionados intervengan en los flujos del núcleo. La infraestructura local se
 inicia de forma independiente a las aplicaciones.
 PostgreSQL, MinIO y MailHog son dependencias operativas de los flujos
 desarrollados. Ollama se ofrece mediante un perfil opcional para la generación
-local. RabbitMQ está provisionado en Docker Compose, pero la coordinación
-actual utiliza el bus de eventos interno de NestJS y no consume todavía ese
-servicio.
+local. La coordinación asíncrona entre casos de uso utiliza el
+\emph{EventBus} interno de NestJS CQRS y se ejecuta en el proceso de la API.
 
 \section{Autenticación, cuentas y aislamiento multiempresa}
 

@@ -58,12 +58,12 @@ repositorio y las mejoras futuras. La auditoría se realizó el 6 de agosto de
 - autenticación con Google o LinkedIn;
 - tiempo real mediante WebSocket;
 - aplicación multilingüe;
-- despliegue distribuido de inferencia o procesamiento mediante RabbitMQ;
+- despliegue distribuido de inferencia o procesamiento mediante un intermediario externo;
 - Langfuse u otra plataforma externa de observabilidad de IA.
 
-RabbitMQ forma parte del entorno de infraestructura disponible, pero los flujos
-asíncronos actuales se coordinan mediante eventos internos de NestJS CQRS. No
-se presentará RabbitMQ como transporte operativo de la generación de IA.
+Los flujos asíncronos actuales se coordinan mediante eventos internos de
+NestJS CQRS. No se presentará un intermediario externo como transporte
+operativo de la generación de IA.
 
 ## Evidencias pendientes para la memoria
 
