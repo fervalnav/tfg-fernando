@@ -2,5 +2,84 @@
 \label{chap:conclusions}
 
 \section{Resultados alcanzados}
+
+El proyecto materializa LIA como una plataforma web que conecta la cartera de
+licitaciones con un proceso configurable de cualificación. El núcleo integra
+cuentas y roles, pipelines, workflows, oportunidades, catálogos reutilizables,
+instancias de cualificación y documentos PDF. Los resultados manuales y
+generados por IA comparten el mismo contexto y permanecen revisables por el
+usuario.
+
+La arquitectura separa los casos de uso de los adaptadores de persistencia,
+almacenamiento e IA. Los estados de ejecución, la evidencia documental y los
+reintentos explícitos permiten observar el resultado de las operaciones sin
+tratar una generación fallida como una respuesta válida. Los filtros de campos
+personalizados amplían la cartera sin duplicar sus filtros nativos y conservan
+el ámbito de cuenta.
+
+La evaluación de 92 generaciones fundamenta una recomendación por operación:
+Flash para resúmenes y Flash-Lite para preguntas de control, campos
+personalizados y decisiones de workflow. En la configuración de un único
+modelo global, el ejemplo de despliegue mantiene Flash-Lite por decisión del
+desarrollador, mientras que los criterios experimentales recomiendan Flash.
+Esta distinción no elimina el riesgo observado en resúmenes ni la necesidad
+de revisión humana.
+
 \section{Cumplimiento de objetivos}
+
+La evaluación se refiere a los objetivos registrados y a la evidencia de los
+capítulos anteriores, sin extender el alcance a funcionalidades futuras.
+
+\begin{description}
+  \item[Objetivo general.] La plataforma reúne documentación, respuestas y
+  pasos de análisis en una oportunidad y permite asistir tareas repetitivas
+  mediante IA. Se obtiene una solución funcional para apoyar el análisis y la
+  toma de requisitos. Su reducción efectiva de esfuerzo en equipos reales no
+  se cuantifica, al no existir una comparación temporal con el trabajo manual.
+
+  \item[Detección de solvencia económica.] Las preguntas de control y el contexto
+  documental permiten generar una evaluación preliminar con evidencia
+  revisable. El banco experimental demuestra esta capacidad en el conjunto
+  controlado, pero no sustituye la acreditación de la empresa ni una evaluación
+  profesional sobre cualquier licitación. El objetivo se alcanza dentro de ese
+  alcance asistido.
+
+  \item[Coste y rendimiento de IA.] Se implementan adaptadores sustituibles y un
+  banco que relaciona calidad, estructura, latencia, tokens y coste. La
+  comparación entre dos modelos de Google permite seleccionar una política por
+  operación. La optimización demostrada es experimental: no se atribuye a LIA
+  una explotación interna de métricas, un enrutamiento automático por operación
+  ni un ahorro mensual observado.
+
+  \item[Flujos de trabajo.] El editor y la ejecución por oportunidad permiten
+  definir pasos, decisiones y acciones, consultar el progreso y completar,
+  omitir o reintentar el trabajo. El objetivo se materializa en el núcleo
+  implementado, con la exclusión explícita de los ejecutores de tarea y correo.
+\end{description}
+
+Las pruebas del \Cref{chap:testing} aportan evidencia de los recorridos
+prioritarios y de las fronteras de autorización y cuenta. Las limitaciones del
+\Cref{chap:future-work} delimitan esa evidencia: no se afirma una certificación
+de seguridad, disponibilidad de producción ni fiabilidad absoluta de la IA.
+
 \section{Valoración personal}
+% TODO: incorporar la valoración personal confirmada por el autor.
+
+Desde el punto de vista técnico, el trabajo muestra que integrar IA no consiste
+únicamente en invocar un modelo. La utilidad del resultado depende de cómo se
+selecciona el contexto, se valida la estructura, se conserva la evidencia y se
+gestiona el fallo dentro del proceso de negocio. La distinción entre validez
+formal y respaldo documental resulta especialmente relevante en el análisis
+de licitaciones.
+
+El diseño modular y las pruebas permiten revisar esas responsabilidades de
+forma separada. Al mismo tiempo, introducen un coste de mantenimiento en
+contratos, conversiones y estados que debe justificarse por la complejidad del
+workflow y el aislamiento multiempresa. La evaluación por operación muestra
+también por qué una media global o una tarifa inferior no bastan para elegir
+un modelo.
+
+El resultado constituye una base funcional para continuar la validación y las
+ampliaciones descritas, manteniendo un principio común: automatizar la
+obtención de información no implica delegar la decisión final ni ocultar las
+limitaciones de la evidencia disponible.
