@@ -26,9 +26,14 @@ cost-performance ratio of generative artificial intelligence providers, and
 facilitate the creation of workflows adapted to tender analysis. The platform
 has been developed as a Turborepo monorepository, with a Vue 3 web application
 and a NestJS API. Technical validation combines unit, component, integration,
-and end-to-end tests. The comparative evaluation of AI quality, latency, and
-cost is reserved for the experimental stage of the project; therefore, this
-abstract will remain provisional until those results are available.
+and end-to-end tests. The experimental evaluation compares 92 generations from
+two Google models using quality, structural validity, latency, cost, and
+hallucination criteria. The results support selecting Flash for summaries and
+Flash-Lite for control questions, custom fields, and workflow decisions. The
+deployment configuration retains Flash-Lite as its single global model by
+developer decision, although the experiment recommends Flash for summaries. Outputs remain
+subject to human review; evaluation on fictitious documents does not, by
+itself, demonstrate a quantified reduction in analysis time in business use.
 
 \vspace{0.5cm}
 \noindent\textbf{Keywords:} public tenders, generative artificial

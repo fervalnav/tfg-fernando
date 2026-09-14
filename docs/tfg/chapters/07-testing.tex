@@ -250,8 +250,13 @@ sustentada; dicho riesgo requiere la evaluación semántica descrita en la
 \section{Resultados de las pruebas automatizadas}
 \label{sec:automated-test-results}
 
-Todas las suites se regeneraron sin utilizar la caché de Turborepo. La
-\Cref{tab:automated-test-results} reúne los resultados obtenidos.
+Las pruebas unitarias y de componentes y su cobertura se regeneraron el 14 de
+septiembre de 2026 mediante los ejecutores de Jest y Vitest. La
+\Cref{tab:automated-test-results} distingue estos resultados de la campaña
+E2E y de integración continua registrada anteriormente. Estas últimas no se
+han repetido sobre la versión integrada durante esta revisión: PostgreSQL
+local no estaba disponible. Por tanto, su resultado histórico no garantiza
+los cambios posteriores.
 
 \begin{table}[H]
   \centering
@@ -262,12 +267,12 @@ Todas las suites se regeneraron sin utilizar la caché de Turborepo. La
     \toprule
     \textbf{Comprobación} & \textbf{Alcance} & \textbf{Resultado} \\
     \midrule
-    API unitarias y componentes & 37 suites & 142 pruebas superadas \\
+    API unitarias y componentes & 41 suites & 158 pruebas superadas \\
     Web unitarias y componentes & 11 archivos & 35 pruebas superadas \\
-    API E2E & NestJS y PostgreSQL & 12 de 12 superadas \\
-    Navegador E2E & Nuxt, NestJS, PostgreSQL, MinIO y fake de IA & 4 de 4 superadas \\
+    API E2E & NestJS y PostgreSQL & 12 de 12; campaña anterior \\
+    Navegador E2E & Nuxt, NestJS, PostgreSQL, MinIO y fake de IA & 4 de 4; campaña anterior \\
     Calidad estática & Tipos, lint y construcción & Superada; 13 avisos web no bloqueantes \\
-    Integración continua & Tipos, lint, pruebas, cobertura, construcción y API E2E & Superada \\
+    Integración continua & Tipos, lint, pruebas, cobertura, construcción y API E2E & Superada en campaña anterior \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -287,8 +292,8 @@ para líneas y ramas, 7\,\% para sentencias y 3\,\% para funciones. La
     \toprule
     \textbf{Aplicación} & \textbf{Líneas} & \textbf{Sentencias} & \textbf{Funciones} & \textbf{Ramas} \\
     \midrule
-    API & 63,16\,\% & 62,53\,\% & 40,45\,\% & 34,59\,\% \\
-    Web & 9,17\,\% & 8,25\,\% & 4,86\,\% & 9,60\,\% \\
+    API & 63,60\,\% & 62,97\,\% & 40,92\,\% & 38,29\,\% \\
+    Web & 9,25\,\% & 8,28\,\% & 4,78\,\% & 9,64\,\% \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -393,9 +398,13 @@ crítica.
 Flash obtiene una calidad media de 7,75/8 y no presenta alucinaciones críticas
 en sus 32 salidas. Al aplicar los criterios por operación se selecciona Flash
 para resúmenes y Flash-Lite para preguntas de control, campos personalizados y
-decisiones de workflow. Si el despliegue utiliza un único modelo global, se
-selecciona Flash porque la ausencia de alucinaciones críticas prevalece sobre
-la diferencia de coste. La campaña conserva la limitación de cuota y el tamaño
+decisiones de workflow. Para un único modelo global, los criterios del
+experimento recomiendan Flash porque la ausencia de alucinaciones críticas
+prevalece sobre la diferencia de coste. Sin embargo, el desarrollador confirma
+que el ejemplo de despliegue mantiene Flash-Lite como modelo global. Esta
+decisión operativa no modifica la recomendación experimental ni elimina el
+riesgo observado en los resúmenes, que requieren revisión humana.
+La campaña conserva la limitación de cuota y el tamaño
 real de cada muestra, sin sustituir las ejecuciones no realizadas por valores
 estimados.
 

@@ -2,12 +2,97 @@
 \label{chap:future-work}
 
 \section{Dificultades encontradas}
+
+La principal dificultad funcional consistió en separar la definición de un
+workflow de su ejecución sobre una oportunidad. Las plantillas del catálogo no
+pueden compartir respuestas ni estados entre licitaciones, y la modificación
+del proceso debe respetar las acciones en curso. El diseño mediante plantillas,
+instancias y estados explícitos descrito en el \Cref{chap:implementation}
+permite delimitar esas responsabilidades.
+
+En el entorno técnico fue necesario estabilizar la aplicación SPA, ajustar la
+resolución de alias de las pruebas E2E y completar la configuración de secretos
+exclusivos del entorno de prueba. Estas incidencias y las medidas aplicadas se
+recogen en los capítulos de planificación y pruebas. No se interpretan como
+fallos del proveedor de IA ni como defectos funcionales descartados del banco
+experimental.
+
+La integración documental añadió una frontera entre PostgreSQL y el
+almacenamiento de objetos. Al no compartir una transacción, la carga requiere
+compensación cuando falla la persistencia posterior. Además, la evaluación de
+IA exigió conservar resultados y reanudar ejecuciones ante los límites de
+cuota: Flash-Lite completó 60 salidas y Flash alcanzó 32. La selección se
+fundamenta en las 92 salidas disponibles y mantiene visible la diferencia de
+tamaño de muestra.
+
 \section{Limitaciones actuales}
+
+\subsection{Alcance funcional y automatización}
+
+Las oportunidades y sus documentos se incorporan manualmente. No se incluyen
+descubrimiento ni importación automática de licitaciones, módulos de
+organizaciones y contactos, comentarios, tareas, notificaciones de negocio o
+exportación de informes a PDF. Las acciones de tarea y correo que admite la
+definición de workflows no tienen un ejecutor funcional terminado. Por ello,
+el cierre del núcleo se refiere a las operaciones implementadas y no a todas
+las ampliaciones que permite representar el editor.
+
+\subsection{Fiabilidad y evaluación de la IA}
+
+Una salida estructuralmente válida puede contener una afirmación no sustentada.
+La evaluación detectó dos alucinaciones críticas en resúmenes de Flash-Lite,
+lo que motivó seleccionar Flash para esa operación. La ausencia de
+alucinaciones críticas observadas en Flash no garantiza que no puedan aparecer
+en otros documentos. El banco consta de cinco expedientes ficticios y siete
+PDF; no equivale a una validación por especialistas sobre una cartera real ni
+permite generalizar sus medias a todos los procedimientos de contratación.
+
+La revisión del usuario sigue siendo necesaria, especialmente para relacionar
+los requisitos del pliego con las evidencias de la empresa. No se automatiza la
+certificación de solvencia ni la decisión final de presentar una oferta. Tampoco
+se dispone de una comparación medida del tiempo de análisis manual frente al
+asistido. Las métricas del proveedor se registran en el banco experimental,
+pero LIA no las explota como un historial operativo de consumo por cuenta.
+
+\subsection{Operación, seguridad y validación}
+
+Los eventos de NestJS CQRS se procesan dentro de la API y no ofrecen una cola
+durable independiente. La topología elegida concentra los servicios en una
+única máquina. El repositorio define su publicación, copias y restauración,
+pero esa definición no acredita por sí sola disponibilidad de producción ni
+una recuperación conjunta verificada de PostgreSQL y MinIO. El
+\Cref{sec:risk-register} recoge prevención, señales y contingencias para estos
+límites.
+
+El aislamiento por cuenta y las URL prefirmadas protegen el acceso a los
+adjuntos, pero no sustituyen una política de tratamiento de datos para enviarlos
+a proveedores externos. Antes de utilizar documentación empresarial deberán
+comprobarse las condiciones aceptadas de privacidad, retención y ubicación.
+Las pruebas tampoco acreditan rendimiento bajo carga, accesibilidad completa
+ni compatibilidad exhaustiva entre navegadores. La cobertura unitaria limitada
+del frontend y los avisos de mantenimiento se interpretan junto con los
+recorridos E2E, no como ausencia general de defectos.
+
 \section{Líneas de trabajo futuro}
+
+\subsection{Validación en uso y observabilidad}
+
+La primera ampliación de la validación consiste en contrastar los resultados
+con especialistas sobre un conjunto autorizado de licitaciones reales,
+manteniendo criterios de aceptación, evidencias y tamaños de muestra. Una
+comparación del análisis manual y asistido permitiría medir tiempo, correcciones
+y errores de omisión, sin atribuir ahora esos beneficios al sistema.
+
+La observabilidad puede incorporar persistencia de tokens, duración, errores,
+reintentos y coste por operación y cuenta. Estos datos permitirían comparar
+escenarios de consumo real con el modelo económico del
+\Cref{sec:operational-cost}, así como detectar cambios de comportamiento cuando
+se actualicen los modelos. La validación operativa deberá incluir restauración
+coordinada, copias externas y pruebas de carga antes de ampliar el uso.
 
 \subsection{Portabilidad y evolución del despliegue}
 
-La topología actual concentra la web, la API, PostgreSQL y MinIO en una única
+La topología elegida concentra la web, la API, PostgreSQL y MinIO en una única
 máquina de Hetzner. Una evolución posible consiste en mantener las imágenes y
 los contratos de configuración, pero distribuir las responsabilidades entre
 servicios independientes: base de datos PostgreSQL gestionada, almacenamiento
@@ -29,6 +114,8 @@ la versión evaluada, el desarrollador fija ambos valores mediante variables de
 entorno antes de arrancar la API. Una evolución deberá añadir persistencia de
 la configuración, permisos, validación de credenciales, auditoría de cambios y
 un panel que muestre conjuntamente coste, calidad, latencia y alucinaciones. La
-política adoptada selecciona Flash para resúmenes y Flash-Lite para preguntas de
-control, campos personalizados y decisiones de workflow; si se configura un
-único modelo global, se utiliza Flash.
+recomendación experimental selecciona Flash para resúmenes y Flash-Lite para
+preguntas de control, campos personalizados y decisiones de workflow. El
+ejemplo de despliegue mantiene Flash-Lite como único modelo global por decisión
+del desarrollador; no implementa un enrutamiento por operación ni elimina el
+riesgo de alucinaciones observado en resúmenes.
