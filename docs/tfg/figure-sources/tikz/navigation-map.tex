@@ -59,7 +59,7 @@
   \draw[branch] (6.05,-5.12) -- (8.95,-5.12);
   \draw[flow] (6.05,-5.12) -- (kanban.north);
   \draw[flow] (8.95,-5.12) -- (list.north);
-  \node[screen] (detail) at (7.5,-7.15)
+  \node[screen] (detail) at (7.5,-7.6)
     {Detalle de oportunidad\\\textcolor{TFGMuted}{Editar datos y estado; gestionar responsables\\y asignar o sustituir el workflow}};
   \draw[branch] (kanban.south) -- (6.05,-6.55) -- (8.95,-6.55) -- (list.south);
   \draw[flow] (7.5,-6.55) -- (detail.north);
@@ -78,16 +78,16 @@
   }
 
   % Navegación contextual dentro de una oportunidad.
-  \node[compact] (details) at (4.25,-8.95) {Detalles\\generales};
-  \node[compact] (documents) at (7.5,-8.95)
+  \node[compact] (details) at (4.25,-9.65) {Detalles\\generales};
+  \node[compact] (documents) at (7.5,-9.65)
     {Documentación\\\textcolor{TFGMuted}{Subir, descargar\\o retirar PDF}};
-  \node[compact] (questions) at (10.75,-8.95)
+  \node[compact] (questions) at (10.75,-9.65)
     {Preguntas de control\\\textcolor{TFGMuted}{Responder o\\generar con IA}};
-  \node[compact] (fields) at (4.25,-10.25)
+  \node[compact] (fields) at (4.25,-11)
     {Campos personalizados\\\textcolor{TFGMuted}{Completar o\\generar con IA}};
-  \node[compact] (summaries) at (7.5,-10.25)
+  \node[compact] (summaries) at (7.5,-11)
     {Resúmenes\\\textcolor{TFGMuted}{Redactar o\\generar con IA}};
-  \node[compact] (workflow) at (10.75,-10.25)
+  \node[compact] (workflow) at (10.75,-11)
     {Workflow\\\textcolor{TFGMuted}{Ejecutar acciones; revisar decisiones}};
   \node[context, fit=(details)(documents)(questions)(fields)(summaries)(workflow)] (sections) {};
   \node[note, fill=white, text=TFGBlue, font=\tiny\bfseries\sffamily]

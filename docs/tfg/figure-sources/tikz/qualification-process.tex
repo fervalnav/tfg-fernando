@@ -1,53 +1,55 @@
 \begin{tikzpicture}[
-  node distance=0.55cm and 0.75cm,
   every node/.style={font=\scriptsize\sffamily},
   activity/.style={draw=TFGBlue, rounded corners=2pt,
-    minimum height=0.78cm, text width=2.85cm, align=center, inner sep=4pt},
+    minimum height=0.72cm, text width=3.55cm, align=center, inner sep=4pt},
   manual/.style={activity, fill=white},
   automatic/.style={activity, fill=TFGLightBlue},
-  decision/.style={draw=TFGAccent, diamond, aspect=2.1, fill=white,
-    text width=2.1cm, align=center, inner sep=1pt},
+  decision/.style={draw=TFGAccent, diamond, aspect=2.5, fill=TFGLightBlue,
+    text width=2.4cm, align=center, inner sep=1pt},
   flow/.style={-{Latex[length=2mm]}, semithick, draw=TFGAccent},
-  legend/.style={font=\tiny\sffamily, anchor=west}
+  lane/.style={draw=TFGMuted, rounded corners=2pt},
+  labeltext/.style={font=\tiny\sffamily, fill=white, inner sep=2pt}
 ]
-  \node[manual] (create) at (-4.8,0) {Registrar la oportunidad};
-  \node[manual] (documents) at (-1.6,0) {Incorporar pliegos y documentos PDF};
-  \node[manual] (assign) at (1.6,0) {Asignar pipeline, estado y workflow};
-  \node[automatic] (instantiate) at (4.8,0)
+  \draw[lane] (-2.5,0.85) rectangle (2.5,-12.3);
+  \draw[lane] (3,0.85) rectangle (8.5,-12.3);
+  \node[font=\small\bfseries\sffamily] at (0,0.42) {Persona usuaria};
+  \node[font=\small\bfseries\sffamily] at (5.75,0.42) {LIA: ejecución automática};
+  \node[manual] (create) at (0,-0.55) {Registrar la oportunidad};
+  \node[manual] (documents) at (0,-1.65) {Incorporar pliegos y documentos PDF};
+  \node[manual] (assign) at (0,-2.75) {Asignar pipeline, estado y workflow};
+  \node[automatic] (instantiate) at (5.75,-2.75)
     {Instanciar los elementos referenciados por el workflow};
-  \node[manual] (choose) at (4.8,-1.55)
+  \node[manual] (choose) at (0,-4.05)
     {Elegir resolución manual o asistida};
-  \node[manual] (manual-action) at (1.6,-3.1)
+  \node[manual] (manual-action) at (0,-5.35)
     {Completar la acción manualmente};
-  \node[manual] (request-ai) at (4.8,-3.1)
-    {Solicitar una generación mediante IA};
-  \node[automatic] (generate) at (8,-3.1)
+  \node[automatic] (generate) at (5.75,-5.35)
     {Generar y validar el resultado estructurado};
-  \node[manual] (review) at (4.8,-4.75)
+  \node[manual] (review) at (0,-6.7)
     {Revisar el resultado y su evidencia};
-  \node[decision] (decision) at (1.6,-4.75) {¿Condición satisfecha?};
-  \node[automatic] (next) at (1.6,-6.35) {Avanzar al siguiente paso};
-  \node[manual] (close) at (4.8,-6.35) {Finalizar la cualificación y apoyar la decisión};
+  \node[automatic] (evaluate) at (5.75,-6.7) {Evaluar la condición del paso};
+  \node[decision] (decision) at (5.75,-8.15) {¿Condición satisfecha?};
+  \node[automatic] (next) at (5.75,-9.7) {Avanzar al siguiente paso o cerrar el recorrido};
+  \node[manual] (close) at (0,-11.45) {Finalizar la cualificación y apoyar la decisión};
 
   \draw[flow] (create) -- (documents);
   \draw[flow] (documents) -- (assign);
   \draw[flow] (assign) -- (instantiate);
-  \draw[flow] (instantiate) -- (choose);
-  \draw[flow] (choose.west) -| (manual-action.north);
-  \draw[flow] (choose) -- (request-ai);
-  \draw[flow] (request-ai) -- (generate);
-  \draw[flow] (generate.south) |- (review.east);
-  \draw[flow] (manual-action.east) -- ++(0.35cm,0) |- (review.north);
-  \draw[flow] (review) -- (decision);
-  \draw[flow] (decision) -- node[left]{sí} (next);
-  \draw[flow] (next) -- (close);
-  \draw[flow] (decision.west) -- ++(-0.75cm,0)
-    |- node[pos=0.25, left, align=right]{no: corregir\\o reintentar} (manual-action.west);
-
-  \node[manual, minimum height=0.42cm, text width=1.35cm, anchor=west]
-    at (-4.7,-7.65) {};
-  \node[legend] at (-3.2,-7.65) {Tarea manual};
-  \node[automatic, minimum height=0.42cm, text width=1.35cm, anchor=west]
-    at (0.2,-7.65) {};
-  \node[legend] at (1.7,-7.65) {Tarea automática de LIA};
+  \draw[flow] (instantiate.south) -- (5.75,-3.5) -| (choose.north);
+  \draw[flow] (choose) -- node[labeltext,left] {manual} (manual-action);
+  \draw[flow] (choose.east) -- (5.75,-4.05) --
+    node[labeltext,right] {solicitar IA} (generate.north);
+  \draw[flow] (manual-action) -- (review);
+  \draw[flow] (generate.south) -- (5.75,-6.05) -| (review.north);
+  \draw[flow] (review) -- (evaluate);
+  \draw[flow] (evaluate) -- (decision);
+  \draw[flow] (decision) -- node[labeltext,left] {sí} (next);
+  \draw[flow] (decision.west) -- (0,-8.15) -- (-2.1,-8.15)
+    -- (-2.1,-4.05) -- node[labeltext,above,align=center]
+    {no: corregir\\o reintentar} (choose.west);
+  \draw[flow] (next.east) -- (8.15,-9.7)
+    -- node[labeltext,rotate=90,above] {hay más pasos} (8.15,-3.75)
+    -- (2.1,-3.75) -- (choose.north east);
+  \draw[flow] (next.south) -- (5.75,-11.45) --
+    node[labeltext,above] {recorrido terminado} (close.east);
 \end{tikzpicture}

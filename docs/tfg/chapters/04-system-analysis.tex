@@ -47,6 +47,11 @@ a una sola oportunidad. El paso actual es opcional porque la oportunidad puede
 no tener un workflow asignado; un mismo paso puede ser, a su vez, el paso actual
 de varias oportunidades.
 
+La restricción \texttt{\{ordered\}} indica que los estados de un pipeline y
+los pasos de un workflow forman colecciones ordenadas, no conjuntos sin
+posición. La ordenación de los pasos no obliga a recorrerlos todos: las
+decisiones pueden determinar la continuación del proceso.
+
 La cualificación requiere además diferenciar los catálogos configurables de
 las instancias vinculadas a una licitación. Las plantillas expresan qué se desea
 obtener; las instancias conservan el valor, el estado de generación y las
@@ -157,6 +162,10 @@ de los términos que se utilizan en los procesos y wireframes del capítulo.
     Workflow, paso y acción & Secuencia de análisis, etapa actual y unidad de trabajo que debe resolverse para avanzar. \\
     Catálogo o plantilla & Definición reutilizable de una pregunta, un campo o un resumen dentro de una cuenta. \\
     Instancia de cualificación & Copia vinculada a una oportunidad que conserva su propio valor, estado y evidencia. \\
+    Cualificación & Análisis documental de una licitación para obtener información y valorar condiciones antes de decidir si se prepara una oferta. \\
+    Pregunta de control & Elemento que permite comprobar una condición mediante una respuesta manual o asistida por IA. \\
+    Campo personalizado & Dato tipado que una cuenta configura para estructurar información específica de su análisis. \\
+    Resumen & Síntesis revisable de los documentos de una oportunidad, redactada manualmente o generada con IA. \\
     Evidencia & Fragmento o referencia documental que permite revisar el fundamento de un resultado generado. \\
     \bottomrule
   \end{tabular}
@@ -194,14 +203,17 @@ de texto ni a una sola pantalla.
   \label{fig:qualification-process}
 \end{figure}
 
-En la \Cref{fig:qualification-process}, el fondo blanco identifica las tareas
-manuales y el fondo azul las operaciones automáticas de LIA. Los documentos
+En la \Cref{fig:qualification-process}, los carriles separan las tareas de la
+persona usuaria de las operaciones automáticas de LIA. El fondo blanco y el
+azul refuerzan esa distinción. Se trata de un diagrama funcional con carriles,
+no de una especificación BPMN completa. Los documentos
 constituyen el contexto de las acciones posteriores y el workflow instancia
 únicamente los elementos referenciados por sus pasos. El usuario puede aportar
 valores manuales o solicitar asistencia de IA, pero en ambos casos revisa el
 resultado y su evidencia. Cuando un paso contiene una condición, el sistema
 evalúa la información disponible y permite corregir o reintentar antes de
-continuar.
+continuar. Si existen más pasos, la ejecución vuelve a las acciones del paso
+siguiente; únicamente al cerrar el recorrido se finaliza la cualificación.
 
 \section{Diagramas de secuencia}
 
