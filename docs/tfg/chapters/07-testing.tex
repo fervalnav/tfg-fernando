@@ -449,28 +449,28 @@ requisitos definidos en el \Cref{chap:requirements}. La columna de evidencia
 identifica el nivel más significativo, aunque un requisito pueda estar
 cubierto por más de una suite.
 
-\begin{longtable}{@{}L{3.6cm}L{3.1cm}L{5.4cm}L{1.6cm}@{}}
+\begin{longtable}{@{}L{3.6cm}L{3.1cm}L{7.0cm}@{}}
   \caption{Trazabilidad entre riesgos, requisitos y pruebas.}
   \label{tab:testing-traceability} \\
   \toprule
-  \textbf{Riesgo} & \textbf{Requisitos} & \textbf{Evidencia principal} & \textbf{Estado} \\
+  \textbf{Riesgo} & \textbf{Requisitos} & \textbf{Evidencia principal} \\
   \midrule
   \endfirsthead
-  \multicolumn{4}{c}{\tablename\ \thetable{} -- continuación} \\[3pt]
+  \multicolumn{3}{c}{\tablename\ \thetable{} -- continuación} \\[3pt]
   \toprule
-  \textbf{Riesgo} & \textbf{Requisitos} & \textbf{Evidencia principal} & \textbf{Estado} \\
+  \textbf{Riesgo} & \textbf{Requisitos} & \textbf{Evidencia principal} \\
   \midrule
   \endhead
   \bottomrule
   \endlastfoot
-  Sesión inválida y acceso cruzado & RF-001--002; RN-001--002; RN-011 & Servicio de sesión y E2E de autenticación y aislamiento. & Completo \\
-  Escalada de privilegios & RF-003; RN-003 & Guarda unitaria y matriz E2E de roles y autoeliminación. & Completo \\
-  Estados incoherentes de proceso & RF-004--005; RF-009; RN-004--005; RN-007 & Entidades, handlers, eventos y recorridos E2E. & Completo \\
-  Duplicación de cualificación & RF-006; RF-010; RN-006 & Servicios de instanciación y casos de uso de preguntas, campos y resúmenes. & Completo \\
-  Salida de IA con forma incorrecta & RF-011; RF-015; RN-008; RNF-002; RNF-004 & Esquemas, fake determinista y adaptador de Google. & Completo \\
-  Documento no válido o inseguro & RF-013--014; RN-002; RN-009; RN-011--012 & Handlers, API E2E y navegador E2E con acceso directo, firmado y caducado. & Completo \\
-  Solvencia no sustentada & RF-012; RF-016; RI-008 & Banco ficticio, repeticiones, revisiones ciegas y selección por operación. & Completo \\
-  Error y recuperación de IA & RF-017--018; RN-007 & Persistencia de estado fallido, presentación del error y reintento de la acción. & Completo \\
+  Sesión inválida y acceso cruzado & RF-001--002; RN-001--002; RN-011 & Servicio de sesión y E2E de autenticación y aislamiento. \\
+  Escalada de privilegios & RF-003; RN-003 & Guarda unitaria y matriz E2E de roles y autoeliminación. \\
+  Estados incoherentes de proceso & RF-004--005; RF-009; RN-004--005; RN-007 & Entidades, handlers, eventos y recorridos E2E. \\
+  Duplicación de cualificación & RF-006; RF-010; RN-006 & Servicios de instanciación y casos de uso de preguntas, campos y resúmenes. \\
+  Salida de IA con forma incorrecta & RF-011; RF-015; RN-008; RNF-002; RNF-004 & Esquemas, fake determinista y adaptador de Google. \\
+  Documento no válido o inseguro & RF-013--014; RN-002; RN-009; RN-011--012 & Handlers, API E2E y navegador E2E con acceso directo, firmado y caducado. \\
+  Solvencia no sustentada & RF-012; RF-016; RI-008 & Banco ficticio, repeticiones, revisiones ciegas y selección por operación. \\
+  Error y recuperación de IA & RF-017--018; RN-007 & Persistencia de estado fallido, presentación del error y reintento de la acción. \\
 \end{longtable}
 
 Los resultados cierran RF-012 y RF-016 para el alcance definido: el sistema
