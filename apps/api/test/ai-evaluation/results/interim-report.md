@@ -1,4 +1,4 @@
-# Informe provisional de evaluación de IA — 13 de agosto de 2026
+# Informe de evaluación de IA
 
 El banco v2 contiene cinco expedientes ficticios, siete PDF y cuatro operaciones
 por expediente. Cada operación se repite tres veces por modelo, para un total
@@ -16,8 +16,8 @@ caso de autobuses afirman que el candidato acredita rampa y espacio reservado,
 cuando `DOSSIER 2.1` solo acredita la rampa. Esta atribución transforma un dato
 ausente en cumplimiento de un requisito y se clasifica como alucinación crítica.
 
-Flash no puede compararse todavía de forma concluyente: el 17 de agosto la
-cuota permitió ampliar la muestra de 10 a 32 salidas antes de agotarse de nuevo.
-Las 28 restantes se reanudarán sin repetir las ya válidas. Por tanto, la tabla
-conserva las métricas observadas, pero no permite seleccionar un modelo
-definitivo.
+La cuota de Google limitó Flash a 32 salidas. La decisión conserva este tamaño
+de muestra y utiliza los resultados observados: Flash se selecciona para
+resúmenes; Flash-Lite, para preguntas de control, campos personalizados y
+decisiones de workflow. Si se necesita un único modelo global, se selecciona
+Flash porque no presenta alucinaciones críticas.
