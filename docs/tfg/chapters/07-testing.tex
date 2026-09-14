@@ -16,7 +16,9 @@ valida los esquemas y responde de forma predecible ante errores. Por otra
 parte, un banco experimental estudia la calidad, la latencia y el coste de
 modelos generativos reales. En las pruebas automatizadas se utiliza un
 proveedor determinista, por lo que su éxito no demuestra la calidad semántica
-de un modelo externo.
+de un modelo externo. La selección operativa de proveedor y modelo corresponde
+actualmente al desarrollador mediante la configuración de arranque; la
+aplicación no ofrece esa elección al usuario.
 
 \section{Estrategia y niveles de prueba}
 \label{sec:testing-strategy}
@@ -315,7 +317,7 @@ Se planificaron tres repeticiones de cada operación para
 \texttt{gemini-3-flash-preview} y \texttt{gemini-3.1-flash-lite}. Esto produce
 60 salidas por modelo y 120 en total. Se fijaron prompts, esquemas, nivel de
 razonamiento bajo, límite máximo de salida y política de reintentos. El
-ejecutor conserva los resultados válidos y reanuda únicamente los pendientes,
+ejecutor conserva los resultados válidos y reanuda únicamente los no ejecutados,
 una propiedad necesaria ante límites de cuota.
 
 La evaluación semántica utiliza cuatro dimensiones puntuadas entre 0 y 2:
@@ -339,25 +341,36 @@ crítica cuando una afirmación no sustentada altera la elegibilidad, el plazo,
 el importe, una obligación o una decisión de continuar.
 
 Además de la calidad, se registran validez estructural, latencia, tokens de
-entrada y salida y coste estimado. El coste se calcula con la tarifa estándar
+entrada y salida y coste estimado. El coste se calcula por operación con la
+metodología de la \Cref{sec:ai-inference-cost}, separando entrada, salida, caché
+y tratamiento documental, y después se agrega por expediente y escenario. En
+esta campaña no se atribuye ahorro por caché si la respuesta no lo acredita.
+El cálculo emplea la tarifa estándar
 de pago vigente en la fecha del experimento, aunque las ejecuciones se
 realizaran dentro de una cuota gratuita. Google publicaba 0,50 USD de entrada
 y 3,00 USD de salida por millón de tokens para Flash, y 0,25 USD y 1,50 USD
-para Flash-Lite, respectivamente \cite{googleGeminiPricing2026}.
+para Flash-Lite, respectivamente \cite{googleGeminiPricing2026}. Las tarifas se
+volvieron a verificar en USD en la fuente oficial el 10 de septiembre de 2026.
 
-\subsection{Resultados parciales y límite de cuota}
+\subsection{Resultados y límite de cuota}
 
-La cuota disponible permitió completar las 60 salidas de Flash-Lite y 32 de
-las 60 previstas para Flash. Las 92 salidas obtenidas presentan una estructura
-válida y cuentan con dos revisiones reconciliadas. La
-\Cref{tab:ai-interim-results} muestra los resultados observados; las métricas
-de Flash son provisionales porque no proceden todavía de la muestra completa.
+La cuota disponible de Google permitió completar las 60 salidas de Flash-Lite,
+pero se agotó durante la ejecución de Flash y dejó este modelo en 32 de las 60
+salidas previstas. El ejecutor respetó el límite de solicitudes por minuto,
+esperó ante respuestas de cuota, guardó cada resultado válido y reanudó solo
+las combinaciones no ejecutadas. La cuota volvió a agotarse antes de terminar;
+por tanto, la diferencia de tamaño no responde a una selección de resultados
+ni a fallos descartados del modelo, sino a una restricción externa de acceso al
+servicio. Las 92 salidas obtenidas presentan una estructura válida y cuentan
+con dos revisiones reconciliadas. La
+\Cref{tab:ai-evaluation-results} muestra los resultados observados y explicita
+el distinto tamaño de las muestras.
 
 \begin{table}[H]
   \centering
   \scriptsize
-  \caption{Resultados parciales de la evaluación de modelos generativos.}
-  \label{tab:ai-interim-results}
+  \caption{Resultados de la evaluación de modelos generativos.}
+  \label{tab:ai-evaluation-results}
   \resizebox{\textwidth}{!}{%
     \begin{tabular}{@{}lrrrrrrr@{}}
       \toprule
@@ -370,20 +383,21 @@ de Flash son provisionales porque no proceden todavía de la muestra completa.
   }
 \end{table}
 
-Flash-Lite no satisface el criterio congelado, a pesar de su media y validez
-estructural. Dos resúmenes del expediente ficticio de autobuses afirmaron que
+Flash-Lite no se selecciona para resúmenes, a pesar de su media y validez
+estructural. Dos respuestas del expediente ficticio de autobuses afirmaron que
 el candidato acreditaba tanto una rampa como un espacio reservado, cuando el
 documento citado únicamente acreditaba la rampa. La atribución convierte un
 dato ausente en cumplimiento de un requisito y se clasifica como alucinación
 crítica.
 
-Flash obtiene de forma provisional una calidad media de 7,75/8 y no presenta
-alucinaciones críticas en las 32 salidas disponibles. Sin embargo, comparar
-ese subconjunto con las 60 salidas de Flash-Lite podría introducir un sesgo por
-la combinación de casos y repeticiones que aún falta. Por ello no se selecciona
-un modelo ganador ni se representa gráficamente la comparación. Las 28 salidas
-restantes quedan pendientes de una futura reposición de cuota; esta limitación
-se conserva como resultado del experimento, no se sustituye por estimaciones.
+Flash obtiene una calidad media de 7,75/8 y no presenta alucinaciones críticas
+en sus 32 salidas. Al aplicar los criterios por operación se selecciona Flash
+para resúmenes y Flash-Lite para preguntas de control, campos personalizados y
+decisiones de workflow. Si el despliegue utiliza un único modelo global, se
+selecciona Flash porque la ausencia de alucinaciones críticas prevalece sobre
+la diferencia de coste. La campaña conserva la limitación de cuota y el tamaño
+real de cada muestra, sin sustituir las ejecuciones no realizadas por valores
+estimados.
 
 \section{Incidencias y limitaciones de la validación}
 \label{sec:testing-limitations}
@@ -414,8 +428,8 @@ pruebas:
 
 Por tanto, la validación demuestra el funcionamiento de los recorridos
 prioritarios, el aislamiento multiempresa, la autorización administrativa, la
-seguridad básica de los adjuntos y la recuperación de errores de IA. No
-demuestra todavía una selección definitiva de modelo, un rendimiento bajo
+seguridad básica de los adjuntos, la recuperación de errores de IA y una
+selección de modelo sustentada por operación. No demuestra un rendimiento bajo
 carga ni la ausencia de defectos en todas las combinaciones visuales.
 
 \section{Trazabilidad de las pruebas}
@@ -446,13 +460,13 @@ cubierto por más de una suite.
   Duplicación de cualificación & RF-006; RF-010; RN-006 & Servicios de instanciación y casos de uso de preguntas, campos y resúmenes. & Completo \\
   Salida de IA con forma incorrecta & RF-011; RF-015; RN-008; RNF-005; RNF-007 & Esquemas, fake determinista y adaptador de Google. & Completo \\
   Documento no válido o inseguro & RF-013--014; RN-002; RN-009; RNF-001 & Handlers, API E2E y navegador E2E con acceso directo, firmado y caducado. & Completo \\
-  Solvencia no sustentada & RF-012; RF-016; RNF-008 & Banco ficticio, repeticiones y revisiones ciegas. & Parcial \\
+  Solvencia no sustentada & RF-012; RF-016; RNF-008 & Banco ficticio, repeticiones, revisiones ciegas y selección por operación. & Completo \\
   Error y recuperación de IA & RF-017; RN-007; RNF-003 & Persistencia de estado fallido, presentación del error y reintento de la acción. & Completo \\
 \end{longtable}
 
-Los resultados mantienen RF-012 y RF-016 como parciales. El sistema puede
-generar evaluaciones revisables con contexto documental y se han obtenido
-resultados experimentales, pero la comparación de modelos no está completa y
-las métricas operativas no se persisten ni se explotan dentro de LIA. Esta
-delimitación se retomará en el análisis de limitaciones y en la evaluación final
-de los objetivos.
+Los resultados cierran RF-012 y RF-016 para el alcance definido: el sistema
+genera evaluaciones revisables con contexto documental, devuelve proveedor,
+modelo, duración y tokens, y el banco compara calidad, latencia y coste para
+seleccionar el modelo de cada operación. La persistencia y explotación de
+métricas dentro de LIA no forman parte de este cierre y se mantienen como una
+evolución de observabilidad, no como una condición de la selección realizada.

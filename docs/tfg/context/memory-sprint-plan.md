@@ -66,10 +66,11 @@ provisional hasta conocer los resultados finales.
 ## Iteración M2 - Planificación, esfuerzo y costes
 
 **Estado:** en curso. La metodología Scrum, el plan de diez sprints, la
-distribución de 320 horas y el coste de personal están redactados. La
-valoración económica queda pendiente de completar con el precio y la fecha de
-adquisición del MacBook Pro M4 Pro y con los servicios de pago realmente
-utilizados.
+comparación entre 320 horas estimadas y 339 reales y el coste de personal están
+redactados. El coste puntual de desarrollo y el coste operativo recurrente se
+presentan por separado. La valoración económica queda pendiente de completar
+con el precio y la fecha de adquisición del MacBook Pro M4 Pro y con los
+servicios de pago realmente utilizados.
 
 ### Capítulos
 
@@ -80,8 +81,8 @@ utilizados.
 - Explicar la adaptación de Scrum al trabajo individual.
 - Resumir los sprints de producto y sus entregables.
 - Preparar cronograma o Gantt.
-- Distribuir con el autor las 320 horas totales entre desarrollo, pruebas,
-  memoria y defensa.
+- Distribuir por sprint las horas estimadas y reales entre desarrollo, pruebas,
+  memoria y defensa, y explicar sus desviaciones.
 - Documentar incidencias y ajustes reales de la planificación.
 - Calcular costes solo con precios, amortizaciones y proveedores confirmados.
 
@@ -127,7 +128,8 @@ Catálogo estable y trazable. Los huecos detectados alimentan el backlog técnic
 previa al desarrollo y reserva las capturas reales para el manual de usuario.
 Los modelos, secuencias y wireframes cubren por separado todas las secciones de
 cualificación, además del acceso, la cartera de oportunidades, la configuración
-que las alimenta y la selección y comparación de proveedores de IA.
+que las alimenta, la configuración del proveedor por el desarrollador y la
+futura consulta de evaluaciones de IA.
 
 ### Capítulos
 
@@ -180,11 +182,11 @@ decisiones, no en un inventario de archivos.
 
 ## Iteración M6 - Pruebas y validación
 
-**Estado:** redactada de forma verificable el 17 de agosto de 2026. Las pruebas
-automatizadas, la cobertura y la integración continua están cerradas. La
-evaluación experimental se presenta como resultado parcial porque la cuota de
-Google dejó 28 de las 60 salidas de Flash pendientes; no se selecciona un
-modelo ganador.
+**Estado:** completada. Las pruebas automatizadas, la cobertura, la integración
+continua y la evaluación experimental están redactadas. La cuota de Google
+limitó Flash a 32 salidas y este tamaño se conserva en la comparación. La
+decisión selecciona Flash para resúmenes y Flash-Lite para las otras tres
+operaciones; con un único modelo global se utiliza Flash.
 
 ### Capítulos
 
@@ -218,11 +220,8 @@ Completado como trabajo experimental de la memoria:
   expediente.
 - Métricas de calidad, validez, latencia, tokens y coste para las salidas
   disponibles, con dos revisiones ciegas independientes y reconciliación.
-
-Pendiente:
-
-- Ejecutar y revisar las 28 salidas restantes de Flash cuando exista cuota.
-- Regenerar la comparación final sin alterar los resultados parciales.
+- Política final de selección por operación, manteniendo explícito el tamaño
+  de muestra causado por la cuota de Google.
 
 ### Salida
 

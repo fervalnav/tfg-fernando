@@ -6,11 +6,16 @@ confirmadas.
 
 ## Planificación y costes
 
-- Confirmar las fechas naturales de inicio y fin del desarrollo si se decide
-  mostrarlas junto al cronograma relativo de sprints.
+- Mantener el cronograma en semanas relativas y no incorporar fechas inferidas
+  del historial Git.
 - Confirmar el precio y la fecha de adquisición del MacBook Pro M4 Pro para
   calcular la amortización imputable al TFG.
-- Confirmar el consumo real de proveedores de IA y las licencias de pago.
+- La campaña experimental conserva 92 generaciones y su coste tarifario
+  equivalente. Confirmar únicamente si existió una factura efectiva y las
+  licencias de pago empleadas durante el desarrollo.
+- Revisar antes de la entrega que las 320 horas estimadas, las 339 horas reales
+  y las desviaciones por sprint coincidan con la versión final de la
+  planificación y del presupuesto.
 - Decidir si los 25,67 euros por hora se mantienen como tarifa de referencia
   procedente de contratación pública o si el coste se recalcula desde las
   tablas salariales del convenio de 2026. No describir esa tarifa como coste
@@ -18,8 +23,10 @@ confirmadas.
 - Recalcular o justificar el porcentaje empresarial: el 29,9 % actual debe
   contrastarse con todos los conceptos de cotización aplicables en 2026 y con
   el tipo de relación laboral supuesto para el presupuesto.
-- Si la aplicación se despliega antes de la entrega, añadir proveedor de
-  alojamiento, plan contratado, periodo, coste y evidencia del despliegue.
+- Mantener separado el coste de desarrollo del coste operativo. Si la
+  aplicación se despliega antes de la entrega, documentar para este último el
+  alojamiento, base de datos, objetos, correo, observabilidad e inferencia, con
+  proveedor, unidad, periodo, coste y evidencia.
 
 ## Despliegue y seguridad
 

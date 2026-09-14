@@ -122,15 +122,18 @@ Por proveedor/modelo se presentan:
 
 Un modelo es aceptable si obtiene al menos 6/8 de calidad media, genera una respuesta estructuralmente válida en al menos el 95 % de ejecuciones y no presenta alucinaciones críticas. Entre los modelos aceptables se elige el de menor coste; la latencia actúa como desempate. Estos umbrales deben revisarse si el conjunto final demuestra que no son adecuados, dejando constancia del cambio.
 
-## Estado de ejecución del 13 de agosto de 2026
+## Resultado de la campaña
 
 - Flash-Lite: 60/60 salidas, 100 % válidas, calidad acordada 7,53/8. Presenta
   dos alucinaciones críticas en resúmenes del caso de autobuses, por lo que no
-  supera el criterio de aceptación pese a su buena media.
-- Flash: la ejecución se reanudó el 17 de agosto y alcanza 32/60 salidas, todas
-  estructuralmente válidas y revisadas, con calidad provisional 7,75/8 y sin
-  alucinaciones. Las 28 restantes quedan pendientes de otro reinicio de cuota.
-  No se extrae una conclusión comparativa hasta completar las 60.
+  se selecciona para esa operación pese a su buena media.
+- Flash: la cuota de Google limitó la muestra a 32/60 salidas, todas
+  estructuralmente válidas y revisadas, con calidad 7,75/8 y sin
+  alucinaciones. El tamaño real se conserva en los resultados y no se completan
+  las ejecuciones ausentes mediante estimaciones.
+- Decisión: Flash para resúmenes; Flash-Lite para preguntas de control, campos
+  personalizados y decisiones de workflow. Si se necesita un único modelo
+  global, se selecciona Flash por su ausencia de alucinaciones críticas.
 - La puntuación original de ambos revisores y la acordada se conservan en
   `reviews/`; los agregados reproducibles están en `results/aggregate.json`.
 

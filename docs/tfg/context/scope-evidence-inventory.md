@@ -44,7 +44,7 @@ repositorio y las mejoras futuras. La auditoría se realizó el 6 de agosto de
 | Contexto documental para IA | Implementado | Los PDF se recuperan desde MinIO/S3 y se entregan como binarios al proveedor; no se persiste una extracción de texto | `OpportunityAttachmentDocumentsService` y handlers de generación |
 | Pruebas automatizadas | Implementadas | Unitarias, componentes, cobertura, E2E de API y E2E de navegador | `docs/testing.md`, `apps/api/test`, `apps/web/tests/e2e` |
 | Integración continua | Implementada, pendiente de ejecución remota completa | Workflow con instalación bloqueada, tipos, lint, tests, cobertura, build y E2E de API | `.github/workflows/ci.yml` |
-| Optimización de coste y rendimiento de IA | Parcial | El adaptador obtiene proveedor, modelo, duración y tokens, y limita la salida; esas métricas aún no se persisten ni se han comparado experimentalmente | `AiGenerationService` y protocolo `apps/api/test/ai-evaluation` |
+| Optimización de coste y rendimiento de IA | Completa | El adaptador obtiene proveedor, modelo, duración y tokens; el banco compara 92 salidas y selecciona modelo por operación, conservando la muestra de Flash limitada por cuota | `AiGenerationService` y resultados de `apps/api/test/ai-evaluation` |
 | Detección de solvencia económica | Parcial | Las preguntas configurables pueden solicitar una evaluación y evidencia a la IA, pero falta validar esta capacidad con casos documentales y una rúbrica definida | Preguntas de control y protocolo de evaluación de IA |
 | Despliegue de producción | No verificado | Existe configuración local reproducible, pero no hay evidencia de un despliegue final validado | `docker-compose.yml`, archivos `.env.example` |
 

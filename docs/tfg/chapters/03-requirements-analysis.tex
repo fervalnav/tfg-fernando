@@ -93,11 +93,11 @@ proyecto.
   RF-009 & Ejecución de workflows & El miembro debe poder asignar un workflow a una oportunidad, consultar su progreso, completar u omitir acciones y avanzar o reintentar su ejecución. & Completo \\
   RF-010 & Cualificación manual & El miembro debe poder añadir las plantillas disponibles a una oportunidad y responder preguntas, editar campos y redactar resúmenes manualmente. & Completo \\
   RF-011 & Generación estructurada con IA & El sistema debe generar respuestas, campos y resúmenes mediante IA, validarlos contra un esquema y conservar su estado y evidencia. & Completo \\
-  RF-012 & Evaluación preliminar de solvencia & El sistema debe utilizar preguntas de control y documentación de la licitación para producir una evaluación preliminar de solvencia acompañada de evidencia revisable. & Parcial \\
+  RF-012 & Evaluación preliminar de solvencia & El sistema debe utilizar preguntas de control y documentación de la licitación para producir una evaluación preliminar de solvencia acompañada de evidencia revisable. & Completo \\
   RF-013 & Gestión documental & El miembro debe poder adjuntar, listar, descargar y eliminar documentos PDF asociados a una oportunidad. & Completo \\
   RF-014 & Contexto documental & El sistema debe recuperar los documentos de la oportunidad y entregarlos como contexto binario al proveedor de IA durante las generaciones. & Completo \\
   RF-015 & Decisiones asistidas por IA & El sistema debe evaluar pasos de decisión mediante IA, registrar el resultado, conservar su evidencia y permitir una nueva evaluación tras un fallo. & Completo \\
-  RF-016 & Selección y medición de proveedores & El sistema debe permitir seleccionar proveedor y modelo, registrar duración y consumo de cada generación y comparar calidad, latencia y coste. & Parcial \\
+  RF-016 & Configuración y medición de proveedores & El sistema debe permitir al desarrollador configurar proveedor y modelo al arrancar la API, registrar duración y consumo de cada generación y comparar calidad, latencia y coste. La selección por el usuario queda fuera de la versión actual. & Completo \\
   RF-017 & Recuperación de generaciones & El miembro debe poder reconocer los estados pendiente, en proceso, completado y fallido, consultar el error y reintentar una generación fallida. & Completo \\
 \end{longtable}
 }
@@ -107,9 +107,10 @@ proyecto.
 RF-003 se verifica mediante una matriz E2E que permite las operaciones de
 administración a \texttt{ADMIN}, las rechaza para \texttt{MEMBER} y protege la
 autoeliminación. RF-012 dispone del mecanismo de preguntas, evidencia y
-contexto documental, pero necesita una evaluación con documentos y respuestas
-esperadas. RF-016 obtiene proveedor, modelo, duración y tokens, aunque aún debe
-persistir las métricas y ejecutar la comparación experimental.
+contexto documental, validado mediante expedientes ficticios con respuestas
+esperadas. RF-016 configura proveedor y modelo mediante variables de entorno,
+obtiene proveedor, modelo, duración y tokens, y registra en el banco los datos
+utilizados para la comparación. No existe selección desde la interfaz.
 
 \subsection{Requisitos de información}
 
@@ -139,7 +140,7 @@ relacionar para ejecutar sus procesos. Se describen en la
   RI-005 & Plantillas de cualificación & Preguntas de control, campos personalizados y resúmenes configurables dentro de cada cuenta. & Completo \\
   RI-006 & Resultados de cualificación & Instancias por oportunidad, valores o respuestas, fuente humana o IA, estado, evidencia, error y fecha de generación. & Completo \\
   RI-007 & Adjuntos & Metadatos del documento, oportunidad y cuenta propietarias, ubicación de almacenamiento, tamaño, tipo y posible acción vinculada. & Completo \\
-  RI-008 & Métricas de IA & Proveedor, modelo, duración, tokens, coste estimado, validez estructural y valoración de calidad de cada ejecución evaluada. & Parcial \\
+  RI-008 & Métricas de IA & Proveedor, modelo, duración, tokens, coste estimado, validez estructural y valoración de calidad de cada ejecución evaluada. & Completo \\
 \end{longtable}
 }
 
@@ -206,7 +207,7 @@ para que el núcleo sea seguro, mantenible y evaluable. Se presentan en la
   RNF-005 & Testabilidad & Los casos de negocio deben poder probarse de forma aislada y la IA debe disponer de un proveedor determinista que no realice consumo facturable. & Completo \\
   RNF-006 & Portabilidad local & El entorno debe poder reproducirse con configuración documentada para PostgreSQL y almacenamiento compatible con S3, sin depender de servicios de producción. & Completo \\
   RNF-007 & Interoperabilidad de IA & La integración debe permitir sustituir el proveedor de IA mediante una interfaz común sin modificar los casos de uso del dominio. & Completo \\
-  RNF-008 & Observabilidad de IA & Cada generación evaluada debe poder relacionarse con proveedor, modelo, duración, tokens, resultado estructural y coste. & Parcial \\
+  RNF-008 & Observabilidad de IA & Cada generación evaluada debe poder relacionarse con proveedor, modelo, duración, tokens, resultado estructural y coste. & Completo \\
 \end{longtable}
 }
 
@@ -243,11 +244,11 @@ identifica la capa donde se verifica su comportamiento más representativo.
   RF-009 & OG-001, OE-003 & Ejecución & Pruebas del servicio de workflow y de las acciones por oportunidad. & Completo \\
   RF-010 & OG-001, OE-001 & Cualificación & Pruebas de instanciación y edición manual por oportunidad. & Completo \\
   RF-011 & OG-001, OE-001 & IA y cualificación & Pruebas de handlers con proveedor determinista y validación de esquemas. & Completo \\
-  RF-012 & OE-001 & Preguntas de control & Banco documental ficticio con respuestas esperadas, rúbrica y revisión ciega; la campaña comparativa permanece incompleta. & Parcial \\
+  RF-012 & OE-001 & Preguntas de control & Banco documental ficticio con respuestas esperadas, rúbrica, revisión ciega y selección de modelo por operación. & Completo \\
   RF-013 & OG-001 & Adjuntos & Pruebas de handlers y E2E de subida, listado, descarga y borrado. & Completo \\
   RF-014 & OG-001, OE-001 & Adjuntos e IA & Pruebas del servicio de documentos y generaciones con contexto. & Completo \\
   RF-015 & OG-001, OE-003 & Decisiones de workflow & Pruebas de evaluación, evidencia, error y reintento. & Completo \\
-  RF-016 & OE-002 & IA & Adaptadores probados y métricas experimentales parciales; pendiente completar la comparación y persistir métricas operativas. & Parcial \\
+  RF-016 & OE-002 & IA & Adaptadores probados, métricas experimentales y comparación de calidad, latencia y coste. & Completo \\
   RF-017 & OG-001, OE-001 & Cualificación & Pruebas de transición de estados, persistencia de errores y reintento. & Completo \\
 \end{longtable}
 }
@@ -266,20 +267,19 @@ los huecos transversales sin repetir todas las relaciones de la tabla anterior.
     \textbf{Grupo} & \textbf{Objetivos} & \textbf{Evidencia y huecos} \\
     \midrule
     RI-001--RI-007 & OG-001, OE-001, OE-003 & Entidades persistidas, DTO compartidos y pruebas de repositorios y casos de uso. \\
-    RI-008 & OE-002 & Resultado disponible en los adaptadores y en el banco experimental; falta su persistencia y explotación dentro de LIA. \\
+    RI-008 & OE-002 & Resultado disponible en los adaptadores y registrado por ejecución en el banco experimental. \\
     RN-001--RN-002, RN-004--RN-010 & OG-001, OE-001, OE-003 & Reglas de dominio y aplicación cubiertas por pruebas unitarias y E2E. \\
     RN-003 & OG-001 & Matriz E2E de operaciones permitidas a \texttt{ADMIN}, rechazo a \texttt{MEMBER} y autoeliminación. \\
     RNF-001--RNF-007 & Todos & Guardas, validación, arquitectura modular, fake de IA y entorno local reproducible. \\
-    RNF-008 & OE-002 & Existen métricas experimentales parciales; falta completar la campaña y almacenar y explotar las métricas dentro de LIA. \\
+    RNF-008 & OE-002 & Las ejecuciones evaluadas relacionan modelo, duración, tokens, estructura, coste y calidad. \\
     \bottomrule
   \end{tabular}
 \end{table}
 
 \medskip
 
-El análisis mantiene dos trabajos parciales que condicionan el cierre de los
-objetivos: completar la validación documental de la solvencia y terminar la
-medición comparativa de los modelos de IA. Los permisos de administrador ya se
-aplican y se han validado mediante una matriz E2E de roles. Los elementos
-pendientes se delimitan expresamente en el \Cref{chap:testing} y deberán
-considerarse de nuevo al redactar las conclusiones.
+El análisis cierra la validación documental de la solvencia y la medición
+comparativa de los modelos mediante el banco experimental. Los permisos de
+administrador se aplican y se han validado mediante una matriz E2E de roles. La
+\Cref{chap:testing} presenta la evidencia, el tamaño real de las muestras y la
+política de selección resultante.

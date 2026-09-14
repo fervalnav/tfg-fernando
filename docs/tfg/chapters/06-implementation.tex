@@ -263,9 +263,137 @@ interfaz muestra la evidencia y permite solicitar una reevaluación del paso
 actual.
 
 Los adaptadores devuelven además proveedor, modelo, duración y uso de tokens.
-Estos datos forman la base de una comparación posterior, pero la versión
-actual no mantiene todavía un histórico agregado de coste y rendimiento. Por
-tanto, el capítulo no presenta métricas comparativas que aún no se han medido.
+La aplicación todavía no persiste estas métricas como un histórico operativo,
+pero el banco experimental conserva cada ejecución en CSV y JSONL. Esta fuente
+permite estudiar la elección del modelo sin afirmar que LIA ya implemente un
+panel de costes o un enrutamiento automático por tipo de operación.
+
+\subsection{Selección del modelo por tipo de operación}
+\label{sec:ai-model-selection}
+
+La elección no se basa únicamente en el precio nominal. El protocolo exige una
+calidad media mínima de 6/8, al menos un 95\,\% de salidas estructuralmente
+válidas y ninguna alucinación crítica. Solo después de superar esos umbrales
+se utiliza el coste como criterio principal y la latencia como desempate. Se
+comparan resúmenes, preguntas de control, campos personalizados y decisiones de
+workflow porque su longitud, estructura y riesgo no son equivalentes.
+
+El banco contiene cinco expedientes ficticios, siete PDF y tres repeticiones de
+cada operación. Flash-Lite completó sus 60 salidas. Flash alcanzó 32 de las 60
+planificadas antes de que Google agotara la cuota disponible. El ejecutor aplicó
+esperas ante el límite de solicitudes, conservó cada salida válida y reanudó
+solo las combinaciones no ejecutadas, pero la cuota volvió a agotarse. La
+decisión usa las 92 salidas obtenidas, mantiene visible el tamaño de cada
+muestra y aplica los criterios de aceptación por tipo de operación.
+
+\begin{table}[H]
+  \centering
+  \scriptsize
+  \caption{Resultados experimentales desglosados por operación y modelo.}
+  \label{tab:ai-results-by-operation}
+  \resizebox{\textwidth}{!}{%
+    \begin{tabular}{@{}llrrrrrrr@{}}
+      \toprule
+      \textbf{Operación} & \textbf{Modelo} & \textbf{N} & \textbf{Calidad} & \textbf{Válidas} & \textbf{Mediana} & \textbf{P95} & \textbf{Coste medio} & \textbf{Aluc. críticas} \\
+      \midrule
+      Resumen & Flash & 9 & 7,67/8 & 100\,\% & 3603 ms & 8716 ms & 0,001387 USD & 0 \\
+      Resumen & Flash-Lite & 15 & 6,27/8 & 100\,\% & 2664 ms & 8915 ms & 0,000946 USD & 2 \\
+      Pregunta de control & Flash & 9 & 7,67/8 & 100\,\% & 1726 ms & 17377 ms & 0,001157 USD & 0 \\
+      Pregunta de control & Flash-Lite & 15 & 7,87/8 & 100\,\% & 1984 ms & 5687 ms & 0,000775 USD & 0 \\
+      Campo personalizado & Flash & 8 & 7,75/8 & 100\,\% & 1501 ms & 2252 ms & 0,001004 USD & 0 \\
+      Campo personalizado & Flash-Lite & 15 & 8,00/8 & 100\,\% & 2215 ms & 5402 ms & 0,000691 USD & 0 \\
+      Decisión de workflow & Flash & 6 & 8,00/8 & 100\,\% & 2605 ms & 3250 ms & 0,001079 USD & 0 \\
+      Decisión de workflow & Flash-Lite & 15 & 8,00/8 & 100\,\% & 4086 ms & 5733 ms & 0,000787 USD & 0 \\
+      \bottomrule
+    \end{tabular}%
+  }
+\end{table}
+
+Los resúmenes muestran por qué la media global no basta. Flash-Lite supera por
+poco el umbral medio, pero dos ejecuciones del caso de autobuses atribuyeron al
+candidato un requisito que el documento no acreditaba. Al ser alucinaciones
+críticas, el modelo queda descartado para esta operación. Flash alcanza 7,67/8
+en sus nueve resúmenes, conserva el 100\,\% de validez y no presenta
+alucinaciones críticas; por ello se selecciona para generar resúmenes.
+
+En preguntas de control, campos personalizados y decisiones de workflow,
+Flash-Lite completa 15 salidas por operación, mantiene el 100\,\% de validez,
+no presenta alucinaciones críticas y obtiene medias de 7,87, 8,00 y 8,00. Su
+coste medio es además inferior al de los subconjuntos disponibles de Flash. En
+preguntas de control se detectó un error menor de formato semántico, aunque la
+salida superó el esquema; debe vigilarse sin confundirlo con una alucinación o
+con un fallo estructural.
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Política final de selección por tipo de operación.}
+  \label{tab:ai-model-decision}
+  \begin{tabular}{@{}p{3.2cm}p{3.0cm}p{6.1cm}@{}}
+    \toprule
+    \textbf{Operación} & \textbf{Modelo recomendado} & \textbf{Decisión} \\
+    \midrule
+    Resumen & Flash & Mejor seguridad observada: 7,67/8, 100\,\% de validez y ninguna alucinación crítica. \\
+    Pregunta de control & Flash-Lite & 7,87/8, ninguna alucinación crítica y un coste medio un 33\,\% menor que Flash. \\
+    Campo personalizado & Flash-Lite & 8/8, ninguna alucinación crítica y un coste medio un 31\,\% menor que Flash. \\
+    Decisión de workflow & Flash-Lite & 8/8, ninguna alucinación crítica y un coste medio un 27\,\% menor que Flash. \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+La política final utiliza Flash para resúmenes y Flash-Lite para preguntas de
+control, campos personalizados y decisiones de workflow. Todas las salidas
+continúan siendo revisables por el usuario. La implementación actual selecciona
+un único valor \texttt{AI\_MODEL} al arrancar la API; para esa configuración
+global se adopta Flash, porque es el único de los dos modelos sin alucinaciones
+críticas en los resultados observados. La distribución por operación de la
+\Cref{tab:ai-model-decision} queda como criterio para entornos que separen los
+flujos de inferencia.
+
+\subsection{Coste de inferencia y reproducción del cálculo}
+\label{sec:ai-inference-cost}
+
+El coste de una generación se calcula a partir del uso devuelto por la API, sin
+mezclar tokens de entrada y salida. Para una operación $o$ se registran modelo,
+proveedor, tarifa y fecha, tokens de entrada $T_{in}$, tokens recuperados de
+caché $T_{cache}$, tokens de salida $T_{out}$ y, cuando exista, almacenamiento
+de caché $T_{store}$ durante $h$ horas:
+
+\begin{equation}
+  C_o = \frac{T_{in} P_{in} + T_{cache} P_{cache} +
+  T_{out} P_{out}}{10^6} + \frac{T_{store} P_{store} h}{10^6}.
+\end{equation}
+
+Los PDF no se valoran por tamaño de archivo. Google contabiliza la modalidad
+\emph{DOCUMENT} dentro de los tokens de entrada informados por la respuesta de
+uso \cite{googleGeminiPricing2026}. Si un proveedor cobra aparte ingestión,
+almacenamiento, recuperación o herramientas, esa partida debe registrarse sin
+inferirla a partir de los tokens. La caché solo se consigna como cero cuando la
+respuesta o la configuración demuestran que no se utilizó.
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Tarifas estándar congeladas para reproducir el experimento
+  (USD por millón de tokens).}
+  \label{tab:ai-model-pricing}
+  \begin{tabular}{@{}lrrrl@{}}
+    \toprule
+    \textbf{Modelo} & \textbf{Entrada} & \textbf{Salida} & \textbf{Caché} & \textbf{Moneda} \\
+    \midrule
+    \texttt{gemini-3-flash-preview} & 0,50 & 3,00 & No publicada & USD \\
+    \texttt{gemini-3.1-flash-lite} & 0,25 & 1,50 & 0,025 & USD \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+El coste de las 32 salidas de Flash asciende a 0,037403 USD y el de las 60 de
+Flash-Lite a 0,048003 USD. No deben compararse esos totales como eficiencia: el
+primero contiene menos ejecuciones. La comparación útil es el coste medio por
+operación de la \Cref{tab:ai-results-by-operation}, junto con calidad,
+alucinaciones y latencia. Para estimar funcionamiento mensual, el coste por
+expediente se obtiene sumando sus operaciones y reintentos reales, y después se
+integra con las demás partidas operativas de la \Cref{sec:operational-cost}.
 
 \section{Adjuntos y contexto documental}
 

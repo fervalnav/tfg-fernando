@@ -98,12 +98,12 @@ académicas o institucionales.
 - Responsabilidades de autor y tutora sin inventar ceremonias o reuniones.
 - Descripción resumida de los sprints de desarrollo.
 - Diagrama de Gantt o cronograma equivalente.
-- Estimación inicial, dedicación reconstruida y desviaciones justificadas.
+- Estimación inicial, dedicación real y desviaciones justificadas.
 - Costes de personal, infraestructura, herramientas y proveedores de IA.
 
-Las horas son estimaciones reconstruidas, no un registro exacto. Deben
-presentarse como tales. La distribución final de las 320 horas acordadas se
-cerrará con el autor cuando se redacte este capítulo.
+La planificación inicial debe presentarse antes que la ejecución real. Las
+horas estimadas y reales se distribuyen por sprint y las diferencias se
+explican mediante sus desviaciones y las incidencias relevantes.
 
 ### 3. Análisis de requisitos
 

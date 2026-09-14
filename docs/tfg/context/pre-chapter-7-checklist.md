@@ -59,8 +59,7 @@ versión funcional que finalmente documente el manual.
   CI sobre la revisión `edaf585` que se citará en el capítulo 7.
 - [x] Registrar la revisión de Git y el resultado remoto: `78ab280` supera la
   CI completa en la ejecución `31689863930`; fecha, comandos y resultados se
-  conservan en `chapter-7-local-evidence-2026-08-13.md`. La revisión final de
-  la campaña cambiará al incorporar las 28 salidas de Flash pendientes.
+  conservan en `chapter-7-local-evidence-2026-08-13.md`.
 
 ### 2. Autorización administrativa
 
@@ -80,17 +79,15 @@ versión funcional que finalmente documente el manual.
   `gemini-3.1-flash-lite` mediante credenciales de Google disponibles.
 - [x] Asignar la segunda revisión ciega a un agente Codex independiente y
   documentar expresamente que no se trata de una revisión humana.
-- [ ] Ejecutar tres repeticiones por caso y operación. Flash-Lite ha completado
-  60/60 y Flash 32/60; las 28 salidas de Flash restantes están pendientes de
-  otro reinicio de su cuota diaria gratuita. Resultados, latencia, tokens y
-  piloto de cuota se conservan por separado.
+- [x] Cerrar la campaña con las ejecuciones disponibles. Flash-Lite completó
+  60/60 y la cuota diaria de Google limitó Flash a 32/60. Resultados, latencia,
+  tokens y piloto de cuota se conservan por separado.
 - [x] Obtener y congelar las tarifas oficiales de Google vigentes el 13 de
   agosto de 2026, con fuente, USD y modelo exacto.
-- [ ] Calcular la comparación final cuando termine Flash. Las 92 salidas
-  disponibles tienen dos revisiones reconciliadas: Flash alcanza
-  provisionalmente 7,75/8, 100 % de validez y ninguna alucinación en 32
-  salidas; Flash-Lite mantiene 7,53/8, 100 % de validez y dos alucinaciones
-  críticas en 60.
+- [x] Calcular la comparación y la selección final con las 92 salidas y dos
+  revisiones reconciliadas: Flash alcanza 7,75/8, 100 % de validez y ninguna
+  alucinación en 32 salidas; Flash-Lite obtiene 7,53/8, 100 % de validez y dos
+  alucinaciones críticas en 60. Se selecciona por tipo de operación.
 
 ### 4. Métricas operativas de IA
 
