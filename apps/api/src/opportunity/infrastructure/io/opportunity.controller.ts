@@ -1,11 +1,13 @@
 import {
   Body,
+  BadRequestException,
   Controller,
   ConflictException,
   DefaultValuePipe,
   Delete,
   Get,
   HttpCode,
+  HttpException,
   InternalServerErrorException,
   NotFoundException,
   Param,
@@ -24,6 +26,7 @@ import type {
   PipelineStatusTotalsDto,
   WorkflowDecisionResultDto,
   WorkflowStepActionDto,
+  CustomFieldFilter,
 } from '@tfg/types';
 import { OpportunityNotFoundException } from '../../domain/exceptions/opportunity-not-found.exception';
 import { CreateOpportunityCommand } from '../../application/commands/create-opportunity';
@@ -74,6 +77,7 @@ export class OpportunityController {
     @Query('dueDateTo') dueDateTo?: string,
     @Query('amountMin') amountMinRaw?: string,
     @Query('amountMax') amountMaxRaw?: string,
+    @Query('customFields') customFieldsRaw?: string,
   ): Promise<OpportunityDto[]> {
     try {
       return await this.queryBus.execute(
@@ -88,10 +92,12 @@ export class OpportunityController {
             dueDateTo,
             amountMinRaw,
             amountMaxRaw,
+            customFieldsRaw,
           ),
         ),
       );
-    } catch {
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
       throw new InternalServerErrorException();
     }
   }
@@ -107,6 +113,7 @@ export class OpportunityController {
     @Query('dueDateTo') dueDateTo?: string,
     @Query('amountMin') amountMinRaw?: string,
     @Query('amountMax') amountMaxRaw?: string,
+    @Query('customFields') customFieldsRaw?: string,
   ): Promise<PipelineStatusTotalsDto[]> {
     try {
       return await this.queryBus.execute(
@@ -121,10 +128,12 @@ export class OpportunityController {
             dueDateTo,
             amountMinRaw,
             amountMaxRaw,
+            customFieldsRaw,
           ),
         ),
       );
-    } catch {
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
       throw new InternalServerErrorException();
     }
   }
@@ -142,6 +151,7 @@ export class OpportunityController {
     @Query('dueDateTo') dueDateTo?: string,
     @Query('amountMin') amountMinRaw?: string,
     @Query('amountMax') amountMaxRaw?: string,
+    @Query('customFields') customFieldsRaw?: string,
   ): Promise<PaginatedResult<OpportunityDto>> {
     try {
       const filters = parseOpportunityFilters(
@@ -154,6 +164,7 @@ export class OpportunityController {
         dueDateTo,
         amountMinRaw,
         amountMaxRaw,
+        customFieldsRaw,
       );
 
       return await this.queryBus.execute(
@@ -169,9 +180,11 @@ export class OpportunityController {
           filters.dueDateTo,
           filters.amountMin,
           filters.amountMax,
+          filters.customFields,
         ),
       );
-    } catch {
+    } catch (error) {
+      if (error instanceof HttpException) throw error;
       throw new InternalServerErrorException();
     }
   }
@@ -430,7 +443,7 @@ export class OpportunityController {
   }
 }
 
-function parseOpportunityFilters(
+export function parseOpportunityFilters(
   accountId: string,
   pipelineId: string,
   q?: string,
@@ -440,9 +453,11 @@ function parseOpportunityFilters(
   dueDateTo?: string,
   amountMinRaw?: string,
   amountMaxRaw?: string,
+  customFieldsRaw?: string,
 ): OpportunityFilters {
   const amountMin = amountMinRaw ? Number(amountMinRaw) : undefined;
   const amountMax = amountMaxRaw ? Number(amountMaxRaw) : undefined;
+  const customFields = parseCustomFieldFilters(customFieldsRaw);
 
   return {
     accountId,
@@ -454,5 +469,63 @@ function parseOpportunityFilters(
     dueDateTo: dueDateTo ? new Date(dueDateTo) : undefined,
     amountMin: amountMin !== undefined && Number.isFinite(amountMin) ? amountMin : undefined,
     amountMax: amountMax !== undefined && Number.isFinite(amountMax) ? amountMax : undefined,
+    customFields,
   };
+}
+
+const FILTER_OPERATORS = {
+  TEXT: ['CONTAINS', 'EQUALS', 'NOT_EQUALS'],
+  NUMBER: ['EQUALS', 'NOT_EQUALS', 'GREATER_THAN', 'GREATER_THAN_OR_EQUAL', 'LESS_THAN', 'LESS_THAN_OR_EQUAL'],
+  DATE: ['EQUALS', 'NOT_EQUALS', 'BEFORE', 'AFTER'],
+  BOOLEAN: ['EQUALS', 'NOT_EQUALS'],
+  CLASSIFIER: ['CONTAINS', 'EQUALS', 'NOT_EQUALS'],
+} as const;
+
+function parseCustomFieldFilters(raw?: string): CustomFieldFilter[] | undefined {
+  if (!raw) return undefined;
+  let value: unknown;
+  try {
+    value = JSON.parse(raw);
+  } catch {
+    throw new BadRequestException('El filtro de campos personalizados no es JSON válido');
+  }
+  if (!Array.isArray(value) || value.length > 10) {
+    throw new BadRequestException('Se admiten entre 0 y 10 filtros de campos personalizados');
+  }
+  const filters = value as Partial<CustomFieldFilter>[];
+  const fieldIds = new Set<string>();
+  for (const filter of filters) {
+    if (!filter || typeof filter !== 'object' || Array.isArray(filter)) {
+      throw new BadRequestException('Filtro de campo personalizado no válido');
+    }
+    if (typeof filter.type !== 'string' || !Object.hasOwn(FILTER_OPERATORS, filter.type)) {
+      throw new BadRequestException('Tipo de campo personalizado no válido');
+    }
+    const operators = filter.type && FILTER_OPERATORS[filter.type];
+    const validValue =
+      (filter.type === 'NUMBER' && typeof filter.value === 'number' && Number.isFinite(filter.value)) ||
+      (filter.type === 'BOOLEAN' && typeof filter.value === 'boolean') ||
+      ((filter.type === 'TEXT' || filter.type === 'DATE' || filter.type === 'CLASSIFIER') &&
+        typeof filter.value === 'string' &&
+        filter.value.length <= 500);
+    const date = filter.type === 'DATE' ? new Date(String(filter.value)) : undefined;
+    const validDate =
+      filter.type !== 'DATE' ||
+      (/^\d{4}-\d{2}-\d{2}$/.test(String(filter.value)) &&
+        date !== undefined &&
+        !Number.isNaN(date.getTime()) &&
+        date.toISOString().slice(0, 10) === filter.value);
+    if (
+      typeof filter.fieldId !== 'string' ||
+      !filter.fieldId.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i) ||
+      fieldIds.has(filter.fieldId) ||
+      !operators?.includes(filter.operator as never) ||
+      !validValue ||
+      !validDate
+    ) {
+      throw new BadRequestException('Filtro de campo personalizado no válido');
+    }
+    fieldIds.add(filter.fieldId);
+  }
+  return filters as CustomFieldFilter[];
 }

@@ -13,6 +13,7 @@ describe('appendOpportunityFilterParams', () => {
       dueDateTo: '2026-08-31',
       amountMin: 0,
       amountMax: 250000,
+      customFields: [{ fieldId: 'field-id', type: 'NUMBER', operator: 'GREATER_THAN', value: 1000 }],
     });
 
     expect(params.get('pipelineId')).toBe('pipeline-id');
@@ -23,6 +24,9 @@ describe('appendOpportunityFilterParams', () => {
     expect(params.get('dueDateTo')).toBe('2026-08-31');
     expect(params.get('amountMin')).toBe('0');
     expect(params.get('amountMax')).toBe('250000');
+    expect(JSON.parse(params.get('customFields')!)).toEqual([
+      { fieldId: 'field-id', type: 'NUMBER', operator: 'GREATER_THAN', value: 1000 },
+    ]);
   });
 
   it('does not add absent filters', () => {

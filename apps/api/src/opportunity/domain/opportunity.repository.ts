@@ -1,5 +1,6 @@
 import type { Opportunity } from './opportunity.entity';
 import type { PaginatedResult } from '@/shared/domain/dto/paginated.dto';
+import type { CustomFieldFilter } from '@tfg/types';
 
 export type OpportunityFilters = {
   pipelineId: string;
@@ -11,6 +12,7 @@ export type OpportunityFilters = {
   dueDateTo?: Date;
   amountMin?: number;
   amountMax?: number;
+  customFields?: CustomFieldFilter[];
 };
 
 export type PipelineStatusTotal = {

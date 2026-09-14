@@ -1,6 +1,7 @@
 import { Query } from '@nestjs/cqrs';
 import type { PaginatedResult } from '@/shared/domain/dto/paginated.dto';
 import type { OpportunityDto } from './opportunity.dto';
+import type { CustomFieldFilter } from '@tfg/types';
 
 export class FindAllOpportunitiesQuery extends Query<PaginatedResult<OpportunityDto>> {
   constructor(
@@ -15,6 +16,7 @@ export class FindAllOpportunitiesQuery extends Query<PaginatedResult<Opportunity
     public readonly dueDateTo?: Date,
     public readonly amountMin?: number,
     public readonly amountMax?: number,
+    public readonly customFields?: CustomFieldFilter[],
   ) {
     super();
   }

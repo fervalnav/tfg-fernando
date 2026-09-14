@@ -23,6 +23,7 @@ describe('useOpportunityFilters', () => {
       statusIds: ['analysis', 'proposal'],
       amountMin: '0',
       amountMax: '90000',
+      customFields: JSON.stringify([{ fieldId: 'field', type: 'BOOLEAN', operator: 'EQUALS', value: true }]),
     };
 
     const result = useOpportunityFilters();
@@ -35,6 +36,7 @@ describe('useOpportunityFilters', () => {
       dueDateTo: undefined,
       amountMin: 0,
       amountMax: 90000,
+      customFields: [{ fieldId: 'field', type: 'BOOLEAN', operator: 'EQUALS', value: true }],
     });
     expect(result.hasActiveFilters.value).toBe(true);
   });

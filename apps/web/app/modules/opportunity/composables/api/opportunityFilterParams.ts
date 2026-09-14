@@ -8,4 +8,5 @@ export function appendOpportunityFilterParams(params: URLSearchParams, filters: 
   if (filters.dueDateTo) params.set('dueDateTo', filters.dueDateTo);
   if (filters.amountMin !== undefined) params.set('amountMin', String(filters.amountMin));
   if (filters.amountMax !== undefined) params.set('amountMax', String(filters.amountMax));
+  if (filters.customFields?.length) params.set('customFields', JSON.stringify(filters.customFields));
 }

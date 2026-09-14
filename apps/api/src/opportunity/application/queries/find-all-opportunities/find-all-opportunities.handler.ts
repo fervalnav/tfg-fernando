@@ -23,6 +23,7 @@ export class FindAllOpportunitiesHandler implements IQueryHandler<
         dueDateTo: query.dueDateTo,
         amountMin: query.amountMin,
         amountMax: query.amountMax,
+        customFields: query.customFields,
       },
       query.page,
       query.limit,
