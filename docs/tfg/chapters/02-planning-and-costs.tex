@@ -88,64 +88,97 @@ un registro diario de actividad.
   \label{fig:core-sprint-plan}
 \end{figure}
 
-\section{Planificación y ejecución del esfuerzo}
+\section{Estimación inicial del esfuerzo}
 
-La estimación inicial acordada para el proyecto fue de 320 horas. Al finalizar
-el núcleo se reconstruyó la dedicación ejecutada a partir de los bloques de
-trabajo, también con un total de 320 horas. Esta reconstrucción incluye
-análisis, diseño, desarrollo, pruebas y elaboración de la memoria, pero no
-procede de un registro horario diario. Por ello permite comparar la magnitud
-global y la distribución del esfuerzo, aunque no calcular una desviación
-horaria fiable para cada sprint.
+La planificación inicial fijó una dedicación de 320 horas. La estimación se
+realizó por sprint atendiendo a la complejidad funcional, las dependencias
+técnicas y el
+trabajo de análisis, implementación, pruebas y documentación necesario para
+obtener cada incremento. Se mantuvo una carga aproximadamente comparable entre
+iteraciones y se asignó algo más de capacidad a las áreas con mayor interacción
+entre dominio, interfaz e infraestructura.
 
-La \Cref{fig:effort-plan-vs-reconstructed} muestra la comparación agregada. La
-coincidencia entre ambos totales no significa que cada iteración consumiera
-exactamente lo previsto: durante la ejecución se redistribuyó la dedicación
-entre bloques para absorber las incidencias descritas en la sección siguiente.
-
-\begin{figure}[H]
-  \centering
-  \input{figure-sources/tikz/effort-plan-vs-reconstructed}
-  \caption{Comparación entre el esfuerzo total estimado y la dedicación
-    ejecutada reconstruida.}
-  \label{fig:effort-plan-vs-reconstructed}
-\end{figure}
-
-La \Cref{tab:effort-breakdown} relaciona cada bloque de trabajo con los sprints
-en los que se concentró. Las pruebas realizadas dentro de cada sprint se
-incluyen en el bloque funcional correspondiente; la partida específica de
-calidad agrupa la infraestructura transversal de pruebas, los casos de extremo
-a extremo y las campañas finales de validación. Las partidas se han redondeado
-para no introducir una precisión que no puede justificarse.
+Las pruebas de cada funcionalidad forman parte de su sprint. Las tareas
+transversales de validación y documentación se reparten en las iteraciones en
+las que se cierra el correspondiente incremento, en lugar de reservarse para
+una fase final independiente.
 
 \begin{table}[H]
   \centering
   \small
-  \caption{Distribución reconstruida de las 320 horas ejecutadas.}
-  \label{tab:effort-breakdown}
-  \begin{tabular}{@{}p{7.35cm}p{3.2cm}r@{}}
+  \caption{Planificación inicial del esfuerzo por sprint.}
+  \label{tab:initial-sprint-effort}
+  \begin{tabular}{@{}clp{7.5cm}r@{}}
     \toprule
-    \textbf{Bloque de trabajo} & \textbf{Sprints relacionados} & \textbf{Horas} \\
+    \textbf{Sprint} & \textbf{Área} & \textbf{Criterio de estimación} & \textbf{Horas} \\
     \midrule
-    Análisis del problema, alcance, planificación y diseño & Transversal & 28 \\
-    Plataforma, monorepositorio e infraestructura local & Sprint 0 & 18 \\
-    Autenticación, cuentas y aislamiento multiempresa & Sprint 1 & 28 \\
-    Pipelines, catálogo y definición de workflows & Sprints 2--4 & 55 \\
-    Oportunidades, ejecución de workflows y cualificación & Sprints 5--7 & 58 \\
-    Integración de IA generativa, adjuntos y almacenamiento & Sprints 8--9 & 48 \\
-    Pruebas, refactorizaciones y validación de calidad & Transversal & 47 \\
-    Documentación técnica, diagramas y memoria académica & Transversal & 38 \\
+    0 & Plataforma & Preparación del monorepositorio, persistencia, servicios locales y base documental. & 30 \\
+    1 & Identidad & Sesión, cuentas, miembros, roles y aislamiento multiempresa. & 32 \\
+    2 & Pipelines & Modelo configurable, estados, ordenación y operaciones de mantenimiento. & 30 \\
+    3 & Catálogo & Tres catálogos reutilizables y sus formularios de gestión. & 30 \\
+    4 & Workflows & Editor, pasos, decisiones, acciones tipadas y validación del flujo. & 34 \\
+    5 & Oportunidades & Listado, kanban, filtros, ordenación y cambios de estado. & 36 \\
+    6 & Ejecución & Detalle, asignación y control del ciclo de vida del workflow. & 34 \\
+    7 & Cualificación & Preguntas, campos y resúmenes asociados a cada oportunidad. & 34 \\
+    8 & IA generativa & Adaptadores, salidas estructuradas, estados, errores y reintentos. & 32 \\
+    9 & Documentos & Adjuntos PDF, almacenamiento, contexto para IA y validación final. & 28 \\
     \midrule
-    \multicolumn{2}{l}{\textbf{Total}} & \textbf{320} \\
+    \multicolumn{3}{r}{\textbf{Total}} & \textbf{320} \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-La mayor dedicación se concentra en la configuración de workflows, la gestión
-de oportunidades y la cualificación, ya que estos bloques forman la ruta
-principal del producto. La integración de IA y documentos también requiere una
-partida relevante por combinar proveedores externos, procesamiento asíncrono y
+La planificación asignó entre 28 y 36 horas a cada sprint. Las iteraciones de
+workflows, oportunidades, ejecución y cualificación concentran algo más de
+esfuerzo porque forman la ruta principal del producto. La integración de IA y
+documentos se dividió en dos incrementos para evitar concentrar en una única
+iteración los adaptadores externos, el procesamiento asíncrono y el
 almacenamiento de ficheros.
+
+\section{Errores de planificación y dedicación real}
+
+El seguimiento posterior registró 339 horas de dedicación, 19 más que las 320
+estimadas. La \Cref{tab:sprint-effort-deviation} compara ambas magnitudes. La
+desviación de cada sprint se calcula como:
+
+\begin{equation}
+  D_s = H_{real,s} - H_{estimada,s},
+  \qquad
+  E_s = \frac{H_{real,s} - H_{estimada,s}}{H_{estimada,s}} \times 100.
+\end{equation}
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Comparación entre horas estimadas y reales por sprint.}
+  \label{tab:sprint-effort-deviation}
+  \begin{tabular}{@{}crrrr@{}}
+    \toprule
+    \textbf{Sprint} & \textbf{Estimadas} & \textbf{Reales} & \textbf{Desviación} & \textbf{Error relativo} \\
+    \midrule
+    0 & 30 & 27 & -3 & -10,0\,\% \\
+    1 & 32 & 34 & +2 & +6,3\,\% \\
+    2 & 30 & 29 & -1 & -3,3\,\% \\
+    3 & 30 & 31 & +1 & +3,3\,\% \\
+    4 & 34 & 37 & +3 & +8,8\,\% \\
+    5 & 36 & 39 & +3 & +8,3\,\% \\
+    6 & 34 & 38 & +4 & +11,8\,\% \\
+    7 & 34 & 36 & +2 & +5,9\,\% \\
+    8 & 32 & 35 & +3 & +9,4\,\% \\
+    9 & 28 & 33 & +5 & +17,9\,\% \\
+    \midrule
+    \textbf{Total} & \textbf{320} & \textbf{339} & \textbf{+19} & \textbf{+5,9\,\%} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+La desviación total es moderada, pero no se distribuye de forma uniforme. La
+plataforma y los pipelines necesitaron algo menos de tiempo del previsto. En
+cambio, los sprints 4 a 9 superaron su estimación por la interacción entre el
+editor de workflows, la cartera, la ejecución, la cualificación, los estados
+asíncronos y el contexto documental. El mayor error relativo aparece en el
+sprint 9: además de almacenar los PDF, fue necesario asegurar su recuperación,
+entrega al proveedor de IA y comportamiento ante fallos.
 
 \section{Incidencias y ajustes de la planificación}
 
@@ -171,19 +204,20 @@ fueron los siguientes:
         la memoria.
 \end{itemize}
 
-Estos ajustes explican la redistribución cualitativa respecto del plan inicial:
-se dedicó más atención a la estabilización del entorno, a la infraestructura de
-pruebas y al contexto documental de la IA, y se redujo el trabajo reservado a
-módulos opcionales. Se absorbieron dentro del total reconstruido de 320 horas
-mediante la revisión del backlog y la priorización de la ruta crítica. Las
-funcionalidades opcionales se conservan como posibles ampliaciones y no
-condicionan la finalización del núcleo funcional.
+La revisión del backlog y la priorización de la ruta crítica permitieron
+contener estos ajustes en una desviación total de 19 horas. Las funcionalidades
+opcionales se conservaron como posibles ampliaciones y no condicionaron la
+finalización del núcleo funcional.
 
-\section{Presupuesto}
+\section{Coste de desarrollo del proyecto}
+\label{sec:development-cost}
 
-El presupuesto valora los recursos necesarios para realizar el TFG. Se separan
-el coste de personal, el equipo informático y los servicios utilizados durante
-el desarrollo.
+El coste de desarrollo reúne los recursos empleados una sola vez para analizar,
+diseñar, implementar y validar el TFG. Incluye la dedicación del desarrollador,
+la parte imputable del equipo y los consumos asociados a la campaña de pruebas.
+No incluye el gasto recurrente necesario para mantener LIA disponible una vez
+desplegada, que se trata por separado en la
+\Cref{sec:operational-cost}.
 
 \subsection{Coste de personal}
 
@@ -195,39 +229,43 @@ salarial vigente de 2026. También se emplea, como hipótesis provisional de
 cálculo, una cuota empresarial del 29,9\,\%. Ambos criterios deberán confirmarse
 antes de cerrar el presupuesto definitivo.
 
-El coste bruto asociado a las 320 horas es:
+El presupuesto inicial utiliza las 320 horas estimadas. El coste bruto previsto
+es:
 
 \begin{equation}
   C_{\text{bruto}} = 320 \times 25{,}67 = 8{.}214{,}40~\text{euros}.
 \end{equation}
 
-La cuota empresarial asciende a:
+La cuota empresarial prevista asciende a:
 
 \begin{equation}
   C_{\text{social}} = 8{.}214{,}40 \times 0{,}299 = 2{.}456{,}11~\text{euros}.
 \end{equation}
 
-Con estas hipótesis, el coste provisional de personal es de 10.670,51 euros,
-como se resume en la \Cref{tab:personnel-cost}.
+La dedicación real de 339 horas eleva la remuneración bruta a 8{.}702,13 euros y
+la cuota empresarial a 2{.}601,94 euros. Con estas hipótesis, el coste previsto
+de personal es de 10{.}670,51 euros y el coste real de 11{.}304,07 euros, una
+diferencia de 633,56 euros, como resume la \Cref{tab:personnel-cost}.
 
 \begin{table}[H]
   \centering
   \small
-  \caption{Estimación provisional del coste de personal del proyecto.}
+  \caption{Comparación provisional entre el coste de personal previsto y real.}
   \label{tab:personnel-cost}
-  \begin{tabular}{@{}lr@{}}
+  \begin{tabular}{@{}lrr@{}}
     \toprule
-    \textbf{Concepto} & \textbf{Coste} \\
+    \textbf{Concepto} & \textbf{Previsto} & \textbf{Real} \\
     \midrule
-    Remuneración bruta & 8.214,40 euros \\
-    Cuota empresarial (29,9\,\%) & 2.456,11 euros \\
+    Horas de dedicación & 320 & 339 \\
+    Remuneración bruta & 8{.}214,40 euros & 8{.}702,13 euros \\
+    Cuota empresarial (29,9\,\%) & 2{.}456,11 euros & 2{.}601,94 euros \\
     \midrule
-    \textbf{Total de personal} & \textbf{10.670,51 euros} \\
+    \textbf{Total de personal} & \textbf{10{.}670,51 euros} & \textbf{11{.}304,07 euros} \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-\subsection{Hardware y servicios}
+\subsection{Recursos de desarrollo}
 
 El desarrollo se realizó con un MacBook Pro equipado con chip M4 Pro. Para
 imputar su coste al proyecto se aplicará la amortización correspondiente al
@@ -236,34 +274,85 @@ de amortización simplificada de la Agencia Tributaria establece para los
 equipos de tratamiento de la información un coeficiente lineal máximo del
 26\,\% y un periodo máximo de diez años \cite{aeatAmortizacion}.
 
-El entorno de producción utiliza un servidor CX23 de Hetzner con copias
-rotatorias habilitadas. Su coste se incorporará al presupuesto cuando se
-confirmen la fecha de alta, el periodo facturado y el importe real. Del mismo
-modo, los servicios de IA y las licencias de pago se contabilizarán por su
-consumo efectivo, sin asignar un coste ficticio a planes gratuitos.
+La aplicación se ejecutó en local durante el desarrollo, por lo que el
+alojamiento no forma parte de este bloque. La campaña comparativa de IA sí es
+un consumo de desarrollo: las 92 generaciones registradas equivalen a
+0,085406 USD al aplicar las tarifas estándar congeladas para el experimento.
+Esta cifra valora el consumo medido, pero no se presenta como un desembolso
+facturado, ya que las llamadas se realizaron dentro de la cuota disponible.
+La metodología y el desglose por operación se explican en la
+\Cref{sec:ai-model-selection}.
 
-La \Cref{tab:hardware-services-cost} diferencia los conceptos confirmados de
-aquellos para los que todavía falta el dato de adquisición o consumo. Esta
+La \Cref{tab:development-resources-cost} diferencia los conceptos confirmados
+de aquellos para los que todavía falta el dato de adquisición o consumo. Esta
 separación evita que una partida pendiente se confunda con un coste nulo.
 
 \begin{table}[H]
   \centering
   \small
-  \caption{Estado de los costes de hardware y servicios.}
-  \label{tab:hardware-services-cost}
+  \caption{Estado de los recursos imputables al desarrollo.}
+  \label{tab:development-resources-cost}
   \begin{tabular}{@{}p{3.5cm}p{6.6cm}p{2.7cm}@{}}
     \toprule
     \textbf{Concepto} & \textbf{Criterio} & \textbf{Estado} \\
     \midrule
     MacBook Pro M4 Pro & Amortización según precio, fecha de adquisición y periodo de uso. & Por completar \\
-    IA generativa & Consumo real por proveedor y modelo durante desarrollo y evaluación. & Por completar \\
-    Hetzner CX23 y copias & Importe y periodo según la facturación real del entorno. & Por completar \\
+    Pruebas de IA & 92 generaciones medidas; valor tarifario equivalente de 0,085406 USD. & Medido; sin factura acreditada \\
     Licencias & Herramientas de pago utilizadas específicamente para el proyecto. & Por completar \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-Con los criterios provisionales disponibles, el coste cuantificado asciende a
-10.670,51 euros correspondientes al personal. No constituye todavía el total
-definitivo: deberá recalcularse tras confirmar la tarifa, la cuota empresarial,
-la amortización del equipo y, cuando proceda, los consumos y servicios reales.
+Con los criterios provisionales disponibles, el coste real cuantificado
+asciende a 11{.}304,07 euros correspondientes al personal, frente a los
+10{.}670,51 euros previstos. No constituye todavía el total definitivo: deberá
+recalcularse tras confirmar la tarifa, la cuota empresarial, la amortización
+del equipo y las licencias realmente utilizadas.
+
+\section{Coste operativo de funcionamiento}
+\label{sec:operational-cost}
+
+El coste operativo es recurrente y comienza cuando la aplicación se mantiene
+disponible para usuarios. No representa el esfuerzo de construir LIA. Comprende
+el alojamiento de la web y la API, PostgreSQL, almacenamiento y transferencia
+de PDF, correo, observabilidad, copias de seguridad y las inferencias de IA.
+La topología de producción definida utiliza un servidor CX23 de Hetzner con
+copias rotatorias. Su importe mensual se incorporará cuando se acrediten la
+fecha de alta, el periodo y la facturación; no se asigna una cifra hipotética
+para producir un presupuesto aparentemente cerrado.
+
+Para un mes $m$, el coste se puede expresar como:
+
+\begin{equation}
+  C_{op,m} = C_{infra,m} + C_{datos,m} + C_{objetos,m} + C_{correo,m}
+  + C_{obs,m} + \sum_{o \in m} C_o,
+\end{equation}
+
+donde $C_o$ es el coste de cada generación calculado con tokens de entrada,
+salida y, si consta en la respuesta del proveedor, caché. La fórmula evita
+extrapolar el consumo puntual del banco de pruebas como si fuera el gasto
+mensual de una aplicación en servicio.
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Partidas del coste operativo de LIA.}
+  \label{tab:operational-cost-items}
+  \begin{tabular}{@{}p{3.2cm}p{7.0cm}p{2.6cm}@{}}
+    \toprule
+    \textbf{Partida} & \textbf{Unidad necesaria para calcularla} & \textbf{Estado} \\
+    \midrule
+    Web y API & Instancias, memoria, CPU, tráfico y periodo de disponibilidad. & Pendiente de facturación \\
+    PostgreSQL & Capacidad, conexiones, copias de seguridad y transferencia. & Pendiente de facturación \\
+    Objetos PDF & GiB-mes almacenados, operaciones y tráfico de salida. & Pendiente de facturación \\
+    Correo y observabilidad & Mensajes, retención de registros, métricas y alertas. & Pendiente de facturación \\
+    Inferencia de IA & Operaciones por tipo, tokens, reintentos y modelo aplicado. & Método definido \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Cuando exista uso real se deberán publicar escenarios bajo, esperado y alto
+con el mismo periodo y unidades: expedientes mensuales, operaciones por tipo,
+documentos, tokens, reintentos y recursos de infraestructura. Hasta entonces,
+la \Cref{tab:operational-cost-items} constituye un modelo de cálculo y no un
+coste mensual observado.
