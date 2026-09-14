@@ -322,11 +322,11 @@ ruta de revisión. Si el proveedor lanza un error o devuelve una salida no
 válida, se persiste un estado fallido y la interfaz permite reintentar o
 completar el trabajo manualmente.
 
-El adaptador ya devuelve proveedor, modelo, duración y tokens, pero estas
-métricas no se almacenan todavía como un registro histórico de uso. Por ello,
-la arquitectura soporta la futura comparación de proveedores, aunque el
-control de cuotas y la evaluación acumulada de coste y rendimiento permanecen
-pendientes.
+El adaptador devuelve proveedor, modelo, duración y tokens. Estas métricas no
+se almacenan como un registro histórico dentro de LIA, pero el banco externo de
+evaluación las conserva y permite comparar calidad, coste y latencia. La
+selección resultante se describe en la \Cref{sec:ai-model-selection}; el control
+de cuotas se resuelve en el ejecutor mediante espera y reanudación.
 
 \section{Ejecución e infraestructura de producción}
 \label{sec:production-infrastructure}

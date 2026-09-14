@@ -11,8 +11,8 @@ La revisión se aplica al checkout actual sin revertir correcciones previas.
 | 3 | 13 | Documento para su revisión | Conservado, sin afirmar revisión previa. |
 | 4–5 | 14 | Referencias automáticas a todos los capítulos | Conservadas y comprobadas; no se detectan números de capítulos/figuras/tablas escritos manualmente en las fuentes publicables. |
 | 6 | 14 | Declaración de uso de IAG | Apéndice A conservado, incluido y referenciado. |
-| 7 | 17 | Vincular bloques de esfuerzo con sprints | Conservada la columna de sprints relacionados. |
-| 8 | 17 | Estimado frente a ejecutado antes de incidencias | Conservado gráfico agregado 320 h / 320 h reconstruidas. Desglose por sprint pendiente de evidencia del autor. |
+| 7 | 17 | Vincular bloques de esfuerzo con sprints | Integrada la planificación inicial por sprint de la tarea de costes. |
+| 8 | 17 | Estimado frente a ejecutado antes de incidencias | Integrada la tabla por sprint de la tarea de costes: 320 h estimadas frente a 339 h de dedicación, antes del análisis de incidencias. |
 | 9 | 18 | Separador de miles | Comprobadas cantidades en texto, tablas y ecuaciones. |
 | 10 | 22 | Separar estado de la especificación de requisitos | Catálogos sin columna de estado; las limitaciones de validación no se ocultan. |
 | 11–13 | 24 | Reclasificar requisitos no funcionales | Conservadas RN-011, RN-012 y RF-018; reparada trazabilidad que aún utilizaba ocho RNF antiguos en lugar de los cuatro actuales. |
@@ -26,10 +26,11 @@ La revisión se aplica al checkout actual sin revertir correcciones previas.
 
 ## Datos que no se completan artificialmente
 
-La comparación por sprint requiere horas inicialmente previstas y ejecutadas
-que no están disponibles. Se mantiene este pendiente en `final-todo.md` y la
-limitación explícita en el capítulo 2. La igualdad de los totales agregados no
-demuestra ausencia de desviaciones por sprint.
+La integración de `codex/tfg-planificacion-costes-modelos` sustituye la
+comparación agregada anterior por el desglose aprobado por el autor en la tarea
+de costes. En esta integración se comprueban las sumas y los cálculos, no se
+obtiene un registro horario independiente. `final-todo.md` conserva la revisión
+de coherencia de las cifras antes de la entrega.
 
 ## Verificación
 

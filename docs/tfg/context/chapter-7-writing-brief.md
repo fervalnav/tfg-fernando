@@ -30,7 +30,7 @@ prueba funcional ordinaria.
 | Duplicación o cruce de instancias de cualificación | RF-006, RF-010, RN-006 | Servicios de instanciación y handlers de preguntas, campos y resúmenes | Superado |
 | Persistencia de una salida de IA con forma incorrecta | RF-011, RF-015, RN-008, RNF-002, RNF-004 | Esquemas Zod, fake determinista y pruebas del adaptador Google | Superado en integración |
 | Documento inseguro, no admitido o perteneciente a otra cuenta | RF-013, RF-014, RN-002, RN-009, RN-011, RN-012 | Handlers, almacenamiento, API E2E y navegador E2E de URL firmada/directa/caducada | Superado |
-| Evaluación de solvencia incorrecta o no sustentada | RF-012, RF-016, RI-008 | Banco ficticio, tres repeticiones, dos revisiones ciegas | Parcial: Flash pendiente; Flash-Lite presenta dos alucinaciones críticas |
+| Evaluación de solvencia incorrecta o no sustentada | RF-012, RF-016, RI-008 | Banco ficticio, repeticiones, dos revisiones ciegas y selección por operación | Completo: Flash para resúmenes y Flash-Lite para las otras operaciones |
 
 ## Resultados automatizados que deben convertirse en tablas
 
@@ -61,11 +61,10 @@ de toda prueba.
 
 ### Evaluación de IA
 
-La tabla provisional está en
-`apps/api/test/ai-evaluation/results/interim-report.md`. La versión publicable se
-regenerará desde `aggregate.json` al completar las 28 salidas pendientes de
-Flash. Hasta entonces no se seleccionará un modelo ganador ni se generalizarán
-las métricas de las 32 salidas disponibles de Flash.
+La tabla reproducible está en
+`apps/api/test/ai-evaluation/results/interim-report.md` y se deriva de
+`aggregate.json`. Conserva el tamaño desigual causado por la cuota de Google y
+fundamenta la selección final por tipo de operación.
 
 ## Incidencias que deben explicarse
 
@@ -89,13 +88,11 @@ las métricas de las 32 salidas disponibles de Flash.
 
 La figura de niveles de prueba sí aporta contexto y debe incluirse. Un gráfico
 de cobertura no mejora las dos filas de la tabla y se omite. La comparación de
-modelos podrá representarse con calidad, coste y latencia cuando ambos tengan
-60 salidas; dibujarla ahora produciría una comparación visual engañosa.
+modelos se presenta mediante tablas que muestran calidad, coste, latencia y
+tamaño de muestra.
 
-## Pendiente antes de redactar el capítulo como definitivo
+## Cierre del capítulo
 
-- completar las 28 salidas de Flash;
-- revisarlas dos veces de forma ciega y reconciliar desacuerdos;
-- regenerar los agregados y la tabla definitiva;
-- actualizar RF-012, RF-016 y RI-008 en la matriz de trazabilidad sin
-  convertir una evaluación externa en persistencia interna inexistente.
+RF-012, RF-016, RI-008 y RI-008 quedan alineados con el banco externo y la
+selección por operación, sin presentar la evaluación como persistencia interna
+de métricas.

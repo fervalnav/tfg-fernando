@@ -97,7 +97,7 @@ proyecto.
   RF-013 & Gestión documental & El miembro debe poder adjuntar, listar, descargar y eliminar documentos PDF asociados a una oportunidad. \\
   RF-014 & Contexto documental & El sistema debe recuperar los documentos de la oportunidad y entregarlos como contexto binario al proveedor de IA durante las generaciones. \\
   RF-015 & Decisiones asistidas por IA & El sistema debe evaluar pasos de decisión mediante IA, registrar el resultado, conservar su evidencia y permitir una nueva evaluación tras un fallo. \\
-  RF-016 & Selección y medición de proveedores & El sistema debe permitir seleccionar proveedor y modelo, registrar duración y consumo de cada generación y comparar calidad, latencia y coste. \\
+  RF-016 & Configuración y medición de proveedores & El sistema debe permitir al desarrollador configurar proveedor y modelo al arrancar la API, registrar duración y consumo de cada generación y comparar calidad, latencia y coste. La selección por el usuario queda fuera de la versión actual. \\
   RF-017 & Recuperación de generaciones & El miembro debe poder reconocer los estados pendiente, en proceso, completado y fallido, consultar el error y reintentar una generación fallida. \\
   RF-018 & Retroalimentación de la interfaz & La interfaz debe informar al usuario de la carga, el éxito, el error y el progreso de las operaciones relevantes. \\
 \end{longtable}
@@ -108,9 +108,10 @@ proyecto.
 RF-003 se verifica mediante una matriz E2E que permite las operaciones de
 administración a \texttt{ADMIN}, las rechaza para \texttt{MEMBER} y protege la
 autoeliminación. RF-012 dispone del mecanismo de preguntas, evidencia y
-contexto documental, pero necesita una evaluación con documentos y respuestas
-esperadas. RF-016 obtiene proveedor, modelo, duración y tokens, aunque aún debe
-persistir las métricas y ejecutar la comparación experimental.
+contexto documental, validado mediante expedientes ficticios con respuestas
+esperadas. RF-016 configura proveedor y modelo mediante variables de entorno,
+obtiene proveedor, modelo, duración y tokens, y registra en el banco los datos
+utilizados para la comparación. No existe selección desde la interfaz.
 
 \subsection{Requisitos de información}
 
@@ -337,3 +338,8 @@ la historia de usuario correspondiente.
     RNF-004 & & & \checkmark & \\ \hline
   \end{tabular}
 \end{table}
+
+La \Cref{chap:testing} presenta la evidencia de validación, el tamaño real de
+las muestras del banco experimental y la política final de selección de modelo
+por operación. Esta evaluación externa no supone que LIA persista ni explote
+internamente las métricas de cada generación.

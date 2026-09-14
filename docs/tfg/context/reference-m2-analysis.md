@@ -26,29 +26,31 @@ además un coste real recalculado tras la desviación horaria.
 
 LIA se presenta mediante una aplicación individual de Scrum: backlog ordenado,
 sprints de dos semanas, incremento funcional y revisión al cierre de cada
-iteración. Las 320 horas acordadas se distribuyen por bloques funcionales e
-incluyen desarrollo, pruebas y memoria. El cronograma utiliza semanas relativas
-hasta que el autor confirme las fechas naturales que deben figurar en la versión
-final.
+iteración. Las 320 horas estimadas se distribuyen por sprint e incluyen
+desarrollo, pruebas y memoria; después se comparan con las 339 horas reales. El
+cronograma utiliza semanas relativas y no deriva fechas del historial Git.
 
 ## Enfoque presupuestario
 
-La memoria calculará el coste económico de realización del TFG, no una oferta
-comercial a un cliente. Por defecto no se añadirán beneficio, reserva comercial
-ni IVA. Si el autor necesita un presupuesto de venta, se preparará como una
-tabla independiente.
+La memoria calculará por separado el coste económico de realizar el TFG y el
+coste recurrente de mantener LIA en funcionamiento; ninguno se presentará como
+una oferta comercial a un cliente. Por defecto no se añadirán beneficio,
+reserva comercial ni IVA. Si el autor necesita un presupuesto de venta, se
+preparará como una tabla independiente.
 
 El coste de personal utiliza 25,67 euros por hora y una cuota empresarial del
 29,9 %, valores compartidos por las memorias de Joaquín Arregui y José Luis. El
 hardware utilizado es un MacBook Pro M4 Pro y se imputará mediante una regla de
 amortización documentada cuando el autor confirme su precio y fecha de compra.
-Los servicios de IA y las licencias se contabilizarán solo con facturas,
-consumo o precios confirmados.
+El consumo de IA de la campaña se considera desarrollo. La inferencia mensual,
+el alojamiento y los servicios gestionados pertenecen al coste operativo. Las
+licencias y desembolsos se contabilizarán solo con facturas, consumo o precios
+confirmados.
 
 ## Decisiones de maquetación
 
 - Un único Gantt compacto mostrará los diez sprints nucleares.
 - Las tareas detalladas se resumirán en una tabla, sin reproducir el backlog.
-- Las horas se agruparán por bloques de trabajo para que la tabla sea legible.
+- Las horas estimadas y reales se compararán por sprint en una tabla legible.
 - El presupuesto usará tablas de conceptos, base de cálculo y estado de
   confirmación.

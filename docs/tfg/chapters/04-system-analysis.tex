@@ -132,8 +132,9 @@ mantienen deliberadamente independientes de tecnologías concretas.
     documento de análisis útil para la decisión. & RF-010--011, RF-017 \\
   HU-013 & Miembro & Ejecutar el workflow y revisar sus decisiones. & Avanzar de
     forma controlada por el proceso de cualificación. & RF-009, RF-015 \\
-  HU-014 & Administrador & Seleccionar proveedor y modelo y consultar sus
-    métricas comparativas. & Equilibrar calidad, latencia y coste. & RF-016 \\
+  HU-014 & Desarrollador & Configurar proveedor y modelo al desplegar y
+    consultar los resultados del banco experimental. & Equilibrar calidad,
+    latencia, coste y riesgo de alucinación. & RF-016 \\
 \end{longtable}
 \normalsize
 
@@ -509,15 +510,18 @@ después podrán incorporarse a los workflows y oportunidades.
   \resizebox{\textwidth}{!}{
     \input{figure-sources/tikz/wireframe-config-ai}
   }
-  \caption{Wireframe de configuración y comparación de proveedores de IA.}
+  \caption{Panel futuro de consulta de evaluaciones de proveedores de IA.}
   \label{fig:wireframe-config-ai}
 \end{figure}
 
-La \Cref{fig:wireframe-config-ai} completa el objetivo de optimización del uso
-de IA. El diseño permite seleccionar proveedor y modelo y consultar, cuando se
-haya ejecutado una evaluación controlada, calidad, latencia, consumo y coste.
-No se muestran valores ficticios: mientras la campaña comparativa permanezca
-pendiente, la vista debe indicarlo expresamente.
+La \Cref{fig:wireframe-config-ai} representa únicamente un panel futuro de
+consulta. En la versión actual, el proveedor y el modelo los selecciona el
+desarrollador mediante variables de entorno al arrancar la API; ni el miembro
+ni el administrador pueden cambiarlos desde la interfaz. El panel propuesto
+permitiría consultar, cuando exista una evaluación controlada completa,
+calidad, latencia, consumo, coste y alucinaciones. La elección por el usuario
+se reserva expresamente como trabajo futuro y el wireframe no incluye controles
+que puedan confundirse con una funcionalidad implementada.
 
 \section{Cobertura del diseño}
 
@@ -555,7 +559,7 @@ no se limita a las pantallas más vistosas ni deja la cualificación incompleta.
   Resúmenes & HU-012 & Secuencia de IA; wireframe de resúmenes; catálogo
     configurable. \\
   Asistencia mediante IA & HU-010--012, HU-014 & Secuencia de generación;
-    estados, evidencia y reintento; selección y comparación de proveedores. \\
+    estados, evidencia y reintento; configuración técnica y futura consulta de evaluaciones. \\
 \end{longtable}
 \normalsize
 
