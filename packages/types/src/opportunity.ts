@@ -63,6 +63,25 @@ export type OpportunityFilters = {
   dueDateTo?: string;
   amountMin?: number;
   amountMax?: number;
+  customFields?: CustomFieldFilter[];
+};
+
+export type CustomFieldFilterOperator =
+  | 'CONTAINS'
+  | 'EQUALS'
+  | 'NOT_EQUALS'
+  | 'GREATER_THAN'
+  | 'GREATER_THAN_OR_EQUAL'
+  | 'LESS_THAN'
+  | 'LESS_THAN_OR_EQUAL'
+  | 'BEFORE'
+  | 'AFTER';
+
+export type CustomFieldFilter = {
+  fieldId: string;
+  type: import('./default-custom-field').CustomFieldType;
+  operator: CustomFieldFilterOperator;
+  value: string | number | boolean;
 };
 
 export type PipelineStatusTotalsDto = {

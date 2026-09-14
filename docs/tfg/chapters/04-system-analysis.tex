@@ -428,8 +428,24 @@ alternativas compatibles.
 \end{figure}
 
 La \Cref{fig:wireframe-qualification-fields} adapta el control al tipo del
-campo. Los campos marcados como automáticos admiten generación mediante IA,
-pero el valor permanece editable antes de confirmarlo.
+campo. Estos campos permiten que cada cuenta modele información de la
+licitación que no forma parte de la ficha común sin modificar el modelo base.
+Por ejemplo, LIA puede configurar el número de expediente como texto, el
+presupuesto base sin IVA como número, la fecha límite de presentación como
+fecha, la admisión de UTE como valor booleano y el tipo de contrato como un
+clasificador con opciones controladas. Los clasificadores pueden admitir una o
+varias opciones. Los campos marcados como automáticos admiten generación
+mediante IA, pero el valor permanece editable antes de confirmarlo.
+
+Las vistas de listado y kanban reutilizan estas definiciones para construir
+filtros dinámicos. Texto y clasificadores permiten buscar coincidencias o
+igualdad; los números admiten igualdad y comparaciones; las fechas, igualdad y
+comparaciones temporales; y los booleanos, igualdad. Cada condición identifica
+la plantilla por su UUID y se combina con las demás mediante conjunción. La
+consulta exige además que tanto la oportunidad como el valor pertenezcan a la
+cuenta autenticada, por lo que no mezcla configuraciones homónimas entre
+clientes. Los campos nativos ---estado, responsable, vencimiento e importe---
+mantienen sus filtros propios y no se recrean como campos personalizados.
 
 \subsection{Resúmenes}
 

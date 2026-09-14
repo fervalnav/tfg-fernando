@@ -209,6 +209,53 @@ contener estos ajustes en una desviación total de 19 horas. Las funcionalidades
 opcionales se conservaron como posibles ampliaciones y no condicionaron la
 finalización del núcleo funcional.
 
+\section{Registro de riesgos y contramedidas}
+\label{sec:risk-register}
+
+La planificación se completa con el registro de la
+\Cref{tab:risk-register}. La probabilidad y el impacto son estimaciones
+cualitativas prospectivas, no frecuencias observadas. Se asignan a partir de
+dependencias y límites comprobables en la solución; por tanto, el registro no
+presupone que los riesgos se hayan materializado. La señal de activación define
+cuándo deja de bastar la prevención y debe aplicarse la contingencia.
+
+\small
+\begin{longtable}{@{}L{1cm}L{2.5cm}L{1.2cm}L{2.85cm}L{2.5cm}L{2.83cm}@{}}
+  \caption{Registro de riesgos del núcleo funcional de LIA.}
+  \label{tab:risk-register} \\
+  \toprule
+  \textbf{Id.} & \textbf{Riesgo} & \textbf{P/I} & \textbf{Prevención} & \textbf{Señal de activación} & \textbf{Contingencia} \\
+  \midrule
+  \endfirsthead
+  \multicolumn{6}{c}{\tablename\ \thetable{} -- continuación} \\
+  \toprule
+  \textbf{Id.} & \textbf{Riesgo} & \textbf{P/I} & \textbf{Prevención} & \textbf{Señal de activación} & \textbf{Contingencia} \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{6}{r}{Continúa en la página siguiente.} \\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  \mbox{R-01} & Desviación del calendario por concentrar análisis, desarrollo, pruebas y memoria en una sola persona. & Media/\newline Alta & Backlog priorizado, sprints acotados, criterios de cierre y exclusión de módulos opcionales. & Un sprint termina con comprobaciones críticas o documentación del núcleo pendientes. & Replanificar la ruta crítica y retirar alcance opcional antes de reducir pruebas o trazabilidad. \\
+  \mbox{R-02} & Acceso cruzado entre cuentas por omitir el filtro multiempresa en una operación nueva. & Baja/\newline Alta & Derivar \texttt{accountId} de la sesión, filtrar también en repositorios y mantener pruebas de autorización y aislamiento. & Una prueba entre dos cuentas recupera o modifica un recurso ajeno, o aparece una consulta sin ámbito de cuenta. & Bloquear la entrega, corregir la ruta, auditar operaciones equivalentes y añadir una prueba de regresión. \\
+  \mbox{R-03} & Pérdida de una consecuencia asíncrona al reiniciar la API, pues los eventos actuales se procesan dentro del mismo proceso y no forman una cola durable. & Media/\newline Alta & Persistir estados explícitos, publicar después de guardar, usar acciones idempotentes y probar fallos y reintentos. & Queda una acción pendiente o fallida sin que se haya ejecutado su consecuencia tras un error o reinicio. & Reconciliar el estado y reintentar desde la aplicación; si el riesgo deja de ser asumible, incorporar mensajería durable antes de escalar. \\
+  \mbox{R-04} & Indisponibilidad, cuota agotada o incompatibilidad con PDF del proveedor de IA. & Alta/\newline Alta & Puerto independiente, proveedor y modelo configurables, reintentos técnicos limitados y finalización manual. & Error de cuota o servicio, salida inválida repetida o rechazo de los documentos de entrada. & Conservar el estado fallido, cambiar a un adaptador compatible o completar manualmente sin bloquear el workflow. \\
+  \mbox{R-05} & Respuesta de IA estructuralmente válida pero inexacta o sin respaldo documental. & Media/\newline Alta & Esquemas de salida, evidencia revisable, temperatura cero, banco ficticio de evaluación y decisión final humana. & La revisión detecta una contradicción, una afirmación no sustentada o una referencia documental incorrecta. & Rechazar el resultado, revisar documentos y prompt, regenerar o sustituirlo manualmente; no automatizar la decisión afectada. \\
+  \mbox{R-06} & Exposición de información sensible al descargar, almacenar o enviar adjuntos a un proveedor externo. & Media/\newline Alta & Aislamiento por cuenta, bucket no público, URLs prefirmadas caducables y selección explícita del proveedor. & Se pretende tratar documentación real sin condiciones aceptadas de privacidad, retención o ubicación, o una URL directa resulta accesible. & Suspender el envío externo, revocar el acceso y usar un proveedor compatible controlado o tratamiento manual hasta definir y verificar esas condiciones. \\
+  \mbox{R-07} & Inconsistencia o pérdida de datos entre PostgreSQL y S3, que no comparten transacción ni procedimiento completo de restauración verificado. & Media/\newline Alta & Compensar la carga fallida, probar los manejadores y separar metadatos y objetos; el diseño de despliegue añade volúmenes y copia lógica de PostgreSQL. & Existe un metadato sin objeto, un objeto huérfano o una restauración no recupera conjuntamente base de datos y adjuntos. & Detener escrituras, reconciliar ambos inventarios y restaurar un punto coherente; no aceptar uso empresarial sin copia externa de ambos almacenes y simulacro de restauración. \\
+  \mbox{R-08} & Interrupción total o degradación por concentrar web, API, base de datos y objetos en un único servidor del despliegue propuesto. & Media/\newline Alta & Servicios aislados en red privada, comprobaciones de salud, reinicio automático, copias del servidor y despliegue versionado. & Falla la máquina, se agotan disco o memoria, o un servicio no supera su comprobación de salud. & Restaurar en una máquina limpia desde copias verificadas y, si la carga lo exige, separar servicios gestionados antes de añadir escalado horizontal. \\
+\end{longtable}
+\normalsize
+
+Los tratamientos anteriores distinguen controles ya presentes de condiciones
+previas a un uso real. En particular, la finalización manual evita que la IA
+decida de forma autónoma, pero no resuelve por sí sola la privacidad de los
+documentos; del mismo modo, disponer de volúmenes o de una copia de PostgreSQL
+no demuestra que los adjuntos puedan restaurarse de forma coherente. Estas
+carencias se mantienen como límites hasta que exista una prueba específica de
+recuperación y una política adecuada al tipo de documentación utilizado.
+
 \section{Coste de desarrollo del proyecto}
 \label{sec:development-cost}
 

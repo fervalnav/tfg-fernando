@@ -40,3 +40,16 @@ de coherencia de las cifras antes de la entrega.
   requisitos/trazabilidad, modelos conceptuales, vocabulario, cualificación,
   navegabilidad, introducción a wireframes y declaración de IAG.
 - No se realizan commits automáticamente.
+
+## Recuperación de los bloques pendientes
+
+- Campos personalizados: recuperados los cambios de `ecc03cd`, incluidos los
+  contratos, la validación HTTP, los filtros compartidos por listado/kanban y
+  totales, las pruebas y la ampliación de los capítulos 4 y 8.
+- Riesgos: recuperada de `82ac45d` la sección del capítulo 2 con los ocho riesgos,
+  probabilidad/impacto, prevención, señal de activación y contingencia.
+- Comprobación actual: tipos, lint sin errores y build de API/web correctos;
+  158 pruebas API y 35 web superadas. La suite E2E no se ejecuta porque PostgreSQL
+  no está disponible en `127.0.0.1:5432`.
+- Los PDF históricos de los snapshots no se importan. Se actualiza el PDF
+  integrado tras compilar y revisar las páginas afectadas.

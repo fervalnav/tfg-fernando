@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import { useDebounceFn } from '@vueuse/core';
 import { SearchIcon, SlidersHorizontalIcon, UserIcon, XIcon } from 'lucide-vue-next';
-import type { AccountMemberDto, PipelineStatusDto } from '@tfg/types';
+import type {
+  AccountMemberDto,
+  CustomFieldFilter,
+  CustomFieldFilterOperator,
+  DefaultCustomFieldDto,
+  PipelineStatusDto,
+} from '@tfg/types';
 import { useOpportunityFilters } from '../composables/useOpportunityFilters';
+import { useDefaultCustomFieldsQuery } from '~/modules/custom-field';
 
 const props = defineProps<{
   statuses?: PipelineStatusDto[];
@@ -17,10 +24,67 @@ const {
   dueDateTo,
   amountMin,
   amountMax,
+  customFields,
   hasActiveFilters,
   setFilter,
   resetFilters,
 } = useOpportunityFilters();
+const { data: customFieldPages, hasNextPage, fetchNextPage } = useDefaultCustomFieldsQuery();
+const customFieldDefinitions = computed(() => customFieldPages.value?.pages.flatMap((page) => page.items) ?? []);
+watchEffect(() => {
+  if (hasNextPage.value) void fetchNextPage();
+});
+
+const operators: Record<DefaultCustomFieldDto['type'], { value: CustomFieldFilterOperator; label: string }[]> = {
+  TEXT: [
+    { value: 'CONTAINS', label: 'contiene' },
+    { value: 'EQUALS', label: 'es igual a' },
+    { value: 'NOT_EQUALS', label: 'no es igual a' },
+  ],
+  NUMBER: [
+    { value: 'EQUALS', label: '=' },
+    { value: 'NOT_EQUALS', label: '≠' },
+    { value: 'GREATER_THAN', label: '>' },
+    { value: 'GREATER_THAN_OR_EQUAL', label: '≥' },
+    { value: 'LESS_THAN', label: '<' },
+    { value: 'LESS_THAN_OR_EQUAL', label: '≤' },
+  ],
+  DATE: [
+    { value: 'EQUALS', label: 'es el día' },
+    { value: 'NOT_EQUALS', label: 'no es el día' },
+    { value: 'BEFORE', label: 'antes de' },
+    { value: 'AFTER', label: 'después de' },
+  ],
+  BOOLEAN: [
+    { value: 'EQUALS', label: 'es' },
+    { value: 'NOT_EQUALS', label: 'no es' },
+  ],
+  CLASSIFIER: [
+    { value: 'CONTAINS', label: 'incluye' },
+    { value: 'NOT_EQUALS', label: 'no incluye' },
+  ],
+};
+
+function definition(filter: CustomFieldFilter) {
+  return customFieldDefinitions.value.find((field) => field.id === filter.fieldId);
+}
+
+function saveCustomFields(next: CustomFieldFilter[]): void {
+  setFilter('customFields', next.length ? JSON.stringify(next) : undefined);
+}
+
+function addCustomField(field: DefaultCustomFieldDto): void {
+  if (customFields.value.some((filter) => filter.fieldId === field.id)) return;
+  const value = field.type === 'NUMBER' ? 0 : field.type === 'BOOLEAN' ? true : '';
+  saveCustomFields([
+    ...customFields.value,
+    { fieldId: field.id, type: field.type, operator: operators[field.type][0]!.value, value },
+  ]);
+}
+
+function updateCustomField(index: number, patch: Partial<CustomFieldFilter>): void {
+  saveCustomFields(customFields.value.map((filter, current) => (current === index ? { ...filter, ...patch } : filter)));
+}
 
 const searchValue = ref(q.value ?? '');
 
@@ -169,6 +233,86 @@ function setResponsible(value: unknown): void {
         <XIcon class="size-4" />
         Limpiar
       </Button>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger as-child>
+          <Button variant="outline" size="sm" class="h-9 gap-2">
+            Campos personalizados
+            <Badge v-if="customFields.length" variant="secondary">{{ customFields.length }}</Badge>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" class="w-72">
+          <DropdownMenuLabel>Añadir filtro</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            v-for="field in customFieldDefinitions"
+            :key="field.id"
+            :disabled="customFields.some((filter) => filter.fieldId === field.id)"
+            @select="addCustomField(field)"
+            >{{ field.name }}</DropdownMenuItem
+          >
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+    <div v-if="customFields.length" class="mt-2 flex flex-wrap gap-2">
+      <div
+        v-for="(filter, index) in customFields"
+        :key="filter.fieldId"
+        class="flex items-center gap-1 rounded-md border p-1"
+      >
+        <span class="max-w-44 truncate px-2 text-xs font-medium">{{ definition(filter)?.name ?? 'Campo' }}</span>
+        <Select
+          :model-value="filter.operator"
+          @update:model-value="(value) => updateCustomField(index, { operator: value as CustomFieldFilterOperator })"
+        >
+          <SelectTrigger class="h-7 w-32"><SelectValue /></SelectTrigger>
+          <SelectContent
+            ><SelectItem v-for="operator in operators[filter.type]" :key="operator.value" :value="operator.value">{{
+              operator.label
+            }}</SelectItem></SelectContent
+          >
+        </Select>
+        <Select
+          v-if="filter.type === 'BOOLEAN'"
+          :model-value="String(filter.value)"
+          @update:model-value="(value) => updateCustomField(index, { value: value === 'true' })"
+        >
+          <SelectTrigger class="h-7 w-24"><SelectValue /></SelectTrigger>
+          <SelectContent
+            ><SelectItem value="true">Sí</SelectItem><SelectItem value="false">No</SelectItem></SelectContent
+          >
+        </Select>
+        <Select
+          v-else-if="filter.type === 'CLASSIFIER'"
+          :model-value="String(filter.value)"
+          @update:model-value="(value) => updateCustomField(index, { value: String(value) })"
+        >
+          <SelectTrigger class="h-7 w-40"><SelectValue placeholder="Valor" /></SelectTrigger>
+          <SelectContent
+            ><SelectItem v-for="option in definition(filter)?.classifiers ?? []" :key="option" :value="option">{{
+              option
+            }}</SelectItem></SelectContent
+          >
+        </Select>
+        <Input
+          v-else
+          :type="filter.type === 'NUMBER' ? 'number' : filter.type === 'DATE' ? 'date' : 'text'"
+          :model-value="String(filter.value)"
+          class="h-7 w-40"
+          placeholder="Valor"
+          @update:model-value="
+            (value) => updateCustomField(index, { value: filter.type === 'NUMBER' ? Number(value) : String(value) })
+          "
+        />
+        <Button
+          variant="ghost"
+          size="icon"
+          class="size-7"
+          aria-label="Quitar filtro"
+          @click="saveCustomFields(customFields.filter((_, current) => current !== index))"
+          ><XIcon class="size-3.5"
+        /></Button>
+      </div>
     </div>
   </div>
 </template>
