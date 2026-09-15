@@ -220,11 +220,12 @@ de IA cuando lo requiera la normativa. Evitar anexar copias masivas del código.
 Cuando se documente el uso de IA durante el desarrollo, distinguir siempre
 entre el asistente empleado para apoyar el trabajo de ingeniería y la IA
 generativa integrada como funcionalidad de LIA. La declaración debe ser breve
-y dejar explícito que todas las decisiones corresponden al autor. La IA solo
-se utilizó para estructurar planes totalmente dirigidos por este, ejecutar
-tareas concretas y bien delimitadas y ofrecer autocompletado. No atribuirle
-autonomía, decisiones de alcance o diseño, porcentajes de código ni ahorros de
-tiempo que no estén medidos.
+y dejar explícito que todas las decisiones y todo el contenido corresponden al
+autor. El código, la memoria y los diagramas fueron escritos, diseñados y
+desarrollados por este. La IA solo se utilizó para organizar el trabajo,
+detectar errores y apoyar la revisión y el contraste. No atribuirle escritura,
+diagramas, código, autonomía, decisiones de alcance o diseño, porcentajes de
+trabajo ni ahorros de tiempo que no estén medidos.
 
 ## Fuentes y orden de autoridad
 

@@ -8,8 +8,10 @@ Este archivo es contexto interno y no se incluye en la memoria.
 - Las herramientas de IA no recibieron autonomía.
 - La IA ayudó a estructurar algunos planes, siempre definidos, dirigidos y
   revisados por el autor.
-- La ejecución se limitó a tareas concretas y claramente delimitadas.
-- También se utilizó autocompletado asistido.
+- El código, la memoria y los diagramas fueron escritos, diseñados y
+  desarrollados por el autor.
+- La IA se limitó a organización, detección de errores, revisión y contraste;
+  no debe atribuirse la escritura o creación de contenido.
 - El anexo debe mantenerse breve y no presentar la IA como protagonista del
   proceso de desarrollo.
 
