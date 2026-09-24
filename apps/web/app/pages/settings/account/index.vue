@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
 import { z } from 'zod';
@@ -24,6 +24,11 @@ const { data: members, isLoading, isError, refetch } = useMembersQuery();
 const { mutate: removeMember } = useRemoveMemberMutation();
 const { mutate: updateRole } = useUpdateMemberRoleMutation();
 const { mutate: inviteMember, isPending: isInviting } = useInviteMemberMutation();
+
+const isCurrentUserAdmin = computed(
+  () =>
+    members.value?.some((member) => member.userId === authStore.currentUser?.id && member.role === 'ADMIN') ?? false,
+);
 
 const inviteSchema = toTypedSchema(
   z.object({
@@ -80,7 +85,7 @@ function handleRoleChange(userId: string, role: string) {
   <div class="p-8 max-w-3xl">
     <div class="flex items-center justify-between mb-6">
       <h1 class="text-2xl font-bold text-foreground">Miembros de la cuenta</h1>
-      <Dialog v-model:open="showInviteDialog">
+      <Dialog v-if="isCurrentUserAdmin" v-model:open="showInviteDialog">
         <DialogTrigger as-child>
           <Button>
             <UserPlusIcon class="mr-2 size-4" />
@@ -132,6 +137,11 @@ function handleRoleChange(userId: string, role: string) {
       </Dialog>
     </div>
 
+    <p v-if="members?.length && !isCurrentUserAdmin" class="mb-4 text-sm text-muted-foreground">
+      Puedes consultar los miembros de la cuenta. Solo los administradores pueden invitar, cambiar roles o eliminar
+      miembros.
+    </p>
+
     <div class="bg-card rounded-xl border">
       <div v-if="isLoading" class="p-6 text-center text-muted-foreground text-sm">Cargando miembros...</div>
 
@@ -167,30 +177,35 @@ function handleRoleChange(userId: string, role: string) {
           </div>
 
           <div class="flex items-center gap-2">
-            <Select
-              :model-value="member.role"
-              :disabled="member.userId === authStore.currentUser?.id"
-              @update:model-value="(val) => val && handleRoleChange(member.userId, val as 'ADMIN' | 'MEMBER')"
-            >
-              <SelectTrigger class="w-28 h-8 text-xs">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="MEMBER">Miembro</SelectItem>
-                <SelectItem value="ADMIN">Admin</SelectItem>
-              </SelectContent>
-            </Select>
+            <template v-if="isCurrentUserAdmin">
+              <Select
+                :model-value="member.role"
+                :disabled="member.userId === authStore.currentUser?.id"
+                @update:model-value="(val) => val && handleRoleChange(member.userId, val as 'ADMIN' | 'MEMBER')"
+              >
+                <SelectTrigger class="w-28 h-8 text-xs">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="MEMBER">Miembro</SelectItem>
+                  <SelectItem value="ADMIN">Admin</SelectItem>
+                </SelectContent>
+              </Select>
 
-            <Button
-              v-if="member.userId !== authStore.currentUser?.id"
-              variant="ghost"
-              size="sm"
-              class="text-destructive hover:text-destructive"
-              @click="handleRemove(member.userId)"
-            >
-              <TrashIcon class="mr-1 size-4" />
-              Eliminar
-            </Button>
+              <Button
+                v-if="member.userId !== authStore.currentUser?.id"
+                variant="ghost"
+                size="sm"
+                class="text-destructive hover:text-destructive"
+                @click="handleRemove(member.userId)"
+              >
+                <TrashIcon class="mr-1 size-4" />
+                Eliminar
+              </Button>
+            </template>
+            <Badge v-else variant="outline">
+              {{ member.role === 'ADMIN' ? 'Administrador' : 'Miembro' }}
+            </Badge>
           </div>
         </li>
       </ul>

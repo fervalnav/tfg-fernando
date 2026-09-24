@@ -9,6 +9,7 @@ import { WorkflowStepOrmEntity } from '../../../workflow/infrastructure/persiste
 import { AccountOrmEntity } from '../../../auth/infrastructure/persistence/account.orm-entity';
 import { OpportunityOrmEntity } from '../../../opportunity/infrastructure/persistence/opportunity.orm-entity';
 import { WorkflowStepActionOrmEntity } from '../../../opportunity/infrastructure/persistence/workflow-step-action.orm-entity';
+import { PipelineStatusOrmEntity } from '../../../pipeline/infrastructure/persistence/pipeline-status.orm-entity';
 import { DevSeeder } from './dev.seeder';
 
 describe('DevSeeder', () => {
@@ -21,15 +22,16 @@ describe('DevSeeder', () => {
         persisted.push(entity);
         return em;
       }),
+      find: jest.fn().mockImplementation(() => persisted.filter((entity) => entity instanceof PipelineStatusOrmEntity)),
       flush,
     } as unknown as EntityManager;
 
-    await new DevSeeder().run(em);
+    await new DevSeeder().run(em, { demo: true });
 
-    expect(
-      persisted.some((entity) => entity instanceof AccountOrmEntity && entity.name === 'Nexum Licitaciones S.L.'),
-    ).toBe(true);
-    expect(persisted.some((entity) => entity instanceof UserOrmEntity && entity.email === 'admin@nexum.es')).toBe(true);
+    expect(persisted.some((entity) => entity instanceof AccountOrmEntity && entity.name === 'Tendios')).toBe(true);
+    expect(persisted.some((entity) => entity instanceof UserOrmEntity && entity.email === 'fernando@tendios.com')).toBe(
+      true,
+    );
 
     const workflows = persisted.filter((entity): entity is WorkflowOrmEntity => entity instanceof WorkflowOrmEntity);
     const steps = persisted.filter(
@@ -38,7 +40,7 @@ describe('DevSeeder', () => {
     const actions = persisted.filter(
       (entity): entity is DefaultWorkflowStepActionOrmEntity => entity instanceof DefaultWorkflowStepActionOrmEntity,
     );
-    expect(workflows).toHaveLength(3);
+    expect(workflows).toHaveLength(4);
 
     const opportunity = persisted.find(
       (entity): entity is OpportunityOrmEntity => entity instanceof OpportunityOrmEntity,
@@ -58,15 +60,16 @@ describe('DevSeeder', () => {
     );
     expect(flush).toHaveBeenCalledTimes(3);
 
-    for (const workflow of workflows) {
-      const firstStep = steps
-        .filter((step) => step.workflow.id === workflow.id)
-        .sort((left, right) => left.position - right.position)[0];
-      expect(firstStep).toBeDefined();
-      const firstStepActions = actions.filter((action) => action.step.id === firstStep?.id);
-      expect(firstStepActions.length).toBeGreaterThan(0);
-      expect(firstStepActions.every((action) => action.targetType === 'attachment')).toBe(true);
-    }
+    const standardWorkflow = workflows.find((workflow) => workflow.name === 'Proceso estándar de licitación');
+    expect(standardWorkflow).toBeDefined();
+    const standardFirstStep = steps
+      .filter((step) => step.workflow.id === standardWorkflow?.id)
+      .sort((left, right) => left.position - right.position)[0];
+    const standardFirstStepActions = actions.filter((action) => action.step.id === standardFirstStep?.id);
+    expect(standardFirstStepActions.length).toBeGreaterThan(0);
+    expect(standardFirstStepActions.every((action) => action.targetType === 'attachment')).toBe(true);
+    expect(workflows.some((workflow) => workflow.name === 'Demo directo · Filtro de certificación ENS')).toBe(true);
+    expect(workflows.some((workflow) => workflow.name === 'Demo directo · Análisis rápido con IA')).toBe(true);
 
     const validTargets = {
       control_question: new Set(
