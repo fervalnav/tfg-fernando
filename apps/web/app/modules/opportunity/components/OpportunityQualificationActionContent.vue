@@ -42,7 +42,11 @@ const summaryDraft = ref('');
 
 watch(question, (item) => (questionDraft.value = item?.answer ?? ''), { immediate: true });
 watch(field, (item) => (fieldDraft.value = item?.value ?? ''), { immediate: true });
-watch(summary, (item) => (summaryDraft.value = item?.result ?? ''), { immediate: true });
+watch(summary, (item) => (summaryDraft.value = normalizeSummaryText(item?.result ?? '')), { immediate: true });
+
+function normalizeSummaryText(value: string): string {
+  return value.replaceAll('\\r\\n', '\n').replaceAll('\\n', '\n').replaceAll('\\r', '\n');
+}
 
 function saveQuestion(): void {
   if (!question.value || questionDraft.value === '') return;
@@ -121,10 +125,6 @@ function requestSummaryGeneration(): void {
       <p class="text-xs font-medium uppercase tracking-wide text-muted-foreground">Pregunta de control</p>
       <p class="mt-1 font-medium">{{ question.question }}</p>
     </div>
-    <div v-if="question.aiEvidence" class="rounded-md border bg-background p-3 text-sm">
-      <p class="font-medium">Evidencia de IA</p>
-      <p class="mt-1 text-muted-foreground">{{ question.aiEvidence }}</p>
-    </div>
     <p v-if="question.aiError" class="text-sm text-destructive">{{ question.aiError }}</p>
     <Input
       v-if="question.answerType === 'TEXT'"
@@ -162,11 +162,6 @@ function requestSummaryGeneration(): void {
         Guardar respuesta
       </Button>
     </div>
-    <div v-if="question.aiEvidence" class="rounded-md border bg-background p-3 text-sm">
-      <p class="font-medium">Evidencia de IA</p>
-      <p class="mt-1 text-muted-foreground">{{ question.aiEvidence }}</p>
-    </div>
-    <p v-if="question.aiError" class="text-sm text-destructive">{{ question.aiError }}</p>
   </div>
 
   <div v-else-if="definition.targetType === 'custom_field' && field" class="space-y-4">
@@ -233,9 +228,23 @@ function requestSummaryGeneration(): void {
     </div>
     <div>
       <p class="font-medium">{{ summary.name }}</p>
-      <p class="mt-1 text-sm text-muted-foreground">{{ summary.prompt }}</p>
     </div>
-    <Textarea v-model="summaryDraft" placeholder="Escribe o revisa el resumen..." />
+    <div class="space-y-2">
+      <div class="flex items-center justify-between gap-3">
+        <label :for="`workflow-summary-result-${summary.id}`" class="text-sm font-medium">Resultado del resumen</label>
+        <span class="text-xs text-muted-foreground">Editable y revisable</span>
+      </div>
+      <Textarea
+        :id="`workflow-summary-result-${summary.id}`"
+        v-model="summaryDraft"
+        class="min-h-[20rem] resize-y font-normal leading-6"
+        placeholder="Escribe o revisa el resumen..."
+      />
+    </div>
+    <details class="rounded-lg border bg-background px-4 py-3">
+      <summary class="cursor-pointer text-sm font-medium text-muted-foreground">Ver prompt de la plantilla</summary>
+      <p class="mt-3 whitespace-pre-wrap text-sm leading-6 text-muted-foreground">{{ summary.prompt }}</p>
+    </details>
     <p v-if="summary.generationError" class="text-sm text-destructive">{{ summary.generationError }}</p>
     <div class="flex flex-wrap justify-end gap-2">
       <Button

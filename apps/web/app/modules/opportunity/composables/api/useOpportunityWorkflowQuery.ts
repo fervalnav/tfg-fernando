@@ -18,10 +18,19 @@ export const useOpportunityWorkflowQuery = (
       const currentActions = data.actions.filter((action) => action.workflowStepId === data.currentStepId);
       const isInitializing = Boolean(currentStep?.actions.length && currentStep.actions.length > currentActions.length);
       const hasRunningAction = currentActions.some((action) => action.status === 'IN_PROGRESS');
+      const lastStep = [...data.workflow.steps].sort((left, right) => left.position - right.position).at(-1);
+      const isWaitingForAdvance = Boolean(
+        currentStep &&
+        lastStep &&
+        currentStep.id !== lastStep.id &&
+        currentStep.actions.length > 0 &&
+        currentActions.length === currentStep.actions.length &&
+        currentActions.every((action) => ['COMPLETED', 'SKIPPED', 'FAILED'].includes(action.status)),
+      );
       const hasPendingDecision = data.decisions.some(
         (decision) => decision.workflowStepId === data.currentStepId && decision.status === 'PENDING',
       );
-      return isInitializing || hasRunningAction || hasPendingDecision ? 1500 : false;
+      return isInitializing || hasRunningAction || isWaitingForAdvance || hasPendingDecision ? 1500 : false;
     },
   });
 };

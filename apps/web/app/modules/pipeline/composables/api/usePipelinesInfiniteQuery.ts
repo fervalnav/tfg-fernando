@@ -8,7 +8,7 @@ export const usePipelinesInfiniteQuery = () => {
   const api = useApi();
 
   return useInfiniteQuery<PaginatedResult<PipelineDto>, Error>({
-    queryKey: ['pipelines'],
+    queryKey: ['pipelines', 'infinite'],
     queryFn: ({ pageParam }) =>
       api<PaginatedResult<PipelineDto>>(`/pipelines?page=${pageParam as number}&limit=${LIMIT}`),
     initialPageParam: 1,

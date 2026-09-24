@@ -39,6 +39,9 @@ db-refresh:
 seed:
 	cd $(API_DIR) && npx mikro-orm seeder:run
 
+seed-demo:
+	cd $(API_DIR) && npx mikro-orm seeder:run --class DemoSeeder
+
 # ── Setup ─────────────────────────────────────────────────────────────────────
 
 setup:
@@ -46,4 +49,4 @@ setup:
 	cp apps/web/.env.example apps/web/.env; \
 	$(MAKE) up
 
-.PHONY: up down logs ai-up ai-down migration-create migration-up migration-down migration-status db-refresh seed setup
+.PHONY: up down logs ai-up ai-down migration-create migration-up migration-down migration-status db-refresh seed seed-demo setup

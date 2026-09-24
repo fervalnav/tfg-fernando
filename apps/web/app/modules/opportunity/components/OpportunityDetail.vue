@@ -18,6 +18,7 @@ import {
 } from 'lucide-vue-next';
 import type { Component } from 'vue';
 import { toast } from 'vue-sonner';
+import { useQueryClient } from '@tanstack/vue-query';
 import type {
   AccountMemberDto,
   DefaultWorkflowStepActionDto,
@@ -60,6 +61,7 @@ const props = defineProps<{
 }>();
 
 const opportunityId = computed(() => props.opportunity.id);
+const queryClient = useQueryClient();
 const hasWorkflow = computed(() => Boolean(props.opportunity.workflowId));
 const {
   data: runtime,
@@ -69,9 +71,9 @@ const {
 } = useOpportunityWorkflowQuery(opportunityId, hasWorkflow);
 const { mutate: assignWorkflow, isPending: isAssigning } = useAssignOpportunityWorkflowMutation();
 const { mutate: reEvaluate, isPending: isReEvaluating } = useReEvaluateWorkflowDecisionMutation();
-const { data: controlQuestions } = useOpportunityControlQuestionsQuery(opportunityId);
-const { data: customFields } = useOpportunityCustomFieldsQuery(opportunityId);
-const { data: summaries } = useOpportunitySummariesQuery(opportunityId);
+const { data: controlQuestions, refetch: refetchControlQuestions } = useOpportunityControlQuestionsQuery(opportunityId);
+const { data: customFields, refetch: refetchCustomFields } = useOpportunityCustomFieldsQuery(opportunityId);
+const { data: summaries, refetch: refetchSummaries } = useOpportunitySummariesQuery(opportunityId);
 const { data: attachments } = useOpportunityAttachmentsQuery(opportunityId);
 
 type NavigationItem = {
@@ -143,10 +145,47 @@ const overallProgress = computed(() => {
 
 watch(
   () => runtime.value?.currentStepId,
-  (stepId) => {
-    if (stepId && !selectedStepId.value) selectedStepId.value = stepId;
+  (stepId, previousStepId) => {
+    if (stepId && (!selectedStepId.value || stepId !== previousStepId)) selectedStepId.value = stepId;
   },
   { immediate: true },
+);
+
+const workflowQualificationSignature = computed(() =>
+  (runtime.value?.actions ?? [])
+    .map((action) => `${action.id}:${action.defaultWorkflowStepActionId}:${action.targetId}:${action.status}`)
+    .join('|'),
+);
+
+watch(workflowQualificationSignature, (signature, previousSignature) => {
+  if (!signature || signature === previousSignature) return;
+  void Promise.all([refetchControlQuestions(), refetchCustomFields(), refetchSummaries()]);
+});
+
+watch(
+  () => runtime.value?.status,
+  (status, previousStatus) => {
+    if (status !== 'COMPLETED' || previousStatus === status) return;
+    void queryClient.invalidateQueries({ queryKey: ['opportunities', 'detail', props.opportunity.id] });
+  },
+);
+
+const completedStatusUpdate = computed(() =>
+  (runtime.value?.actions ?? []).some(
+    (action) => action.targetType === 'opportunity_status_update' && action.status === 'COMPLETED',
+  ),
+);
+
+watch(completedStatusUpdate, (completed, wasCompleted) => {
+  if (!completed || wasCompleted) return;
+  void queryClient.invalidateQueries({ queryKey: ['opportunities', 'detail', props.opportunity.id] });
+});
+
+const pipelineStatus = computed(() =>
+  props.pipeline?.statuses.find((status) => status.id === props.opportunity.pipelineStatusId),
+);
+const isTerminalOpportunity = computed(
+  () => props.opportunity.finalOutcomeType !== null || pipelineStatus.value?.isTerminal === true,
 );
 
 const formattedAmount = computed(() => {
@@ -394,8 +433,21 @@ function selectSection(section: OpportunityDetailSection): void {
 
             <div
               v-else-if="runtime"
-              class="min-h-full rounded-xl border bg-background lg:grid lg:h-full lg:min-h-0 lg:grid-cols-[360px_minmax(0,1fr)] lg:overflow-hidden"
+              class="min-h-full rounded-xl border bg-background lg:grid lg:h-full lg:min-h-0 lg:content-start lg:grid-cols-[360px_minmax(0,1fr)] lg:overflow-hidden"
             >
+              <div
+                v-if="isTerminalOpportunity"
+                class="flex items-start gap-3 border-b bg-amber-500/10 px-5 py-3 text-amber-950 lg:col-span-full"
+              >
+                <InfoIcon class="mt-0.5 size-5 shrink-0 text-amber-600" />
+                <div>
+                  <p class="text-sm font-semibold">Ejecución automática detenida</p>
+                  <p class="mt-1 text-sm text-amber-900/80">
+                    La oportunidad está en un estado final{{ pipelineStatus?.name ? ` (${pipelineStatus.name})` : '' }}.
+                    El workflow no ejecutará más acciones automáticamente.
+                  </p>
+                </div>
+              </div>
               <aside class="border-b bg-muted/10 lg:min-h-0 lg:overflow-y-auto lg:border-b-0 lg:border-r">
                 <div class="z-10 border-b bg-background/95 p-5 backdrop-blur lg:sticky lg:top-0">
                   <div class="flex items-center justify-between gap-3">

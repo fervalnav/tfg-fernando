@@ -174,9 +174,15 @@ export class Opportunity extends AggregateRoot {
     this.record(new OpportunityWorkflowCompletedEvent(this._id, this._accountId));
   }
 
-  transitionPipelineStatus(pipelineId: string, pipelineStatusId: string): void {
+  transitionPipelineStatus(
+    pipelineId: string,
+    pipelineStatusId: string,
+    finalOutcomeType: FinalOutcomeType | null = null,
+  ): void {
     this._pipelineId = pipelineId;
     this._pipelineStatusId = pipelineStatusId;
+    this._finalOutcomeType = finalOutcomeType;
+    this._closedAt = finalOutcomeType !== null ? new Date() : null;
     this._updatedAt = new Date();
   }
 
