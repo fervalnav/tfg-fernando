@@ -6,7 +6,7 @@ export const usePipelinesQuery = () => {
   const api = useApi();
 
   return useQuery<PipelineDto[], Error>({
-    queryKey: ['pipelines'],
+    queryKey: ['pipelines', 'all'],
     queryFn: async () => {
       const result = await api<PaginatedResult<PipelineDto>>('/pipelines?limit=100');
       return result.items;

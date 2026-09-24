@@ -78,6 +78,11 @@ make db-refresh         # Drop + re-run todas
 curl http://localhost:3000/api/health
 ```
 
+El Compose local construye MinIO desde `deploy/minio/Dockerfile`, fijado a
+`RELEASE.2025-10-15T17-29-55Z`, porque `minio/minio:latest` ya no está disponible
+en Docker Hub. La primera ejecución de `make up` tarda más mientras compila la
+imagen; las siguientes reutilizan la caché de Docker.
+
 ## Despliegue
 
 La preparación del entorno económico de producción se divide en dos partes:

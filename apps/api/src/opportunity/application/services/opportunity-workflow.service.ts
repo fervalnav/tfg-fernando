@@ -1,10 +1,11 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, Optional } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
 import type { OpportunityWorkflowDto } from '@tfg/types';
 import { DefaultWorkflowStepActionRepository, WorkflowRepository, WorkflowStepRepository } from '@/workflow';
 import { ControlQuestionFromDefaultService } from '@/control-question';
 import { CustomFieldFromDefaultService } from '@/custom-field';
 import { SummaryFromTemplateService } from '@/summary';
+import { PipelineStatusRepository } from '@/pipeline/domain/repositories/pipeline-status.repository';
 import { IdService } from '@/shared/domain/services/id.service';
 import { OpportunityRepository } from '../../domain/opportunity.repository';
 import { WorkflowStepActionRepository } from '../../domain/workflow-step-action.repository';
@@ -34,6 +35,7 @@ export class OpportunityWorkflowService {
     private readonly summaryFromTemplate: SummaryFromTemplateService,
     private readonly idService: IdService,
     private readonly eventBus: EventBus,
+    @Optional() private readonly pipelineStatusRepo?: PipelineStatusRepository,
   ) {}
 
   async assign(opportunityId: string, accountId: string, workflowId: string, replace: boolean): Promise<void> {
@@ -244,7 +246,7 @@ export class OpportunityWorkflowService {
 
   async autoExecute(opportunityId: string, accountId: string): Promise<void> {
     const opportunity = await this.getOpportunity(opportunityId, accountId);
-    if (!opportunity.workflowStepId) return;
+    if (!opportunity.workflowStepId || opportunity.finalOutcomeType !== null) return;
     const actions = await this.actionRepo.findByOpportunityAndStep(opportunityId, opportunity.workflowStepId);
     for (const action of actions) {
       if (action.status !== 'PENDING') continue;
@@ -268,7 +270,16 @@ export class OpportunityWorkflowService {
         if (!action.targetId) throw new Error('La acción no tiene estado destino');
         const pipelineId = action.metadata?.['pipelineId'];
         if (typeof pipelineId !== 'string') throw new Error('La acción no tiene pipeline destino');
-        opportunity.transitionPipelineStatus(pipelineId, action.targetId);
+        const configuredOutcomeType = action.metadata?.['finalOutcomeType'];
+        const status = await this.pipelineStatusRepo?.findById(action.targetId);
+        const finalOutcomeType = status?.isTerminal ? status.outcomeType : configuredOutcomeType;
+        opportunity.transitionPipelineStatus(
+          pipelineId,
+          action.targetId,
+          finalOutcomeType === 'WON' || finalOutcomeType === 'LOST' || finalOutcomeType === 'DROPPED'
+            ? finalOutcomeType
+            : null,
+        );
         await this.opportunityRepo.save(opportunity);
         action.complete();
       } catch (error) {
@@ -281,12 +292,12 @@ export class OpportunityWorkflowService {
 
   async checkAndAdvance(opportunityId: string, accountId: string): Promise<void> {
     const opportunity = await this.getOpportunity(opportunityId, accountId);
-    if (!opportunity.workflowId || !opportunity.workflowStepId) return;
+    if (!opportunity.workflowId || !opportunity.workflowStepId || opportunity.finalOutcomeType !== null) return;
     const step = await this.stepRepo.findById(opportunity.workflowStepId);
     if (!step) return;
     if (step.type === 'decision') {
       const result = await this.decisionRepo.findByOpportunityAndStep(opportunityId, step.id);
-      if (result?.status !== 'TRUE') return;
+      if (result?.status !== 'TRUE' && result?.status !== 'FALSE') return;
     }
     const actions = await this.actionRepo.findByOpportunityAndStep(opportunityId, step.id);
     if (!actions.every((action) => action.isSettled)) return;
@@ -295,7 +306,7 @@ export class OpportunityWorkflowService {
 
   async advance(opportunityId: string, accountId: string): Promise<void> {
     const opportunity = await this.getOpportunity(opportunityId, accountId);
-    if (!opportunity.workflowId || !opportunity.workflowStepId) return;
+    if (!opportunity.workflowId || !opportunity.workflowStepId || opportunity.finalOutcomeType !== null) return;
     const steps = (await this.stepRepo.findByWorkflowId(opportunity.workflowId)).sort(
       (a, b) => a.position - b.position,
     );
@@ -426,7 +437,7 @@ export class OpportunityWorkflowService {
         })),
       },
       currentStepId: opportunity.workflowStepId,
-      status: isCompleted ? 'COMPLETED' : 'ACTIVE',
+      status: isCompleted || opportunity.finalOutcomeType !== null ? 'COMPLETED' : 'ACTIVE',
       actions: actions.map((action) => {
         const data = action.toPrimitives();
         return {

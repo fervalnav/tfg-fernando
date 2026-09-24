@@ -2,6 +2,7 @@ import { forwardRef, Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { WorkflowModule } from '@/workflow';
+import { PipelineModule } from '@/pipeline';
 import { ControlQuestionModule } from '@/control-question';
 import { CustomFieldModule } from '@/custom-field';
 import { SummaryModule } from '@/summary';
@@ -94,6 +95,7 @@ const eventHandlers = [
 @Module({
   imports: [
     CqrsModule,
+    PipelineModule,
     AiModule,
     forwardRef(() => AttachmentModule),
     WorkflowModule,

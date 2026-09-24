@@ -571,6 +571,16 @@ export class DevSeeder extends Seeder {
           'Determina si el pliego de condiciones administrativas permite la presentación de ofertas en UTE (Unión Temporal de Empresas). Responde true o false.',
       },
       {
+        name: 'Certificación ENS requerida',
+        description: 'Indica si el contrato exige certificación del Esquema Nacional de Seguridad y su categoría',
+        type: 'CLASSIFIER',
+        classifiers: ['No requerida', 'Categoría Básica', 'Categoría Media', 'Categoría Alta'],
+        canSelectMultiple: false,
+        automatic: true,
+        aiPrompt:
+          'Determina si el pliego exige certificación del Esquema Nacional de Seguridad (ENS). Devuelve exactamente una opción: No requerida, Categoría Básica, Categoría Media o Categoría Alta. Si exige ENS pero no indica categoría, usa Categoría Básica y explica la ambigüedad en la evidencia.',
+      },
+      {
         name: 'Fecha límite de presentación',
         description: 'Fecha y hora tope para registrar la oferta en la plataforma',
         type: 'DATE',
@@ -642,7 +652,8 @@ export class DevSeeder extends Seeder {
           '(2) Solvencia: ¿los requisitos técnicos y económicos son alcanzables para una empresa mediana del sector? ' +
           '(3) Competitividad económica: ¿el presupuesto es competitivo para el mercado español? ' +
           '(4) Riesgos: identifica los tres principales riesgos del contrato. ' +
-          '(5) Conclusión: recomienda una de estas tres opciones: PARTICIPAR / ESTUDIAR EN DETALLE / NO PARTICIPAR, con justificación en dos frases.',
+          '(5) Conclusión: recomienda una de estas tres opciones: PARTICIPAR / ESTUDIAR EN DETALLE / NO PARTICIPAR, con justificación en dos frases. ' +
+          'Devuelve texto plano con esta estructura: título; sección "Decisión"; sección "Solvencia económica"; sección "Solvencia técnica"; sección "Criterios de adjudicación"; sección "Riesgos"; sección "Próximos pasos". ',
       },
       {
         name: 'Matriz de requisitos y causas de exclusión',

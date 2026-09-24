@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { EventBus } from '@nestjs/cqrs';
+import { AiGenerationService } from '@/ai';
 import {
   OpportunityFinder,
   OpportunityQualificationActionLifecycleService,
@@ -149,12 +150,16 @@ describe('opportunity summary use cases', () => {
       save: jest.fn().mockResolvedValue(undefined),
     } as unknown as jest.Mocked<SummaryRepository>;
     const eventBus = { publishAll: jest.fn() } as unknown as jest.Mocked<EventBus>;
-    const generateStructured = jest.fn().mockResolvedValue({
-      value: { result: 'Resumen generado' },
-      provider: 'fake',
-      model: 'fake',
-      durationMs: 1,
-      usage: { inputTokens: 1, outputTokens: 1, totalTokens: 2 },
+    let systemPrompt = '';
+    const generateStructured = jest.fn((request: { system: string }) => {
+      systemPrompt = request.system;
+      return Promise.resolve({
+        value: { result: 'Resumen generado\\n\\n• Punto clave' },
+        provider: 'fake',
+        model: 'fake',
+        durationMs: 1,
+        usage: { inputTokens: 1, outputTokens: 1, totalTokens: 2 },
+      });
     });
     const handler = new GenerateSummaryWithAiHandler(
       repo,
@@ -167,7 +172,7 @@ describe('opportunity summary use cases', () => {
           dueDate: null,
         }),
       } as unknown as OpportunityFinder,
-      { generateStructured },
+      { generateStructured } as unknown as AiGenerationService,
       { find: jest.fn().mockResolvedValue([]) } as never,
       eventBus,
     );
@@ -175,8 +180,9 @@ describe('opportunity summary use cases', () => {
     await handler.execute(new GenerateSummaryWithAiCommand(opportunityId, accountId, instanceId));
 
     expect(summary.toPrimitives()).toEqual(
-      expect.objectContaining({ result: 'Resumen generado', generationStatus: 'COMPLETED' }),
+      expect.objectContaining({ result: 'Resumen generado\n\n• Punto clave', generationStatus: 'COMPLETED' }),
     );
+    expect(systemPrompt).toContain('texto plano bien maquetado');
     expect(eventBus.publishAll).toHaveBeenCalledWith([expect.any(OpportunityQualificationUpdatedEvent)]);
   });
 

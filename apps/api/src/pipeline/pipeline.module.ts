@@ -50,5 +50,6 @@ const eventHandlers = [AccountCreatedHandler];
     { provide: PipelineRepository, useClass: MikroOrmPipelineRepository },
     { provide: PipelineStatusRepository, useClass: MikroOrmPipelineStatusRepository },
   ],
+  exports: [PipelineStatusRepository],
 })
 export class PipelineModule {}

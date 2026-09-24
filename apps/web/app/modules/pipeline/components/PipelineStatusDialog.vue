@@ -43,7 +43,10 @@ const { mutate: updateStatus, isPending: isUpdating } = useUpdatePipelineStatusM
 const isPending = computed(() => isCreating.value || isUpdating.value);
 
 watch(isOpen, (open) => {
-  if (!open) return;
+  if (!open) {
+    form.resetForm();
+    return;
+  }
   if (props.status) {
     form.setValues({
       name: props.status.name,

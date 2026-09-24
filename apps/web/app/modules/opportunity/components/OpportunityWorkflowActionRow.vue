@@ -9,6 +9,7 @@ import {
   CircleDotIcon,
   FileTextIcon,
   ListChecksIcon,
+  LoaderCircleIcon,
   PaperclipIcon,
   RotateCcwIcon,
   SkipForwardIcon,
@@ -109,9 +110,16 @@ function run(operation: 'complete' | 'skip' | 'retry'): void {
     >
       <span
         class="flex size-9 shrink-0 items-center justify-center rounded-full"
-        :class="status === 'COMPLETED' ? 'bg-emerald-500 text-white' : 'bg-muted text-muted-foreground'"
+        :class="
+          status === 'COMPLETED'
+            ? 'bg-emerald-500 text-white'
+            : status === 'IN_PROGRESS'
+              ? 'bg-blue-500/10 text-blue-600'
+              : 'bg-muted text-muted-foreground'
+        "
       >
-        <component :is="typeDefinition.icon" class="size-4" />
+        <LoaderCircleIcon v-if="status === 'IN_PROGRESS'" class="size-4 animate-spin" />
+        <component :is="typeDefinition.icon" v-else class="size-4" />
       </span>
 
       <span class="min-w-0 flex-1 font-medium">{{ definition.name }}</span>

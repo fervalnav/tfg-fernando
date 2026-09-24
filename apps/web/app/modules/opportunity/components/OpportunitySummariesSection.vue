@@ -34,10 +34,14 @@ const templateOptions = computed(
 watch(
   summaries,
   (items) => {
-    for (const item of items ?? []) draftResults.value[item.id] = item.result ?? '';
+    for (const item of items ?? []) draftResults.value[item.id] = normalizeSummaryText(item.result ?? '');
   },
   { immediate: true },
 );
+
+function normalizeSummaryText(value: string): string {
+  return value.replaceAll('\\r\\n', '\n').replaceAll('\\n', '\n').replaceAll('\\r', '\n');
+}
 
 function save(id: string): void {
   const result = draftResults.value[id]?.trim();
@@ -121,7 +125,6 @@ function generate(id: string): void {
           <div class="flex items-start justify-between gap-4">
             <div>
               <CardTitle class="text-base">{{ summary.name }}</CardTitle>
-              <CardDescription class="mt-1">{{ summary.prompt }}</CardDescription>
             </div>
             <Badge
               v-if="summary.generationStatus === 'PENDING' || summary.generationStatus === 'PROCESSING'"
@@ -145,7 +148,24 @@ function generate(id: string): void {
           <p v-if="summary.generationError" class="text-sm text-destructive">
             {{ summary.generationError }}
           </p>
-          <Textarea v-model="draftResults[summary.id]" placeholder="El resultado se mostrará aquí..." />
+          <div class="space-y-2">
+            <div class="flex items-center justify-between gap-3">
+              <label :for="`summary-result-${summary.id}`" class="text-sm font-medium">Resultado del resumen</label>
+              <span class="text-xs text-muted-foreground">Editable y revisable</span>
+            </div>
+            <Textarea
+              :id="`summary-result-${summary.id}`"
+              v-model="draftResults[summary.id]"
+              class="min-h-[20rem] resize-y font-normal leading-6"
+              placeholder="El resultado se mostrará aquí..."
+            />
+          </div>
+          <details class="rounded-lg border bg-muted/20 px-4 py-3">
+            <summary class="cursor-pointer text-sm font-medium text-muted-foreground">
+              Ver prompt de la plantilla
+            </summary>
+            <p class="mt-3 whitespace-pre-wrap text-sm leading-6 text-muted-foreground">{{ summary.prompt }}</p>
+          </details>
           <div class="flex flex-wrap justify-end gap-2">
             <Button
               variant="outline"
