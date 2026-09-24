@@ -1,41 +1,61 @@
-# Datos y recorrido para el vídeo de demostración
+# Entorno de demostración Tendios
+
+La seed de demo prepara un entorno local aislado para presentar el análisis de
+licitaciones públicas. Está pensada para ejecutarse desde una base de datos
+vacía y no debe utilizarse en producción.
 
 ## Preparación
 
-1. Cargar Node 26.1.0 desde la raíz: `nvm use`.
-2. Levantar PostgreSQL, MinIO y MailHog con `make up` y aplicar migraciones con `make migration-up`.
-3. Ejecutar `make seed-demo`. Este comando crea la cuenta de desarrollo si falta, añade una licitación real consultada en Tendios, ocho casos ficticios y un workflow breve para la demo. Se puede repetir: no duplica las oportunidades ni el workflow. Si Leitza ya tiene otro workflow asignado, conserva esa asignación; para usar el nuevo, cambiarlo desde la ficha.
-4. Iniciar la aplicación con `pnpm dev`. Abrir `http://localhost:3001` e iniciar sesión como `admin@nexum.es` con `password123`. Las cuentas `sara@nexum.es` y `carlos@nexum.es` comparten esta contraseña de desarrollo.
+1. Cargar Node 26.1.0: `nvm use`.
+2. Para empezar desde cero, ejecutar `make db-refresh` y después `make migration-up`.
+3. Levantar PostgreSQL, MinIO y MailHog con `make up`.
+4. Ejecutar `make seed-demo`.
+5. Iniciar la aplicación con `pnpm dev` y abrir `http://localhost:3001`.
 
-**Usar solo en un entorno local de demostración.** Los usuarios y la contraseña son de prueba. Los expedientes, importes y resultados `DEMO ·` son inventados. La oportunidad de Leitza reproduce datos visibles en Tendios el 19/09/2026; las fechas y condiciones pueden cambiar. El resumen del Archivo digital es un ejemplo manual: no se generó con IA.
+La cuenta creada es **Tendios**. Todos los usuarios de demo usan la contraseña
+`password123`:
 
-La seed no sube archivos a MinIO. Para mostrar la documentación, usar los pliegos descargados de la pestaña **Documentos** de [la licitación de Leitza en Tendios](https://bid.tendios.com/tender/01a0b6c8-95c0-7053-87b2-c7a41df1328e/documents): `20260918_Eginbidea_Pliego Obras Liburutegia-Leitza 11SEP2(...).pdf` (pliego regulador/administrativo, 38 páginas) y `EINPRJ01437_PE Bib.Leitza - Pliego.pdf` (condiciones técnicas, 266 páginas). Están en `~/Downloads` de este equipo; no se incluyen en el repositorio. Asociar el primero a PCAP y el segundo a PPTP.
+| Usuario                | Rol           |
+| ---------------------- | ------------- |
+| `fernando@tendios.com` | Administrador |
+| `manu@tendios.com`     | Miembro       |
+| `sandra@tendios.com`   | Miembro       |
 
-## Qué queda listo para mostrar
+La seed crea un pipeline de licitación pública con estados de análisis,
+preparación, presentación, resolución y los estados finales **Ganada**,
+**Perdida** y **Descartada**. También crea el catálogo de preguntas de control,
+campos personalizados y plantillas de resumen, además de una oportunidad de
+ejemplo con el workflow completo asignado. La seed de demo añade además diez
+oportunidades ficticias repartidas por los estados para probar filtros de
+Kanban y listado.
 
-| Zona               | Datos preparados                                                                                                                                                                                                      | Acción durante el vídeo                                                                                                                                                                                   |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Cuenta y equipo    | Nexum Licitaciones, Fernando (admin), Sara y Carlos                                                                                                                                                                   | Mostrar miembros y responsables.                                                                                                                                                                          |
-| Configuración      | Un pipeline con 10 estados, 16 preguntas de control, campos personalizados, plantillas de resumen y cuatro workflows, incluido el de demo                                                                             | Enseñar cómo se definen estados, plantillas y pasos.                                                                                                                                                      |
-| Kanban y listado   | Una licitación real de Leitza y ocho oportunidades ficticias repartidas desde En análisis hasta Ganada, Perdida y Descartada, más el caso Punta Begoña de la seed de desarrollo                                       | Cambiar entre Kanban y listado; filtrar y abrir una ficha. **Descartada** está oculta en Kanban por la configuración del estado.                                                                          |
-| Cualificación      | Archivo digital municipal con una pregunta contestada, tres campos rellenados y un resumen manual                                                                                                                     | Mostrar las secciones de la ficha y editar un valor.                                                                                                                                                      |
-| Workflow           | Punta Begoña ya tiene el workflow estándar asignado y dos acciones de adjuntos pendientes                                                                                                                             | Mostrar la vista de pasos, acciones y progreso.                                                                                                                                                           |
-| Documentación e IA | Leitza queda asociada a **DEMO · Documentación, cualificación y resumen con IA** al crearla. Tiene dos adjuntos y cuatro acciones de IA: una pregunta de solvencia, dos campos (ENS y UTE) y un resumen de viabilidad | Subir los PDF en PCAP y PPTP. La cualificación muestra la solvencia, si se exige ENS y de qué categoría, si se admite UTE, y después genera un resumen útil sobre solvencia y criterios de participación. |
+## Workflows incluidos
 
-## Guion sugerido (6-8 minutos)
+| Workflow                                       | Uso en la demo                                                                                                                                                                                                |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Proceso estándar de licitación**             | Recorrido completo: documentación, extracción con IA, cualificación Go/No-Go, revisión de riesgos, estrategia, preparación y presentación.                                                                    |
+| **Acuerdo Marco / Sistema Dinámico**           | Segundo recorrido completo para contratos marco, con análisis de lotes, solvencia, riesgos, estrategia y notificación final.                                                                                  |
+| **Demo directo · Filtro de certificación ENS** | Workflow corto: responde la pregunta `¿Qué certificación ENS exige la licitación?` y decide. Solo `No requerida` cumple; si exige un nivel ENS, mueve la oportunidad a **Descartada** y detiene la ejecución. |
+| **Demo directo · Análisis rápido con IA**      | Workflow corto para subir documentación, extraer presupuesto, fecha y criterios, responder solvencia y generar los resúmenes de viabilidad y riesgos.                                                         |
 
-1. **Entrada y navegación (30 s):** iniciar sesión, abrir Oportunidades y señalar la cuenta activa.
-2. **Pipeline (45 s):** recorrer el Kanban de izquierda a derecha. Abrir el listado y mostrar que incluye el caso Descartada; probar un filtro o búsqueda.
-3. **Configuración (60 s):** abrir Ajustes → Pipelines para enseñar los estados; luego Ajustes → Workflows para enseñar el proceso estándar y el workflow breve **DEMO · Documentación, cualificación y resumen con IA**; pasar por preguntas, campos y plantillas de resumen.
-4. **Ficha y cualificación (90 s):** abrir **DEMO · Archivo digital municipal**. Mostrar Detalles, Preguntas de control, Campos personalizados y Resúmenes. Explicar que los valores precargados son manuales y editables. Mostrar la asignación de responsable.
-5. **Proceso documental (90 s):** abrir **3038_888/2026 · Rehabilitación de la biblioteca municipal de Leitza** y comprobar que tiene asignado **DEMO · Documentación, cualificación y resumen con IA**. Cargar los dos pliegos reales en las acciones PCAP y PPTP; la subida necesita MinIO activo. Al completar ambas, se avanza a la cualificación inicial.
-6. **IA en directo (90-120 s):** ejecutar la pregunta de solvencia y los campos **Certificación ENS requerida** y **Admite UTE** para enseñar los tipos de cualificación. El ENS devuelve si no se exige o si se exige en categoría básica, media o alta; UTE indica si se permite concurrir en unión temporal. Después, generar **un único análisis de solvencia y viabilidad** con los PDF adjuntos y contrastar sus criterios con los pliegos. Grabar una toma de prueba con el proveedor configurado antes del vídeo definitivo; no repetir acciones ni pulsar reintentos durante la grabación. No presentar el resumen manual precargado del Archivo digital como salida de IA.
-7. **Cierre (30 s):** mostrar los estados terminales Ganada y Perdida como ejemplos ficticios y resumir el flujo desde oportunidad hasta seguimiento.
+Los workflows completos incluyen acciones de adjuntos, campos, preguntas de
+control, resúmenes, tareas y notificaciones por email para mostrar la variedad
+de acciones disponibles. Las acciones de tarea y email sirven como definición
+del proceso en esta demo; no se envían mensajes externos automáticamente.
 
-## Límites que conviene explicar
+## Recorrido sugerido
 
-- La seed no afirma que los casos `DEMO ·` sean licitaciones o adjudicaciones reales. Leitza es una licitación real, pero los datos deben revisarse en la fuente si se graba después del 19/09/2026.
-- Los estados avanzados del Kanban son ejemplos de seguimiento; las oportunidades `DEMO ·` no tienen un historial de workflow completado artificialmente.
-- El botón de generación requiere un proveedor de IA disponible y configurado en `apps/api/.env`. Los PDF se envían como contexto al proveedor configurado.
-- El workflow breve realiza cinco solicitudes de IA: una pregunta, dos campos, una decisión sobre ENS y un análisis final. Primero calcula la cualificación, después evalúa el filtro ENS: si detecta que se exige un certificado, cambia la oportunidad a `Descartada`; si no, continúa con el resumen. Al terminar el análisis muestra una acción de notificación por email preparada para avisar al equipo. Como incluye los dos pliegos, también envía el PPTP de 266 páginas en cada solicitud: puede consumir muchos tokens de entrada. Si se repite la demo, usar una oportunidad nueva o comprobar el estado del workflow antes de volver a subir los archivos.
-- La importación automática de licitaciones, las tareas ejecutables y la exportación PDF siguen fuera del alcance implementado; algunas acciones de workflow de tipo tarea o notificación sirven como definición del proceso, no como ejecución autónoma.
+1. Entrar con Fernando y enseñar la cuenta, el equipo y el pipeline.
+2. Abrir **Ajustes → Workflows** y comparar los dos procesos completos con los
+   dos workflows directos.
+3. En la oportunidad de ejemplo, adjuntar el PCAP y el PPTP en el primer paso.
+4. Ejecutar el workflow rápido de IA para enseñar campos, preguntas de
+   solvencia y los resúmenes de requisitos y viabilidad.
+5. Ejecutar el workflow ENS en otra oportunidad: cuando el campo indique que
+   se exige un certificado, la decisión la pasa a **Descartada** y el workflow
+   se detiene; si indica `No requerida`, continúa al paso siguiente.
+
+Conviene probar las acciones con el proveedor de IA configurado antes de
+grabar. Los PDF se envían como buffers al proveedor y el consumo depende de su
+tamaño, por lo que es preferible ejecutar cada acción una sola vez durante la
+grabación.

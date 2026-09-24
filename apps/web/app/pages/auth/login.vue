@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue';
 import { useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
 import { z } from 'zod';
-import { toast } from 'vue-sonner';
 import { useLoginMutation } from '~/modules/auth';
 import { LiaWordmark } from '~/modules/shared';
 import { isFetchError } from '~/modules/shared/composables/useApi';
@@ -22,16 +22,24 @@ const schema = toTypedSchema(
 
 const form = useForm({ validationSchema: schema });
 const { mutate: login, isPending } = useLoginMutation();
+const loginError = ref<string | null>(null);
+
+watch([() => form.values.email, () => form.values.password], () => {
+  loginError.value = null;
+});
 
 const onSubmit = form.handleSubmit((values) => {
   login(values, {
-    onSuccess: () => navigateTo(redirectTo.value ?? '/'),
+    onSuccess: () => {
+      loginError.value = null;
+      return navigateTo(redirectTo.value ?? '/');
+    },
     onError: (error) => {
       if (isFetchError(error, 401)) {
-        toast.error('Email o contraseña incorrectos');
+        loginError.value = 'Email o contraseña incorrectos';
         return;
       }
-      toast.error('Error inesperado');
+      loginError.value = 'No se pudo iniciar sesión. Inténtalo de nuevo.';
     },
   });
 });
@@ -47,6 +55,14 @@ const onSubmit = form.handleSubmit((values) => {
 
     <div class="bg-card rounded-xl border p-6 shadow-sm">
       <form class="space-y-4" @submit="onSubmit">
+        <p
+          v-if="loginError"
+          role="alert"
+          class="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive"
+        >
+          {{ loginError }}
+        </p>
+
         <FormField v-slot="{ componentField }" name="email">
           <FormItem>
             <FormLabel>Email</FormLabel>

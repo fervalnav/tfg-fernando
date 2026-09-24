@@ -52,6 +52,8 @@ type QualificationCatalog = {
 type PipelineSeed = {
   pipelineId: string;
   initialStatusId: string;
+  analysisStatusId: string;
+  discardedStatusId: string;
 };
 
 type WorkflowSeed = {
@@ -61,21 +63,23 @@ type WorkflowSeed = {
 };
 
 export class DevSeeder extends Seeder {
-  async run(em: EntityManager): Promise<void> {
-    const existingUser = await em.findOne(UserOrmEntity, { email: 'admin@nexum.es' });
+  async run(em: EntityManager, context: { demo?: boolean } = {}): Promise<void> {
+    const existingUser = await em.findOne(UserOrmEntity, { email: 'fernando@tendios.com' });
     if (existingUser) return;
 
     const now = new Date();
     const { accountId, adminUserId } = await this.seedAccountAndUsers(em, now);
     const pipeline = this.seedPipeline(em, accountId, now);
     const catalog: QualificationCatalog = {
-      controlQuestions: this.seedControlQuestions(em, accountId, now),
+      controlQuestions: this.seedControlQuestions(em, accountId, now, context.demo === true),
       customFields: this.seedCustomFields(em, accountId, now),
       summaries: this.seedSummaryTemplates(em, accountId, now),
     };
-    const workflow = this.seedWorkflows(em, accountId, catalog, now);
+    const workflow = this.seedWorkflows(em, accountId, pipeline, catalog, now, context.demo === true);
     await em.flush();
     await this.seedTenderOpportunity(em, accountId, adminUserId, pipeline, workflow, now);
+
+    if (context.demo) await this.seedDemoFilterOpportunities(em, accountId, pipeline.pipelineId, now);
 
     await em.flush();
   }
@@ -86,12 +90,12 @@ export class DevSeeder extends Seeder {
     const accountId = uuidv7();
     const passwordHash = await bcrypt.hash('password123', 12);
 
-    em.persist(new AccountOrmEntity({ id: accountId, name: 'Nexum Licitaciones S.L.', createdAt: now }));
+    em.persist(new AccountOrmEntity({ id: accountId, name: 'Tendios', createdAt: now }));
 
     const users = [
-      { email: 'admin@nexum.es', firstName: 'Fernando', lastName: 'Valdés', role: 'ADMIN' as const },
-      { email: 'sara@nexum.es', firstName: 'Sara', lastName: 'Ibáñez', role: 'MEMBER' as const },
-      { email: 'carlos@nexum.es', firstName: 'Carlos', lastName: 'Fuentes', role: 'MEMBER' as const },
+      { email: 'fernando@tendios.com', firstName: 'Fernando', lastName: 'Valdés', role: 'ADMIN' as const },
+      { email: 'manu@tendios.com', firstName: 'Manu', lastName: 'Tendios', role: 'MEMBER' as const },
+      { email: 'sandra@tendios.com', firstName: 'Sandra', lastName: 'Tendios', role: 'MEMBER' as const },
     ];
 
     let adminUserId = '';
@@ -204,7 +208,7 @@ export class DevSeeder extends Seeder {
       },
       {
         name: 'Ganada',
-        description: 'Contrato adjudicado a Nexum',
+        description: 'Contrato adjudicado a Tendios',
         backgroundColor: '#22c55e',
         textColor: '#ffffff',
         isTerminal: true,
@@ -235,9 +239,13 @@ export class DevSeeder extends Seeder {
     ];
 
     let initialStatusId = '';
+    let analysisStatusId = '';
+    let discardedStatusId = '';
     for (const s of statuses) {
       const id = uuidv7();
       if (s.isInitial) initialStatusId = id;
+      if (s.name === 'En análisis') analysisStatusId = id;
+      if (s.name === 'Descartada') discardedStatusId = id;
       em.persist(
         new PipelineStatusOrmEntity({
           id,
@@ -257,12 +265,19 @@ export class DevSeeder extends Seeder {
       );
     }
     if (!initialStatusId) throw new Error('La seed requiere un estado inicial de pipeline');
-    return { pipelineId: pipeline.id, initialStatusId };
+    if (!analysisStatusId) throw new Error('La seed requiere un estado de análisis de pipeline');
+    if (!discardedStatusId) throw new Error('La seed requiere un estado descartado de pipeline');
+    return { pipelineId: pipeline.id, initialStatusId, analysisStatusId, discardedStatusId };
   }
 
   // ── Preguntas de control ───────────────────────────────────────────────
 
-  private seedControlQuestions(em: EntityManager, accountId: string, now: Date): Map<string, string> {
+  private seedControlQuestions(
+    em: EntityManager,
+    accountId: string,
+    now: Date,
+    includeEnsQuestion: boolean,
+  ): Map<string, string> {
     const catalog = new Map<string, string>();
     const questions: { question: string; answerType: 'TEXT' | 'BOOLEAN'; passConditionPrompt: string | null }[] = [
       {
@@ -342,7 +357,7 @@ export class DevSeeder extends Seeder {
           '¿Hemos analizado la posición competitiva de los principales licitadores habituales en este tipo de contratos?',
         answerType: 'BOOLEAN',
         passConditionPrompt:
-          'La respuesta debe confirmar que se ha realizado un análisis de competidores y se conoce la posición relativa de Nexum',
+          'La respuesta debe confirmar que se ha realizado un análisis de competidores y se conoce la posición relativa de Tendios',
       },
       {
         question:
@@ -367,6 +382,14 @@ export class DevSeeder extends Seeder {
         passConditionPrompt: null,
       },
     ];
+    if (includeEnsQuestion) {
+      questions.push({
+        question: '¿Qué certificación ENS exige la licitación?',
+        answerType: 'TEXT',
+        passConditionPrompt:
+          'La respuesta solo cumple si indica exactamente «No requerida». Si la licitación exige categoría Básica, Media o Alta, debe marcarse como no cumplida.',
+      });
+    }
 
     for (const cq of questions) {
       const id = uuidv7();
@@ -578,7 +601,7 @@ export class DevSeeder extends Seeder {
         canSelectMultiple: false,
         automatic: true,
         aiPrompt:
-          'Determina si el pliego exige certificación del Esquema Nacional de Seguridad (ENS). Devuelve exactamente una opción: No requerida, Categoría Básica, Categoría Media o Categoría Alta. Si exige ENS pero no indica categoría, usa Categoría Básica y explica la ambigüedad en la evidencia.',
+          'Determina si el pliego exige certificación del Esquema Nacional de Seguridad (ENS). Devuelve exactamente una opción: No requerida, Categoría Básica, Categoría Media o Categoría Alta.',
       },
       {
         name: 'Fecha límite de presentación',
@@ -638,7 +661,7 @@ export class DevSeeder extends Seeder {
       {
         name: 'Resumen ejecutivo',
         prompt:
-          'Genera un resumen ejecutivo de esta licitación pública española para el equipo directivo de Nexum Licitaciones. ' +
+          'Genera un resumen ejecutivo de esta licitación pública española para el equipo directivo de Tendios. ' +
           'Incluye: (1) objeto del contrato en una frase, (2) órgano de contratación, (3) presupuesto base sin IVA, ' +
           '(4) plazo de ejecución, (5) criterios de adjudicación con sus ponderaciones, y (6) fecha límite de presentación. ' +
           'Formato: párrafo introductorio + lista con viñetas. Máximo 300 palabras. Tono profesional y directo.',
@@ -646,7 +669,7 @@ export class DevSeeder extends Seeder {
       {
         name: 'Análisis de viabilidad',
         prompt:
-          'Realiza un análisis de viabilidad completo de esta licitación para decidir si Nexum Licitaciones debe presentar oferta. ' +
+          'Realiza un análisis de viabilidad completo de esta licitación para decidir si Tendios debe presentar oferta. ' +
           'Evalúa los siguientes bloques: ' +
           '(1) Encaje estratégico: ¿el objeto del contrato es el núcleo de negocio o adyacente? ' +
           '(2) Solvencia: ¿los requisitos técnicos y económicos son alcanzables para una empresa mediana del sector? ' +
@@ -675,7 +698,7 @@ export class DevSeeder extends Seeder {
       {
         name: 'Guía de redacción de la oferta técnica',
         prompt:
-          'Basándote en los pliegos de esta licitación, genera una guía detallada para redactar la oferta técnica de Nexum. ' +
+          'Basándote en los pliegos de esta licitación, genera una guía detallada para redactar la oferta técnica de Tendios. ' +
           'Incluye: (1) estructura recomendada de la memoria técnica (secciones y orden), (2) puntos críticos que el evaluador valorará, ' +
           '(3) errores frecuentes que descartan ofertas en este tipo de contratos, (4) documentación complementaria recomendada, ' +
           'y (5) extensión máxima estimada por sección. Usa lenguaje claro y accionable para el equipo redactor.',
@@ -683,7 +706,7 @@ export class DevSeeder extends Seeder {
       {
         name: 'Análisis de riesgos del contrato',
         prompt:
-          'Realiza un análisis de riesgos detallado de este contrato público para Nexum Licitaciones. ' +
+          'Realiza un análisis de riesgos detallado de este contrato público para Tendios. ' +
           'Identifica y evalúa los riesgos en las siguientes categorías: ' +
           '(1) Técnicos: complejidad de ejecución, dependencias tecnológicas, recursos necesarios. ' +
           '(2) Económicos: variaciones de costes, penalidades por demora, revisión de precios. ' +
@@ -713,10 +736,18 @@ export class DevSeeder extends Seeder {
 
   // ── Workflows ─────────────────────────────────────────────────────────
 
-  private seedWorkflows(em: EntityManager, accountId: string, catalog: QualificationCatalog, now: Date): WorkflowSeed {
+  private seedWorkflows(
+    em: EntityManager,
+    accountId: string,
+    pipeline: PipelineSeed,
+    catalog: QualificationCatalog,
+    now: Date,
+    includeDemoWorkflow: boolean,
+  ): WorkflowSeed {
     const standard = this.seedWorkflowEstandar(em, accountId, catalog, now);
-    this.seedWorkflowUrgente(em, accountId, catalog, now);
+    this.seedWorkflowUrgente(em, accountId, pipeline, catalog, now);
     this.seedWorkflowMarco(em, accountId, catalog, now);
+    if (includeDemoWorkflow) this.seedWorkflowEns(em, accountId, pipeline, catalog, now);
     return standard;
   }
 
@@ -977,12 +1008,78 @@ export class DevSeeder extends Seeder {
     return { workflow, firstStep: s1, firstStepActions };
   }
 
-  private seedWorkflowUrgente(em: EntityManager, accountId: string, catalog: QualificationCatalog, now: Date): void {
+  private seedWorkflowEns(
+    em: EntityManager,
+    accountId: string,
+    pipeline: PipelineSeed,
+    catalog: QualificationCatalog,
+    now: Date,
+  ): void {
     const workflow = new WorkflowOrmEntity({
       id: uuidv7(),
       accountId,
-      name: 'Licitación urgente (<48h)',
-      description: 'Proceso acelerado para licitaciones con plazo de presentación inferior a 48 horas.',
+      name: 'Demo directo · Filtro de certificación ENS',
+      description: 'Workflow corto para extraer la categoría ENS y descartar automáticamente si es necesaria.',
+      createdAt: now,
+      updatedAt: now,
+    });
+    em.persist(workflow);
+    const steps = this.createSteps(
+      em,
+      workflow,
+      [
+        { name: 'Calcular certificación ENS', type: 'step', condition: null, position: 1 },
+        {
+          name: '¿Requiere certificación ENS?',
+          type: 'decision',
+          condition: '¿La licitación exige una certificación ENS distinta de «No requerida»?',
+          position: 2,
+        },
+      ],
+      now,
+    );
+    const [qualificationStep, decisionStep] = steps;
+    if (!qualificationStep || !decisionStep) throw new Error('El workflow ENS requiere dos pasos');
+    this.createActions(
+      em,
+      qualificationStep,
+      [
+        {
+          name: 'Extraer certificado ENS requerido',
+          targetType: 'control_question',
+          targetId: this.requiredTarget(catalog.controlQuestions, '¿Qué certificación ENS exige la licitación?'),
+          metadata: null,
+        },
+      ],
+      now,
+    );
+    this.createActions(
+      em,
+      decisionStep,
+      [
+        {
+          name: 'Descartar si requiere ENS',
+          targetType: 'opportunity_status_update',
+          targetId: pipeline.discardedStatusId,
+          metadata: { pipelineId: pipeline.pipelineId, finalOutcomeType: 'DROPPED' },
+        },
+      ],
+      now,
+    );
+  }
+
+  private seedWorkflowUrgente(
+    em: EntityManager,
+    accountId: string,
+    pipeline: PipelineSeed,
+    catalog: QualificationCatalog,
+    now: Date,
+  ): void {
+    const workflow = new WorkflowOrmEntity({
+      id: uuidv7(),
+      accountId,
+      name: 'Demo directo · Análisis rápido con IA',
+      description: 'Workflow corto para enseñar extracción de datos, preguntas de control y resúmenes en directo.',
       createdAt: now,
       updatedAt: now,
     });
@@ -995,19 +1092,24 @@ export class DevSeeder extends Seeder {
         { name: 'Documentación imprescindible', type: 'step', condition: null, position: 1 },
         { name: 'Análisis rápido con IA', type: 'step', condition: null, position: 2 },
         {
-          name: '¿Requiere validación adicional?',
+          name: '¿Falta alguna certificación o requisito?',
           type: 'decision',
           condition:
-            '¿Hay algún requisito excluyente o riesgo crítico que deba validar una persona antes de continuar?',
+            '¿La licitación exige alguna certificación, acreditación o requisito técnico que Tendios no pueda acreditar con la documentación de empresa?',
           position: 3,
         },
-        { name: 'Preparación express', type: 'step', condition: null, position: 4 },
-        { name: 'Presentación', type: 'step', condition: null, position: 5 },
+        {
+          name: '¿Cumple los requisitos para continuar?',
+          type: 'decision',
+          condition:
+            '¿Tendios cumple todos los requisitos económicos, técnicos, de seguros y certificaciones exigidos por la licitación?',
+          position: 4,
+        },
       ],
       now,
     );
 
-    const [s1, s2, s3, s4, s5] = steps;
+    const [s1, s2, s3, s4] = steps;
 
     if (s1) {
       this.createActions(
@@ -1019,6 +1121,11 @@ export class DevSeeder extends Seeder {
             name: 'Adjuntar anexos y modelos obligatorios',
             targetType: 'attachment',
             metadata: { label: 'Anexos y modelos' },
+          },
+          {
+            name: 'Adjuntar ficha de capacidades de la empresa',
+            targetType: 'attachment',
+            metadata: { label: 'Ficha de capacidades de la empresa' },
           },
         ],
         now,
@@ -1055,12 +1162,12 @@ export class DevSeeder extends Seeder {
         em,
         s3,
         [
-          this.controlQuestionAction(
-            'Validar margen económico',
-            '¿El presupuesto base de licitación es suficiente para ejecutar el contrato con un margen neto mínimo del 10%?',
-            catalog,
-          ),
-          this.summaryAction('Generar análisis de riesgos urgente', 'Análisis de riesgos del contrato', catalog),
+          {
+            name: 'Descartar si falta una certificación',
+            targetType: 'opportunity_status_update',
+            targetId: pipeline.discardedStatusId,
+            metadata: { pipelineId: pipeline.pipelineId, finalOutcomeType: 'DROPPED' },
+          },
         ],
         now,
       );
@@ -1071,39 +1178,11 @@ export class DevSeeder extends Seeder {
         em,
         s4,
         [
-          this.summaryAction('Generar guía de redacción express', 'Guía de redacción de la oferta técnica', catalog),
           {
-            name: 'Preparar propuesta técnica y económica',
-            targetType: 'task',
-            metadata: { title: 'Preparar y revisar la propuesta dentro del plazo urgente' },
-          },
-        ],
-        now,
-      );
-    }
-
-    if (s5) {
-      this.createActions(
-        em,
-        s5,
-        [
-          {
-            name: 'Adjuntar propuesta técnica y económica',
-            targetType: 'attachment',
-            metadata: { label: 'Propuesta completa' },
-          },
-          {
-            name: 'Registrar en plataforma de contratación',
-            targetType: 'task',
-            metadata: { title: 'Subir oferta a la plataforma — urgente' },
-          },
-          {
-            name: 'Notificar presentación urgente al equipo',
-            targetType: 'email_notification',
-            metadata: {
-              subject: 'Oferta urgente presentada',
-              message: 'Se ha registrado la oferta dentro del plazo establecido.',
-            },
+            name: 'Mover a En análisis',
+            targetType: 'opportunity_status_update',
+            targetId: pipeline.analysisStatusId,
+            metadata: { pipelineId: pipeline.pipelineId },
           },
         ],
         now,
@@ -1133,7 +1212,7 @@ export class DevSeeder extends Seeder {
           name: '¿Requiere revisión estratégica reforzada?',
           type: 'decision',
           condition:
-            '¿Hay dudas sobre el encaje con el portfolio de Nexum, la solvencia o la inversión necesaria para participar?',
+            '¿Hay dudas sobre el encaje con el portfolio de Tendios, la solvencia o la inversión necesaria para participar?',
           position: 3,
         },
         { name: 'Preparación de la candidatura', type: 'step', condition: null, position: 4 },
@@ -1352,6 +1431,56 @@ export class DevSeeder extends Seeder {
           status: 'PENDING',
           errorMessage: null,
           completedAt: null,
+          createdAt: now,
+          updatedAt: now,
+        }),
+      );
+    }
+  }
+
+  private async seedDemoFilterOpportunities(
+    em: EntityManager,
+    accountId: string,
+    pipelineId: string,
+    now: Date,
+  ): Promise<void> {
+    const statuses = await em.find(PipelineStatusOrmEntity, { pipeline: pipelineId });
+    const statusByName = new Map(statuses.map((status) => [status.name, status]));
+    const opportunities = [
+      ['Nueva', 'Servicio de mantenimiento de plataforma de contratación', 185000],
+      ['En análisis', 'Implantación de portal de licitación electrónica', 420000],
+      ['Candidata', 'Asistencia técnica para contratación pública digital', 275000],
+      ['En preparación', 'Suministro de infraestructura cloud para expediente electrónico', 690000],
+      ['En revisión interna', 'Automatización de revisión de pliegos', 315000],
+      ['Presentada', 'Evolución del sistema de información de contratación', 510000],
+      ['En resolución', 'Plataforma de seguimiento de contratos públicos', 240000],
+      ['Ganada', 'Cuadro de mando para contratación municipal', 128000],
+      ['Perdida', 'Portal de transparencia y datos abiertos', 195000],
+      ['Descartada', 'Servicio de seguridad con certificación no disponible', 350000],
+    ] as const;
+
+    for (const [statusName, title, amount] of opportunities) {
+      const status = statusByName.get(statusName);
+      if (!status) throw new Error(`La seed requiere el estado de pipeline: ${statusName}`);
+      em.persist(
+        new OpportunityOrmEntity({
+          id: uuidv7(),
+          accountId,
+          title: `DEMO · ${title}`,
+          description: `Oportunidad ficticia para mostrar filtros. Estado inicial de demo: ${statusName}.`,
+          amount,
+          currency: 'EUR',
+          pipelineId,
+          pipelineStatusId: status.id,
+          sortPoints: status.sortPoints,
+          workflowId: null,
+          workflowStepId: null,
+          organizationId: null,
+          dueDate: null,
+          finalOutcomeType: status.outcomeType === 'NONE' ? null : status.outcomeType,
+          closedAt: status.isTerminal ? now : null,
+          responsibleUserIds: [],
+          responsibleTeamIds: [],
           createdAt: now,
           updatedAt: now,
         }),
