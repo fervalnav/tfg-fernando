@@ -17,7 +17,7 @@ services:
 
   minio:
     build:
-      context: ./deploy/minio
+      context: ./infra/local/minio
     command: server /data --console-address ":9001"
     ports:
       - "9000:9000"

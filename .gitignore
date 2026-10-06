@@ -57,7 +57,6 @@ yarn-error.log*
 *.tfstate.*
 *.tfvars
 !*.tfvars.example
-deploy/.env
 
 # Local reference material used while drafting the TFG
 /docs/refs/

@@ -12,6 +12,5 @@ node_modules
 **/coverage
 **/dist
 docs
-deploy/.env
 infra/**/.terraform
 infra/**/*.tfstate*

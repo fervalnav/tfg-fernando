@@ -78,23 +78,10 @@ make db-refresh         # Drop + re-run todas
 curl http://localhost:3000/api/health
 ```
 
-El Compose local construye MinIO desde `deploy/minio/Dockerfile`, fijado a
+El Compose local construye MinIO desde `infra/local/minio/Dockerfile`, fijado a
 `RELEASE.2025-10-15T17-29-55Z`, porque `minio/minio:latest` ya no está disponible
 en Docker Hub. La primera ejecución de `make up` tarda más mientras compila la
 imagen; las siguientes reutilizan la caché de Docker.
-
-## Despliegue
-
-La preparación del entorno económico de producción se divide en dos partes:
-
-- [`infra/hetzner`](infra/hetzner/README.md) crea el servidor, el firewall y el
-  usuario de despliegue mediante OpenTofu o Terraform;
-- [`deploy`](deploy/README.md) define los contenedores, HTTPS, copias y el
-  despliegue manual desde GitHub Actions.
-
-La configuración no crea recursos por sí sola. El alta del servidor requiere
-un `terraform apply` explícito y el despliegue necesita un dominio y los
-secretos del entorno `production`.
 
 ## Módulos
 
