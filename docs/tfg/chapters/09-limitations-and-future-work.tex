@@ -60,8 +60,8 @@ Los eventos de NestJS CQRS se procesan dentro de la API y no ofrecen una cola
 durable independiente. La topología elegida concentra los servicios en una
 única máquina. El repositorio define su publicación, copias y restauración,
 pero esa definición no acredita por sí sola disponibilidad de producción ni
-una recuperación conjunta verificada de PostgreSQL y MinIO. El
-\Cref{sec:risk-register} recoge prevención, señales y contingencias para estos
+una recuperación conjunta verificada de PostgreSQL y MinIO. La
+\cref{sec:risk-register} recoge prevención, señales y contingencias para estos
 límites.
 
 El aislamiento por cuenta y las URL prefirmadas protegen el acceso a los
@@ -85,14 +85,14 @@ y errores de omisión, sin atribuir ahora esos beneficios al sistema.
 
 La observabilidad puede incorporar persistencia de tokens, duración, errores,
 reintentos y coste por operación y cuenta. Estos datos permitirían comparar
-escenarios de consumo real con el modelo económico del
-\Cref{sec:operational-cost}, así como detectar cambios de comportamiento cuando
+escenarios de consumo real con el modelo económico de la
+\cref{sec:operational-cost}, así como detectar cambios de comportamiento cuando
 se actualicen los modelos. La validación operativa deberá incluir restauración
 coordinada, copias externas y pruebas de carga antes de ampliar el uso.
 
 \subsection{Portabilidad y evolución del despliegue}
 
-La topología elegida concentra la web, la API, PostgreSQL y MinIO en una única
+La topología propuesta concentra la web, la API, PostgreSQL y MinIO en una única
 máquina de Hetzner. Una evolución posible consiste en mantener las imágenes y
 los contratos de configuración, pero distribuir las responsabilidades entre
 servicios independientes: base de datos PostgreSQL gestionada, almacenamiento

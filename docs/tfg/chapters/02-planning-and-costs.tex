@@ -269,59 +269,55 @@ desplegada, que se trata por separado en la
 
 \subsection{Coste de personal}
 
-Para valorar el trabajo se adopta provisionalmente una tarifa de referencia de
-25,67 euros por hora para el perfil de desarrollador de software. Esta cifra
+Para valorar el trabajo se adopta la tarifa de referencia de 28,37 euros por
+hora correspondiente al perfil de analista programador J2EE/Web, categoría
+\emph{junior}, apropiada para una experiencia inferior a seis años. La cifra
 procede del informe sobre perfiles profesionales informáticos de la Junta de
-Andalucía \cite{juntaPerfilesInformaticos2018}; no se presenta como una tabla
-salarial vigente de 2026. También se emplea, como hipótesis provisional de
-cálculo, una cuota empresarial del 29,9\,\%. Ambos criterios deberán confirmarse
-antes de cerrar el presupuesto definitivo.
+Andalucía \cite{juntaPerfilesInformaticos2018}. Se trata de un precio horario de
+servicio sin IVA empleado como referencia en contratación pública, no de un
+salario; por ello no se añade una cuota empresarial de Seguridad Social.
 
-El presupuesto inicial utiliza las 320 horas estimadas. El coste bruto previsto
+El presupuesto inicial utiliza las 320 horas estimadas. El coste previsto
 es:
 
 \begin{equation}
-  C_{\text{bruto}} = 320 \times 25{,}67 = 8{.}214{,}40~\text{euros}.
+  C_{\text{previsto}} = 320 \times 28{,}37 = 9{.}078{,}40~\text{euros}.
 \end{equation}
 
-La cuota empresarial prevista asciende a:
-
-\begin{equation}
-  C_{\text{social}} = 8{.}214{,}40 \times 0{,}299 = 2{.}456{,}11~\text{euros}.
-\end{equation}
-
-La dedicación real de 339 horas eleva la remuneración bruta a 8{.}702,13 euros y
-la cuota empresarial a 2{.}601,94 euros. Con estas hipótesis, el coste previsto
-de personal es de 10{.}670,51 euros y el coste real de 11{.}304,07 euros, una
-diferencia de 633,56 euros, como resume la \Cref{tab:personnel-cost}.
+La dedicación real de 339 horas sitúa el coste de personal en 9{.}617,43 euros.
+La diferencia respecto a lo previsto es de 539,03 euros, como resume la
+\Cref{tab:personnel-cost}.
 
 \begin{table}[H]
   \centering
   \small
-  \caption{Comparación provisional entre el coste de personal previsto y real.}
+  \caption{Comparación entre el coste de personal previsto y real.}
   \label{tab:personnel-cost}
   \begin{tabular}{@{}lrr@{}}
     \toprule
     \textbf{Concepto} & \textbf{Previsto} & \textbf{Real} \\
     \midrule
     Horas de dedicación & 320 & 339 \\
-    Remuneración bruta & 8{.}214,40 euros & 8{.}702,13 euros \\
-    Cuota empresarial (29,9\,\%) & 2{.}456,11 euros & 2{.}601,94 euros \\
+    Tarifa de referencia & 28,37 euros/h & 28,37 euros/h \\
     \midrule
-    \textbf{Total de personal} & \textbf{10{.}670,51 euros} & \textbf{11{.}304,07 euros} \\
+    \textbf{Total de personal} & \textbf{9{.}078,40 euros} & \textbf{9{.}617,43 euros} \\
     \bottomrule
   \end{tabular}
 \end{table}
 
 \subsection{Recursos de desarrollo}
 
-El desarrollo se realizó con un MacBook Pro equipado con chip M4 Pro, cuyo
-precio de adquisición fue de 3{.}049 euros, confirmado por el autor. Para
-imputar su coste al proyecto se aplicará la amortización correspondiente al
-periodo de uso, a partir del precio y la fecha reales de adquisición. La tabla
-de amortización simplificada de la Agencia Tributaria establece para los
-equipos de tratamiento de la información un coeficiente lineal máximo del
-26\,\% y un periodo máximo de diez años \cite{aeatAmortizacion}.
+El desarrollo se realizó con un MacBook Pro equipado con chip M4 Pro, adquirido
+en diciembre de 2024 por 3{.}049 euros. La tabla de amortización simplificada de
+la Agencia Tributaria establece para los equipos de tratamiento de la
+información un coeficiente lineal máximo del 26\,\%
+\cite{aeatAmortizacion}. Aplicado a las veinte semanas planificadas para el TFG,
+el coste imputable es:
+
+\begin{equation}
+  C_{\text{equipo}} = 3{.}049 \times 0{,}26 \times \frac{20}{52}
+  = 304{,}90~\text{euros}.
+\end{equation}
 
 La aplicación se ejecutó en local durante el desarrollo, por lo que el
 alojamiento no forma parte de este bloque. La campaña comparativa de IA sí es
@@ -332,31 +328,28 @@ facturado, ya que las llamadas se realizaron dentro de la cuota disponible.
 La metodología y el desglose por operación se explican en la
 \Cref{sec:ai-model-selection}.
 
-La \Cref{tab:development-resources-cost} diferencia los conceptos confirmados
-de aquellos para los que todavía falta el dato de adquisición o consumo. Esta
-separación evita que una partida pendiente se confunda con un coste nulo.
+No se adquirieron licencias de pago específicamente para el proyecto.
 
 \begin{table}[H]
   \centering
   \small
   \caption{Recursos imputables al desarrollo.}
   \label{tab:development-resources-cost}
-  \begin{tabular}{@{}p{3.5cm}p{9.5cm}@{}}
+  \begin{tabular}{@{}p{3.5cm}p{7.5cm}r@{}}
     \toprule
-    \textbf{Concepto} & \textbf{Criterio de valoración} \\
+    \textbf{Concepto} & \textbf{Criterio de valoración} & \textbf{Coste} \\
     \midrule
-    MacBook Pro M4 Pro & Compra: 3{.}049 euros. Amortización según fecha de adquisición y periodo de uso, aún no confirmados. \\
-    Pruebas de IA & 92 generaciones medidas; valor tarifario equivalente de 0,085406 USD, sin factura acreditada. \\
-    Licencias & Herramientas de pago utilizadas específicamente para el proyecto; desembolso no confirmado. \\
+    MacBook Pro M4 Pro & Amortización al 26\,\% anual durante veinte semanas. & 304,90 euros \\
+    Pruebas de IA & 92 generaciones; valor tarifario equivalente de 0,085406 USD, cubierto por la cuota disponible. & 0 euros \\
+    Licencias & No se adquirieron licencias de pago para el proyecto. & 0 euros \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-Con los criterios provisionales disponibles, el coste real cuantificado
-asciende a 11{.}304,07 euros correspondientes al personal, frente a los
-10{.}670,51 euros previstos. No constituye todavía el total definitivo: deberá
-recalcularse tras confirmar la tarifa, la cuota empresarial, la amortización
-del equipo y las licencias realmente utilizadas.
+El coste total previsto, sumando personal y equipo, era de 9{.}383,30 euros. El
+coste real del desarrollo asciende a 9{.}922,33 euros: 9{.}617,43 euros de
+personal y 304,90 euros de amortización del equipo. La diferencia de 539,03
+euros se debe a las 19 horas adicionales de dedicación.
 
 \section{Coste operativo de funcionamiento}
 \label{sec:operational-cost}
@@ -365,10 +358,11 @@ El coste operativo es recurrente y comienza cuando la aplicación se mantiene
 disponible para usuarios. No representa el esfuerzo de construir LIA. Comprende
 el alojamiento de la web y la API, PostgreSQL, almacenamiento y transferencia
 de PDF, correo, observabilidad, copias de seguridad y las inferencias de IA.
-La topología de producción definida utiliza un servidor CX23 de Hetzner con
-copias rotatorias. Su importe mensual se incorporará cuando se acrediten la
-fecha de alta, el periodo y la facturación; no se asigna una cifra hipotética
-para producir un presupuesto aparentemente cerrado.
+La topología de producción propuesta utiliza un servidor CX23 de Hetzner con
+copias rotatorias. Durante el TFG no se contrató Hetzner ni otro alojamiento de
+pago, por lo que el coste operativo observado fue de 0 euros. El modelo
+siguiente permite estimar el gasto si la aplicación se mantiene disponible en
+el futuro.
 
 Para un mes $m$, el coste se puede expresar como:
 

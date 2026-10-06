@@ -331,8 +331,8 @@ de cuotas se resuelve en el ejecutor mediante espera y reanudación.
 \section{Ejecución e infraestructura de producción}
 \label{sec:production-infrastructure}
 
-LIA se despliega sobre una máquina virtual de Hetzner Cloud provisionada
-mediante infraestructura como código. La definición crea el servidor, limita
+El despliegue de producción propuesto utiliza una máquina virtual de Hetzner
+Cloud provisionada mediante infraestructura como código. La definición crea el servidor, limita
 el acceso mediante un cortafuegos y prepara un usuario específico de
 despliegue. Sobre esta máquina, Docker Compose ejecuta de forma aislada la
 aplicación web, la API, PostgreSQL, MinIO y Caddy. Las credenciales, dominios,

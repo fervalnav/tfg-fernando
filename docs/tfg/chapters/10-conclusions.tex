@@ -32,29 +32,29 @@ capítulos anteriores, sin extender el alcance a funcionalidades futuras.
 
 \begin{description}
   \item[OG-001.] La plataforma reúne documentación, respuestas y
-  pasos de análisis en una oportunidad y permite asistir tareas repetitivas
-  mediante IA. Se obtiene una solución funcional para apoyar el análisis y la
-  toma de requisitos. Su reducción efectiva de esfuerzo en equipos reales no
-  se cuantifica, al no existir una comparación temporal con el trabajo manual.
+    pasos de análisis en una oportunidad y permite asistir tareas repetitivas
+    mediante IA. Se obtiene una solución funcional para apoyar el análisis y la
+    toma de requisitos. Su reducción efectiva de esfuerzo en equipos reales no
+    se cuantifica, al no existir una comparación temporal con el trabajo manual.
 
   \item[OE-001.] Las preguntas de control y el contexto
-  documental permiten generar una evaluación preliminar con evidencia
-  revisable. El banco experimental demuestra esta capacidad en el conjunto
-  controlado, pero no sustituye la acreditación de la empresa ni una evaluación
-  profesional sobre cualquier licitación. El objetivo se alcanza dentro de ese
-  alcance asistido.
+    documental permiten generar una evaluación preliminar con evidencia
+    revisable. El banco experimental demuestra esta capacidad en el conjunto
+    controlado, pero no sustituye la acreditación de la empresa ni una evaluación
+    profesional sobre cualquier licitación. El objetivo se alcanza dentro de ese
+    alcance asistido.
 
   \item[OE-002.] Se implementan adaptadores sustituibles y un
-  banco que relaciona calidad, estructura, latencia, tokens y coste. La
-  comparación entre dos modelos de Google permite seleccionar una política por
-  operación. La optimización demostrada es experimental: no se atribuye a LIA
-  una explotación interna de métricas, un enrutamiento automático por operación
-  ni un ahorro mensual observado.
+    banco que relaciona calidad, estructura, latencia, tokens y coste. La
+    comparación entre dos modelos de Google permite seleccionar una política por
+    operación. La optimización demostrada es experimental: no se atribuye a LIA
+    una explotación interna de métricas, un enrutamiento automático por operación
+    ni un ahorro mensual observado.
 
   \item[OE-003.] El editor y la ejecución por oportunidad permiten
-  definir pasos, decisiones y acciones, consultar el progreso y completar,
-  omitir o reintentar el trabajo. El objetivo se materializa en el núcleo
-  implementado, con la exclusión explícita de los ejecutores de tarea y correo.
+    definir pasos, decisiones y acciones, consultar el progreso y completar,
+    omitir o reintentar el trabajo. El objetivo se materializa en el núcleo
+    implementado, con la exclusión explícita de los ejecutores de tarea y correo.
 \end{description}
 
 Las pruebas del \Cref{chap:testing} aportan evidencia de los recorridos
@@ -63,23 +63,37 @@ prioritarios y de las fronteras de autorización y cuenta. Las limitaciones del
 de seguridad, disponibilidad de producción ni fiabilidad absoluta de la IA.
 
 \section{Valoración personal}
-% TODO: incorporar la valoración personal confirmada por el autor.
 
-Desde el punto de vista técnico, el trabajo muestra que integrar IA no consiste
-únicamente en invocar un modelo. La utilidad del resultado depende de cómo se
-selecciona el contexto, se valida la estructura, se conserva la evidencia y se
-gestiona el fallo dentro del proceso de negocio. La distinción entre validez
-formal y respaldo documental resulta especialmente relevante en el análisis
-de licitaciones.
+La realización de este proyecto me ha permitido comprobar que integrar IA no
+consiste únicamente en invocar un modelo. La utilidad del resultado depende de
+cómo se selecciona el contexto, se valida la estructura, se conserva la
+evidencia y se gestiona el fallo dentro del proceso de negocio. La distinción
+entre validez formal y respaldo documental resulta especialmente relevante en
+el análisis de licitaciones.
 
-El diseño modular y las pruebas permiten revisar esas responsabilidades de
-forma separada. Al mismo tiempo, introducen un coste de mantenimiento en
-contratos, conversiones y estados que debe justificarse por la complejidad del
-workflow y el aislamiento multiempresa. La evaluación por operación muestra
-también por qué una media global o una tarifa inferior no bastan para elegir
-un modelo.
+Uno de los principales aprendizajes ha sido la complejidad de elegir el modelo
+adecuado para cada tipo de tarea. La decisión exige estudiar conjuntamente la
+calidad de la respuesta, su respaldo documental, el cumplimiento del formato,
+la latencia, el coste y los límites de uso. Una media global o una tarifa
+inferior no bastan para decidir. Además, el rápido avance de la IA generativa
+dificulta que esta selección pueda considerarse definitiva: los proveedores
+publican modelos nuevos y retiran versiones anteriores con gran frecuencia.
+En una aplicación real sería necesario mantener de forma continua los
+adaptadores, repetir las evaluaciones y revisar la política de selección para
+evitar que una actualización altere el comportamiento esperado.
 
-El resultado constituye una base funcional para continuar la validación y las
-ampliaciones descritas, manteniendo un principio común: automatizar la
-obtención de información no implica delegar la decisión final ni ocultar las
-limitaciones de la evidencia disponible.
+También considero especialmente relevante el cambio de escala temporal que
+pueden aportar estas herramientas. Durante las conversaciones mantenidas con
+clientes de la empresa para estudiar este desarrollo de automatización se
+identificaron tareas de análisis que podían requerir días o semanas. LIA puede
+generar una primera respuesta en segundos. Esta diferencia no constituye una
+medición controlada de productividad, pero sí muestra el potencial del enfoque
+para reducir el trabajo repetitivo y dedicar más tiempo a la revisión y a la
+toma de decisiones.
+
+La rapidez solo resulta útil si no obliga a confiar ciegamente en el modelo.
+Por ello valoro especialmente que la aplicación acompañe sus respuestas con
+evidencias localizables en los documentos oficiales. De esta forma, el usuario
+puede contrastar con facilidad la información generada y mantiene la decisión
+final, en lugar de asumir que una afirmación es correcta únicamente porque la
+ha producido una IA.
